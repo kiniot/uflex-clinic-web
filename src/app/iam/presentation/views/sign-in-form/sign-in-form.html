@@ -1,0 +1,36 @@
+<div class="form-container">
+  <section class="card">
+    <header class="card-header">
+      <h2 class="card-title">Sign-In</h2>
+    </header>
+    <div class="card-content">
+      <form [formGroup]="form" (submit)="performSignIn()">
+        <div class="form-field">
+          <label for="username">Username</label>
+          <input type="text"
+                 id="username"
+                 name="username"
+                 placeholder="Enter your username"
+                 formControlName="username"
+                 [class.input-error]="isInvalidControl(form,'username')">
+          @if (isInvalidControl(form,'username')) {
+            <span class="error-message">{{ errorMessagesForControl(form,'username')}}</span>
+          }
+        </div>
+        <div class="form-field">
+          <label for="password">Password</label>
+          <input type="password"
+                 id="password"
+                 name="password"
+                 placeholder="Enter your password"
+                 formControlName="password"
+                 [class.input-error]="isInvalidControl(form,'password')">
+          @if (isInvalidControl(form,'password')) {
+            <span class="error-message">{{ errorMessagesForControl(form,'password')}}</span>
+          }
+        </div>
+        <button type="submit" class="btn-primary">Sign-In</button>
+      </form>
+    </div>
+  </section>
+</div>
