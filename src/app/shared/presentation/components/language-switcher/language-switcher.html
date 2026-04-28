@@ -1,0 +1,11 @@
+<div class="language-group" role="group" aria-label="Preferred language">
+  @for (language of languages; track language) {
+    <button
+      type="button"
+      [class.active]="currentLang === language"
+      [attr.aria-pressed]="currentLang === language"
+      (click)="useLanguage(language)">
+      {{ language.toUpperCase() }}
+    </button>
+  }
+</div>
