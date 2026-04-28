@@ -1,0 +1,11 @@
+<div class="auth-section">
+  @if (store.isSignedIn()) {
+    <span class="welcome-text">Welcome, <strong>{{ store.currentUsername() }}</strong></span>
+    <span class="divider"></span>
+    <button type="button" class="btn-link" (click)="performSignOut()">Sign-Out</button>
+  } @else {
+    <button type="button" class="btn-link" (click)="performSignIn()">Sign-In</button>
+    <span class="divider"></span>
+    <button type="button" class="btn-link" (click)="performSignUp()">Sign-Up</button>
+  }
+</div>
