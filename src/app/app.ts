@@ -6,7 +6,7 @@ import { Layout } from './shared/presentation/components/layout/layout';
   selector: 'app-root',
   imports: [Layout],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  styleUrl: './app.scss',
 })
 export class App {
   protected readonly title = signal('uflex-clinic-web');
