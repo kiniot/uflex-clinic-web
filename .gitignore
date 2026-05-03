@@ -32,7 +32,7 @@ pnpm-debug.log
 .env
 .env.*
 src/environments/environment.development.ts
-!src/environments/environment.ts
+src/environments/environment.ts
 
 # Miscellaneous
 /.angular/cache

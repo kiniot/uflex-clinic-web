@@ -1,0 +1,11 @@
+a.theme-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  transition: transform 0.2s ease-in-out;
+
+  &:active {
+    transform: scale(0.9);
+  }
+}

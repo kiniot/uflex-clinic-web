@@ -1,1 +1,38 @@
 /* You can add global styles to this file, and also import other style files */
+
+@use 'primeicons/primeicons.css' as pi;
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--p-surface-950);
+  background-color: var(--p-surface-50);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--p-primary-500); /* Petroleum for headings */
+  font-weight: 600;
+  margin-top: 0;
+  transition: color 0.3s ease;
+}
+
+a {
+  color: var(--p-turquoise-400); /* Turquoise for links */
+  text-decoration: none;
+  transition: color 0.2s ease;
+  &:hover {
+    color: var(--p-turquoise-500);
+  }
+}
+
+.container-with-spacing {
+  padding: 1.5rem; /* 24px spacing around the container */
+}
