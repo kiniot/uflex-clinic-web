@@ -13,6 +13,7 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -20,11 +21,13 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--p-primary-500); /* Petroleum for headings */
   font-weight: 600;
   margin-top: 0;
+  transition: color 0.3s ease;
 }
 
 a {
   color: var(--p-turquoise-400); /* Turquoise for links */
   text-decoration: none;
+  transition: color 0.2s ease;
   &:hover {
     color: var(--p-turquoise-500);
   }
