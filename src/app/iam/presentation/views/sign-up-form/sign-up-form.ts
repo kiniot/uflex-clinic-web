@@ -13,7 +13,7 @@ import {SignUpCommand} from '../../../domain/model/sign-up.command';
   selector: 'app-sign-up-form',
   imports: [ReactiveFormsModule],
   templateUrl: './sign-up-form.html',
-  styleUrl: './sign-up-form.css'
+  styleUrl: './sign-up-form.scss'
 })
 export class SignUpForm extends BaseForm {
   private router = inject(Router);

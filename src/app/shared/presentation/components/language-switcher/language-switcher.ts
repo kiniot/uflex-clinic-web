@@ -5,7 +5,7 @@ import {TranslateService} from '@ngx-translate/core';
   selector: 'app-language-switcher',
   imports: [],
   templateUrl: './language-switcher.html',
-  styleUrl: './language-switcher.css'
+  styleUrl: './language-switcher.scss'
 })
 export class LanguageSwitcher {
   protected currentLang: string = 'en';

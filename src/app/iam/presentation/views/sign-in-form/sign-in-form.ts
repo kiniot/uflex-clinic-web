@@ -13,7 +13,7 @@ import {BaseForm} from '../../../../shared/presentation/components/base-form/bas
   selector: 'app-sign-in-form',
   imports: [ReactiveFormsModule],
   templateUrl: './sign-in-form.html',
-  styleUrl: './sign-in-form.css'
+  styleUrl: './sign-in-form.scss'
 })
 export class SignInForm extends BaseForm {
   private router = inject(Router);

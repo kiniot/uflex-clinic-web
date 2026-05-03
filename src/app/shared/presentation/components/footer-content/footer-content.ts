@@ -7,7 +7,7 @@ import {TranslatePipe} from '@ngx-translate/core';
     TranslatePipe
   ],
   templateUrl: './footer-content.html',
-  styleUrl: './footer-content.css'
+  styleUrl: './footer-content.scss'
 })
 export class FooterContent {
 

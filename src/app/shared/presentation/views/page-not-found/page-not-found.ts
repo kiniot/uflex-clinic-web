@@ -6,7 +6,7 @@ import {TranslatePipe} from '@ngx-translate/core';
   selector: 'app-page-not-found',
   imports: [TranslatePipe],
   templateUrl: './page-not-found.html',
-  styleUrl: './page-not-found.css'
+  styleUrl: './page-not-found.scss'
 })
 export class PageNotFound implements OnInit {
   protected invalidPath:  string  = '';

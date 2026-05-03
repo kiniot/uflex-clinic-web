@@ -7,7 +7,7 @@ import {TranslatePipe} from '@ngx-translate/core';
     TranslatePipe
   ],
   templateUrl: './about.html',
-  styleUrl: './about.css'
+  styleUrl: './about.scss'
 })
 export class About {
 
