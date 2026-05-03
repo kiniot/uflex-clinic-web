@@ -10,7 +10,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { iamInterceptor } from './iam/infrastructure/iam.interceptor';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
+import { appPreset } from './app.preset';
 
 /**
  * Application configuration for dependency injection and providers in the infrastructure layer.
@@ -25,15 +25,15 @@ export const appConfig: ApplicationConfig = {
     }),
     provideRouter(routes),
     providePrimeNG({
+      ripple: true,
       theme: {
-        preset: Aura,
+        preset: appPreset,
         options: {
           prefix: 'p',
-          darkModeSelector: 'light',
+          darkModeSelector: '.app-dark',
           cssLayer: false,
         },
       },
-      ripple: true,
     }),
   ],
 };

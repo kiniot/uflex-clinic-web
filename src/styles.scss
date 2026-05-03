@@ -8,9 +8,28 @@ html, body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: var(--p-surface-950);
+  background-color: var(--p-surface-50);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--p-primary-500); /* Petroleum for headings */
+  font-weight: 600;
+  margin-top: 0;
+}
+
+a {
+  color: var(--p-turquoise-400); /* Turquoise for links */
+  text-decoration: none;
+  &:hover {
+    color: var(--p-turquoise-500);
+  }
 }
 
 .container-with-spacing {
-  margin: 10px; /* Applies margin to all sides */
+  padding: 1.5rem; /* 24px spacing around the container */
 }
