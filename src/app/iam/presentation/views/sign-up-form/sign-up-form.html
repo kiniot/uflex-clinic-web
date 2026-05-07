@@ -10,6 +10,22 @@
 
     <form class="sign-up__form" [formGroup]="form" (ngSubmit)="performSignUp()">
       <div class="sign-up__field">
+        <label>{{ 'signUp.roleLabel' | translate }}</label>
+        <p-selectButton
+          [options]="roleOptions"
+          formControlName="role"
+          optionLabel="label"
+          optionValue="value"
+          [allowEmpty]="false"
+          [fluid]="true"
+          class="sign-up__role-select">
+          <ng-template let-option #item>
+            <span>{{ option.label | translate }}</span>
+          </ng-template>
+        </p-selectButton>
+      </div>
+
+      <div class="sign-up__field">
         <label for="fullName">{{ 'signUp.fullName.label' | translate }}</label>
         <input pInputText
                id="fullName"

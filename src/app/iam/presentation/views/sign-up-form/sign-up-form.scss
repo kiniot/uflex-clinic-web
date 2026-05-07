@@ -196,6 +196,13 @@
   height: 48px;
 }
 
+:host ::ng-deep .sign-up__role-select .p-togglebutton-content {
+  min-height: 36px;
+  padding: 6px 14px;
+  width: 100%;
+  font-size: 14px;
+}
+
 :host ::ng-deep .sign-up__btn-primary {
   display: block;
   width: 100%;
