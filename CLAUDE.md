@@ -60,3 +60,38 @@ Generic CRUD lives in `shared/infrastructure/base-api-endpoint.ts` (`getAll/getB
 - Forms currently use **Reactive Forms** (`ReactiveFormsModule`) and extend `BaseForm` from `shared/presentation/components/base-form/` for `isInvalidControl`/`errorMessagesForControl` helpers.
 - Domain entities and commands use **private underscore-prefixed fields with getters/setters** rather than public properties (see `User`, `SignInCommand`).
 - The `angular-developer` skill in `skills/` is auto-loaded for Angular guidance — defer to it for framework-specific best-practice questions (signals, signal forms, DI, routing).
+
+## Git workflow
+
+### Branching (gitflow)
+
+- `main` — production, only receives merges from `release/*` and `hotfix/*`.
+- `develop` — integration branch; PRs from feature branches land here.
+- `feature/<short-name>` — new features, branched off `develop`.
+- `bugfix/<short-name>` — non-critical fixes off `develop`.
+- `release/<version>` — release stabilization, branched off `develop`, merges into both `main` and `develop`.
+- `hotfix/<short-name>` — production patches off `main`, merges into both `main` and `develop`.
+
+Never commit directly to `main` or `develop`. Always go through a PR from a topic branch.
+
+### Commit messages (Conventional Commits)
+
+Format:
+
+```
+<type>(<scope>): <subject>
+
+<body>
+```
+
+- **Subject line**: 50 characters max, imperative mood, no trailing period. Lowercase except proper nouns.
+- **Blank line** between subject and body.
+- **Body** (optional): wrap at 72 chars; explain *why* the change exists, not what — the diff already shows what.
+- **Type**: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`.
+- **Scope** (optional but preferred): the bounded context (`iam`, `shared`) or layer (`layout`, `i18n`, `infra`, `app`, `styles`).
+
+Examples already in this repo's history: `feat(app): add theme switcher component`, `refactor(styles): rename CSS files to SCSS`, `docs: update README.md`.
+
+### Co-author trailers
+
+`Co-Authored-By: Claude...` lines are intentionally **disabled** for this project via `.claude/settings.json` (`"includeCoAuthoredBy": false`). Do not add them manually.
