@@ -36,5 +36,43 @@
     "submit": "Sign In",
     "createAccount": "Create Account",
     "trustMessage": "Secure clinical access for authorized medical personnel only."
+  },
+  "signUp": {
+    "title": "Create your account",
+    "subtitle": "Join the connected rehabilitation network.",
+    "roleLabel": "Select your role",
+    "roles": {
+      "physiotherapist": "Physiotherapist",
+      "clinicAdmin": "Clinic Admin"
+    },
+    "fullName": {
+      "label": "Full Name",
+      "placeholder": "Enter your full name"
+    },
+    "email": {
+      "label": "Email address",
+      "placeholder": "Enter your email"
+    },
+    "username": {
+      "label": "Username",
+      "placeholder": "Choose a username"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Create a password"
+    },
+    "confirmPassword": {
+      "label": "Confirm Password",
+      "placeholder": "Re-enter your password",
+      "mismatch": "Passwords do not match."
+    },
+    "invitationCode": {
+      "label": "Clinic Invitation Code",
+      "optional": "(Optional)",
+      "placeholder": "e.g. CLINIC-1234"
+    },
+    "submit": "Create Account",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign In"
   }
 }

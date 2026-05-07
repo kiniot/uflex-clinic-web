@@ -1,7 +1,218 @@
-form {
+:host {
+  display: block;
+}
+
+.sign-up {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.sign-up__card {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: 440px;
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(7, 77, 97, 0.08);
+  padding: 40px 32px;
+}
+
+:host-context(.app-dark) .sign-up__card {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.sign-up__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.sign-up__brand-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  font-size: 26px;
+  margin-bottom: 8px;
+  box-shadow: 0 4px 12px rgba(7, 77, 97, 0.18);
+}
+
+.sign-up__brand-title {
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.sign-up__brand-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--p-text-muted-color);
+  margin: 0;
+}
+
+.sign-up__form {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 600px;
-  margin: 16px;
+}
+
+.sign-up__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sign-up__field label {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--p-text-color);
+}
+
+.sign-up__optional {
+  font-weight: 400;
+  color: var(--p-text-muted-color);
+  margin-left: 6px;
+}
+
+.sign-up__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 520px) {
+  .sign-up__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sign-up__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.sign-up__error {
+  color: var(--p-red-500);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+}
+
+.sign-up__signin-row {
+  text-align: center;
+  padding: 16px 0 0;
+  border-top: 1px solid var(--p-surface-200);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--p-text-muted-color);
+}
+
+:host-context(.app-dark) .sign-up__signin-row {
+  border-top-color: var(--p-surface-300);
+}
+
+.sign-up__signin-link {
+  color: var(--p-primary-color);
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.sign-up__signin-link:hover {
+  text-decoration: underline;
+}
+
+:host ::ng-deep .p-inputtext {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+}
+
+:host ::ng-deep .p-inputgroup {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+:host ::ng-deep .p-inputgroup .p-inputgroupaddon {
+  height: 48px;
+  min-width: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-100);
+  border: 1px solid var(--p-surface-300);
+  border-right: 0;
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+:host ::ng-deep .p-inputgroup .p-inputtext {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+:host-context(.app-dark) ::ng-deep .p-inputgroup .p-inputgroupaddon {
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-400);
+}
+
+:host ::ng-deep .sign-up__password {
+  display: block;
+  width: 100%;
+}
+
+:host ::ng-deep .sign-up__password .p-password {
+  display: block;
+  width: 100%;
+}
+
+:host ::ng-deep .sign-up__password .p-password-input,
+:host ::ng-deep .sign-up__password .p-inputtext {
+  width: 100%;
+  height: 48px;
+}
+
+:host ::ng-deep .sign-up__btn-primary {
+  display: block;
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+:host ::ng-deep .sign-up__btn-primary .p-button {
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.sign-up__btn-icon-right {
+  margin-left: 12px;
 }
