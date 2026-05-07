@@ -20,5 +20,21 @@
     "rights": "All rights reserved.",
     "powered-by": "Powered by",
     "and": "and"
+  },
+  "signIn": {
+    "subtitle": "Clinical Telerehabilitation Platform",
+    "username": {
+      "label": "Username",
+      "placeholder": "Enter your username"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter your password"
+    },
+    "forgotPassword": "Forgot password?",
+    "rememberMe": "Remember me for 30 days",
+    "submit": "Sign In",
+    "createAccount": "Create Account",
+    "trustMessage": "Secure clinical access for authorized medical personnel only."
   }
 }
