@@ -1,3 +1,14 @@
 .mat-spacer {
   flex: 1 1 auto;
 }
+
+.auth-toolbar {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  z-index: 10;
+}
