@@ -20,5 +20,59 @@
     "rights": "Todos los derechos reservados.",
     "powered-by": "Desarrollado con",
     "and": "y"
+  },
+  "signIn": {
+    "subtitle": "Plataforma Clínica de Telerehabilitación",
+    "username": {
+      "label": "Nombre de usuario",
+      "placeholder": "Ingresa tu nombre de usuario"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Ingresa tu contraseña"
+    },
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "rememberMe": "Recuérdame por 30 días",
+    "submit": "Iniciar sesión",
+    "createAccount": "Crear cuenta",
+    "trustMessage": "Acceso clínico seguro solo para personal médico autorizado."
+  },
+  "signUp": {
+    "title": "Crea tu cuenta",
+    "subtitle": "Únete a la red de rehabilitación conectada.",
+    "roleLabel": "Selecciona tu rol",
+    "roles": {
+      "physiotherapist": "Fisioterapeuta",
+      "clinicAdmin": "Administrador de Clínica"
+    },
+    "fullName": {
+      "label": "Nombre completo",
+      "placeholder": "Ingresa tu nombre completo"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "Ingresa tu correo"
+    },
+    "username": {
+      "label": "Nombre de usuario",
+      "placeholder": "Elige un nombre de usuario"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Crea una contraseña"
+    },
+    "confirmPassword": {
+      "label": "Confirmar contraseña",
+      "placeholder": "Vuelve a ingresar tu contraseña",
+      "mismatch": "Las contraseñas no coinciden."
+    },
+    "invitationCode": {
+      "label": "Código de invitación de clínica",
+      "optional": "(Opcional)",
+      "placeholder": "ej. CLINIC-1234"
+    },
+    "submit": "Crear cuenta",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "signInLink": "Iniciar sesión"
   }
 }

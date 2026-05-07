@@ -1,36 +1,119 @@
-<div class="form-container">
-  <section class="card">
-    <header class="card-header">
-      <h2 class="card-title">Sign-Up</h2>
-    </header>
-    <div class="card-content">
-      <form [formGroup]="form" (submit)="performSignUp()">
-        <div class="form-field">
-          <label for="username">Username</label>
-          <input type="text"
-                 id="username"
-                 name="username"
-                 placeholder="Choose a username"
-                 formControlName="username"
-                 [class.input-error]="isInvalidControl(form,'username')">
-          @if (isInvalidControl(form,'username')) {
-            <span class="error-message">{{ errorMessagesForControl(form,'username')}}</span>
-          }
-        </div>
-        <div class="form-field">
-          <label for="password">Password</label>
-          <input type="password"
-                 id="password"
-                 name="password"
-                 placeholder="Create a password"
-                 formControlName="password"
-                 [class.input-error]="isInvalidControl(form,'password')">
-          @if (isInvalidControl(form,'password')) {
-            <span class="error-message">{{ errorMessagesForControl(form,'password')}}</span>
-          }
-        </div>
-        <button type="submit" class="btn-primary">Sign-Up</button>
-      </form>
+<section class="sign-up">
+  <div class="sign-up__card">
+    <div class="sign-up__brand">
+      <div class="sign-up__brand-icon" aria-hidden="true">
+        <i class="pi pi-heart-fill"></i>
+      </div>
+      <h1 class="sign-up__brand-title">uFlex</h1>
+      <p class="sign-up__brand-subtitle">{{ 'signUp.title' | translate }}</p>
     </div>
-  </section>
-</div>
+
+    <form class="sign-up__form" [formGroup]="form" (ngSubmit)="performSignUp()">
+      <div class="sign-up__field">
+        <label>{{ 'signUp.roleLabel' | translate }}</label>
+        <p-selectButton
+          [options]="roleOptions"
+          formControlName="role"
+          optionLabel="label"
+          optionValue="value"
+          [allowEmpty]="false"
+          [fluid]="true"
+          class="sign-up__role-select">
+          <ng-template let-option #item>
+            <span>{{ option.label | translate }}</span>
+          </ng-template>
+        </p-selectButton>
+      </div>
+
+      <div class="sign-up__field">
+        <label for="fullName">{{ 'signUp.fullName.label' | translate }}</label>
+        <input pInputText
+               id="fullName"
+               type="text"
+               formControlName="fullName"
+               [placeholder]="'signUp.fullName.placeholder' | translate"
+               [class.ng-invalid]="isInvalidControl(form,'fullName')"
+               [class.ng-dirty]="isInvalidControl(form,'fullName')" />
+        @if (isInvalidControl(form,'fullName')) {
+          <small class="sign-up__error">{{ errorMessagesForControl(form,'fullName') }}</small>
+        }
+      </div>
+
+      <div class="sign-up__field">
+        <label for="email">{{ 'signUp.email.label' | translate }}</label>
+        <input pInputText
+               id="email"
+               type="email"
+               formControlName="email"
+               [placeholder]="'signUp.email.placeholder' | translate"
+               [class.ng-invalid]="isInvalidControl(form,'email')"
+               [class.ng-dirty]="isInvalidControl(form,'email')" />
+        @if (isInvalidControl(form,'email')) {
+          <small class="sign-up__error">{{ errorMessagesForControl(form,'email') }}</small>
+        }
+      </div>
+
+      <div class="sign-up__row">
+        <div class="sign-up__field">
+          <label for="password">{{ 'signUp.password.label' | translate }}</label>
+          <p-password inputId="password"
+                      formControlName="password"
+                      [feedback]="false"
+                      [toggleMask]="true"
+                      [placeholder]="'signUp.password.placeholder' | translate"
+                      styleClass="sign-up__password"
+                      [class.ng-invalid]="isInvalidControl(form,'password')"
+                      [class.ng-dirty]="isInvalidControl(form,'password')" />
+          @if (isInvalidControl(form,'password')) {
+            <small class="sign-up__error">{{ errorMessagesForControl(form,'password') }}</small>
+          }
+        </div>
+
+        <div class="sign-up__field">
+          <label for="confirmPassword">{{ 'signUp.confirmPassword.label' | translate }}</label>
+          <p-password inputId="confirmPassword"
+                      formControlName="confirmPassword"
+                      [feedback]="false"
+                      [toggleMask]="false"
+                      [placeholder]="'signUp.confirmPassword.placeholder' | translate"
+                      styleClass="sign-up__password"
+                      [class.ng-invalid]="isInvalidControl(form,'confirmPassword')"
+                      [class.ng-dirty]="isInvalidControl(form,'confirmPassword')" />
+          @if (isInvalidControl(form,'confirmPassword')) {
+            <small class="sign-up__error">{{ 'signUp.confirmPassword.mismatch' | translate }}</small>
+          }
+        </div>
+      </div>
+
+      <div class="sign-up__field">
+        <label for="invitationCode">
+          {{ 'signUp.invitationCode.label' | translate }}
+          <span class="sign-up__optional">{{ 'signUp.invitationCode.optional' | translate }}</span>
+        </label>
+        <p-inputgroup>
+          <p-inputgroup-addon>#</p-inputgroup-addon>
+          <input pInputText
+                 id="invitationCode"
+                 type="text"
+                 formControlName="invitationCode"
+                 [placeholder]="'signUp.invitationCode.placeholder' | translate" />
+        </p-inputgroup>
+      </div>
+
+      <div class="sign-up__actions">
+        <button pButton
+                type="submit"
+                severity="primary"
+                class="sign-up__btn-primary">
+          <span>{{ 'signUp.submit' | translate }}</span>
+          <i class="pi pi-user-plus sign-up__btn-icon-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </form>
+
+    <footer class="sign-up__signin-row">
+      {{ 'signUp.haveAccount' | translate }}
+      <a class="sign-up__signin-link" routerLink="/iam/sign-in">{{ 'signUp.signInLink' | translate }}</a>
+    </footer>
+  </div>
+</section>

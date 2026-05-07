@@ -1,11 +1,9 @@
-<div class="language-group" role="group" aria-label="Preferred language">
-  @for (language of languages; track language) {
-    <button
-      type="button"
-      [class.active]="currentLang === language"
-      [attr.aria-pressed]="currentLang === language"
-      (click)="useLanguage(language)">
-      {{ language.toUpperCase() }}
-    </button>
-  }
-</div>
+<p-selectButton
+  [options]="languageOptions"
+  [ngModel]="currentLang"
+  (ngModelChange)="useLanguage($event)"
+  optionLabel="label"
+  optionValue="value"
+  [allowEmpty]="false"
+  size="small"
+  ariaLabelledBy="Preferred language" />

@@ -1,10 +1,12 @@
-<p-button
-  [icon]="isDark ? 'pi pi-sun' : 'pi pi-moon'"
-  [pTooltip]="isDark ? 'Toggle Light Mode' : 'Toggle Dark Mode'"
-  tooltipPosition="left"
-  (onClick)="toggleTheme()"
-  severity="secondary"
-  [text]="true"
-  [rounded]="true"
-  styleClass="theme-button">
-</p-button>
+<p-selectButton
+  [options]="themeOptions"
+  [ngModel]="currentTheme"
+  (ngModelChange)="setTheme($event)"
+  optionValue="value"
+  [allowEmpty]="false"
+  size="small"
+  ariaLabelledBy="Theme">
+  <ng-template let-option #item>
+    <i [class]="option.icon" [attr.aria-label]="option.ariaLabel"></i>
+  </ng-template>
+</p-selectButton>

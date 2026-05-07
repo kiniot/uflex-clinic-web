@@ -1,36 +1,73 @@
-<div class="form-container">
-  <section class="card">
-    <header class="card-header">
-      <h2 class="card-title">Sign-In</h2>
-    </header>
-    <div class="card-content">
-      <form [formGroup]="form" (submit)="performSignIn()">
-        <div class="form-field">
-          <label for="username">Username</label>
-          <input type="text"
-                 id="username"
-                 name="username"
-                 placeholder="Enter your username"
-                 formControlName="username"
-                 [class.input-error]="isInvalidControl(form,'username')">
-          @if (isInvalidControl(form,'username')) {
-            <span class="error-message">{{ errorMessagesForControl(form,'username')}}</span>
-          }
-        </div>
-        <div class="form-field">
-          <label for="password">Password</label>
-          <input type="password"
-                 id="password"
-                 name="password"
-                 placeholder="Enter your password"
-                 formControlName="password"
-                 [class.input-error]="isInvalidControl(form,'password')">
-          @if (isInvalidControl(form,'password')) {
-            <span class="error-message">{{ errorMessagesForControl(form,'password')}}</span>
-          }
-        </div>
-        <button type="submit" class="btn-primary">Sign-In</button>
-      </form>
+<section class="sign-in">
+  <div class="sign-in__card">
+    <div class="sign-in__brand">
+      <div class="sign-in__brand-icon" aria-hidden="true">
+        <i class="pi pi-heart-fill"></i>
+      </div>
+      <h1 class="sign-in__brand-title">uFlex</h1>
+      <p class="sign-in__brand-subtitle">{{ 'signIn.subtitle' | translate }}</p>
     </div>
-  </section>
-</div>
+
+    <form class="sign-in__form" [formGroup]="form" (ngSubmit)="performSignIn()">
+      <div class="sign-in__field">
+        <label for="username">{{ 'signIn.username.label' | translate }}</label>
+        <input pInputText
+               id="username"
+               type="text"
+               formControlName="username"
+               [placeholder]="'signIn.username.placeholder' | translate"
+               [class.ng-invalid]="isInvalidControl(form,'username')"
+               [class.ng-dirty]="isInvalidControl(form,'username')" />
+        @if (isInvalidControl(form,'username')) {
+          <small class="sign-in__error">{{ errorMessagesForControl(form,'username') }}</small>
+        }
+      </div>
+
+      <div class="sign-in__field">
+        <div class="sign-in__label-row">
+          <label for="password">{{ 'signIn.password.label' | translate }}</label>
+          <a class="sign-in__forgot" href="#">{{ 'signIn.forgotPassword' | translate }}</a>
+        </div>
+        <p-password inputId="password"
+                    formControlName="password"
+                    [feedback]="false"
+                    [toggleMask]="true"
+                    [placeholder]="'signIn.password.placeholder' | translate"
+                    styleClass="sign-in__password"
+                    [class.ng-invalid]="isInvalidControl(form,'password')"
+                    [class.ng-dirty]="isInvalidControl(form,'password')" />
+        @if (isInvalidControl(form,'password')) {
+          <small class="sign-in__error">{{ errorMessagesForControl(form,'password') }}</small>
+        }
+      </div>
+
+      <div class="sign-in__remember">
+        <p-checkbox inputId="rememberMe" formControlName="rememberMe" [binary]="true" />
+        <label for="rememberMe">{{ 'signIn.rememberMe' | translate }}</label>
+      </div>
+
+      <div class="sign-in__actions">
+        <button pButton
+                type="submit"
+                severity="primary"
+                class="sign-in__btn-primary">
+          <span>{{ 'signIn.submit' | translate }}</span>
+          <i class="pi pi-sign-in sign-in__btn-icon-right" aria-hidden="true"></i>
+        </button>
+        <button pButton
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                routerLink="/iam/sign-up"
+                class="sign-in__btn-secondary">
+          <span>{{ 'signIn.createAccount' | translate }}</span>
+        </button>
+      </div>
+    </form>
+
+    <footer class="sign-in__trust">
+      <i class="pi pi-shield sign-in__trust-icon"></i>
+      <span>{{ 'signIn.trustMessage' | translate }}</span>
+    </footer>
+  </div>
+</section>
