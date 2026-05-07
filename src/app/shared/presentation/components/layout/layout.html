@@ -19,14 +19,20 @@
   </header>
 }
 @if (isAuthRoute()) {
-  <div class="auth-toolbar">
-    <app-language-switcher/>
-    <app-theme-switcher/>
+  <div class="auth-shell">
+    <div class="auth-toolbar">
+      <app-theme-switcher/>
+      <app-language-switcher/>
+    </div>
+    <main class="auth-main">
+      <router-outlet/>
+    </main>
   </div>
+} @else {
+  <main>
+    <router-outlet/>
+  </main>
 }
-<main>
-  <router-outlet/>
-</main>
 @if (!isAuthRoute()) {
   <app-footer-content/>
 }

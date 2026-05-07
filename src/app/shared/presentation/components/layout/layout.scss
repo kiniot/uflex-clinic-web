@@ -2,13 +2,27 @@
   flex: 1 1 auto;
 }
 
-.auth-toolbar {
-  position: absolute;
-  top: 16px;
-  right: 16px;
+.auth-shell {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-  z-index: 10;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.auth-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 440px;
+}
+
+.auth-main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

@@ -44,7 +44,7 @@ export class Layout {
       filter(event => event instanceof NavigationEnd),
       map(event => (event as NavigationEnd).urlAfterRedirects)
     ),
-    {initialValue: this.router.url}
+    {initialValue: window.location.pathname}
   );
 
   /**
