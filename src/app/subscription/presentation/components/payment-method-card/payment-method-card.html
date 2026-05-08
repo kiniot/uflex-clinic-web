@@ -1,0 +1,33 @@
+<p-card styleClass="subscription-card payment-card">
+  <div class="card-title">
+    <span class="icon-wrap"><i class="pi pi-credit-card"></i></span>
+    <div>
+      <span class="eyebrow">Payment Method</span>
+      <h3>Billing card</h3>
+    </div>
+  </div>
+
+  @if (subscription(); as current) {
+    <div class="card-number">**** **** **** {{ current.paymentReference.last4 }}</div>
+    <dl>
+      <div>
+        <dt>Provider token</dt>
+        <dd>{{ current.paymentReference.providerToken }}</dd>
+      </div>
+      <div>
+        <dt>Expires</dt>
+        <dd>{{ current.paymentReference.expiresOn }}</dd>
+      </div>
+    </dl>
+    <button
+      pButton
+      type="button"
+      label="Update method"
+      icon="pi pi-refresh"
+      severity="secondary"
+      (click)="updateRequested.emit()"
+    ></button>
+  } @else {
+    <p>No payment method is attached yet.</p>
+  }
+</p-card>

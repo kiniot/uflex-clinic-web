@@ -1,0 +1,40 @@
+<p-card styleClass="subscription-card plan-card">
+  <div class="plan-heading">
+    <div>
+      <span class="plan-code">{{ plan().code }}</span>
+      <h3>{{ plan().name }}</h3>
+    </div>
+    @if (isCurrent()) {
+      <span class="current-pill">Active</span>
+    }
+  </div>
+
+  <div class="plan-price">
+    <strong>{{ plan().monthlyPrice.formatted() }}</strong>
+    <span>/ month</span>
+  </div>
+
+  <div class="limits">
+    <span>{{ plan().maxPatients }} patients</span>
+    <span>{{ plan().maxPhysiotherapists }} physiotherapists</span>
+  </div>
+
+  <ul>
+    @for (feature of plan().features; track feature) {
+      <li>
+        <i class="pi pi-check"></i>
+        <span>{{ feature }}</span>
+      </li>
+    }
+  </ul>
+
+  <button
+    pButton
+    type="button"
+    [label]="isCurrent() ? 'Current plan' : 'Select plan'"
+    [disabled]="isCurrent()"
+    icon="pi pi-arrow-right"
+    iconPos="right"
+    (click)="selectPlan()"
+  ></button>
+</p-card>

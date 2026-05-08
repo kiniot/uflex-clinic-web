@@ -1,0 +1,66 @@
+:host {
+  display: block;
+}
+
+:host ::ng-deep .payment-card {
+  border: 1px solid var(--p-surface-200);
+  border-radius: 16px;
+  height: 100%;
+}
+
+.card-title {
+  align-items: center;
+  display: flex;
+  gap: 0.85rem;
+}
+
+.icon-wrap {
+  align-items: center;
+  background: var(--p-highlight-background);
+  border-radius: 12px;
+  color: var(--p-primary-600);
+  display: inline-flex;
+  height: 2.75rem;
+  justify-content: center;
+  width: 2.75rem;
+}
+
+.eyebrow {
+  color: var(--p-surface-500);
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+h3 {
+  color: var(--p-primary-500);
+  margin: 0.1rem 0 0;
+}
+
+.card-number {
+  color: var(--p-primary-700);
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 1.5rem 0;
+}
+
+dl {
+  display: grid;
+  gap: 0.9rem;
+  margin: 0 0 1.5rem;
+}
+
+dt {
+  color: var(--p-surface-500);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+dd {
+  color: var(--p-surface-900);
+  margin: 0.2rem 0 0;
+}
+
+button {
+  width: 100%;
+}

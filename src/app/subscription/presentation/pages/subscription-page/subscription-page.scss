@@ -1,0 +1,92 @@
+:host {
+  display: block;
+}
+
+.subscription-page {
+  background: var(--p-surface-50);
+  min-height: 100%;
+  padding: 1.5rem;
+}
+
+.page-shell {
+  display: grid;
+  gap: 1.5rem;
+  margin: 0 auto;
+  max-width: 1180px;
+}
+
+.page-heading {
+  align-items: end;
+  display: flex;
+  justify-content: space-between;
+}
+
+.eyebrow,
+.section-heading span {
+  color: var(--p-turquoise-500);
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+h1 {
+  color: var(--p-primary-500);
+  font-size: 2.5rem;
+  margin: 0.35rem 0 0.25rem;
+}
+
+.page-heading p {
+  color: var(--p-surface-600);
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.loading-state {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 8rem;
+}
+
+.overview-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: minmax(0, 2fr) minmax(18rem, 0.85fr);
+}
+
+.plans-section {
+  display: grid;
+  gap: 1rem;
+}
+
+.section-heading h2 {
+  color: var(--p-primary-500);
+  font-size: 1.45rem;
+  margin: 0.2rem 0 0;
+}
+
+.plans-grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 980px) {
+  .overview-grid,
+  .plans-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .subscription-page {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+}
