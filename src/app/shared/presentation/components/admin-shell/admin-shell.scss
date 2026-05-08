@@ -1,0 +1,189 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: var(--p-surface-100);
+}
+
+.admin-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.admin-shell__sidebar {
+  display: flex;
+  flex-direction: column;
+  background: var(--p-surface-0);
+  border-right: 1px solid var(--p-surface-200);
+  padding: 24px 16px;
+  gap: 24px;
+  box-sizing: border-box;
+}
+
+:host-context(.app-dark) .admin-shell__sidebar {
+  background: var(--p-surface-100);
+  border-right-color: var(--p-surface-300);
+}
+
+.admin-shell__brand {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px 12px;
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .admin-shell__brand {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.admin-shell__brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+}
+
+.admin-shell__brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  min-width: 0;
+}
+
+.admin-shell__brand-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--p-primary-color);
+}
+
+.admin-shell__brand-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+  margin-top: 2px;
+}
+
+.admin-shell__brand-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #8a6d12;
+  background: #fde8a3;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.admin-shell__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 auto;
+}
+
+.admin-shell__bottom {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 12px;
+  border-top: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .admin-shell__bottom {
+  border-top-color: var(--p-surface-300);
+}
+
+.admin-shell__nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+  text-decoration: none;
+  transition: background-color 120ms ease, color 120ms ease;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+
+.admin-shell__nav-item:hover {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+}
+
+:host-context(.app-dark) .admin-shell__nav-item:hover {
+  background: var(--p-surface-200);
+}
+
+.admin-shell__nav-item--active {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+.admin-shell__nav-item--active:hover {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+.admin-shell__nav-icon {
+  font-size: 16px;
+  width: 18px;
+  text-align: center;
+}
+
+.admin-shell__main {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-width: 0;
+}
+
+.admin-shell__topbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 32px;
+  background: var(--p-surface-0);
+  border-bottom: 1px solid var(--p-surface-200);
+  box-sizing: border-box;
+}
+
+:host-context(.app-dark) .admin-shell__topbar {
+  background: var(--p-surface-100);
+  border-bottom-color: var(--p-surface-300);
+}
+
+.admin-shell__search {
+  flex: 0 1 420px;
+}
+
+.admin-shell__topbar-actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-shell__content {
+  flex: 1 1 auto;
+  padding: 32px;
+  box-sizing: border-box;
+}

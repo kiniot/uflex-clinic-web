@@ -1,0 +1,120 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cal__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+  text-decoration: none;
+  margin-bottom: -12px;
+  align-self: flex-start;
+}
+
+.cal__back:hover {
+  color: var(--p-text-color);
+}
+
+:host ::ng-deep .cal__btn,
+:host ::ng-deep .cal__btn .p-button {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+:host ::ng-deep .cal__btn--primary,
+:host ::ng-deep .cal__btn--primary .p-button {
+  font-weight: 600;
+}
+
+.cal__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+
+@media (max-width: 1080px) {
+  .cal__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cal__main,
+.cal__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cal__telemetry {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.cal-tile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 12px;
+}
+
+:host-context(.app-dark) .cal-tile {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.cal-tile__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--p-surface-100);
+  color: var(--p-primary-color);
+  font-size: 14px;
+}
+
+:host-context(.app-dark) .cal-tile__icon {
+  background: var(--p-surface-200);
+}
+
+.cal-tile__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.cal-tile__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+}
+
+.cal-tile__value {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

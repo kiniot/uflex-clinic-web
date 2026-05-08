@@ -1,0 +1,20 @@
+:host {
+  display: block;
+}
+
+.role-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.role-screen__title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--p-primary-color);
+  text-align: center;
+  margin: 0;
+}

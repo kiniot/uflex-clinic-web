@@ -1,0 +1,72 @@
+:host {
+  display: block;
+}
+
+.billing {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+}
+
+.billing th,
+.billing td {
+  padding: 14px 20px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.billing thead th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .billing thead th {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.billing tbody tr {
+  border-bottom: 1px solid var(--p-surface-100);
+}
+
+:host-context(.app-dark) .billing tbody tr {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.billing tbody tr:last-child { border-bottom: 0; }
+
+.billing td {
+  font-size: 13px;
+  color: var(--p-text-color);
+  font-weight: 500;
+}
+
+.billing__amount { font-weight: 700; }
+
+.billing__status {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.billing__status--paid {
+  background: rgba(52, 199, 155, 0.18);
+  color: #16785a;
+}
+
+.billing__status--pending {
+  background: rgba(217, 165, 54, 0.18);
+  color: #8a6212;
+}
+
+.billing__status--failed {
+  background: rgba(217, 83, 79, 0.18);
+  color: #b6322f;
+}

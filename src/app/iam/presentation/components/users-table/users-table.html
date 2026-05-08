@@ -1,0 +1,56 @@
+<div class="users-table__scroll">
+  <table class="users-table">
+    <thead>
+      <tr>
+        <th>{{ 'profile.columns.userDetails' | translate }}</th>
+        <th>{{ 'profile.columns.role' | translate }}</th>
+        <th>{{ 'profile.columns.status' | translate }}</th>
+        <th>{{ 'profile.columns.verification' | translate }}</th>
+        <th>{{ 'profile.columns.lastLogin' | translate }}</th>
+        <th class="users-table__actions-col">{{ 'profile.columns.actions' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users(); track user.id) {
+        <tr class="users-table__row" (click)="onRowOpen(user)">
+          <td>
+            <div class="users-table__person">
+              <p-avatar [label]="user.avatarInitials" shape="circle" size="normal"
+                        styleClass="users-table__avatar"/>
+              <div class="users-table__person-text">
+                <span class="users-table__name">{{ user.fullName }}</span>
+                <span class="users-table__email">{{ user.email }}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="users-table__role users-table__role--{{ user.role }}">
+              {{ 'profile.role.' + user.role | translate }}
+            </span>
+          </td>
+          <td>
+            <span class="users-table__status users-table__status--{{ user.status }}">
+              <span class="users-table__dot" aria-hidden="true"></span>
+              {{ 'profile.status.' + user.status | translate }}
+            </span>
+          </td>
+          <td>
+            <span class="users-table__verification users-table__verification--{{ user.verification }}">
+              <i [class]="user.verification === 'verified' ? 'pi pi-check-circle' : 'pi pi-clock'"
+                 aria-hidden="true"></i>
+              {{ 'profile.verification.' + user.verification | translate }}
+            </span>
+          </td>
+          <td class="users-table__last-login">{{ user.lastLoginLabel }}</td>
+          <td class="users-table__actions-col">
+            <button type="button" class="users-table__action"
+                    (click)="onRowAction($event, user)"
+                    [attr.aria-label]="'profile.columns.actions' | translate">
+              <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

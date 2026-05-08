@@ -87,22 +87,23 @@ export class IamStore {
   }
 
   /**
-   * Signs up a new user.
+   * Signs up a new user and navigates to the given destination on success.
    * @param signUpCommand The sign-up command.
    * @param router The router for navigation.
+   * @param redirectTo The route to navigate to on success (defaults to sign-in).
    */
-  signUp(signUpCommand: SignUpCommand, router: Router) {
+  signUp(signUpCommand: SignUpCommand, router: Router, redirectTo: string = '/iam/sign-in') {
     this.iamApi.signUp(signUpCommand).subscribe({
       next: (signUpResource) => {
         console.log('Sign-up successful:', signUpResource);
-        router.navigate(['/iam/sign-in']).then();
+        router.navigate([redirectTo]).then();
       },
       error: (err) => {
         console.error('Sign-up failed:', err);
         this.isSignedInSignal.set(false);
         this.currentUsernameSignal.set(null);
         this.currentUserIdSignal.set(null);
-        router.navigate(['/iam/sign-up']).then();
+        router.navigate([redirectTo]).then();
       }
     });
   }

@@ -21,6 +21,501 @@
     "powered-by": "Powered by",
     "and": "and"
   },
+  "roles": {
+    "physiotherapist": "Physiotherapist",
+    "clinicAdmin": "Clinic Admin"
+  },
+  "clinicAdmin": {
+    "brand": {
+      "name": "uFlex",
+      "subtitle": "Clinician Portal",
+      "badge": "ADMIN"
+    },
+    "nav": {
+      "therapy": "Therapy",
+      "device": "Device",
+      "organization": "Organization",
+      "subscription": "Subscription",
+      "profile": "Profile",
+      "support": "Support",
+      "logout": "Logout"
+    },
+    "topbar": {
+      "searchPlaceholder": "Search patients or devices...",
+      "clinicSelector": "Clinic Selector"
+    },
+    "therapy": {
+      "title": "Therapy Management",
+      "subtitle": "Specialized telerehabilitation exercises for Arm and Wrist injuries.",
+      "registerNew": "Register New Exercise"
+    },
+    "device": {
+      "title": "Device Management",
+      "subtitle": "Connected rehabilitation devices and their pairings."
+    },
+    "organization": {
+      "title": "Organization",
+      "subtitle": "Clinic profile, locations, and team members."
+    },
+    "subscription": {
+      "title": "Subscription",
+      "subtitle": "Plan, billing, and invoices."
+    },
+    "profile": {
+      "title": "Profile",
+      "subtitle": "Your account settings and preferences."
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Manage user roles, permissions, and platform access.",
+    "actions": {
+      "filter": "Filter",
+      "inviteUser": "Invite User"
+    },
+    "actionCards": {
+      "verifyUser": "Verify User",
+      "verifyUserDesc": "Review pending ID docs",
+      "suspendAccess": "Suspend Access",
+      "suspendAccessDesc": "Revoke system privileges",
+      "resetPassword": "Reset Password",
+      "resetPasswordDesc": "Send recovery links",
+      "totalActiveUsers": "Total Active Users"
+    },
+    "columns": {
+      "userDetails": "User Details",
+      "role": "Role",
+      "status": "Status",
+      "verification": "Verification",
+      "lastLogin": "Last Login",
+      "actions": "Actions"
+    },
+    "role": {
+      "physio": "Physio",
+      "patient": "Patient",
+      "admin": "Admin"
+    },
+    "status": {
+      "active": "Active",
+      "pending": "Pending",
+      "suspended": "Suspended"
+    },
+    "verification": {
+      "verified": "Verified",
+      "awaiting-docs": "Awaiting Docs"
+    },
+    "showingCount": "Showing 1 to {{visible}} of {{total}} users"
+  },
+  "therapyManagement": {
+    "filters": {
+      "searchPlaceholder": "Search exercises by name...",
+      "allCategories": "All Categories",
+      "anyDifficulty": "Any Difficulty",
+      "anyEquipment": "Equipment"
+    },
+    "category": {
+      "mobility": "Mobility",
+      "strength": "Strength",
+      "endurance": "Endurance"
+    },
+    "difficulty": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "equipment": {
+      "therapyBall": "Therapy Ball",
+      "resistanceBand": "Resistance Band",
+      "none": "No equipment"
+    },
+    "viewDetails": "View Details",
+    "addToList": "Add to list",
+    "empty": "No exercises match the current filters.",
+    "register": {
+      "title": "Register New Exercise",
+      "subtitle": "Add a new exercise to the master therapy library.",
+      "exerciseName": "Exercise Name",
+      "exerciseNamePlaceholder": "e.g., Wrist Flexion with Dumbbell",
+      "category": "Category",
+      "categoryPlaceholder": "Select Category",
+      "bodyPart": "Target Body Part",
+      "bodyPartPlaceholder": "Select Body Part",
+      "description": "Description / Instructions",
+      "descriptionPlaceholder": "Provide step-by-step instructions for the patient...",
+      "prescriptionParameters": "Prescription Parameters",
+      "defaultSets": "Default Sets",
+      "defaultReps": "Default Reps",
+      "holdDuration": "Hold Duration (sec)",
+      "difficultyLevel": "Difficulty Level",
+      "equipmentNeeded": "Equipment Needed",
+      "equipmentNeededPlaceholder": "e.g., Resistance Band, 2lb Dumbbell",
+      "media": "Media",
+      "uploadHint": "Click to upload or drag and drop",
+      "uploadFormats": "SVG, PNG, JPG or MP4 (max. 800x400px)",
+      "cancel": "Cancel",
+      "save": "Save Exercise"
+    },
+    "bodyPart": {
+      "wrist": "Wrist",
+      "elbow": "Elbow",
+      "shoulder": "Shoulder",
+      "hand": "Hand",
+      "forearm": "Forearm",
+      "knee": "Knee",
+      "ankle": "Ankle",
+      "other": "Other"
+    }
+  },
+  "deviceManagement": {
+    "title": "Device Inventory",
+    "subtitle": "Manage, monitor, and provision uFlex IoT rehabilitation kits.",
+    "actions": {
+      "runDiagnostics": "Run Diagnostics",
+      "calibrate": "Calibrate",
+      "linkToPatient": "Link to Patient",
+      "registerDevice": "Register Device"
+    },
+    "stats": {
+      "totalActiveKits": "Total Active Kits",
+      "requiresCalibration": "Requires Calibration",
+      "networkStatus": "Network Status",
+      "delta": "+4 this week",
+      "within7Days": "Within 7 days",
+      "online": "Online"
+    },
+    "fleetStatus": "Fleet Status",
+    "columns": {
+      "kitId": "IoT Kit ID",
+      "linkedPatient": "Linked Patient",
+      "batteryLevel": "Battery Level",
+      "bluetooth": "Bluetooth",
+      "calibration": "Calibration",
+      "firmware": "Firmware",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "calibration": {
+      "valid": "Valid",
+      "expired": "Expired",
+      "pending": "Pending"
+    },
+    "status": {
+      "online": "Online",
+      "idle": "Idle",
+      "offline": "Offline"
+    },
+    "unassigned": "Unassigned"
+  },
+  "deviceCalibration": {
+    "title": "Device Calibration",
+    "subtitle": "Sensor: {{sensor}} — ID: #{{id}}",
+    "actions": {
+      "restartGuide": "Restart Guide",
+      "complete": "Complete Calibration"
+    },
+    "liveAlignment": "Live Spatial Alignment",
+    "axes": {
+      "x": "X-Axis",
+      "y": "Y-Axis",
+      "z": "Z-Axis"
+    },
+    "readings": {
+      "pitch": "Pitch (X)",
+      "yaw": "Yaw (Y)",
+      "roll": "Roll (Z)"
+    },
+    "steps": {
+      "title": "Calibration Steps"
+    },
+    "hardwareIntegrity": "Hardware Integrity",
+    "integrity": {
+      "optimal": "OPTIMAL",
+      "warning": "WARNING",
+      "degraded": "DEGRADED"
+    },
+    "telemetry": {
+      "batteryHealth": "Battery Health",
+      "capacity": "Capacity",
+      "firmware": "Firmware",
+      "connection": "Connection",
+      "lastSync": "Last Sync"
+    }
+  },
+  "deviceRegister": {
+    "backToInventory": "Back to Inventory",
+    "title": "Register New Device",
+    "subtitle": "Connect your uFlex IoT hardware to the clinician portal for remote monitoring.",
+    "quickEntry": {
+      "title": "Quick Entry",
+      "description": "Use your device camera to scan the QR code located on the bottom of the uFlex hub for automatic field population.",
+      "scanLabel": "Scan QR Code",
+      "openScanner": "Open Scanner"
+    },
+    "hardware": {
+      "title": "Hardware Specifications",
+      "kitSerial": "Kit Serial Number",
+      "kitSerialPlaceholder": "e.g. UF-2024-X982",
+      "batchId": "Batch ID",
+      "batchIdPlaceholder": "e.g. BT-0092-A",
+      "hardwareVersion": "Hardware Version",
+      "hardwareVersionPlaceholder": "Select Version",
+      "firmwareVersion": "Firmware Version",
+      "firmwareVersionPlaceholder": "e.g. 1.0.4-stable",
+      "firmwareCurrent": "Current",
+      "versions": {
+        "flex30": "FlexSense v3.0",
+        "flex40": "FlexSense v4.0",
+        "flex42": "FlexSense v4.2"
+      }
+    },
+    "actions": {
+      "discard": "Discard",
+      "complete": "Complete Registration"
+    },
+    "status": {
+      "title": "Registration Status",
+      "subtitle": "Live session tracker",
+      "in-progress": "In Progress",
+      "pending": "Pending",
+      "complete": "Complete",
+      "stepCounter": "Step {{current}} of {{total}}: Verification"
+    },
+    "bestPractices": {
+      "title": "Best Practices",
+      "powerPrecheck": {
+        "title": "Power Pre-check",
+        "description": "Ensure the hub is connected to a stable power source before initiating registration."
+      },
+      "firmwareMatch": {
+        "title": "Firmware Match",
+        "description": "The portal will automatically check for OTA updates after the device is registered."
+      },
+      "assetTagging": {
+        "title": "Asset Tagging",
+        "description": "We recommend placing a physical asset tag on the hardware for manual inventory audits."
+      }
+    },
+    "promo": {
+      "title": "New Gen-4 Sensors",
+      "description": "Upgrade your existing kits to the new high-fidelity sensor arrays for better clinical data.",
+      "learnMore": "Learn More"
+    }
+  },
+  "deviceLink": {
+    "title": "Link IoT Device",
+    "subtitle": "Provision a wearable uFlex sensor kit to an active patient profile.",
+    "selectPatient": "Select Patient",
+    "filterPlaceholder": "Filter by name or MRN",
+    "columns": {
+      "patient": "Patient Details",
+      "mrn": "MRN",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "waitlist": "Waitlist",
+      "discharged": "Discharged"
+    },
+    "empty": "No patients match the current filter.",
+    "assignKit": {
+      "title": "Assign IoT Kit",
+      "available": "Available uFlex Devices",
+      "placeholder": "Select from active inventory",
+      "calibration": {
+        "title": "Device Calibration Status",
+        "description": "Last calibrated: Today, 08:30 AM. Signal strength: Excellent."
+      }
+    },
+    "finalAssignment": {
+      "title": "Final Assignment",
+      "reviewBadge": "REVIEW DRAFT",
+      "assignedPatient": "Assigned Patient",
+      "kitIdentification": "Kit Identification",
+      "protocolDuration": "Protocol Duration",
+      "confirm": "Confirm Device Assignment",
+      "cancel": "Cancel Operation"
+    },
+    "hardwareView": {
+      "caption": "Hardware View: uFlex Gen-4 Sensor"
+    },
+    "protocolDurationDefault": "12 Weeks / Daily Wear",
+    "unselectedPatient": "No patient selected",
+    "unselectedKit": "No kit selected"
+  },
+  "organization": {
+    "actions": {
+      "editClinic": "Edit Clinic Profile",
+      "addPhysiotherapist": "Add Physiotherapist"
+    },
+    "stats": {
+      "totalPatients": "Total Patients",
+      "activePhysiotherapists": "Active Physiotherapists",
+      "availableIotKits": "Available IoT Kits",
+      "onLeave": "On Leave"
+    },
+    "tabs": {
+      "physiotherapists": "Physiotherapists",
+      "patients": "Patients"
+    },
+    "patientsTabEmpty": "Patient roster lives in the Planning context. Coming soon to this view.",
+    "showingCount": "Showing {{visible}} of {{total}} staff members",
+    "columns": {
+      "staffMember": "Staff Member",
+      "specializedRole": "Specialized Role",
+      "activePatients": "Active Patients",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "role": {
+      "neuro-rehab": "Neuro-Rehab",
+      "post-op-recovery": "Post-Op Recovery",
+      "geriatric-mobility": "Geriatric Mobility",
+      "iot-mobility": "IoT Mobility",
+      "sports-rehab": "Sports Rehab"
+    },
+    "status": {
+      "active": "Active",
+      "on-leave": "On Leave",
+      "inactive": "Inactive"
+    },
+    "performance": {
+      "title": "Performance Overview",
+      "description": "Organization recovery success rate has increased by 7.4% over the last quarter. Patient retention for remote sessions is currently at 92%.",
+      "cta": "View Detailed Analytics"
+    },
+    "recentUpdates": {
+      "title": "Recent Updates",
+      "firmware": "New IoT firmware (v2.4.1) deployed to 86 kits.",
+      "subscription": "Subscription renewed for next billing cycle."
+    }
+  },
+  "subscription": {
+    "title": "Subscription",
+    "subtitle": "Manage your clinical licensing, payment methods, and billing history.",
+    "actions": {
+      "downloadAudit": "Download Audit Report",
+      "upgradePlan": "Upgrade Plan"
+    },
+    "active": {
+      "badge": "Active Plan",
+      "billedMonthly": "billed monthly",
+      "changeCycle": "Change billing cycle",
+      "cancel": "Cancel subscription",
+      "activeLicenses": "Active Licenses",
+      "storageUsage": "Storage Usage",
+      "apiStatus": "API Status",
+      "api": {
+        "healthy": "Healthy",
+        "degraded": "Degraded",
+        "down": "Down"
+      }
+    },
+    "payment": {
+      "title": "Payment Method",
+      "cardHolder": "Card Holder",
+      "expires": "Expires",
+      "update": "Update Payment Method"
+    },
+    "billing": {
+      "title": "Billing History",
+      "viewAll": "View All Invoices",
+      "columns": {
+        "amount": "Mount",
+        "plan": "Plan",
+        "status": "Status"
+      },
+      "status": {
+        "paid": "Paid",
+        "pending": "Pending",
+        "failed": "Failed"
+      }
+    },
+    "upsell": {
+      "title": "Advance Your Practice",
+      "description": "Unlock exclusive clinical features by upgrading to Clinical Research tier.",
+      "feature1": "Advanced Gait Analytics",
+      "feature2": "Global Research DB Access",
+      "feature3": "White-label Patient Portal",
+      "cta": "Learn More about Clinical Research"
+    },
+    "plans": {
+      "title": "Available Clinical Plans",
+      "perMonth": "/mo",
+      "selected": "Selected",
+      "currentPlan": "Current Plan",
+      "alreadyActive": "Already Active"
+    }
+  },
+  "registerPhysiotherapist": {
+    "breadcrumb": {
+      "organization": "Organization",
+      "staff": "Staff",
+      "addNew": "Add New"
+    },
+    "title": "Register New Physiotherapist",
+    "subtitle": "Onboard a new clinician to your facility's roster.",
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save Profile"
+    },
+    "personal": {
+      "title": "Personal Information",
+      "fullName": "Full Name",
+      "fullNamePlaceholder": "Dr. Sarah Johnson",
+      "specialty": "Specialty",
+      "specialtyPlaceholder": "Orthopedic PT",
+      "email": "Email Address",
+      "emailPlaceholder": "sarah.j@clinic.com",
+      "phone": "Phone Number",
+      "phonePlaceholder": "+1 (555) 000-0000"
+    },
+    "credentials": {
+      "title": "Clinical Credentials",
+      "licenseNumber": "License Number",
+      "licenseNumberPlaceholder": "PT-98234-X",
+      "summary": "Professional Summary",
+      "summaryPlaceholder": "Brief overview of clinical expertise and years of experience..."
+    },
+    "photo": {
+      "title": "Profile Photo",
+      "upload": "Click to upload",
+      "formats": "Upload a high-resolution professional headshot. JPEG, PNG, or GIF. Max size 5MB."
+    },
+    "quickTip": {
+      "title": "Quick Tip",
+      "description": "Complete clinical credential profiles ensure seamless IoT device pairing for gait analysis sessions.",
+      "verified": "Verified clinicians get access to the global research database."
+    },
+    "enrollments": {
+      "title": "Recent Enrollments",
+      "dbConnected": "Database Connected",
+      "sslSecured": "SSL Secured Journey",
+      "activeClinicians": "12 Active Clinicians"
+    }
+  },
+  "deviceDiagnostics": {
+    "eyebrow": "Maintenance Mode",
+    "title": "System Diagnostics",
+    "actions": {
+      "recalibrate": "Re-calibrate",
+      "exportReport": "Export Report"
+    },
+    "liveScan": {
+      "title": "Live Scan Status",
+      "subtitle": "Scanning internal node arrays and pressure sensors.",
+      "activeScan": "Active Scan"
+    },
+    "hardwareId": "Hardware ID",
+    "metrics": {
+      "battery": "Battery Health",
+      "batteryUnit": "Capacity",
+      "signal": "Signal Strength",
+      "temperature": "Operating Temp"
+    },
+    "log": {
+      "clear": "Clear Logs"
+    }
+  },
   "signIn": {
     "subtitle": "Clinical Telerehabilitation Platform",
     "username": {

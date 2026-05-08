@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.search-input--fluid,
+.search-input--fluid input {
+  width: 100%;
+}
+
+:host ::ng-deep .p-iconfield input.p-inputtext {
+  height: 40px;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  padding-left: 36px;
+  background: var(--p-surface-50);
+}
+
+:host ::ng-deep .p-iconfield .p-inputicon {
+  color: var(--p-text-muted-color);
+}

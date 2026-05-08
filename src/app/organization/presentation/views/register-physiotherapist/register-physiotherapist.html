@@ -1,0 +1,141 @@
+<nav class="register-pt__breadcrumb" aria-label="breadcrumb">
+  <a routerLink="/clinic-admin/organization">{{ 'registerPhysiotherapist.breadcrumb.organization' | translate }}</a>
+  <i class="pi pi-chevron-right" aria-hidden="true"></i>
+  <span>{{ 'registerPhysiotherapist.breadcrumb.staff' | translate }}</span>
+  <i class="pi pi-chevron-right" aria-hidden="true"></i>
+  <span class="register-pt__breadcrumb-current">{{ 'registerPhysiotherapist.breadcrumb.addNew' | translate }}</span>
+</nav>
+
+<header class="register-pt__header">
+  <div class="register-pt__header-text">
+    <h1 class="register-pt__title">{{ 'registerPhysiotherapist.title' | translate }}</h1>
+    <p class="register-pt__subtitle">{{ 'registerPhysiotherapist.subtitle' | translate }}</p>
+  </div>
+  <div class="register-pt__actions">
+    <button pButton type="button" severity="secondary" [outlined]="true"
+            class="register-pt__btn"
+            (click)="onCancel()">
+      {{ 'registerPhysiotherapist.actions.cancel' | translate }}
+    </button>
+    <button pButton type="button" severity="primary"
+            class="register-pt__btn register-pt__btn--primary"
+            (click)="onSubmit()">
+      <i class="pi pi-save" aria-hidden="true"></i>
+      <span>{{ 'registerPhysiotherapist.actions.save' | translate }}</span>
+    </button>
+  </div>
+</header>
+
+<form class="register-pt__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="register-pt__grid">
+    <div class="register-pt__main">
+      <article class="register-pt__card">
+        <header class="register-pt__card-header">
+          <i class="pi pi-user register-pt__card-icon" aria-hidden="true"></i>
+          <h2 class="register-pt__card-title">{{ 'registerPhysiotherapist.personal.title' | translate }}</h2>
+        </header>
+        <div class="register-pt__row register-pt__row--2">
+          <div class="register-pt__field">
+            <label for="ptName">{{ 'registerPhysiotherapist.personal.fullName' | translate }}</label>
+            <input pInputText id="ptName" type="text" formControlName="fullName"
+                   [placeholder]="'registerPhysiotherapist.personal.fullNamePlaceholder' | translate"
+                   [class.ng-invalid]="isInvalidControl(form,'fullName')"
+                   [class.ng-dirty]="isInvalidControl(form,'fullName')"/>
+          </div>
+          <div class="register-pt__field">
+            <label for="ptSpecialty">{{ 'registerPhysiotherapist.personal.specialty' | translate }}</label>
+            <input pInputText id="ptSpecialty" type="text" formControlName="specialty"
+                   [placeholder]="'registerPhysiotherapist.personal.specialtyPlaceholder' | translate"
+                   [class.ng-invalid]="isInvalidControl(form,'specialty')"
+                   [class.ng-dirty]="isInvalidControl(form,'specialty')"/>
+          </div>
+          <div class="register-pt__field">
+            <label for="ptEmail">{{ 'registerPhysiotherapist.personal.email' | translate }}</label>
+            <input pInputText id="ptEmail" type="email" formControlName="email"
+                   [placeholder]="'registerPhysiotherapist.personal.emailPlaceholder' | translate"
+                   [class.ng-invalid]="isInvalidControl(form,'email')"
+                   [class.ng-dirty]="isInvalidControl(form,'email')"/>
+          </div>
+          <div class="register-pt__field">
+            <label for="ptPhone">{{ 'registerPhysiotherapist.personal.phone' | translate }}</label>
+            <input pInputText id="ptPhone" type="tel" formControlName="phone"
+                   [placeholder]="'registerPhysiotherapist.personal.phonePlaceholder' | translate"
+                   [class.ng-invalid]="isInvalidControl(form,'phone')"
+                   [class.ng-dirty]="isInvalidControl(form,'phone')"/>
+          </div>
+        </div>
+      </article>
+
+      <article class="register-pt__card">
+        <header class="register-pt__card-header">
+          <i class="pi pi-id-card register-pt__card-icon" aria-hidden="true"></i>
+          <h2 class="register-pt__card-title">{{ 'registerPhysiotherapist.credentials.title' | translate }}</h2>
+        </header>
+        <div class="register-pt__field">
+          <label for="ptLicense">{{ 'registerPhysiotherapist.credentials.licenseNumber' | translate }}</label>
+          <input pInputText id="ptLicense" type="text" formControlName="licenseNumber"
+                 [placeholder]="'registerPhysiotherapist.credentials.licenseNumberPlaceholder' | translate"
+                 [class.ng-invalid]="isInvalidControl(form,'licenseNumber')"
+                 [class.ng-dirty]="isInvalidControl(form,'licenseNumber')"/>
+        </div>
+        <div class="register-pt__field">
+          <label for="ptSummary">{{ 'registerPhysiotherapist.credentials.summary' | translate }}</label>
+          <textarea pTextarea id="ptSummary" rows="4" formControlName="professionalSummary"
+                    [placeholder]="'registerPhysiotherapist.credentials.summaryPlaceholder' | translate"></textarea>
+        </div>
+      </article>
+    </div>
+
+    <aside class="register-pt__side">
+      <article class="register-pt__card">
+        <header class="register-pt__card-header">
+          <i class="pi pi-camera register-pt__card-icon" aria-hidden="true"></i>
+          <h2 class="register-pt__card-title">{{ 'registerPhysiotherapist.photo.title' | translate }}</h2>
+        </header>
+        <label class="register-pt__photo">
+          <input type="file" accept=".jpg,.jpeg,.png,.gif" hidden (change)="onPhotoPicked($event)"/>
+          <i class="pi pi-cloud-upload register-pt__photo-icon" aria-hidden="true"></i>
+          <span class="register-pt__photo-hint">
+            @if (photoFileName()) {
+              {{ photoFileName() }}
+            } @else {
+              {{ 'registerPhysiotherapist.photo.upload' | translate }}
+            }
+          </span>
+        </label>
+        <p class="register-pt__photo-formats">{{ 'registerPhysiotherapist.photo.formats' | translate }}</p>
+      </article>
+
+      <article class="register-pt__quick-tip">
+        <h3 class="register-pt__quick-tip-title">{{ 'registerPhysiotherapist.quickTip.title' | translate }}</h3>
+        <p class="register-pt__quick-tip-desc">{{ 'registerPhysiotherapist.quickTip.description' | translate }}</p>
+        <div class="register-pt__quick-tip-callout">
+          <i class="pi pi-shield" aria-hidden="true"></i>
+          <span>{{ 'registerPhysiotherapist.quickTip.verified' | translate }}</span>
+        </div>
+      </article>
+
+      <article class="register-pt__enrollments">
+        <h3 class="register-pt__enrollments-title">{{ 'registerPhysiotherapist.enrollments.title' | translate }}</h3>
+        <div class="register-pt__enrollments-preview" aria-hidden="true">
+          <div class="register-pt__enrollments-bars">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <div class="register-pt__enrollments-pills">
+          <span class="register-pt__pill register-pt__pill--success">
+            <span class="register-pt__pill-dot" aria-hidden="true"></span>
+            {{ 'registerPhysiotherapist.enrollments.dbConnected' | translate }}
+          </span>
+          <span class="register-pt__pill register-pt__pill--info">
+            <i class="pi pi-lock" aria-hidden="true"></i>
+            {{ 'registerPhysiotherapist.enrollments.sslSecured' | translate }}
+          </span>
+        </div>
+        <span class="register-pt__enrollments-caption">
+          {{ 'registerPhysiotherapist.enrollments.activeClinicians' | translate }}
+        </span>
+      </article>
+    </aside>
+  </div>
+</form>

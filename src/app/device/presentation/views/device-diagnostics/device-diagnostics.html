@@ -1,0 +1,84 @@
+<a class="diag__back" routerLink="/clinic-admin/device">
+  <i class="pi pi-arrow-left" aria-hidden="true"></i>
+  <span>{{ 'deviceRegister.backToInventory' | translate }}</span>
+</a>
+
+<header class="diag__header">
+  <div class="diag__header-text">
+    <span class="diag__eyebrow">{{ 'deviceDiagnostics.eyebrow' | translate }}</span>
+    <h1 class="diag__title">{{ 'deviceDiagnostics.title' | translate }}</h1>
+  </div>
+  <div class="diag__actions">
+    <button pButton type="button" severity="secondary" [outlined]="true"
+            class="diag__btn"
+            (click)="onRecalibrate()">
+      <i class="pi pi-refresh" aria-hidden="true"></i>
+      <span>{{ 'deviceDiagnostics.actions.recalibrate' | translate }}</span>
+    </button>
+    <button pButton type="button" severity="primary"
+            class="diag__btn diag__btn--primary"
+            (click)="onExportReport()">
+      <i class="pi pi-download" aria-hidden="true"></i>
+      <span>{{ 'deviceDiagnostics.actions.exportReport' | translate }}</span>
+    </button>
+  </div>
+</header>
+
+<section class="diag__top">
+  <app-diagnostic-progress class="diag__progress"
+    [progressPct]="session.scanProgressPct"
+    [estimatedRemaining]="session.estimatedRemainingLabel"
+    [phases]="session.phases"/>
+
+  <app-hardware-id-card class="diag__hw"
+    [hardwareId]="session.hardwareId"
+    [badge]="session.hardwareIdBadge"/>
+</section>
+
+<section class="diag__metrics">
+  <app-stat-card [title]="'deviceDiagnostics.metrics.battery' | translate">
+    <div class="diag-metric">
+      <i class="pi pi-bolt diag-metric__icon" aria-hidden="true"></i>
+      <div class="diag-metric__body">
+        <span class="diag-metric__primary">{{ session.metrics.batteryHealthPct }}% {{ 'deviceDiagnostics.metrics.batteryUnit' | translate }}</span>
+        <div class="diag-metric__bar">
+          <div class="diag-metric__bar-fill" [style.width.%]="session.metrics.batteryHealthPct"></div>
+        </div>
+        <span class="diag-metric__detail">{{ session.metrics.batteryDetail }}</span>
+      </div>
+    </div>
+  </app-stat-card>
+
+  <app-stat-card [title]="'deviceDiagnostics.metrics.signal' | translate">
+    <div class="diag-metric">
+      <i class="pi pi-wifi diag-metric__icon" aria-hidden="true"></i>
+      <div class="diag-metric__body">
+        <span class="diag-metric__primary">{{ session.metrics.signalDbm }} dBm</span>
+        <div class="diag-metric__bars" aria-hidden="true">
+          @for (b of [1,2,3,4,5]; track b) {
+            <span class="diag-metric__bar-segment"
+                  [class.diag-metric__bar-segment--on]="b <= session.metrics.signalBars"
+                  [style.height.px]="6 + b * 2"></span>
+          }
+        </div>
+        <span class="diag-metric__detail">{{ session.metrics.signalDetail }}</span>
+      </div>
+    </div>
+  </app-stat-card>
+
+  <app-stat-card [title]="'deviceDiagnostics.metrics.temperature' | translate">
+    <div class="diag-metric">
+      <i class="pi pi-sun diag-metric__icon" aria-hidden="true"></i>
+      <div class="diag-metric__body">
+        <span class="diag-metric__primary">{{ session.metrics.operatingTempC }}°C</span>
+        <span class="diag-metric__detail">{{ session.metrics.tempRangeLabel }}</span>
+      </div>
+    </div>
+  </app-stat-card>
+</section>
+
+<app-diagnostic-log [entries]="logs()" (clear)="onClearLogs()"/>
+
+<button type="button" class="diag__fab" aria-label="notifications">
+  <i class="pi pi-bell" aria-hidden="true"></i>
+</button>

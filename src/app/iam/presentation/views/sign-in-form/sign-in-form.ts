@@ -8,6 +8,7 @@ import {ButtonModule} from 'primeng/button';
 import {CheckboxModule} from 'primeng/checkbox';
 import {IamStore} from '../../../application/iam.store';
 import {SignInCommand} from '../../../domain/model/sign-in.command';
+import {AuthShell} from '../../../../shared/presentation/components/auth-shell/auth-shell';
 import {BaseForm} from '../../../../shared/presentation/components/base-form/base-form';
 
 /**
@@ -23,7 +24,8 @@ import {BaseForm} from '../../../../shared/presentation/components/base-form/bas
     InputTextModule,
     PasswordModule,
     ButtonModule,
-    CheckboxModule
+    CheckboxModule,
+    AuthShell
   ],
   templateUrl: './sign-in-form.html',
   styleUrl: './sign-in-form.scss'

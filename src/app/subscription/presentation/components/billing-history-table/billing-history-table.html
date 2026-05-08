@@ -1,0 +1,22 @@
+<table class="billing">
+  <thead>
+    <tr>
+      <th>{{ 'subscription.billing.columns.amount' | translate }}</th>
+      <th>{{ 'subscription.billing.columns.plan' | translate }}</th>
+      <th>{{ 'subscription.billing.columns.status' | translate }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (invoice of invoices(); track invoice.id) {
+      <tr>
+        <td class="billing__amount">{{ invoice.amount | number:'1.2-2' }}</td>
+        <td>{{ invoice.planName }}</td>
+        <td>
+          <span class="billing__status billing__status--{{ invoice.status }}">
+            {{ 'subscription.billing.status.' + invoice.status | translate }}
+          </span>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

@@ -1,0 +1,32 @@
+<article class="plan-card" [class.plan-card--selected]="isCurrent()">
+  @if (isCurrent()) {
+    <span class="plan-card__selected-badge">{{ 'subscription.plans.selected' | translate }}</span>
+  }
+  <h3 class="plan-card__name">{{ plan().name }}</h3>
+  <p class="plan-card__desc">{{ plan().description }}</p>
+  <div class="plan-card__price">
+    <span class="plan-card__price-value">${{ plan().monthlyPrice }}</span>
+    <span class="plan-card__price-suffix">{{ 'subscription.plans.perMonth' | translate }}</span>
+  </div>
+  <ul class="plan-card__features">
+    @for (feature of plan().features; track feature.label) {
+      <li class="plan-card__feature" [class.plan-card__feature--off]="!feature.included">
+        <i class="pi pi-check-circle plan-card__feature-icon" aria-hidden="true"></i>
+        <span>{{ feature.label }}</span>
+      </li>
+    }
+  </ul>
+  @if (isCurrent()) {
+    <button pButton type="button" severity="primary"
+            class="plan-card__btn plan-card__btn--active"
+            (click)="onSelect()">
+      {{ 'subscription.plans.alreadyActive' | translate }}
+    </button>
+  } @else {
+    <button pButton type="button" severity="secondary" [outlined]="true"
+            class="plan-card__btn"
+            (click)="onSelect()">
+      {{ 'subscription.plans.currentPlan' | translate }}
+    </button>
+  }
+</article>
