@@ -1,17 +1,17 @@
 export const environment = {
-  production: true,
+  production: false,
 
-  apiBaseUrl: 'https://api.uflex.com/api/v1',
+  apiBaseUrl: 'http://localhost:8080/api/v1',
 
   subscription: {
-    useMockApi: false,
+    useMockApi: true,
     plansEndpoint: '/plans',
     subscriptionsEndpoint: '/subscriptions',
     invoicesEndpoint: '/invoices'
   },
 
   culqi: {
-    publicKey: 'pk_live_replace_me',
-    enabled: true
+    enabled: false,
+    publicKey: 'pk_test_replace_me'
   }
 };

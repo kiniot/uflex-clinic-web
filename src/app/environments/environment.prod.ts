@@ -11,7 +11,7 @@ export const environment = {
   },
 
   culqi: {
-    publicKey: 'pk_live_replace_me',
-    enabled: true
+    enabled: true,
+    publicKey: 'pk_live_replace_me'
   }
 };
