@@ -12,6 +12,8 @@ const clinicAdminPortalRoutes = () =>
 const physiotherapistPortalRoutes = () =>
   import('./shared/presentation/portals/physiotherapist-portal/physiotherapist-portal.routes')
     .then((m) => m.physiotherapistPortalRoutes);
+const subscriptionRoutes = () =>
+  import('./subscription/presentation/subscription.routes').then((m) => m.subscriptionRoutes);
 
 const baseTitle = 'KinIoT - uFlex';
 
@@ -26,6 +28,11 @@ export const routes: Routes = [
   { path: 'iam', loadChildren: iamRoutes },
   { path: 'clinic-admin', loadChildren: clinicAdminPortalRoutes, title: `${baseTitle} - Clinic Admin` },
   { path: 'physiotherapist', loadChildren: physiotherapistPortalRoutes, title: `${baseTitle} - Physiotherapist` },
+  {
+    path: 'subscription',
+    loadChildren: subscriptionRoutes,
+    title: `${baseTitle} - Subscription`,
+  },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', loadComponent: pageNotFound, title: `${baseTitle} - Page Not Found` },
 ];

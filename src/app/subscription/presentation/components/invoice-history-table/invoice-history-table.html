@@ -1,0 +1,29 @@
+<section class="invoice-panel">
+  <div class="section-heading">
+    <span>Billing History</span>
+    <h2>Invoices</h2>
+  </div>
+
+  <p-table [value]="invoices()" responsiveLayout="scroll">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Invoice</th>
+        <th>Issued</th>
+        <th>Due</th>
+        <th>Amount</th>
+        <th>Status</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-invoice>
+      <tr>
+        <td>{{ invoice.id }}</td>
+        <td>{{ invoice.issuedAt | date: 'MMM d, y' }}</td>
+        <td>{{ invoice.dueAt | date: 'MMM d, y' }}</td>
+        <td>{{ invoice.amount.formatted() }}</td>
+        <td>
+          <p-tag [value]="invoice.status" [severity]="statusSeverity(invoice.status)" />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</section>
