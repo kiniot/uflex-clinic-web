@@ -21,6 +21,151 @@
     "powered-by": "Desarrollado con",
     "and": "y"
   },
+  "roles": {
+    "physiotherapist": "Fisioterapeuta",
+    "clinicAdmin": "Administrador de Clínica"
+  },
+  "clinicAdmin": {
+    "brand": {
+      "name": "uFlex",
+      "subtitle": "Portal Clínico",
+      "badge": "ADMIN"
+    },
+    "nav": {
+      "therapy": "Terapia",
+      "device": "Dispositivos",
+      "organization": "Organización",
+      "subscription": "Suscripción",
+      "profile": "Perfil",
+      "support": "Soporte",
+      "logout": "Cerrar sesión"
+    },
+    "topbar": {
+      "searchPlaceholder": "Buscar pacientes o dispositivos...",
+      "clinicSelector": "Selector de clínica"
+    },
+    "therapy": {
+      "title": "Gestión de terapias",
+      "subtitle": "Ejercicios especializados de telerrehabilitación para lesiones de brazo y muñeca.",
+      "registerNew": "Registrar nuevo ejercicio"
+    },
+    "device": {
+      "title": "Gestión de dispositivos",
+      "subtitle": "Dispositivos de rehabilitación conectados y sus emparejamientos."
+    },
+    "organization": {
+      "title": "Organización",
+      "subtitle": "Perfil de la clínica, sedes y miembros del equipo."
+    },
+    "subscription": {
+      "title": "Suscripción",
+      "subtitle": "Plan, facturación y comprobantes."
+    },
+    "profile": {
+      "title": "Perfil",
+      "subtitle": "Configuración y preferencias de tu cuenta."
+    }
+  },
+  "therapyManagement": {
+    "filters": {
+      "searchPlaceholder": "Buscar ejercicios por nombre...",
+      "allCategories": "Todas las categorías",
+      "anyDifficulty": "Cualquier dificultad",
+      "anyEquipment": "Equipamiento"
+    },
+    "category": {
+      "mobility": "Movilidad",
+      "strength": "Fuerza",
+      "endurance": "Resistencia"
+    },
+    "difficulty": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado"
+    },
+    "equipment": {
+      "therapyBall": "Pelota de terapia",
+      "resistanceBand": "Banda elástica",
+      "none": "Sin equipamiento"
+    },
+    "viewDetails": "Ver detalles",
+    "addToList": "Agregar a la lista",
+    "empty": "Ningún ejercicio coincide con los filtros actuales.",
+    "register": {
+      "title": "Registrar nuevo ejercicio",
+      "subtitle": "Agrega un nuevo ejercicio a la biblioteca maestra de terapias.",
+      "exerciseName": "Nombre del ejercicio",
+      "exerciseNamePlaceholder": "ej. Flexión de muñeca con mancuerna",
+      "category": "Categoría",
+      "categoryPlaceholder": "Selecciona categoría",
+      "bodyPart": "Parte del cuerpo objetivo",
+      "bodyPartPlaceholder": "Selecciona parte del cuerpo",
+      "description": "Descripción / Instrucciones",
+      "descriptionPlaceholder": "Proporciona instrucciones paso a paso para el paciente...",
+      "prescriptionParameters": "Parámetros de prescripción",
+      "defaultSets": "Series por defecto",
+      "defaultReps": "Repeticiones por defecto",
+      "holdDuration": "Duración de retención (seg)",
+      "difficultyLevel": "Nivel de dificultad",
+      "equipmentNeeded": "Equipamiento necesario",
+      "equipmentNeededPlaceholder": "ej. Banda elástica, Mancuerna de 1kg",
+      "media": "Medio",
+      "uploadHint": "Haz clic para subir o arrastra y suelta",
+      "uploadFormats": "SVG, PNG, JPG o MP4 (máx. 800x400px)",
+      "cancel": "Cancelar",
+      "save": "Guardar ejercicio"
+    },
+    "bodyPart": {
+      "wrist": "Muñeca",
+      "elbow": "Codo",
+      "shoulder": "Hombro",
+      "hand": "Mano",
+      "forearm": "Antebrazo",
+      "knee": "Rodilla",
+      "ankle": "Tobillo",
+      "other": "Otro"
+    }
+  },
+  "deviceManagement": {
+    "title": "Inventario de dispositivos",
+    "subtitle": "Administra, monitorea y aprovisiona los kits IoT uFlex.",
+    "actions": {
+      "runDiagnostics": "Ejecutar diagnóstico",
+      "calibrate": "Calibrar",
+      "linkToPatient": "Vincular paciente",
+      "registerDevice": "Registrar dispositivo"
+    },
+    "stats": {
+      "totalActiveKits": "Kits activos totales",
+      "requiresCalibration": "Requieren calibración",
+      "networkStatus": "Estado de red",
+      "delta": "+4 esta semana",
+      "within7Days": "En 7 días",
+      "online": "En línea"
+    },
+    "fleetStatus": "Estado de la flota",
+    "columns": {
+      "kitId": "ID del kit IoT",
+      "linkedPatient": "Paciente vinculado",
+      "batteryLevel": "Nivel de batería",
+      "bluetooth": "Bluetooth",
+      "calibration": "Calibración",
+      "firmware": "Firmware",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "calibration": {
+      "valid": "Válida",
+      "expired": "Expirada",
+      "pending": "Pendiente"
+    },
+    "status": {
+      "online": "En línea",
+      "idle": "Inactivo",
+      "offline": "Desconectado"
+    },
+    "unassigned": "Sin asignar"
+  },
   "signIn": {
     "subtitle": "Plataforma Clínica de Telerehabilitación",
     "username": {
