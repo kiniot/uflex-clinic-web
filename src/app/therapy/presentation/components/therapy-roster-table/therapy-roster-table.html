@@ -1,0 +1,54 @@
+<div class="roster__scroll">
+  <table class="roster">
+    <thead>
+      <tr>
+        <th>{{ 'therapyRoster.columns.profile' | translate }}</th>
+        <th>{{ 'therapyRoster.columns.injury' | translate }}</th>
+        <th>{{ 'therapyRoster.columns.lastSession' | translate }}</th>
+        <th>{{ 'therapyRoster.columns.iotStatus' | translate }}</th>
+        <th class="roster__action-col">{{ 'therapyRoster.columns.action' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (patient of patients(); track patient.id) {
+        <tr class="roster__row">
+          <td>
+            <div class="roster__profile">
+              <p-avatar [label]="patient.avatarInitials" shape="circle" size="normal"
+                        styleClass="roster__avatar"/>
+              <div class="roster__profile-text">
+                <span class="roster__name">{{ patient.name }}</span>
+                <span class="roster__mrn">{{ 'therapyRoster.mrn' | translate }} #{{ patient.mrn }}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="roster__injury">
+              <i class="pi {{ patient.injuryIcon }} roster__injury-icon" aria-hidden="true"></i>
+              <span>{{ patient.injuryContext }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="roster__session">
+              <span class="roster__session-date">{{ patient.lastSessionDateLabel }}</span>
+              <span class="roster__session-time">{{ patient.lastSessionTimeLabel }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="roster__iot roster__iot--{{ patient.iotStatus }}">
+              <span class="roster__dot" aria-hidden="true"></span>
+              {{ 'therapyRoster.iot.' + patient.iotStatus | translate }}
+            </span>
+          </td>
+          <td class="roster__action-col">
+            <button type="button" class="roster__review"
+                    (click)="onReview($event, patient)">
+              <span>{{ 'therapyRoster.review' | translate }}</span>
+              <i class="pi pi-arrow-right" aria-hidden="true"></i>
+            </button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

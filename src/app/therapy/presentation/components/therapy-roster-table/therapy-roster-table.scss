@@ -1,0 +1,170 @@
+:host { display: block; }
+
+.roster__scroll { overflow-x: auto; }
+
+.roster {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+.roster th,
+.roster td {
+  padding: 14px 18px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.roster thead th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--p-text-muted-color);
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .roster thead th {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.roster__row {
+  border-bottom: 1px solid var(--p-surface-100);
+  transition: background-color 120ms ease;
+}
+
+:host-context(.app-dark) .roster__row {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.roster__row:last-child { border-bottom: 0; }
+
+.roster__row:hover {
+  background: var(--p-surface-50);
+}
+
+:host-context(.app-dark) .roster__row:hover {
+  background: var(--p-surface-200);
+}
+
+.roster__profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+:host ::ng-deep .roster__avatar {
+  background: var(--p-surface-200);
+  color: var(--p-text-muted-color);
+  font-weight: 600;
+}
+
+.roster__profile-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.roster__name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.roster__mrn {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--p-text-muted-color);
+}
+
+.roster__injury {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--p-text-color);
+}
+
+.roster__injury-icon {
+  color: var(--p-primary-color);
+  font-size: 14px;
+}
+
+.roster__session {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.roster__session-date {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-color);
+}
+
+.roster__session-time {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  color: var(--p-text-muted-color);
+}
+
+.roster__iot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.roster__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.roster__iot--connected {
+  background: rgba(52, 199, 155, 0.16);
+  color: #16785a;
+}
+.roster__iot--connected .roster__dot { background: #34c79b; }
+
+.roster__iot--offline {
+  background: rgba(217, 83, 79, 0.18);
+  color: #b6322f;
+}
+.roster__iot--offline .roster__dot { background: #d9534f; }
+
+:host-context(.app-dark) .roster__iot--connected { color: #34c79b; }
+:host-context(.app-dark) .roster__iot--offline { color: #ff8a87; }
+
+.roster__action-col {
+  text-align: right;
+  width: 140px;
+}
+
+.roster__review {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 0;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--p-primary-color);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.roster__review:hover {
+  background: color-mix(in srgb, var(--p-primary-color) 8%, transparent);
+}
+
+.roster__review i { font-size: 12px; }

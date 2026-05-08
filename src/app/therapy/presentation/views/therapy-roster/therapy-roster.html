@@ -1,0 +1,118 @@
+<header class="roster-page__header">
+  <div class="roster-page__header-text">
+    <span class="roster-page__eyebrow">{{ 'therapyRoster.eyebrow' | translate }}</span>
+    <h1 class="roster-page__title">{{ 'therapyRoster.title' | translate }}</h1>
+    <p class="roster-page__subtitle">{{ 'therapyRoster.subtitle' | translate }}</p>
+  </div>
+  <button pButton type="button" severity="primary"
+          class="roster-page__cta"
+          (click)="onRegisterPatient()">
+    <i class="pi pi-user-plus" aria-hidden="true"></i>
+    <span>{{ 'therapyRoster.registerPatient' | translate }}</span>
+  </button>
+</header>
+
+<section class="roster-page__kpis">
+  <article class="kpi kpi--throughput">
+    <div class="kpi__main">
+      <h3 class="kpi__title">{{ 'therapyRoster.kpi.throughput' | translate }}</h3>
+      <p class="kpi__sub">{{ 'therapyRoster.kpi.throughputSub' | translate }}</p>
+      <div class="kpi__value-row">
+        <span class="kpi__value">{{ overview().throughputPct }}%</span>
+        <span class="kpi__delta">
+          <i class="pi pi-arrow-up" aria-hidden="true"></i>
+          +{{ overview().throughputDeltaPct }}%
+        </span>
+      </div>
+    </div>
+    <div class="kpi__visual" aria-hidden="true">
+      <div class="kpi__visual-card">
+        <span class="kpi__visual-mark">uF</span>
+        <span class="kpi__visual-tag">{{ 'therapyRoster.kpi.throughputBadge' | translate }}</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="kpi kpi--devices">
+    <span class="kpi__icon kpi__icon--accent" aria-hidden="true">
+      <i class="pi pi-wifi"></i>
+    </span>
+    <span class="kpi__value kpi__value--small">{{ overview().activeDevices }} {{ 'therapyRoster.kpi.active' | translate }}</span>
+    <p class="kpi__sub">{{ 'therapyRoster.kpi.devicesSub' | translate }}</p>
+    <div class="kpi__bar">
+      <div class="kpi__bar-fill" [style.width.%]="devicesUsagePct()"></div>
+    </div>
+  </article>
+
+  <article class="kpi kpi--reviews">
+    <span class="kpi__icon kpi__icon--inverse" aria-hidden="true">
+      <i class="pi pi-calendar"></i>
+    </span>
+    <span class="kpi__value kpi__value--inverse">{{ overview().pendingReviews }} {{ 'therapyRoster.kpi.reviews' | translate }}</span>
+    <p class="kpi__sub kpi__sub--inverse">{{ 'therapyRoster.kpi.reviewsSub' | translate }}</p>
+    <span class="kpi__badge">{{ 'therapyRoster.kpi.actionRequired' | translate }}</span>
+  </article>
+</section>
+
+<section class="roster-page__roster-card">
+  <header class="roster-page__roster-header">
+    <div class="roster-page__roster-tabs">
+      <h2 class="roster-page__roster-title">{{ 'therapyRoster.roster' | translate }}</h2>
+      <button type="button" class="roster-page__tab"
+              [class.roster-page__tab--active]="activeTab() === 'all'"
+              (click)="onTab('all')">
+        {{ 'therapyRoster.tabs.all' | translate }} ({{ overview().totalActivePatients }})
+      </button>
+      <button type="button" class="roster-page__tab"
+              [class.roster-page__tab--active]="activeTab() === 'connected'"
+              (click)="onTab('connected')">
+        {{ 'therapyRoster.tabs.connected' | translate }} ({{ connectedCount() }})
+      </button>
+    </div>
+    <div class="roster-page__roster-filters">
+      <button type="button" class="roster-page__icon-btn" aria-label="filter">
+        <i class="pi pi-filter" aria-hidden="true"></i>
+      </button>
+      <button type="button" class="roster-page__icon-btn" aria-label="more">
+        <i class="pi pi-sort-alt" aria-hidden="true"></i>
+      </button>
+    </div>
+  </header>
+
+  <app-therapy-roster-table [patients]="visiblePatients()"
+                             (reviewOpen)="onReviewTherapy($event)"/>
+
+  <footer class="roster-page__footer">
+    <span class="roster-page__counter">
+      {{ 'therapyRoster.showingCount' | translate: {visible: visiblePatients().length, total: overview().totalActivePatients} }}
+    </span>
+    <div class="roster-page__pager">
+      <button type="button">{{ 'therapyRoster.previous' | translate }}</button>
+      <button type="button">{{ 'therapyRoster.next' | translate }}</button>
+    </div>
+  </footer>
+  <button type="button" class="roster-page__fab" (click)="onAddPatient()" aria-label="Add patient">
+    <i class="pi pi-plus" aria-hidden="true"></i>
+  </button>
+</section>
+
+<section class="roster-page__bottom">
+  <article class="roster-page__promo">
+    <div class="roster-page__promo-pattern" aria-hidden="true"></div>
+    <div class="roster-page__promo-text">
+      <h3 class="roster-page__promo-title">{{ 'therapyRoster.promo.title' | translate }}</h3>
+      <p class="roster-page__promo-body">{{ 'therapyRoster.promo.body' | translate }}</p>
+      <button pButton type="button" class="roster-page__promo-cta" (click)="onExploreSensors()">
+        <span>{{ 'therapyRoster.promo.cta' | translate }}</span>
+      </button>
+    </div>
+  </article>
+
+  <button type="button" class="roster-page__template" (click)="onCreateTemplate()">
+    <span class="roster-page__template-plus" aria-hidden="true">
+      <i class="pi pi-plus"></i>
+    </span>
+    <strong class="roster-page__template-title">{{ 'therapyRoster.template.title' | translate }}</strong>
+    <span class="roster-page__template-body">{{ 'therapyRoster.template.body' | translate }}</span>
+  </button>
+</section>
