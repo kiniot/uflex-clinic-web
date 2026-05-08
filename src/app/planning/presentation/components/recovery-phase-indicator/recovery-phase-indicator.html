@@ -1,0 +1,12 @@
+<div class="phase-indicator">
+  @for (phase of phases(); track phase.id; let i = $index, last = $last) {
+    <div class="phase-indicator__step phase-indicator__step--{{ phase.status }}">
+      <span class="phase-indicator__circle">{{ i + 1 }}</span>
+      <span class="phase-indicator__label">{{ phase.label }}</span>
+    </div>
+    @if (!last) {
+      <span class="phase-indicator__connector phase-indicator__connector--{{ phase.status }}"
+            aria-hidden="true"></span>
+    }
+  }
+</div>

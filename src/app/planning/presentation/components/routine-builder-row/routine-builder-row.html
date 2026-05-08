@@ -1,0 +1,42 @@
+<article class="routine-row">
+  <span class="routine-row__thumb" aria-hidden="true">
+    <i class="pi pi-image"></i>
+  </span>
+  <div class="routine-row__body">
+    <header class="routine-row__header">
+      <div class="routine-row__title-block">
+        <h3 class="routine-row__title">{{ exercise().name }}</h3>
+        <p class="routine-row__desc">{{ exercise().description }}</p>
+      </div>
+      <button type="button" class="routine-row__remove"
+              (click)="onRemove()"
+              aria-label="Remove exercise">
+        <i class="pi pi-trash" aria-hidden="true"></i>
+      </button>
+    </header>
+    <div class="routine-row__params">
+      @for (param of exercise().parameters; track param.key) {
+        <div class="routine-row__param">
+          <span class="routine-row__param-label">{{ param.label }}</span>
+          @if (param.type === 'counter') {
+            <div class="routine-row__counter">
+              <button type="button" class="routine-row__counter-btn"
+                      (click)="onAdjust(param.key, -1)"
+                      aria-label="Decrement">
+                <i class="pi pi-minus" aria-hidden="true"></i>
+              </button>
+              <span class="routine-row__counter-value">{{ param.value }}{{ param.unit ?? '' }}</span>
+              <button type="button" class="routine-row__counter-btn"
+                      (click)="onAdjust(param.key, 1)"
+                      aria-label="Increment">
+                <i class="pi pi-plus" aria-hidden="true"></i>
+              </button>
+            </div>
+          } @else {
+            <span class="routine-row__param-static">{{ param.value }}</span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</article>

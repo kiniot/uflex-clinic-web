@@ -1,0 +1,53 @@
+<section class="trajectory">
+  <header class="trajectory__header">
+    <h2 class="trajectory__title">{{ 'therapyRoadmap.trajectory.title' | translate }}</h2>
+    <button type="button" class="trajectory__fab" aria-label="More">
+      <i class="pi pi-sparkles" aria-hidden="true"></i>
+    </button>
+  </header>
+
+  <div class="trajectory__chart" aria-hidden="true">
+    <div class="trajectory__chart-pattern"></div>
+    <span class="trajectory__pin">
+      {{ 'therapyRoadmap.trajectory.currentPoint' | translate }}
+      <span class="trajectory__pin-dot"></span>
+    </span>
+  </div>
+
+  <div class="trajectory__stats">
+    <article class="trajectory__stat">
+      <span class="trajectory__stat-label">{{ 'therapyRoadmap.trajectory.estimatedRtp' | translate }}</span>
+      <strong class="trajectory__stat-value">{{ trajectory().estimatedRtpDateLabel }}</strong>
+      <span class="trajectory__stat-sub trajectory__stat-sub--{{ trajectory().scheduleStatus }}">
+        <i class="pi pi-check-circle" aria-hidden="true"></i>
+        {{ 'therapyRoadmap.trajectory.scheduleStatus.' + trajectory().scheduleStatus | translate }}
+      </span>
+    </article>
+
+    <article class="trajectory__stat">
+      <span class="trajectory__stat-label">{{ 'therapyRoadmap.trajectory.complianceScore' | translate }}</span>
+      <strong class="trajectory__stat-value">{{ trajectory().complianceScorePct }}%</strong>
+      <div class="trajectory__bar">
+        <div class="trajectory__bar-fill" [style.width.%]="trajectory().complianceScorePct"></div>
+      </div>
+      <span class="trajectory__stat-sub">{{ trajectory().complianceLabel }}</span>
+    </article>
+
+    <article class="trajectory__stat">
+      <span class="trajectory__stat-label">{{ 'therapyRoadmap.trajectory.riskAssessment' | translate }}</span>
+      <strong class="trajectory__stat-value trajectory__stat-value--{{ trajectory().riskLevel }}">
+        {{ 'therapyRoadmap.trajectory.risk.' + trajectory().riskLevel | translate }}
+      </strong>
+      <div class="trajectory__risk-bars">
+        @for (filled of riskBars(); track $index) {
+          <span class="trajectory__risk-bar"
+                [class.trajectory__risk-bar--filled]="filled"
+                [class.trajectory__risk-bar--filled--low]="filled && trajectory().riskLevel === 'low'"
+                [class.trajectory__risk-bar--filled--medium]="filled && trajectory().riskLevel === 'medium'"
+                [class.trajectory__risk-bar--filled--high]="filled && trajectory().riskLevel === 'high'"
+                aria-hidden="true"></span>
+        }
+      </div>
+    </article>
+  </div>
+</section>

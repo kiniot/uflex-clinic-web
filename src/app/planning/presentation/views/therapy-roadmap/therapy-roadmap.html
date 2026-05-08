@@ -1,0 +1,152 @@
+<nav class="roadmap__breadcrumb" aria-label="Breadcrumb">
+  <a href="#">{{ 'therapyRoadmap.breadcrumb.patients' | translate }}</a>
+  <i class="pi pi-angle-right" aria-hidden="true"></i>
+  <a href="#">{{ program().patientName }}</a>
+  <i class="pi pi-angle-right" aria-hidden="true"></i>
+  <span>{{ 'therapyRoadmap.breadcrumb.therapyPlanning' | translate }}</span>
+</nav>
+
+<header class="roadmap__header">
+  <div class="roadmap__header-text">
+    <h1 class="roadmap__title">{{ 'therapyRoadmap.title' | translate }}</h1>
+    <p class="roadmap__subtitle">{{ 'therapyRoadmap.subtitle' | translate }}</p>
+  </div>
+  <div class="roadmap__header-actions">
+    <button pButton type="button" severity="secondary" [outlined]="true"
+            class="roadmap__btn"
+            (click)="onSaveDraft()">
+      <i class="pi pi-save" aria-hidden="true"></i>
+      <span>{{ 'therapyRoadmap.saveDraft' | translate }}</span>
+    </button>
+    <button pButton type="button" severity="primary"
+            class="roadmap__btn roadmap__btn--primary"
+            (click)="onFinalizeAndDeploy()">
+      <i class="pi pi-send" aria-hidden="true"></i>
+      <span>{{ 'therapyRoadmap.finalize' | translate }}</span>
+    </button>
+  </div>
+</header>
+
+<section class="roadmap__top-cards">
+  <article class="roadmap__patient-card">
+    <span class="roadmap__patient-icon" aria-hidden="true">
+      <i class="pi pi-user"></i>
+    </span>
+    <div class="roadmap__patient-text">
+      <span class="roadmap__patient-eyebrow">{{ 'therapyRoadmap.patient' | translate }}</span>
+      <strong class="roadmap__patient-name">{{ program().patientName }}</strong>
+      <span class="roadmap__patient-meta">
+        {{ program().patientAge }}, {{ program().patientGender }} &middot; {{ program().patientCondition }}
+      </span>
+    </div>
+  </article>
+
+  <article class="roadmap__phase-card">
+    <span class="roadmap__phase-eyebrow">{{ 'therapyRoadmap.currentPhase' | translate }}</span>
+    <app-recovery-phase-indicator [phases]="program().phases"/>
+  </article>
+
+  <article class="roadmap__day-card">
+    <div class="roadmap__day-row">
+      <div class="roadmap__day-text">
+        <span class="roadmap__day-eyebrow">
+          {{ 'therapyRoadmap.dayOf' | translate: {day: program().dayNumber, total: program().totalDays} }}
+        </span>
+        <strong class="roadmap__day-value">
+          {{ progressPct() }}% {{ 'therapyRoadmap.complete' | translate }}
+        </strong>
+      </div>
+      <span class="roadmap__day-icon" aria-hidden="true">
+        <i class="pi pi-chart-line"></i>
+      </span>
+    </div>
+    <div class="roadmap__day-bar">
+      <div class="roadmap__day-bar-fill" [style.width.%]="progressPct()"></div>
+    </div>
+  </article>
+</section>
+
+<section class="roadmap__main">
+  <article class="roadmap__library">
+    <header class="roadmap__library-header">
+      <h2 class="roadmap__library-title">{{ 'therapyRoadmap.library.title' | translate }}</h2>
+      <p class="roadmap__library-sub">{{ 'therapyRoadmap.library.subtitle' | translate }}</p>
+      <div class="roadmap__library-chips">
+        <button type="button" class="roadmap__chip"
+                [class.roadmap__chip--active]="libraryFilter() === 'knee'"
+                (click)="onLibraryFilter('knee')">
+          {{ 'therapyRoadmap.library.tags.knee' | translate }}
+        </button>
+        <button type="button" class="roadmap__chip"
+                [class.roadmap__chip--active]="libraryFilter() === 'strength'"
+                (click)="onLibraryFilter('strength')">
+          {{ 'therapyRoadmap.library.tags.strength' | translate }}
+        </button>
+        <button type="button" class="roadmap__chip"
+                [class.roadmap__chip--active]="libraryFilter() === 'mobility'"
+                (click)="onLibraryFilter('mobility')">
+          {{ 'therapyRoadmap.library.tags.mobility' | translate }}
+        </button>
+      </div>
+    </header>
+
+    <div class="roadmap__library-list">
+      @for (protocol of visibleProtocols(); track protocol.id) {
+        <article class="roadmap__library-card">
+          <span class="roadmap__library-thumb" aria-hidden="true">
+            <i class="pi pi-image"></i>
+          </span>
+          <div class="roadmap__library-info">
+            <strong class="roadmap__library-name">{{ protocol.name }}</strong>
+            <span class="roadmap__library-focus">{{ protocol.focus }}</span>
+          </div>
+          <button type="button" class="roadmap__library-add"
+                  (click)="onAddProtocol()"
+                  aria-label="Add to routine">
+            <i class="pi pi-plus" aria-hidden="true"></i>
+          </button>
+        </article>
+      }
+    </div>
+
+    <article class="roadmap__insight">
+      <h3 class="roadmap__insight-title">{{ 'therapyRoadmap.insight.title' | translate }}</h3>
+      <p class="roadmap__insight-body">
+        {{ 'therapyRoadmap.insight.body' | translate: {patient: program().patientName} }}
+      </p>
+      <a class="roadmap__insight-link" href="#">
+        {{ 'therapyRoadmap.insight.cta' | translate }}
+        <i class="pi pi-external-link" aria-hidden="true"></i>
+      </a>
+    </article>
+  </article>
+
+  <article class="roadmap__builder">
+    <header class="roadmap__builder-header">
+      <div>
+        <h2 class="roadmap__builder-title">{{ 'therapyRoadmap.builder.title' | translate }}</h2>
+        <p class="roadmap__builder-sub">{{ 'therapyRoadmap.builder.subtitle' | translate }}</p>
+      </div>
+      <span class="roadmap__schedule">
+        <i class="pi pi-calendar" aria-hidden="true"></i>
+        {{ program().scheduleLabel }}
+      </span>
+    </header>
+
+    <div class="roadmap__builder-list">
+      @for (exercise of program().routineExercises; track exercise.id) {
+        <app-routine-builder-row [exercise]="exercise"
+                                  (paramChange)="onParamChange($event)"
+                                  (remove)="onRemoveExercise($event.id)"/>
+      }
+
+      <div class="roadmap__builder-drop">
+        <i class="pi pi-plus-circle" aria-hidden="true"></i>
+        <strong>{{ 'therapyRoadmap.builder.dropTitle' | translate }}</strong>
+        <span>{{ 'therapyRoadmap.builder.dropHint' | translate }}</span>
+      </div>
+    </div>
+  </article>
+</section>
+
+<app-long-term-trajectory [trajectory]="trajectory()"/>

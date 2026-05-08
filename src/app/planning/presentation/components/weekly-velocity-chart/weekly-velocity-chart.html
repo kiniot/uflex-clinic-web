@@ -1,0 +1,8 @@
+<div class="velocity">
+  <div class="velocity__bars">
+    @for (bar of bars(); track $index) {
+      <span class="velocity__bar" [style.height.%]="bar"></span>
+    }
+  </div>
+  <span class="velocity__caption">{{ 'planningDashboard.summary.chartCaption' | translate }}</span>
+</div>
