@@ -1,0 +1,28 @@
+<section class="cal-steps">
+  <h2 class="cal-steps__title">{{ 'deviceCalibration.steps.title' | translate }}</h2>
+
+  <ol class="cal-steps__list">
+    @for (step of steps(); track step.id) {
+      <li class="cal-steps__item cal-steps__item--{{ step.status }}">
+        <div class="cal-steps__icon" aria-hidden="true">
+          @if (step.status === 'completed') {
+            <i class="pi pi-check"></i>
+          } @else if (step.status === 'active') {
+            <i class="pi pi-bolt"></i>
+          } @else {
+            <i class="pi pi-circle"></i>
+          }
+        </div>
+        <div class="cal-steps__body">
+          <h3 class="cal-steps__name">{{ step.title }}</h3>
+          <p class="cal-steps__desc">{{ step.description }}</p>
+          @if (step.status === 'active' && step.progress != null) {
+            <div class="cal-steps__progress">
+              <div class="cal-steps__progress-fill" [style.width.%]="step.progress"></div>
+            </div>
+          }
+        </div>
+      </li>
+    }
+  </ol>
+</section>

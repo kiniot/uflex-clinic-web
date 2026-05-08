@@ -1,0 +1,140 @@
+<a class="link__back" routerLink="/clinic-admin/device">
+  <i class="pi pi-arrow-left" aria-hidden="true"></i>
+  <span>{{ 'deviceRegister.backToInventory' | translate }}</span>
+</a>
+
+<header class="link__intro">
+  <h1 class="link__title">{{ 'deviceLink.title' | translate }}</h1>
+  <p class="link__subtitle">{{ 'deviceLink.subtitle' | translate }}</p>
+</header>
+
+<section class="link__grid">
+  <article class="patients">
+    <header class="patients__header">
+      <div class="patients__heading">
+        <i class="pi pi-user-plus patients__icon" aria-hidden="true"></i>
+        <h2 class="patients__title">{{ 'deviceLink.selectPatient' | translate }}</h2>
+      </div>
+      <app-search-input class="patients__filter"
+                        [placeholder]="'deviceLink.filterPlaceholder' | translate"
+                        [value]="filterText()"
+                        (valueChange)="filterText.set($event)"/>
+    </header>
+
+    <div class="patients__scroll">
+      <table class="patients__table">
+        <thead>
+          <tr>
+            <th>{{ 'deviceLink.columns.patient' | translate }}</th>
+            <th>{{ 'deviceLink.columns.mrn' | translate }}</th>
+            <th class="patients__status-col">{{ 'deviceLink.columns.status' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (patient of filteredPatients(); track patient.id) {
+            <tr class="patients__row"
+                [class.patients__row--selected]="patient.id === selectedPatientId()"
+                (click)="onSelectPatient(patient)">
+              <td>
+                <div class="patients__person">
+                  <p-avatar [label]="patient.avatarInitials" shape="circle" size="normal"
+                            styleClass="patients__avatar"/>
+                  <div class="patients__person-text">
+                    <span class="patients__name">{{ patient.name }}</span>
+                    <span class="patients__condition">{{ patient.condition }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="patients__mrn">{{ patient.mrn }}</td>
+              <td>
+                <span class="patients__status patients__status--{{ patient.status }}">
+                  <span class="patients__dot" aria-hidden="true"></span>
+                  {{ 'deviceLink.status.' + patient.status | translate }}
+                </span>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="3" class="patients__empty">{{ 'deviceLink.empty' | translate }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <aside class="link__side">
+    <article class="kit">
+      <header class="kit__header">
+        <i class="pi pi-bluetooth kit__icon" aria-hidden="true"></i>
+        <h2 class="kit__title">{{ 'deviceLink.assignKit.title' | translate }}</h2>
+      </header>
+      <span class="kit__label">{{ 'deviceLink.assignKit.available' | translate }}</span>
+      <p-select class="kit__select"
+                [options]="deviceOptions()"
+                [ngModel]="selectedDeviceId()"
+                (ngModelChange)="selectedDeviceId.set($event)"
+                optionLabel="label"
+                optionValue="value"
+                [placeholder]="'deviceLink.assignKit.placeholder' | translate"/>
+
+      <div class="kit__calibration">
+        <i class="pi pi-check-circle kit__calibration-icon" aria-hidden="true"></i>
+        <div class="kit__calibration-text">
+          <strong class="kit__calibration-title">{{ 'deviceLink.assignKit.calibration.title' | translate }}</strong>
+          <span class="kit__calibration-desc">{{ 'deviceLink.assignKit.calibration.description' | translate }}</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="final-assignment">
+      <header class="final-assignment__header">
+        <h2 class="final-assignment__title">{{ 'deviceLink.finalAssignment.title' | translate }}</h2>
+        <span class="final-assignment__badge">{{ 'deviceLink.finalAssignment.reviewBadge' | translate }}</span>
+      </header>
+
+      <dl class="final-assignment__fields">
+        <div class="final-assignment__field">
+          <dt>{{ 'deviceLink.finalAssignment.assignedPatient' | translate }}</dt>
+          <dd>
+            <span>{{ assignedPatientLabel() }}</span>
+            <i class="pi pi-user" aria-hidden="true"></i>
+          </dd>
+        </div>
+        <div class="final-assignment__field">
+          <dt>{{ 'deviceLink.finalAssignment.kitIdentification' | translate }}</dt>
+          <dd>
+            <span>{{ assignedKitLabel() }}</span>
+            <i class="pi pi-microchip" aria-hidden="true"></i>
+          </dd>
+        </div>
+        <div class="final-assignment__field">
+          <dt>{{ 'deviceLink.finalAssignment.protocolDuration' | translate }}</dt>
+          <dd>
+            <span>{{ protocolDuration() }}</span>
+            <i class="pi pi-clock" aria-hidden="true"></i>
+          </dd>
+        </div>
+      </dl>
+
+      <button type="button" pButton severity="primary"
+              class="final-assignment__confirm"
+              [disabled]="!canConfirm()"
+              (click)="onConfirm()">
+        {{ 'deviceLink.finalAssignment.confirm' | translate }}
+      </button>
+
+      <button type="button" class="final-assignment__cancel" (click)="onCancel()">
+        {{ 'deviceLink.finalAssignment.cancel' | translate }}
+      </button>
+    </article>
+
+    <article class="hardware-view">
+      <span class="hardware-view__mark" aria-hidden="true">uF</span>
+      <div class="hardware-view__text">
+        <strong class="hardware-view__name">uFlex</strong>
+        <span class="hardware-view__caption">{{ 'deviceLink.hardwareView.caption' | translate }}</span>
+      </div>
+    </article>
+  </aside>
+</section>

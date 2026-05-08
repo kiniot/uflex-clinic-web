@@ -1,0 +1,86 @@
+:host {
+  display: block;
+}
+
+.hw-integrity {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+}
+
+:host-context(.app-dark) .hw-integrity {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.hw-integrity__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hw-integrity__mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.hw-integrity__name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-primary-color);
+  letter-spacing: -0.01em;
+}
+
+.hw-integrity__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.hw-integrity__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+  text-transform: capitalize;
+}
+
+.hw-integrity__badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 9px;
+  border-radius: 6px;
+}
+
+.hw-integrity[data-level='optimal'] .hw-integrity__badge {
+  background: rgba(52, 199, 155, 0.2);
+  color: #16785a;
+}
+
+.hw-integrity[data-level='warning'] .hw-integrity__badge {
+  background: rgba(217, 165, 54, 0.2);
+  color: #8a6212;
+}
+
+.hw-integrity[data-level='degraded'] .hw-integrity__badge {
+  background: rgba(217, 83, 79, 0.18);
+  color: #b6322f;
+}

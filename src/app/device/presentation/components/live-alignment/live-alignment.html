@@ -1,0 +1,41 @@
+<section class="alignment">
+  <header class="alignment__header">
+    <h2 class="alignment__title">{{ 'deviceCalibration.liveAlignment' | translate }}</h2>
+    <ul class="alignment__legend">
+      <li class="alignment__chip alignment__chip--x">
+        <span class="alignment__dot"></span>{{ 'deviceCalibration.axes.x' | translate }}
+      </li>
+      <li class="alignment__chip alignment__chip--y">
+        <span class="alignment__dot"></span>{{ 'deviceCalibration.axes.y' | translate }}
+      </li>
+      <li class="alignment__chip alignment__chip--z">
+        <span class="alignment__dot"></span>{{ 'deviceCalibration.axes.z' | translate }}
+      </li>
+    </ul>
+  </header>
+
+  <div class="alignment__stage">
+    <span class="alignment__angle alignment__angle--top">90° (Vertical)</span>
+    <span class="alignment__angle alignment__angle--right">0°</span>
+    <div class="alignment__circle">
+      <div class="alignment__core" [style.transform]="'rotate(' + coreRotation() + 'deg)'">
+        <span>uFlex-Core</span>
+      </div>
+    </div>
+  </div>
+
+  <ul class="alignment__readings">
+    <li class="alignment__reading">
+      <span class="alignment__reading-label">{{ 'deviceCalibration.readings.pitch' | translate }}</span>
+      <span class="alignment__reading-value">{{ formatDeg(pitchDeg()) }}</span>
+    </li>
+    <li class="alignment__reading">
+      <span class="alignment__reading-label">{{ 'deviceCalibration.readings.yaw' | translate }}</span>
+      <span class="alignment__reading-value">{{ formatDeg(yawDeg()) }}</span>
+    </li>
+    <li class="alignment__reading">
+      <span class="alignment__reading-label">{{ 'deviceCalibration.readings.roll' | translate }}</span>
+      <span class="alignment__reading-value">{{ formatDeg(rollDeg()) }}</span>
+    </li>
+  </ul>
+</section>

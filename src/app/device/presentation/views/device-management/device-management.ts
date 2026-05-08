@@ -1,4 +1,5 @@
 import {Component, inject} from '@angular/core';
+import {RouterLink} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ButtonModule} from 'primeng/button';
 import {PageHeader} from '../../../../shared/presentation/components/page-header/page-header';
@@ -14,7 +15,7 @@ import {FleetTable} from '../../components/fleet-table/fleet-table';
  */
 @Component({
   selector: 'app-device-management',
-  imports: [TranslatePipe, ButtonModule, PageHeader, StatCard, FleetTable],
+  imports: [RouterLink, TranslatePipe, ButtonModule, PageHeader, StatCard, FleetTable],
   templateUrl: './device-management.html',
   styleUrl: './device-management.scss'
 })

@@ -1,0 +1,64 @@
+<a class="cal__back" routerLink="/clinic-admin/device">
+  <i class="pi pi-arrow-left" aria-hidden="true"></i>
+  <span>{{ 'deviceRegister.backToInventory' | translate }}</span>
+</a>
+
+<app-page-header
+  [title]="'deviceCalibration.title' | translate"
+  [subtitle]="subtitle()">
+  <button pButton type="button" severity="secondary" [outlined]="true"
+          class="cal__btn"
+          (click)="onRestartGuide()">
+    {{ 'deviceCalibration.actions.restartGuide' | translate }}
+  </button>
+  <button pButton type="button" severity="primary"
+          class="cal__btn cal__btn--primary"
+          (click)="onCompleteCalibration()">
+    {{ 'deviceCalibration.actions.complete' | translate }}
+  </button>
+</app-page-header>
+
+<section class="cal__grid">
+  <div class="cal__main">
+    <app-live-alignment
+      [pitchDeg]="session.pitchDeg"
+      [yawDeg]="session.yawDeg"
+      [rollDeg]="session.rollDeg"/>
+  </div>
+
+  <div class="cal__side">
+    <app-calibration-steps [steps]="session.steps"/>
+    <app-hardware-integrity [level]="session.hardwareIntegrity"/>
+  </div>
+</section>
+
+<section class="cal__telemetry">
+  <article class="cal-tile">
+    <i class="pi pi-bolt cal-tile__icon" aria-hidden="true"></i>
+    <div class="cal-tile__body">
+      <span class="cal-tile__label">{{ 'deviceCalibration.telemetry.batteryHealth' | translate }}</span>
+      <span class="cal-tile__value">{{ session.batteryHealthPct }}% {{ 'deviceCalibration.telemetry.capacity' | translate }}</span>
+    </div>
+  </article>
+  <article class="cal-tile">
+    <i class="pi pi-server cal-tile__icon" aria-hidden="true"></i>
+    <div class="cal-tile__body">
+      <span class="cal-tile__label">{{ 'deviceCalibration.telemetry.firmware' | translate }}</span>
+      <span class="cal-tile__value">{{ session.firmwareVersion }}</span>
+    </div>
+  </article>
+  <article class="cal-tile">
+    <i class="pi pi-wifi cal-tile__icon" aria-hidden="true"></i>
+    <div class="cal-tile__body">
+      <span class="cal-tile__label">{{ 'deviceCalibration.telemetry.connection' | translate }}</span>
+      <span class="cal-tile__value">{{ session.connectionLatencyLabel }}</span>
+    </div>
+  </article>
+  <article class="cal-tile">
+    <i class="pi pi-clock cal-tile__icon" aria-hidden="true"></i>
+    <div class="cal-tile__body">
+      <span class="cal-tile__label">{{ 'deviceCalibration.telemetry.lastSync' | translate }}</span>
+      <span class="cal-tile__value">{{ session.lastSyncLabel }}</span>
+    </div>
+  </article>
+</section>

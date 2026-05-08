@@ -2,22 +2,26 @@
   [title]="'deviceManagement.title' | translate"
   [subtitle]="'deviceManagement.subtitle' | translate">
   <button pButton type="button" severity="secondary" [outlined]="true"
-          class="device__action-btn">
+          class="device__action-btn"
+          routerLink="diagnostics">
     <i class="pi pi-bolt" aria-hidden="true"></i>
     <span>{{ 'deviceManagement.actions.runDiagnostics' | translate }}</span>
   </button>
   <button pButton type="button" severity="secondary" [outlined]="true"
-          class="device__action-btn">
+          class="device__action-btn"
+          routerLink="calibrate">
     <i class="pi pi-refresh" aria-hidden="true"></i>
     <span>{{ 'deviceManagement.actions.calibrate' | translate }}</span>
   </button>
   <button pButton type="button" severity="secondary" [outlined]="true"
-          class="device__action-btn">
+          class="device__action-btn"
+          routerLink="link">
     <i class="pi pi-user-plus" aria-hidden="true"></i>
     <span>{{ 'deviceManagement.actions.linkToPatient' | translate }}</span>
   </button>
   <button pButton type="button" severity="primary"
-          class="device__action-btn device__action-btn--primary">
+          class="device__action-btn device__action-btn--primary"
+          routerLink="register">
     <i class="pi pi-plus" aria-hidden="true"></i>
     <span>{{ 'deviceManagement.actions.registerDevice' | translate }}</span>
   </button>

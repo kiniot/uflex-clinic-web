@@ -1,0 +1,28 @@
+<section class="reg-status">
+  <header class="reg-status__header">
+    <h2 class="reg-status__title">{{ 'deviceRegister.status.title' | translate }}</h2>
+    <span class="reg-status__subtitle">{{ 'deviceRegister.status.subtitle' | translate }}</span>
+  </header>
+
+  <ul class="reg-status__list">
+    @for (step of steps(); track step.id) {
+      <li class="reg-status__item reg-status__item--{{ step.status }}">
+        <span class="reg-status__dot" aria-hidden="true">
+          @if (step.status === 'complete') {
+            <i class="pi pi-check"></i>
+          }
+        </span>
+        <span class="reg-status__label">{{ step.label }}</span>
+        <span class="reg-status__badge">{{ 'deviceRegister.status.' + step.status | translate }}</span>
+      </li>
+    }
+  </ul>
+
+  <div class="reg-status__progress">
+    <div class="reg-status__progress-fill" [style.width.%]="progress()"></div>
+  </div>
+
+  <span class="reg-status__counter">
+    {{ 'deviceRegister.status.stepCounter' | translate: {current: currentStepIndex() + 1, total: steps().length} }}
+  </span>
+</section>
