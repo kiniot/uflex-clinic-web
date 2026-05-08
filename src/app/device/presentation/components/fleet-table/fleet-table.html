@@ -1,0 +1,93 @@
+<section class="fleet">
+  <header class="fleet__header">
+    <h2 class="fleet__title">{{ 'deviceManagement.fleetStatus' | translate }}</h2>
+    <button type="button" class="fleet__filter-btn" aria-label="filter">
+      <i class="pi pi-filter" aria-hidden="true"></i>
+    </button>
+  </header>
+
+  <div class="fleet__scroll">
+    <table class="fleet__table">
+      <thead>
+        <tr>
+          <th>{{ 'deviceManagement.columns.kitId' | translate }}</th>
+          <th>{{ 'deviceManagement.columns.linkedPatient' | translate }}</th>
+          <th>{{ 'deviceManagement.columns.batteryLevel' | translate }}</th>
+          <th>{{ 'deviceManagement.columns.bluetooth' | translate }}</th>
+          <th>{{ 'deviceManagement.columns.calibration' | translate }}</th>
+          <th>{{ 'deviceManagement.columns.firmware' | translate }}</th>
+          <th>{{ 'deviceManagement.columns.status' | translate }}</th>
+          <th class="fleet__actions-col">{{ 'deviceManagement.columns.actions' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (device of devices(); track device.id) {
+          <tr>
+            <td class="fleet__kit-id">{{ device.kitId }}</td>
+
+            <td>
+              @if (device.linkedPatient) {
+                {{ device.linkedPatient }}
+              } @else {
+                <span class="fleet__muted">{{ 'deviceManagement.unassigned' | translate }}</span>
+              }
+            </td>
+
+            <td>
+              <div class="fleet-battery">
+                <div class="fleet-battery__bar">
+                  <div class="fleet-battery__fill"
+                       [class]="batteryLevelClass(device.batteryLevel)"
+                       [style.width.%]="device.batteryLevel"></div>
+                </div>
+                <span class="fleet-battery__label">{{ device.batteryLevel }}%</span>
+              </div>
+            </td>
+
+            <td>
+              <i class="pi pi-bluetooth fleet__bt"
+                 [class.fleet__bt--on]="device.bluetoothConnected"
+                 [class.fleet__bt--off]="!device.bluetoothConnected"
+                 aria-hidden="true"></i>
+            </td>
+
+            <td>
+              @if (device.calibrationStatus === 'valid') {
+                <span class="fleet__cal fleet__cal--valid">
+                  <i class="pi pi-check-circle" aria-hidden="true"></i>
+                  {{ 'deviceManagement.calibration.valid' | translate }}
+                </span>
+              } @else if (device.calibrationStatus === 'expired') {
+                <span class="fleet__cal fleet__cal--expired">
+                  <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+                  {{ 'deviceManagement.calibration.expired' | translate }}
+                </span>
+              } @else {
+                <span class="fleet__cal fleet__cal--pending">
+                  <i class="pi pi-clock" aria-hidden="true"></i>
+                  {{ 'deviceManagement.calibration.pending' | translate }}
+                </span>
+              }
+            </td>
+
+            <td class="fleet__firmware">{{ device.firmwareVersion }}</td>
+
+            <td>
+              <span class="fleet__status fleet__status--{{ device.status }}">
+                {{ 'deviceManagement.status.' + device.status | translate }}
+              </span>
+            </td>
+
+            <td class="fleet__actions-col">
+              <button type="button" class="fleet__row-action"
+                      (click)="onRowAction(device, $event)"
+                      aria-label="actions">
+                <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

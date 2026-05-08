@@ -1,0 +1,50 @@
+<app-page-header
+  [title]="'deviceManagement.title' | translate"
+  [subtitle]="'deviceManagement.subtitle' | translate">
+  <button pButton type="button" severity="secondary" [outlined]="true"
+          class="device__action-btn">
+    <i class="pi pi-bolt" aria-hidden="true"></i>
+    <span>{{ 'deviceManagement.actions.runDiagnostics' | translate }}</span>
+  </button>
+  <button pButton type="button" severity="secondary" [outlined]="true"
+          class="device__action-btn">
+    <i class="pi pi-refresh" aria-hidden="true"></i>
+    <span>{{ 'deviceManagement.actions.calibrate' | translate }}</span>
+  </button>
+  <button pButton type="button" severity="secondary" [outlined]="true"
+          class="device__action-btn">
+    <i class="pi pi-user-plus" aria-hidden="true"></i>
+    <span>{{ 'deviceManagement.actions.linkToPatient' | translate }}</span>
+  </button>
+  <button pButton type="button" severity="primary"
+          class="device__action-btn device__action-btn--primary">
+    <i class="pi pi-plus" aria-hidden="true"></i>
+    <span>{{ 'deviceManagement.actions.registerDevice' | translate }}</span>
+  </button>
+</app-page-header>
+
+<section class="device__stats">
+  <app-stat-card [title]="'deviceManagement.stats.totalActiveKits' | translate">
+    <span class="device__stat-number">{{ totalActiveKits() }}</span>
+    <span class="device__stat-badge">{{ 'deviceManagement.stats.delta' | translate }}</span>
+  </app-stat-card>
+
+  <app-stat-card [title]="'deviceManagement.stats.requiresCalibration' | translate">
+    <span class="device__stat-number device__stat-number--alert">{{ requiresCalibration() }}</span>
+    <span class="device__stat-subtitle">{{ 'deviceManagement.stats.within7Days' | translate }}</span>
+  </app-stat-card>
+
+  <app-stat-card [title]="'deviceManagement.stats.networkStatus' | translate">
+    <div class="device__network">
+      <div class="device__network-row">
+        <span class="device__network-label">{{ 'deviceManagement.stats.online' | translate }}</span>
+        <span class="device__network-value">{{ onlinePercentage() }}%</span>
+      </div>
+      <div class="device__network-bar">
+        <div class="device__network-fill" [style.width.%]="onlinePercentage()"></div>
+      </div>
+    </div>
+  </app-stat-card>
+</section>
+
+<app-fleet-table [devices]="devices()" (rowAction)="onRowAction($event)"/>
