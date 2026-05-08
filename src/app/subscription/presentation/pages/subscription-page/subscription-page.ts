@@ -41,6 +41,10 @@ export class SubscriptionPage implements OnInit {
     this.facade.purchase(planId, BillingCycle.Monthly);
   }
 
+  isCurrentPlan(planId: string): boolean {
+    return this.facade.currentSubscription()?.plan.id === planId;
+  }
+
   updatePaymentMethod(): void {
     const current = this.facade.currentSubscription();
     if (!current) return;

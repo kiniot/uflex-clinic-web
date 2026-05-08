@@ -2,17 +2,22 @@
   display: block;
 }
 
-.plan-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: var(--p-surface-0);
 :host ::ng-deep .plan-card {
   border: 1px solid var(--p-surface-200);
-  border-radius: 16px;
-  padding: 22px 24px 20px;
+  border-radius: 12px;
   height: 100%;
+}
+
+:host ::ng-deep .plan-card .p-card-body {
+  height: 100%;
+}
+
+:host ::ng-deep .plan-card .p-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+  padding: 0;
 }
 
 .plan-heading {
@@ -22,93 +27,38 @@
   justify-content: space-between;
 }
 
-:host-context(.app-dark) .plan-card {
-  background: var(--p-surface-100);
-  border-color: var(--p-surface-300);
 .plan-code {
   color: var(--p-turquoise-500);
   font-size: 0.75rem;
   font-weight: 800;
 }
 
-.plan-card--selected {
-  border: 2px solid var(--p-primary-color);
-  padding: 21px 23px 19px;
 h3 {
   color: var(--p-primary-500);
   font-size: 1.35rem;
   margin: 0.25rem 0 0;
 }
 
-.plan-card__selected-badge {
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 4px 12px;
 .current-pill {
   background: var(--p-highlight-background);
   border-radius: 999px;
-  text-transform: uppercase;
-}
-
-.plan-card__name {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--p-text-color);
-  margin: 0;
-}
-
-.plan-card__desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--p-text-muted-color);
-  margin: 0;
   color: var(--p-highlight-color);
   font-size: 0.75rem;
   font-weight: 800;
   padding: 0.35rem 0.65rem;
+  text-transform: uppercase;
 }
 
-.plan-card__price {
-  display: inline-flex;
+.plan-description {
+  color: var(--p-text-muted-color);
+  margin: 0;
+}
+
 .plan-price {
   align-items: baseline;
+  display: flex;
   gap: 6px;
   margin: 4px 0 8px;
-}
-
-.plan-card__price-value {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--p-text-color);
-  line-height: 1;
-  letter-spacing: -0.01em;
-}
-
-.plan-card__price-suffix {
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: var(--p-text-muted-color);
-}
-
-.plan-card__features {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  gap: 0.45rem;
-  margin: 1.25rem 0 0.85rem;
 }
 
 .plan-price strong {
@@ -134,12 +84,11 @@ h3 {
   padding: 0.35rem 0.55rem;
 }
 
-.plan-card__feature {
-ul {
-  display: grid;
-  grid-template-columns: 16px 1fr;
-  gap: 8px;
-  gap: 0.7rem;
+.plan-features {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75rem;
   list-style: none;
   margin: 1.25rem 0;
   padding: 0;
@@ -147,38 +96,16 @@ ul {
 
 li {
   align-items: center;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  display: flex;
+  gap: 0.5rem;
   color: var(--p-text-color);
 }
 
-.plan-card__feature-icon {
-  font-size: 13px;
-  color: #16785a;
-}
-
-.plan-card__feature--off {
-  color: var(--p-text-muted-color);
-  opacity: 0.6;
-  color: var(--p-surface-800);
-  display: flex;
-  gap: 0.5rem;
-}
-
-.plan-card__feature--off .plan-card__feature-icon {
-  color: var(--p-text-muted-color);
 i {
   color: var(--p-turquoise-500);
 }
 
-:host ::ng-deep .plan-card__btn,
-:host ::ng-deep .plan-card__btn .p-button {
 button {
   width: 100%;
-  height: 44px;
-  border-radius: 10px;
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
   margin-top: 8px;
 }

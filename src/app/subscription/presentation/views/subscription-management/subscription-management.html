@@ -1,14 +1,25 @@
 <app-page-header
   [title]="'subscription.title' | translate"
-  [subtitle]="'subscription.subtitle' | translate">
-  <button pButton type="button" severity="secondary" [outlined]="true"
-          class="sub__btn"
-          (click)="onDownloadAuditReport()">
+  [subtitle]="'subscription.subtitle' | translate"
+>
+  <button
+    pButton
+    type="button"
+    severity="secondary"
+    [outlined]="true"
+    class="sub__btn"
+    (click)="onDownloadAuditReport()"
+  >
     {{ 'subscription.actions.downloadAudit' | translate }}
   </button>
-  <button pButton type="button" severity="secondary" [outlined]="true"
-          class="sub__btn"
-          (click)="onUpgradePlan()">
+  <button
+    pButton
+    type="button"
+    severity="secondary"
+    [outlined]="true"
+    class="sub__btn"
+    (click)="onUpgradePlan()"
+  >
     {{ 'subscription.actions.upgradePlan' | translate }}
   </button>
 </app-page-header>
@@ -26,15 +37,24 @@
 
       <div class="sub-active__price">
         <span class="sub-active__price-value">${{ activePlan()?.monthlyPrice }}</span>
-        <span class="sub-active__price-suffix">/ {{ 'subscription.active.billedMonthly' | translate }}</span>
+        <span class="sub-active__price-suffix"
+          >/ {{ 'subscription.active.billedMonthly' | translate }}</span
+        >
       </div>
 
       <div class="sub-active__links">
-        <a class="sub-active__link" href="#" (click)="$event.preventDefault(); onChangeBillingCycle()">
+        <a
+          class="sub-active__link"
+          href="#"
+          (click)="$event.preventDefault(); onChangeBillingCycle()"
+        >
           {{ 'subscription.active.changeCycle' | translate }} <i class="pi pi-arrow-right"></i>
         </a>
-        <a class="sub-active__link sub-active__link--danger" href="#"
-           (click)="$event.preventDefault(); onCancelSubscription()">
+        <a
+          class="sub-active__link sub-active__link--danger"
+          href="#"
+          (click)="$event.preventDefault(); onCancelSubscription()"
+        >
           {{ 'subscription.active.cancel' | translate }}
         </a>
       </div>
@@ -42,7 +62,9 @@
 
     <aside class="sub-active__right">
       <div class="sub-active__metric">
-        <span class="sub-active__metric-label">{{ 'subscription.active.activeLicenses' | translate }}</span>
+        <span class="sub-active__metric-label">{{
+          'subscription.active.activeLicenses' | translate
+        }}</span>
         <span class="sub-active__metric-value">
           {{ activeSubscription().activeLicenses }}/{{ activeSubscription().totalLicenses }}
         </span>
@@ -51,14 +73,18 @@
         </div>
       </div>
       <div class="sub-active__metric">
-        <span class="sub-active__metric-label">{{ 'subscription.active.storageUsage' | translate }}</span>
+        <span class="sub-active__metric-label">{{
+          'subscription.active.storageUsage' | translate
+        }}</span>
         <span class="sub-active__metric-value">{{ activeSubscription().storageUsageTb }} TB</span>
         <div class="sub-active__bar">
           <div class="sub-active__bar-fill" [style.width.%]="storageUsagePct()"></div>
         </div>
       </div>
       <div class="sub-active__metric sub-active__metric--row">
-        <span class="sub-active__metric-label">{{ 'subscription.active.apiStatus' | translate }}</span>
+        <span class="sub-active__metric-label">{{
+          'subscription.active.apiStatus' | translate
+        }}</span>
         <span class="sub-active__api">
           <span class="sub-active__dot" aria-hidden="true"></span>
           {{ 'subscription.active.api.' + activeSubscription().apiStatus | translate }}
@@ -69,10 +95,15 @@
 
   <article class="sub-payment">
     <h2 class="sub-payment__title">{{ 'subscription.payment.title' | translate }}</h2>
-    <app-payment-card [paymentMethod]="paymentMethod()"/>
-    <button pButton type="button" severity="secondary" [outlined]="true"
-            class="sub-payment__btn"
-            (click)="onUpdatePaymentMethod()">
+    <app-payment-card [paymentMethod]="paymentMethod()" />
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      [outlined]="true"
+      class="sub-payment__btn"
+      (click)="onUpdatePaymentMethod()"
+    >
       <i class="pi pi-pencil" aria-hidden="true"></i>
       <span>{{ 'subscription.payment.update' | translate }}</span>
     </button>
@@ -85,7 +116,7 @@
       <h2 class="sub-billing__title">{{ 'subscription.billing.title' | translate }}</h2>
       <a class="sub-billing__link" href="#">{{ 'subscription.billing.viewAll' | translate }}</a>
     </header>
-    <app-billing-history-table [invoices]="invoices()"/>
+    <app-billing-history-table [invoices]="invoices()" />
   </article>
 
   <article class="sub-upsell">
@@ -115,9 +146,11 @@
   <h2 class="sub__plans-title">{{ 'subscription.plans.title' | translate }}</h2>
   <div class="sub__plans-grid">
     @for (plan of plans(); track plan.id) {
-      <app-plan-card [plan]="plan"
-                     [isCurrent]="isCurrent(plan)"
-                     (select)="onPlanSelect($event)"/>
+      <app-plan-card
+        [plan]="plan"
+        [isCurrent]="isCurrent(plan)"
+        (planSelected)="onPlanSelect($event)"
+      />
     }
   </div>
 </section>

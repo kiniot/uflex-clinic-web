@@ -38,7 +38,7 @@
         @for (plan of facade.plans(); track plan.id) {
           <app-plan-card
             [plan]="plan"
-            [currentSubscription]="facade.currentSubscription()"
+            [isCurrent]="isCurrentPlan(plan.id)"
             (planSelected)="selectPlan($event)"
           />
         }
