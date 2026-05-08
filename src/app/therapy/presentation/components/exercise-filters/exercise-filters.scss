@@ -1,0 +1,58 @@
+:host {
+  display: block;
+}
+
+.exercise-filters {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) repeat(3, minmax(140px, 180px));
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 12px;
+}
+
+:host-context(.app-dark) .exercise-filters {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.exercise-filters__search {
+  width: 100%;
+}
+
+.exercise-filters__select {
+  width: 100%;
+}
+
+:host ::ng-deep .exercise-filters__select .p-select {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+}
+
+:host ::ng-deep .exercise-filters__select .p-select-label {
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .exercise-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+  .exercise-filters__search {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .exercise-filters {
+    grid-template-columns: 1fr;
+  }
+  .exercise-filters__search {
+    grid-column: auto;
+  }
+}

@@ -1,0 +1,27 @@
+<div class="exercise-filters">
+  <app-search-input class="exercise-filters__search"
+                    [placeholder]="searchPlaceholder()"
+                    [value]="search()"
+                    (valueChange)="search.set($event)"/>
+
+  <p-select class="exercise-filters__select"
+            [options]="categoryOptions()"
+            [ngModel]="category()"
+            (ngModelChange)="category.set($event)"
+            optionLabel="label"
+            optionValue="value"/>
+
+  <p-select class="exercise-filters__select"
+            [options]="difficultyOptions()"
+            [ngModel]="difficulty()"
+            (ngModelChange)="difficulty.set($event)"
+            optionLabel="label"
+            optionValue="value"/>
+
+  <p-select class="exercise-filters__select"
+            [options]="equipmentOptions()"
+            [ngModel]="equipment()"
+            (ngModelChange)="equipment.set($event)"
+            optionLabel="label"
+            optionValue="value"/>
+</div>
