@@ -569,5 +569,279 @@
     "submit": "Create Account",
     "haveAccount": "Already have an account?",
     "signInLink": "Sign In"
+  },
+  "physiotherapist": {
+    "brand": {
+      "name": "uFlex",
+      "subtitle": "CLINICIAN PORTAL"
+    },
+    "nav": {
+      "dashboard": "Dashboard",
+      "therapy": "Therapy",
+      "planning": "Planning",
+      "device": "Device",
+      "organization": "Organization",
+      "support": "Support",
+      "logout": "Logout"
+    },
+    "topbar": {
+      "searchPlaceholder": "Search patients, devices, or reports...",
+      "rolePill": "Physiotherapist"
+    },
+    "dashboard": {
+      "greeting": "Good Morning, {{name}}",
+      "summary": "You have {{sessions}} patient sessions scheduled for today. {{urgent}} requires immediate review.",
+      "registerPatient": "Register New Patient",
+      "complianceRate": "Compliance Rate",
+      "monthlyProgress": "Monthly Progress",
+      "activePatients": "Active Patients",
+      "newPatientsThisWeek": "{{count}} new this week",
+      "recoveryMilestones": "Recovery Milestones",
+      "goalAchievement": "Goal Achievement Rate",
+      "dailySchedule": "Daily Schedule",
+      "viewFullCalendar": "View Full Calendar",
+      "urgentAlerts": "Urgent Alerts",
+      "releaseBanner": "New Analytics Engine: v2.4 Active",
+      "clinicalSummary": "Clinical Summary",
+      "clinicalSummaryBody": "Cross-patient analysis shows a significant correlation between morning session consistency and 15% faster mobility recovery across the population.",
+      "clinicVsNational": "Clinic vs. National Avg"
+    }
+  },
+  "planning": {
+    "title": "Planning",
+    "subtitle": "Patient roster and rehabilitation programs.",
+    "status": {
+      "active": "Active",
+      "waitlist": "Waitlist",
+      "discharged": "Discharged"
+    }
+  },
+  "therapyRoster": {
+    "eyebrow": "Active Caseload",
+    "title": "Therapy Management",
+    "subtitle": "Oversee patient recovery tracks and monitor real-time IoT device metrics.",
+    "registerPatient": "Register New Patient",
+    "kpi": {
+      "throughput": "Clinic Throughput",
+      "throughputSub": "Recovery velocity this month",
+      "throughputBadge": "Clinic Portal",
+      "active": "Active",
+      "devicesSub": "IoT Devices Linked",
+      "reviews": "Reviews",
+      "reviewsSub": "Pending assessment",
+      "actionRequired": "Action Required"
+    },
+    "roster": "Patient Roster",
+    "tabs": {
+      "all": "All",
+      "connected": "Connected"
+    },
+    "columns": {
+      "profile": "Patient Profile",
+      "injury": "Injury Context",
+      "lastSession": "Last Session",
+      "iotStatus": "IoT Status",
+      "action": "Action"
+    },
+    "iot": {
+      "connected": "Connected",
+      "offline": "Offline"
+    },
+    "mrn": "ID:",
+    "review": "Review Therapy",
+    "showingCount": "Showing {{visible}} of {{total}} active patients",
+    "previous": "Previous",
+    "next": "Next",
+    "promo": {
+      "title": "Advanced IoT Integration for Post-Op Care",
+      "body": "Sync wearable orthopedic sensors to track range-of-motion in real-time during remote therapy sessions.",
+      "cta": "Explore Sensor Kits"
+    },
+    "template": {
+      "title": "Create New Template",
+      "body": "Save time by building reusable therapy protocols for common injury types."
+    }
+  },
+  "therapyRoadmap": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "therapyPlanning": "Therapy Planning"
+    },
+    "title": "Therapy Roadmap",
+    "subtitle": "Design a personalized rehabilitation journey by selecting validated exercises and configuring precise recovery parameters.",
+    "saveDraft": "Save Draft",
+    "finalize": "Finalize & Deploy",
+    "patient": "Patient",
+    "currentPhase": "Current Recovery Phase",
+    "dayOf": "Day {{day}} of {{total}}",
+    "complete": "Complete",
+    "library": {
+      "title": "Exercise Library",
+      "subtitle": "Select from clinical protocols",
+      "tags": {
+        "knee": "Knee",
+        "strength": "Strength",
+        "mobility": "Mobility"
+      }
+    },
+    "insight": {
+      "title": "Protocol Insight",
+      "body": "Based on {{patient}}'s current phase (Strength Transition), protocols suggest increasing volume by 15% this week.",
+      "cta": "View Clinical Evidence"
+    },
+    "builder": {
+      "title": "Daily Routine Builder",
+      "subtitle": "Customize parameters for each session",
+      "dropTitle": "Drag and drop more exercises here",
+      "dropHint": "Or select from the library on the left"
+    },
+    "trajectory": {
+      "title": "Long-Term Trajectory",
+      "currentPoint": "Current Point",
+      "estimatedRtp": "Estimated RTP",
+      "complianceScore": "Compliance Score",
+      "riskAssessment": "Risk Assessment",
+      "scheduleStatus": {
+        "ahead": "Ahead of Schedule",
+        "on-track": "On Track",
+        "behind": "Behind Schedule"
+      },
+      "risk": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      }
+    }
+  },
+  "deviceInventory": {
+    "breadcrumb": {
+      "fleet": "Fleet Management",
+      "sensors": "IoT Flex-Sensors"
+    },
+    "title": "Device Inventory",
+    "subtitle": "Manage and monitor your clinical sensor fleet. Monitor battery health, connectivity status, and assign devices to active patient rehabilitation tracks.",
+    "assignToPatient": "Assign to Patient",
+    "connectivity": {
+      "title": "Fleet Connectivity",
+      "active": "Active Devices",
+      "available": "Available Units",
+      "inService": "In Service",
+      "fromLastWeek": "from last week",
+      "maintenanceRequired": "Maintenance required"
+    },
+    "battery": {
+      "title": "Battery Health",
+      "high": "80-100% (High)",
+      "mid": "20-80% (Mid)",
+      "low": "0-20% (Low)",
+      "units": "units",
+      "chargingReport": "View charging report"
+    },
+    "table": {
+      "title": "Device Inventory",
+      "filter": "Filter",
+      "export": "Export"
+    },
+    "columns": {
+      "deviceId": "Device ID",
+      "model": "Model",
+      "status": "Status",
+      "battery": "Battery",
+      "lastSync": "Last Sync",
+      "assignment": "Assignment",
+      "action": "Action"
+    },
+    "status": {
+      "available": "Available",
+      "active": "Active",
+      "offline": "Offline"
+    },
+    "actions": {
+      "assign": "Assign",
+      "manage": "Manage"
+    },
+    "showingCount": "Showing {{visible}} of {{total}} devices",
+    "maintenance": {
+      "title": "Maintenance Needed",
+      "body": "4 devices have been flagged for hardware diagnostics after reporting inconsistent calibration data.",
+      "cta": "Request Service"
+    },
+    "quick": {
+      "title": "Quick Assignment",
+      "body": "Quickly allocate available sensors to new patient profiles.",
+      "cta": "Start Assignment Wizard"
+    },
+    "monitor": {
+      "title": "Connectivity Monitor",
+      "body": "Real-time status of the local clinic gateway and Bluetooth mesh network.",
+      "gateway": "Gateway",
+      "statusValue": {
+        "stable": "Stable",
+        "degraded": "Degraded",
+        "down": "Down"
+      }
+    }
+  },
+  "organizationView": {
+    "title": "Organization View",
+    "subtitle": "Oversee clinical performance, manage caseloads, and optimize patient allocation.",
+    "summary": {
+      "totalStaff": "Total Staff",
+      "avgProductivity": "Avg. Productivity"
+    },
+    "queue": {
+      "title": "Unassigned Patients",
+      "awaiting": "{{count}} Awaiting",
+      "tags": {
+        "critical-care": "Critical Care",
+        "home-visit": "Home Visit",
+        "outpatient": "Outpatient",
+        "iot-syncing": "IoT Syncing"
+      },
+      "assignToSelf": "Assign to Self",
+      "help": {
+        "title": "Need Help?",
+        "body": "Coordinate with lead physiotherapists for patient triage assistance."
+      }
+    },
+    "directory": {
+      "title": "Staff Directory & Productivity",
+      "filter": "Filter",
+      "export": "Export Report",
+      "columns": {
+        "clinician": "Clinician",
+        "specialization": "Specialization",
+        "caseload": "Caseload"
+      },
+      "showingCount": "Showing {{visible}} of {{total}} clinical staff members"
+    },
+    "fleet": {
+      "title": "IoT Fleet Health",
+      "body": "{{pct}}% of patient devices are currently reporting data with zero critical alerts.",
+      "online": "Online",
+      "syncing": "Syncing"
+    },
+    "efficiency": {
+      "title": "Clinic Efficiency",
+      "mom": "MoM",
+      "cta": "View Efficiency Report"
+    }
+  },
+  "planningDashboard": {
+    "schedule": {
+      "time": "Time",
+      "patient": "Patient",
+      "focusArea": "Focus Area",
+      "iotStatus": "IoT Status",
+      "actions": "Actions"
+    },
+    "iot": {
+      "connected": "Connected",
+      "offline": "Offline",
+      "upcoming": "Upcoming"
+    },
+    "summary": {
+      "chartCaption": "Weekly Rehabilitation Velocity"
+    }
   }
 }

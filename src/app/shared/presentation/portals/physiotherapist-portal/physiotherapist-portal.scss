@@ -2,19 +2,110 @@
   display: block;
 }
 
-.role-screen {
-  min-height: 100vh;
+.portal__actions {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 32px;
+  gap: 12px;
 }
 
-.role-screen__title {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 48px;
-  font-weight: 600;
+.portal__role-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid var(--p-surface-200);
+  border-radius: 999px;
+  background: var(--p-surface-0);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--p-text-color);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.portal__role-pill i {
+  font-size: 14px;
   color: var(--p-primary-color);
-  text-align: center;
-  margin: 0;
+}
+
+.portal__role-pill:hover {
+  background: var(--p-surface-50);
+  border-color: var(--p-surface-300);
+}
+
+:host-context(.app-dark) .portal__role-pill {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.portal__icon-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  color: var(--p-text-muted-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal__icon-btn:hover {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+}
+
+:host-context(.app-dark) .portal__icon-btn:hover {
+  background: var(--p-surface-200);
+}
+
+.portal__icon-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--p-red-500);
+  border: 2px solid var(--p-surface-0);
+}
+
+.portal__profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 6px 4px 10px;
+  border-radius: 12px;
+}
+
+.portal__profile-text {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  line-height: 1.2;
+}
+
+.portal__profile-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.portal__profile-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--p-text-muted-color);
+}
+
+:host ::ng-deep .portal__avatar {
+  background: color-mix(in srgb, var(--p-primary-color) 16%, var(--p-surface-100));
+  color: var(--p-primary-color);
+  font-weight: 600;
+  font-size: 12px;
 }

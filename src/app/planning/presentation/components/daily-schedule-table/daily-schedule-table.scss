@@ -1,0 +1,137 @@
+:host { display: block; }
+
+.daily-schedule__scroll { overflow-x: auto; }
+
+.daily-schedule {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+.daily-schedule th,
+.daily-schedule td {
+  padding: 14px 16px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.daily-schedule thead th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--p-text-muted-color);
+  border-bottom: 1px solid var(--p-surface-200);
+  font-family: 'Inter', sans-serif;
+  white-space: normal;
+  max-width: 80px;
+  line-height: 1.25;
+}
+
+:host-context(.app-dark) .daily-schedule thead th {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.daily-schedule__row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--p-surface-100);
+  transition: background-color 120ms ease;
+}
+
+:host-context(.app-dark) .daily-schedule__row {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.daily-schedule__row:last-child { border-bottom: 0; }
+
+.daily-schedule__row:hover {
+  background: var(--p-surface-50);
+}
+
+:host-context(.app-dark) .daily-schedule__row:hover {
+  background: var(--p-surface-200);
+}
+
+.daily-schedule__time {
+  font-weight: 600;
+  color: var(--p-text-color);
+  width: 80px;
+  white-space: pre-line;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+}
+
+.daily-schedule__patient {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+:host ::ng-deep .daily-schedule__avatar {
+  background: var(--p-surface-200);
+  color: var(--p-text-muted-color);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.daily-schedule__patient-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.daily-schedule__focus {
+  color: var(--p-text-color);
+}
+
+.daily-schedule__iot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.daily-schedule__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.daily-schedule__iot--connected {
+  background: rgba(52, 199, 155, 0.16);
+  color: #16785a;
+}
+.daily-schedule__iot--connected .daily-schedule__dot { background: #34c79b; }
+
+.daily-schedule__iot--offline {
+  background: rgba(217, 83, 79, 0.18);
+  color: #b6322f;
+}
+.daily-schedule__iot--offline .daily-schedule__dot { background: #d9534f; }
+
+.daily-schedule__iot--upcoming {
+  background: var(--p-surface-200);
+  color: var(--p-text-muted-color);
+}
+.daily-schedule__iot--upcoming .daily-schedule__dot { background: var(--p-text-muted-color); }
+
+:host-context(.app-dark) .daily-schedule__iot--connected { color: #34c79b; }
+:host-context(.app-dark) .daily-schedule__iot--offline { color: #ff8a87; }
+
+.daily-schedule__chevron-col {
+  text-align: right;
+  width: 40px;
+}
+
+.daily-schedule__chevron {
+  color: var(--p-text-muted-color);
+  font-size: 13px;
+}

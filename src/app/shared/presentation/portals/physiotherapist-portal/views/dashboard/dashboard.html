@@ -1,0 +1,135 @@
+<header class="dash__greeting">
+  <div class="dash__greeting-text">
+    <h1 class="dash__greeting-title">{{ 'physiotherapist.dashboard.greeting' | translate: {name: 'Dr. Jenkins'} }}</h1>
+    <p class="dash__greeting-sub">
+      {{ 'physiotherapist.dashboard.summary' | translate: {sessions: metrics().todaySessionCount, urgent: metrics().todayUrgentCount} }}
+    </p>
+  </div>
+  <button pButton type="button" severity="primary"
+          class="dash__cta"
+          (click)="onRegisterPatient()">
+    <i class="pi pi-user-plus" aria-hidden="true"></i>
+    <span>{{ 'physiotherapist.dashboard.registerPatient' | translate }}</span>
+  </button>
+</header>
+
+<section class="dash__stats">
+  <article class="dash__stat-card">
+    <header class="dash__stat-header">
+      <h3 class="dash__stat-title">{{ 'physiotherapist.dashboard.complianceRate' | translate }}</h3>
+      <span class="dash__stat-icon dash__stat-icon--accent" aria-hidden="true">
+        <i class="pi pi-chart-line"></i>
+      </span>
+    </header>
+    <span class="dash__stat-value">{{ metrics().complianceRatePct | number:'1.1-1' }}%</span>
+    <div class="dash__stat-progress">
+      <div class="dash__stat-progress-row">
+        <span class="dash__stat-progress-label">{{ 'physiotherapist.dashboard.monthlyProgress' | translate }}</span>
+        <span class="dash__stat-progress-delta">+{{ metrics().monthlyProgressDeltaPct | number:'1.1-1' }}%</span>
+      </div>
+      <div class="dash__stat-progress-bar">
+        <div class="dash__stat-progress-fill" [style.width.%]="metrics().complianceRatePct"></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="dash__stat-card">
+    <header class="dash__stat-header">
+      <h3 class="dash__stat-title">{{ 'physiotherapist.dashboard.activePatients' | translate }}</h3>
+      <span class="dash__stat-icon dash__stat-icon--muted" aria-hidden="true">
+        <i class="pi pi-users"></i>
+      </span>
+    </header>
+    <span class="dash__stat-value">{{ metrics().activePatients }}</span>
+    <div class="dash__stat-patients">
+      <div class="dash__stat-avatars">
+        @for (patient of patientsPreview(); track patient.id) {
+          <p-avatar [label]="patient.avatarInitials" shape="circle" size="normal"
+                    styleClass="dash__stat-avatar"/>
+        }
+        <span class="dash__stat-avatar-pill">+{{ metrics().activePatients - patientsPreview().length }}</span>
+      </div>
+      <span class="dash__stat-sub">
+        {{ 'physiotherapist.dashboard.newPatientsThisWeek' | translate: {count: metrics().newPatientsThisWeek} }}
+      </span>
+    </div>
+  </article>
+
+  <article class="dash__stat-card">
+    <header class="dash__stat-header">
+      <h3 class="dash__stat-title">{{ 'physiotherapist.dashboard.recoveryMilestones' | translate }}</h3>
+      <span class="dash__stat-icon dash__stat-icon--gold" aria-hidden="true">
+        <i class="pi pi-trophy"></i>
+      </span>
+    </header>
+    <span class="dash__stat-value">{{ metrics().recoveryMilestones }}</span>
+    <div class="dash__stat-progress">
+      <div class="dash__stat-progress-row">
+        <span class="dash__stat-progress-label">{{ 'physiotherapist.dashboard.goalAchievement' | translate }}</span>
+        <span class="dash__stat-progress-delta dash__stat-progress-delta--neutral">{{ metrics().goalAchievementRatePct }}%</span>
+      </div>
+      <div class="dash__stat-progress-bar">
+        <div class="dash__stat-progress-fill" [style.width.%]="metrics().goalAchievementRatePct"></div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<section class="dash__middle">
+  <article class="dash__schedule-card">
+    <header class="dash__card-header">
+      <div class="dash__card-title">
+        <i class="pi pi-calendar dash__card-title-icon" aria-hidden="true"></i>
+        <span>{{ 'physiotherapist.dashboard.dailySchedule' | translate }}</span>
+      </div>
+      <button type="button" class="dash__card-link" (click)="onViewFullCalendar()">
+        {{ 'physiotherapist.dashboard.viewFullCalendar' | translate }}
+      </button>
+    </header>
+    <app-daily-schedule-table [sessions]="sessions()"
+                              (rowOpen)="onSessionOpen($event)"/>
+  </article>
+
+  <aside class="dash__alerts">
+    <article class="dash__alerts-card">
+      <header class="dash__card-header">
+        <div class="dash__card-title dash__card-title--danger">
+          <i class="pi pi-exclamation-triangle dash__card-title-icon" aria-hidden="true"></i>
+          <span>{{ 'physiotherapist.dashboard.urgentAlerts' | translate }}</span>
+        </div>
+      </header>
+      <app-urgent-alerts-feed [alerts]="alerts()"
+                              (actionInvoked)="onAlertAction($event)"/>
+    </article>
+
+    <article class="dash__release-card">
+      <span class="dash__release-image" aria-hidden="true"></span>
+      <span class="dash__release-caption">
+        {{ 'physiotherapist.dashboard.releaseBanner' | translate }}
+      </span>
+    </article>
+  </aside>
+</section>
+
+<section class="dash__summary-card">
+  <div class="dash__summary-text">
+    <h2 class="dash__summary-title">{{ 'physiotherapist.dashboard.clinicalSummary' | translate }}</h2>
+    <p class="dash__summary-body">{{ 'physiotherapist.dashboard.clinicalSummaryBody' | translate }}</p>
+    <div class="dash__summary-stat">
+      <div class="dash__summary-stat-row">
+        <span class="dash__summary-stat-label">{{ 'physiotherapist.dashboard.clinicVsNational' | translate }}</span>
+        <span class="dash__summary-stat-delta">+{{ metrics().clinicVsNationalAvgDeltaPct }}%</span>
+      </div>
+      <div class="dash__summary-stat-bar">
+        <div class="dash__summary-stat-fill"
+             [style.width.%]="metrics().clinicVsNationalAvgDeltaPct * 5"></div>
+      </div>
+    </div>
+  </div>
+  <div class="dash__summary-chart">
+    <app-weekly-velocity-chart [bars]="metrics().weeklyVelocityBars"/>
+    <button type="button" class="dash__summary-fab" (click)="onSummaryAction()" aria-label="More">
+      <i class="pi pi-plus" aria-hidden="true"></i>
+    </button>
+  </div>
+</section>

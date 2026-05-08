@@ -1,3 +1,29 @@
-<section class="role-screen">
-  <h1 class="role-screen__title">{{ 'roles.physiotherapist' | translate }}</h1>
-</section>
+<app-admin-shell
+  [brand]="brand()"
+  [navItems]="navItems()"
+  [bottomItems]="bottomItems()"
+  [searchPlaceholder]="searchPlaceholder()">
+  <div topbar-actions class="portal__actions">
+    <button type="button" class="portal__role-pill">
+      <i class="pi pi-id-card" aria-hidden="true"></i>
+      <span>{{ rolePillLabel() }}</span>
+    </button>
+    <button type="button" class="portal__icon-btn" aria-label="Notifications">
+      <i class="pi pi-bell" aria-hidden="true"></i>
+      <span class="portal__icon-dot" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="portal__icon-btn" aria-label="Settings">
+      <i class="pi pi-cog" aria-hidden="true"></i>
+    </button>
+    <div class="portal__profile">
+      <div class="portal__profile-text">
+        <strong class="portal__profile-name">Dr. Sarah Jenkins</strong>
+        <span class="portal__profile-sub">ST. JUDE MEDICAL</span>
+      </div>
+      <p-avatar shape="circle" size="normal" styleClass="portal__avatar"
+                label="SJ"/>
+    </div>
+  </div>
+
+  <router-outlet/>
+</app-admin-shell>

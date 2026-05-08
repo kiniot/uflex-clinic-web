@@ -1,0 +1,37 @@
+<div class="daily-schedule__scroll">
+  <table class="daily-schedule">
+    <thead>
+      <tr>
+        <th>{{ 'planningDashboard.schedule.time' | translate }}</th>
+        <th>{{ 'planningDashboard.schedule.patient' | translate }}</th>
+        <th>{{ 'planningDashboard.schedule.focusArea' | translate }}</th>
+        <th>{{ 'planningDashboard.schedule.iotStatus' | translate }}</th>
+        <th class="daily-schedule__chevron-col">{{ 'planningDashboard.schedule.actions' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (session of sessions(); track session.id) {
+        <tr class="daily-schedule__row" (click)="onRowOpen(session)">
+          <td class="daily-schedule__time">{{ session.timeLabel }}</td>
+          <td>
+            <div class="daily-schedule__patient">
+              <p-avatar [label]="session.patientInitials" shape="circle" size="normal"
+                        styleClass="daily-schedule__avatar"/>
+              <span class="daily-schedule__patient-name">{{ session.patientName }}</span>
+            </div>
+          </td>
+          <td class="daily-schedule__focus">{{ session.focusArea }}</td>
+          <td>
+            <span class="daily-schedule__iot daily-schedule__iot--{{ session.iotStatus }}">
+              <span class="daily-schedule__dot" aria-hidden="true"></span>
+              {{ 'planningDashboard.iot.' + session.iotStatus | translate }}
+            </span>
+          </td>
+          <td class="daily-schedule__chevron-col">
+            <i class="pi pi-chevron-right daily-schedule__chevron" aria-hidden="true"></i>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

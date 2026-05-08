@@ -1,0 +1,178 @@
+<header class="orgv__header">
+  <div class="orgv__header-text">
+    <h1 class="orgv__title">{{ 'organizationView.title' | translate }}</h1>
+    <p class="orgv__subtitle">{{ 'organizationView.subtitle' | translate }}</p>
+  </div>
+  <div class="orgv__summary">
+    <article class="orgv__summary-chip">
+      <span class="orgv__summary-icon" aria-hidden="true">
+        <i class="pi pi-users"></i>
+      </span>
+      <div class="orgv__summary-text">
+        <span class="orgv__summary-label">{{ 'organizationView.summary.totalStaff' | translate }}</span>
+        <strong class="orgv__summary-value">{{ summary().totalStaff }}</strong>
+      </div>
+    </article>
+    <article class="orgv__summary-chip">
+      <span class="orgv__summary-icon" aria-hidden="true">
+        <i class="pi pi-chart-line"></i>
+      </span>
+      <div class="orgv__summary-text">
+        <span class="orgv__summary-label">{{ 'organizationView.summary.avgProductivity' | translate }}</span>
+        <strong class="orgv__summary-value">{{ summary().avgProductivityPct }}%</strong>
+      </div>
+    </article>
+  </div>
+</header>
+
+<section class="orgv__main">
+  <aside class="orgv__queue">
+    <header class="orgv__queue-header">
+      <div class="orgv__queue-title">
+        <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+        <h2>{{ 'organizationView.queue.title' | translate }}</h2>
+      </div>
+      <span class="orgv__queue-count">
+        {{ 'organizationView.queue.awaiting' | translate: {count: unassignedTotal()} }}
+      </span>
+    </header>
+
+    @for (patient of unassigned(); track patient.id) {
+      <article class="orgv__queue-card">
+        <header class="orgv__queue-card-header">
+          <strong class="orgv__queue-card-name">{{ patient.name }}</strong>
+          <button type="button" class="orgv__queue-card-action" aria-label="More">
+            <i class="pi pi-arrow-up-right" aria-hidden="true"></i>
+          </button>
+        </header>
+        <span class="orgv__queue-card-meta">{{ patient.condition }} &middot; {{ patient.arrivedLabel }}</span>
+        <div class="orgv__queue-card-tags">
+          @for (tag of patient.tags; track tag) {
+            <span class="orgv__queue-card-tag">{{ 'organizationView.queue.tags.' + tag | translate }}</span>
+          }
+        </div>
+        <button pButton type="button" severity="primary"
+                class="orgv__queue-card-cta"
+                (click)="onAssignSelf(patient)">
+          <i class="pi pi-user-plus" aria-hidden="true"></i>
+          <span>{{ 'organizationView.queue.assignToSelf' | translate }}</span>
+        </button>
+      </article>
+    }
+
+    <article class="orgv__queue-help">
+      <div class="orgv__queue-help-pattern" aria-hidden="true"></div>
+      <div class="orgv__queue-help-body">
+        <h3>{{ 'organizationView.queue.help.title' | translate }}</h3>
+        <p>{{ 'organizationView.queue.help.body' | translate }}</p>
+      </div>
+    </article>
+  </aside>
+
+  <section class="orgv__directory">
+    <header class="orgv__directory-header">
+      <h2 class="orgv__directory-title">{{ 'organizationView.directory.title' | translate }}</h2>
+      <div class="orgv__directory-actions">
+        <button type="button" class="orgv__icon-btn" (click)="onFilter()">
+          <i class="pi pi-filter" aria-hidden="true"></i>
+          <span>{{ 'organizationView.directory.filter' | translate }}</span>
+        </button>
+        <button type="button" class="orgv__icon-btn" (click)="onExport()">
+          <i class="pi pi-download" aria-hidden="true"></i>
+          <span>{{ 'organizationView.directory.export' | translate }}</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="orgv__directory-scroll">
+      <table class="orgv__directory-table">
+        <thead>
+          <tr>
+            <th>{{ 'organizationView.directory.columns.clinician' | translate }}</th>
+            <th>{{ 'organizationView.directory.columns.specialization' | translate }}</th>
+            <th>{{ 'organizationView.directory.columns.caseload' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (clinician of staff(); track clinician.id) {
+            <tr class="orgv__directory-row" (click)="onClinicianOpen(clinician)">
+              <td>
+                <div class="orgv__clinician">
+                  <p-avatar [label]="clinician.avatarInitials" shape="circle" size="normal"
+                            styleClass="orgv__clinician-avatar"/>
+                  <div class="orgv__clinician-text">
+                    <strong class="orgv__clinician-name">{{ clinician.name }}</strong>
+                    <span class="orgv__clinician-email">{{ clinician.email }}</span>
+                  </div>
+                </div>
+              </td>
+              <td class="orgv__spec">{{ clinician.specialization }}</td>
+              <td>
+                <div class="orgv__caseload">
+                  <span class="orgv__caseload-value">{{ clinician.caseloadCurrent }}/{{ clinician.caseloadMax }}</span>
+                  <div class="orgv__caseload-bar">
+                    <div class="orgv__caseload-fill"
+                         [class.orgv__caseload-fill--full]="clinician.caseloadCurrent >= clinician.caseloadMax"
+                         [style.width.%]="caseloadPct(clinician.caseloadCurrent, clinician.caseloadMax)"></div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="orgv__directory-footer">
+      <span class="orgv__counter">
+        {{ 'organizationView.directory.showingCount' | translate: {visible: staff().length, total: summary().totalStaff} }}
+      </span>
+      <div class="orgv__pager">
+        <button type="button" aria-label="prev"><i class="pi pi-chevron-left"></i></button>
+        <button type="button" aria-label="next"><i class="pi pi-chevron-right"></i></button>
+      </div>
+    </footer>
+
+    <div class="orgv__bottom">
+      <article class="orgv__fleet">
+        <header class="orgv__fleet-header">
+          <span class="orgv__fleet-icon" aria-hidden="true">
+            <i class="pi pi-wifi"></i>
+          </span>
+          <button type="button" class="orgv__fleet-info" aria-label="info">
+            <i class="pi pi-info-circle" aria-hidden="true"></i>
+          </button>
+        </header>
+        <h3 class="orgv__fleet-title">{{ 'organizationView.fleet.title' | translate }}</h3>
+        <p class="orgv__fleet-body">
+          {{ 'organizationView.fleet.body' | translate: {pct: fleet().reportingPct} }}
+        </p>
+        <div class="orgv__fleet-stats">
+          <span class="orgv__fleet-pill">
+            <span class="orgv__fleet-pill-dot orgv__fleet-pill-dot--green"></span>
+            {{ fleet().onlineCount }} {{ 'organizationView.fleet.online' | translate }}
+          </span>
+          <span class="orgv__fleet-pill">
+            <span class="orgv__fleet-pill-dot orgv__fleet-pill-dot--amber"></span>
+            {{ fleet().syncingCount }} {{ 'organizationView.fleet.syncing' | translate }}
+          </span>
+        </div>
+      </article>
+
+      <article class="orgv__efficiency">
+        <header class="orgv__efficiency-header">
+          <span class="orgv__efficiency-icon" aria-hidden="true">
+            <i class="pi pi-chart-line"></i>
+          </span>
+          <span class="orgv__efficiency-delta">+{{ efficiency().deltaPct }}% {{ 'organizationView.efficiency.mom' | translate }}</span>
+        </header>
+        <h3 class="orgv__efficiency-title">{{ 'organizationView.efficiency.title' | translate }}</h3>
+        <p class="orgv__efficiency-body">{{ efficiency().body }}</p>
+        <button type="button" class="orgv__efficiency-link" (click)="onEfficiencyReport()">
+          {{ 'organizationView.efficiency.cta' | translate }}
+          <i class="pi pi-arrow-right" aria-hidden="true"></i>
+        </button>
+      </article>
+    </div>
+  </section>
+</section>

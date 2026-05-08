@@ -1,0 +1,38 @@
+:host { display: block; }
+
+.velocity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.velocity__bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+  width: 100%;
+  max-width: 360px;
+  height: 130px;
+}
+
+.velocity__bar {
+  flex: 1;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, var(--p-primary-color) 0%, color-mix(in srgb, var(--p-primary-color) 60%, #0c1822) 100%);
+  min-height: 4px;
+  transition: height 200ms ease;
+}
+
+.velocity__bar:nth-child(odd) {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--p-primary-color) 90%, #0c1822) 0%, #0c1822 100%);
+}
+
+.velocity__caption {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+}

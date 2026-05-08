@@ -1,0 +1,209 @@
+<nav class="inv__breadcrumb" aria-label="Breadcrumb">
+  <a href="#">{{ 'deviceInventory.breadcrumb.fleet' | translate }}</a>
+  <i class="pi pi-angle-right" aria-hidden="true"></i>
+  <span>{{ 'deviceInventory.breadcrumb.sensors' | translate }}</span>
+</nav>
+
+<header class="inv__header">
+  <div class="inv__header-text">
+    <h1 class="inv__title">{{ 'deviceInventory.title' | translate }}</h1>
+    <p class="inv__subtitle">{{ 'deviceInventory.subtitle' | translate }}</p>
+  </div>
+  <button pButton type="button" severity="primary"
+          class="inv__cta"
+          (click)="onAssignToPatient()">
+    <i class="pi pi-user-plus" aria-hidden="true"></i>
+    <span>{{ 'deviceInventory.assignToPatient' | translate }}</span>
+  </button>
+</header>
+
+<section class="inv__top">
+  <article class="inv__connectivity">
+    <header class="inv__connectivity-header">
+      <span class="inv__connectivity-icon" aria-hidden="true">
+        <i class="pi pi-wifi"></i>
+      </span>
+      <h2 class="inv__connectivity-title">{{ 'deviceInventory.connectivity.title' | translate }}</h2>
+    </header>
+    <div class="inv__connectivity-grid">
+      <div class="inv__metric">
+        <span class="inv__metric-label">{{ 'deviceInventory.connectivity.active' | translate }}</span>
+        <strong class="inv__metric-value">{{ connectivity().activeDevices | number }}</strong>
+        <span class="inv__metric-delta">
+          <i class="pi pi-arrow-up" aria-hidden="true"></i>
+          +{{ connectivity().activeDeltaPct }}% {{ 'deviceInventory.connectivity.fromLastWeek' | translate }}
+        </span>
+      </div>
+      <div class="inv__metric">
+        <span class="inv__metric-label">{{ 'deviceInventory.connectivity.available' | translate }}</span>
+        <strong class="inv__metric-value">{{ connectivity().availableUnits }}</strong>
+        <div class="inv__metric-bar">
+          <div class="inv__metric-bar-fill" [style.width.%]="availableUnitsPct()"></div>
+        </div>
+      </div>
+      <div class="inv__metric inv__metric--service">
+        <span class="inv__metric-label">{{ 'deviceInventory.connectivity.inService' | translate }}</span>
+        <strong class="inv__metric-value inv__metric-value--danger">{{ connectivity().inServiceUnits }}</strong>
+        <span class="inv__metric-sub inv__metric-sub--danger">
+          {{ 'deviceInventory.connectivity.maintenanceRequired' | translate }}
+        </span>
+      </div>
+    </div>
+  </article>
+
+  <article class="inv__battery">
+    <h2 class="inv__battery-title">{{ 'deviceInventory.battery.title' | translate }}</h2>
+    <ul class="inv__battery-list">
+      <li class="inv__battery-row">
+        <span class="inv__battery-dot inv__battery-dot--high" aria-hidden="true"></span>
+        <span class="inv__battery-label">{{ 'deviceInventory.battery.high' | translate }}</span>
+        <span class="inv__battery-value">{{ batteryHealth().highCount }} {{ 'deviceInventory.battery.units' | translate }}</span>
+      </li>
+      <li class="inv__battery-row">
+        <span class="inv__battery-dot inv__battery-dot--mid" aria-hidden="true"></span>
+        <span class="inv__battery-label">{{ 'deviceInventory.battery.mid' | translate }}</span>
+        <span class="inv__battery-value">{{ batteryHealth().midCount }} {{ 'deviceInventory.battery.units' | translate }}</span>
+      </li>
+      <li class="inv__battery-row">
+        <span class="inv__battery-dot inv__battery-dot--low" aria-hidden="true"></span>
+        <span class="inv__battery-label">{{ 'deviceInventory.battery.low' | translate }}</span>
+        <span class="inv__battery-value">{{ batteryHealth().lowCount }} {{ 'deviceInventory.battery.units' | translate }}</span>
+      </li>
+    </ul>
+    <button type="button" class="inv__battery-link" (click)="onChargingReport()">
+      {{ 'deviceInventory.battery.chargingReport' | translate }}
+    </button>
+  </article>
+</section>
+
+<section class="inv__table-card">
+  <header class="inv__table-header">
+    <h2 class="inv__table-title">{{ 'deviceInventory.table.title' | translate }}</h2>
+    <div class="inv__table-actions">
+      <button type="button" class="inv__icon-btn" (click)="onFilter()">
+        <i class="pi pi-filter" aria-hidden="true"></i>
+        <span>{{ 'deviceInventory.table.filter' | translate }}</span>
+      </button>
+      <button type="button" class="inv__icon-btn" (click)="onExport()">
+        <i class="pi pi-download" aria-hidden="true"></i>
+        <span>{{ 'deviceInventory.table.export' | translate }}</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="inv__table-scroll">
+    <table class="inv__table">
+      <thead>
+        <tr>
+          <th>{{ 'deviceInventory.columns.deviceId' | translate }}</th>
+          <th>{{ 'deviceInventory.columns.model' | translate }}</th>
+          <th>{{ 'deviceInventory.columns.status' | translate }}</th>
+          <th>{{ 'deviceInventory.columns.battery' | translate }}</th>
+          <th>{{ 'deviceInventory.columns.lastSync' | translate }}</th>
+          <th>{{ 'deviceInventory.columns.assignment' | translate }}</th>
+          <th class="inv__action-col">{{ 'deviceInventory.columns.action' | translate }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (device of inventory(); track device.id) {
+          <tr class="inv__row">
+            <td>
+              <div class="inv__device">
+                <i class="pi pi-wifi inv__device-icon" aria-hidden="true"></i>
+                <span class="inv__device-id">{{ device.deviceId }}</span>
+              </div>
+            </td>
+            <td class="inv__model">{{ device.modelName }}</td>
+            <td>
+              <span class="inv__status inv__status--{{ device.status }}">
+                {{ 'deviceInventory.status.' + device.status | translate }}
+              </span>
+            </td>
+            <td>
+              <div class="inv__battery-cell">
+                <div class="inv__battery-bar">
+                  <div class="inv__battery-fill"
+                       [class.inv__battery-fill--low]="device.batteryPct < 50"
+                       [style.width.%]="device.batteryPct"></div>
+                </div>
+                <span class="inv__battery-pct">{{ device.batteryPct }}%</span>
+              </div>
+            </td>
+            <td class="inv__sync">{{ device.lastSyncLabel }}</td>
+            <td class="inv__assignment">
+              {{ device.assignmentName ?? '—' }}
+            </td>
+            <td class="inv__action-col">
+              <button type="button" class="inv__row-action"
+                      [class.inv__row-action--muted]="device.status === 'active'"
+                      (click)="onRowAction(device)">
+                {{ (device.status === 'available' ? 'deviceInventory.actions.assign' : 'deviceInventory.actions.manage') | translate }}
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <footer class="inv__table-footer">
+    <span class="inv__counter">
+      {{ 'deviceInventory.showingCount' | translate: {visible: inventory().length, total: inventoryTotal()} }}
+    </span>
+    <div class="inv__pager">
+      <button type="button" aria-label="prev"><i class="pi pi-chevron-left"></i></button>
+      <button type="button" aria-label="next"><i class="pi pi-chevron-right"></i></button>
+    </div>
+  </footer>
+</section>
+
+<section class="inv__bottom">
+  <article class="inv__maintenance">
+    <h3 class="inv__maintenance-title">{{ 'deviceInventory.maintenance.title' | translate }}</h3>
+    <p class="inv__maintenance-body">{{ 'deviceInventory.maintenance.body' | translate }}</p>
+    <div class="inv__maintenance-tags">
+      <span class="inv__maintenance-tag">FX</span>
+      <span class="inv__maintenance-tag">FX</span>
+    </div>
+    <button type="button" class="inv__maintenance-link" (click)="onRequestService()">
+      {{ 'deviceInventory.maintenance.cta' | translate }}
+      <i class="pi pi-external-link" aria-hidden="true"></i>
+    </button>
+  </article>
+
+  <article class="inv__quick">
+    <header class="inv__quick-header">
+      <h3 class="inv__quick-title">{{ 'deviceInventory.quick.title' | translate }}</h3>
+      <span class="inv__quick-icon" aria-hidden="true">
+        <i class="pi pi-user-plus"></i>
+      </span>
+    </header>
+    <p class="inv__quick-body">{{ 'deviceInventory.quick.body' | translate }}</p>
+    <div class="inv__quick-portal">
+      <span class="inv__quick-portal-mark">uF</span>
+      <div class="inv__quick-portal-text">
+        <strong>uFlex</strong>
+        <span>Clinician Portal</span>
+      </div>
+      <span class="inv__quick-portal-badge">ADMIN</span>
+    </div>
+    <button pButton type="button" severity="primary" [outlined]="true"
+            class="inv__quick-cta"
+            (click)="onAssignmentWizard()">
+      <span>{{ 'deviceInventory.quick.cta' | translate }}</span>
+    </button>
+  </article>
+
+  <article class="inv__monitor">
+    <div class="inv__monitor-pattern" aria-hidden="true"></div>
+    <span class="inv__monitor-icon" aria-hidden="true">
+      <i class="pi pi-user"></i>
+    </span>
+    <h3 class="inv__monitor-title">{{ 'deviceInventory.monitor.title' | translate }}</h3>
+    <p class="inv__monitor-body">{{ 'deviceInventory.monitor.body' | translate }}</p>
+    <span class="inv__monitor-status">
+      <span class="inv__monitor-dot" aria-hidden="true"></span>
+      {{ 'deviceInventory.monitor.gateway' | translate }}: {{ 'deviceInventory.monitor.statusValue.' + gateway().status | translate }} ({{ gateway().uptimeLabel }})
+    </span>
+  </article>
+</section>
