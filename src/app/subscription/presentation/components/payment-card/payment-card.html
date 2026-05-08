@@ -1,0 +1,24 @@
+<article class="pay-card">
+  <header class="pay-card__top">
+    <i class="pi pi-wifi pay-card__contactless" aria-hidden="true"></i>
+    <span class="pay-card__chip" aria-hidden="true">
+      <i class="pi pi-credit-card"></i>
+    </span>
+  </header>
+  <div class="pay-card__number" aria-label="card number">
+    <span>••••</span>
+    <span>••••</span>
+    <span>••••</span>
+    <span>{{ paymentMethod().last4 }}</span>
+  </div>
+  <footer class="pay-card__footer">
+    <div class="pay-card__field">
+      <span class="pay-card__label">{{ 'subscription.payment.cardHolder' | translate }}</span>
+      <span class="pay-card__value">{{ paymentMethod().cardHolder }}</span>
+    </div>
+    <div class="pay-card__field">
+      <span class="pay-card__label">{{ 'subscription.payment.expires' | translate }}</span>
+      <span class="pay-card__value">{{ paymentMethod().expiryLabel }}</span>
+    </div>
+  </footer>
+</article>

@@ -1,0 +1,106 @@
+:host {
+  display: block;
+}
+
+.pay-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  height: 200px;
+  padding: 22px 24px;
+  border-radius: 14px;
+  color: var(--p-primary-contrast-color);
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--p-primary-color) 92%, #000),
+    color-mix(in srgb, var(--p-primary-color) 70%, #000)
+  );
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.pay-card::after {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.pay-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+
+.pay-card__contactless {
+  font-size: 22px;
+  transform: rotate(90deg);
+  opacity: 0.85;
+  color: var(--p-primary-contrast-color);
+}
+
+.pay-card__chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 22px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.85);
+  color: color-mix(in srgb, var(--p-primary-color) 70%, #000);
+  font-size: 12px;
+}
+
+.pay-card__number {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'JetBrains Mono', 'Menlo', monospace;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--p-primary-contrast-color);
+  position: relative;
+  z-index: 1;
+}
+
+.pay-card__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+}
+
+.pay-card__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.pay-card__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-primary-contrast-color);
+  opacity: 0.65;
+}
+
+.pay-card__value {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-primary-contrast-color);
+}
