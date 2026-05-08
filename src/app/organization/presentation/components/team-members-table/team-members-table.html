@@ -1,0 +1,50 @@
+<div class="team-table__scroll">
+  <table class="team-table">
+    <thead>
+      <tr>
+        <th>{{ 'organization.columns.staffMember' | translate }}</th>
+        <th>{{ 'organization.columns.specializedRole' | translate }}</th>
+        <th>{{ 'organization.columns.activePatients' | translate }}</th>
+        <th>{{ 'organization.columns.status' | translate }}</th>
+        <th class="team-table__chevron-col">{{ 'organization.columns.actions' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (member of members(); track member.id) {
+        <tr class="team-table__row" (click)="onRowOpen(member)">
+          <td>
+            <div class="team-table__person">
+              <p-avatar [label]="member.avatarInitials" shape="circle" size="normal"
+                        styleClass="team-table__avatar"/>
+              <div class="team-table__person-text">
+                <span class="team-table__name">{{ member.name }}</span>
+                <span class="team-table__email">{{ member.email }}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="team-table__role-tag">{{ 'organization.role.' + member.role | translate }}</span>
+          </td>
+          <td>
+            <div class="team-table__patients">
+              <span class="team-table__patients-value">{{ member.activePatients }}</span>
+              <div class="team-table__patients-bar">
+                <div class="team-table__patients-fill"
+                     [style.width.%]="progressFor(member.activePatients)"></div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="team-table__status team-table__status--{{ member.status }}">
+              <span class="team-table__dot" aria-hidden="true"></span>
+              {{ 'organization.status.' + member.status | translate }}
+            </span>
+          </td>
+          <td class="team-table__chevron-col">
+            <i class="pi pi-chevron-right team-table__chevron" aria-hidden="true"></i>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,165 @@
+:host {
+  display: block;
+}
+
+.team-table__scroll { overflow-x: auto; }
+
+.team-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+.team-table th,
+.team-table td {
+  padding: 14px 20px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.team-table thead th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-50);
+  border-top: 1px solid var(--p-surface-200);
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .team-table thead th {
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-300);
+}
+
+.team-table__row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--p-surface-100);
+  transition: background-color 120ms ease;
+}
+
+:host-context(.app-dark) .team-table__row {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.team-table__row:last-child { border-bottom: 0; }
+
+.team-table__row:hover {
+  background: var(--p-surface-50);
+}
+
+:host-context(.app-dark) .team-table__row:hover {
+  background: var(--p-surface-200);
+}
+
+.team-table__person {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+:host ::ng-deep .team-table__avatar {
+  background: color-mix(in srgb, var(--p-primary-color) 16%, var(--p-surface-100));
+  color: var(--p-primary-color);
+  font-weight: 600;
+}
+
+.team-table__person-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.team-table__name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.team-table__email {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+.team-table__role-tag {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-primary-color) 10%, transparent);
+  color: var(--p-primary-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.team-table__patients {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.team-table__patients-value {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-text-color);
+  min-width: 18px;
+}
+
+.team-table__patients-bar {
+  width: 64px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--p-surface-200);
+  overflow: hidden;
+}
+
+:host-context(.app-dark) .team-table__patients-bar {
+  background: var(--p-surface-300);
+}
+
+.team-table__patients-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #34c79b;
+}
+
+.team-table__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.team-table__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.team-table__status--active { color: #16785a; }
+.team-table__status--active .team-table__dot { background: #34c79b; }
+
+.team-table__status--on-leave { color: #b6322f; }
+.team-table__status--on-leave .team-table__dot { background: #d9534f; }
+
+.team-table__status--inactive { color: var(--p-text-muted-color); }
+.team-table__status--inactive .team-table__dot { background: var(--p-text-muted-color); }
+
+.team-table__chevron-col {
+  text-align: right;
+  width: 60px;
+}
+
+.team-table__chevron {
+  color: var(--p-text-muted-color);
+  font-size: 14px;
+}
