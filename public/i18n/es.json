@@ -66,6 +66,46 @@
       "subtitle": "Configuración y preferencias de tu cuenta."
     }
   },
+  "profile": {
+    "title": "Perfil",
+    "subtitle": "Administra roles, permisos y acceso a la plataforma.",
+    "actions": {
+      "filter": "Filtrar",
+      "inviteUser": "Invitar usuario"
+    },
+    "actionCards": {
+      "verifyUser": "Verificar usuario",
+      "verifyUserDesc": "Revisa documentos de identidad pendientes",
+      "suspendAccess": "Suspender acceso",
+      "suspendAccessDesc": "Revoca privilegios del sistema",
+      "resetPassword": "Restablecer contraseña",
+      "resetPasswordDesc": "Envía enlaces de recuperación",
+      "totalActiveUsers": "Usuarios activos totales"
+    },
+    "columns": {
+      "userDetails": "Usuario",
+      "role": "Rol",
+      "status": "Estado",
+      "verification": "Verificación",
+      "lastLogin": "Último ingreso",
+      "actions": "Acciones"
+    },
+    "role": {
+      "physio": "Fisio",
+      "patient": "Paciente",
+      "admin": "Admin"
+    },
+    "status": {
+      "active": "Activo",
+      "pending": "Pendiente",
+      "suspended": "Suspendido"
+    },
+    "verification": {
+      "verified": "Verificado",
+      "awaiting-docs": "Documentos pendientes"
+    },
+    "showingCount": "Mostrando 1 a {{visible}} de {{total}} usuarios"
+  },
   "therapyManagement": {
     "filters": {
       "searchPlaceholder": "Buscar ejercicios por nombre...",
@@ -165,6 +205,316 @@
       "offline": "Desconectado"
     },
     "unassigned": "Sin asignar"
+  },
+  "deviceCalibration": {
+    "title": "Calibración de dispositivo",
+    "subtitle": "Sensor: {{sensor}} — ID: #{{id}}",
+    "actions": {
+      "restartGuide": "Reiniciar guía",
+      "complete": "Completar calibración"
+    },
+    "liveAlignment": "Alineación espacial en vivo",
+    "axes": {
+      "x": "Eje X",
+      "y": "Eje Y",
+      "z": "Eje Z"
+    },
+    "readings": {
+      "pitch": "Pitch (X)",
+      "yaw": "Yaw (Y)",
+      "roll": "Roll (Z)"
+    },
+    "steps": {
+      "title": "Pasos de calibración"
+    },
+    "hardwareIntegrity": "Integridad del hardware",
+    "integrity": {
+      "optimal": "ÓPTIMO",
+      "warning": "ADVERTENCIA",
+      "degraded": "DEGRADADO"
+    },
+    "telemetry": {
+      "batteryHealth": "Salud de batería",
+      "capacity": "Capacidad",
+      "firmware": "Firmware",
+      "connection": "Conexión",
+      "lastSync": "Última sincronización"
+    }
+  },
+  "deviceRegister": {
+    "backToInventory": "Volver al inventario",
+    "title": "Registrar nuevo dispositivo",
+    "subtitle": "Conecta tu hardware uFlex IoT al portal clínico para monitoreo remoto.",
+    "quickEntry": {
+      "title": "Entrada rápida",
+      "description": "Usa la cámara del dispositivo para escanear el código QR ubicado en la parte inferior del hub uFlex y completar los campos automáticamente.",
+      "scanLabel": "Escanear código QR",
+      "openScanner": "Abrir escáner"
+    },
+    "hardware": {
+      "title": "Especificaciones de hardware",
+      "kitSerial": "Número de serie del kit",
+      "kitSerialPlaceholder": "ej. UF-2024-X982",
+      "batchId": "ID de lote",
+      "batchIdPlaceholder": "ej. BT-0092-A",
+      "hardwareVersion": "Versión de hardware",
+      "hardwareVersionPlaceholder": "Selecciona versión",
+      "firmwareVersion": "Versión de firmware",
+      "firmwareVersionPlaceholder": "ej. 1.0.4-stable",
+      "firmwareCurrent": "Actual",
+      "versions": {
+        "flex30": "FlexSense v3.0",
+        "flex40": "FlexSense v4.0",
+        "flex42": "FlexSense v4.2"
+      }
+    },
+    "actions": {
+      "discard": "Descartar",
+      "complete": "Completar registro"
+    },
+    "status": {
+      "title": "Estado del registro",
+      "subtitle": "Seguimiento en vivo",
+      "in-progress": "En curso",
+      "pending": "Pendiente",
+      "complete": "Completo",
+      "stepCounter": "Paso {{current}} de {{total}}: Verificación"
+    },
+    "bestPractices": {
+      "title": "Buenas prácticas",
+      "powerPrecheck": {
+        "title": "Verificación de energía",
+        "description": "Asegúrate de que el hub esté conectado a una fuente estable antes de iniciar el registro."
+      },
+      "firmwareMatch": {
+        "title": "Coincidencia de firmware",
+        "description": "El portal verificará actualizaciones OTA automáticamente después de registrar el dispositivo."
+      },
+      "assetTagging": {
+        "title": "Etiquetado del activo",
+        "description": "Recomendamos colocar una etiqueta física en el hardware para auditorías manuales de inventario."
+      }
+    },
+    "promo": {
+      "title": "Nuevos sensores Gen-4",
+      "description": "Actualiza tus kits actuales a los nuevos arreglos de sensores de alta fidelidad para mejores datos clínicos.",
+      "learnMore": "Más información"
+    }
+  },
+  "deviceLink": {
+    "title": "Vincular dispositivo IoT",
+    "subtitle": "Asigna un kit uFlex a un perfil de paciente activo.",
+    "selectPatient": "Seleccionar paciente",
+    "filterPlaceholder": "Filtrar por nombre o MRN",
+    "columns": {
+      "patient": "Detalles del paciente",
+      "mrn": "MRN",
+      "status": "Estado"
+    },
+    "status": {
+      "active": "Activo",
+      "waitlist": "Lista de espera",
+      "discharged": "Dado de alta"
+    },
+    "empty": "Ningún paciente coincide con el filtro.",
+    "assignKit": {
+      "title": "Asignar kit IoT",
+      "available": "Dispositivos uFlex disponibles",
+      "placeholder": "Selecciona del inventario activo",
+      "calibration": {
+        "title": "Estado de calibración",
+        "description": "Última calibración: Hoy, 08:30 AM. Intensidad de señal: Excelente."
+      }
+    },
+    "finalAssignment": {
+      "title": "Asignación final",
+      "reviewBadge": "REVISIÓN",
+      "assignedPatient": "Paciente asignado",
+      "kitIdentification": "Identificación del kit",
+      "protocolDuration": "Duración del protocolo",
+      "confirm": "Confirmar asignación",
+      "cancel": "Cancelar operación"
+    },
+    "hardwareView": {
+      "caption": "Vista de hardware: Sensor uFlex Gen-4"
+    },
+    "protocolDurationDefault": "12 semanas / Uso diario",
+    "unselectedPatient": "Ningún paciente seleccionado",
+    "unselectedKit": "Ningún kit seleccionado"
+  },
+  "organization": {
+    "actions": {
+      "editClinic": "Editar Perfil de la Clínica",
+      "addPhysiotherapist": "Añadir Fisioterapeuta"
+    },
+    "stats": {
+      "totalPatients": "Pacientes totales",
+      "activePhysiotherapists": "Fisioterapeutas activos",
+      "availableIotKits": "Kits IoT disponibles",
+      "onLeave": "De baja"
+    },
+    "tabs": {
+      "physiotherapists": "Fisioterapeutas",
+      "patients": "Pacientes"
+    },
+    "patientsTabEmpty": "El roster de pacientes vive en el contexto Planning. Próximamente en esta vista.",
+    "showingCount": "Mostrando {{visible}} de {{total}} miembros del staff",
+    "columns": {
+      "staffMember": "Miembro del staff",
+      "specializedRole": "Rol especializado",
+      "activePatients": "Pacientes activos",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "role": {
+      "neuro-rehab": "Neuro-Rehab",
+      "post-op-recovery": "Post-Op Recovery",
+      "geriatric-mobility": "Movilidad geriátrica",
+      "iot-mobility": "Movilidad IoT",
+      "sports-rehab": "Rehab deportiva"
+    },
+    "status": {
+      "active": "Activo",
+      "on-leave": "De baja",
+      "inactive": "Inactivo"
+    },
+    "performance": {
+      "title": "Resumen de desempeño",
+      "description": "La tasa de éxito en recuperación de la organización subió 7.4% en el último trimestre. La retención de pacientes en sesiones remotas está en 92%.",
+      "cta": "Ver analíticas detalladas"
+    },
+    "recentUpdates": {
+      "title": "Actualizaciones recientes",
+      "firmware": "Nuevo firmware IoT (v2.4.1) desplegado en 86 kits.",
+      "subscription": "Suscripción renovada para el próximo ciclo de facturación."
+    }
+  },
+  "subscription": {
+    "title": "Suscripción",
+    "subtitle": "Administra licencias clínicas, métodos de pago e historial de facturación.",
+    "actions": {
+      "downloadAudit": "Descargar informe de auditoría",
+      "upgradePlan": "Mejorar plan"
+    },
+    "active": {
+      "badge": "Plan activo",
+      "billedMonthly": "facturado mensualmente",
+      "changeCycle": "Cambiar ciclo de facturación",
+      "cancel": "Cancelar suscripción",
+      "activeLicenses": "Licencias activas",
+      "storageUsage": "Uso de almacenamiento",
+      "apiStatus": "Estado de API",
+      "api": {
+        "healthy": "Saludable",
+        "degraded": "Degradado",
+        "down": "Caída"
+      }
+    },
+    "payment": {
+      "title": "Método de pago",
+      "cardHolder": "Titular de la tarjeta",
+      "expires": "Vence",
+      "update": "Actualizar método de pago"
+    },
+    "billing": {
+      "title": "Historial de facturación",
+      "viewAll": "Ver todas las facturas",
+      "columns": {
+        "amount": "Monto",
+        "plan": "Plan",
+        "status": "Estado"
+      },
+      "status": {
+        "paid": "Pagada",
+        "pending": "Pendiente",
+        "failed": "Fallida"
+      }
+    },
+    "upsell": {
+      "title": "Avanza tu práctica",
+      "description": "Desbloquea funciones clínicas exclusivas al pasar al tier de Clinical Research.",
+      "feature1": "Analíticas avanzadas de marcha",
+      "feature2": "Acceso a base de datos global de investigación",
+      "feature3": "Portal de pacientes con marca blanca",
+      "cta": "Aprende más sobre Clinical Research"
+    },
+    "plans": {
+      "title": "Planes clínicos disponibles",
+      "perMonth": "/mes",
+      "selected": "Seleccionado",
+      "currentPlan": "Plan actual",
+      "alreadyActive": "Ya activo"
+    }
+  },
+  "registerPhysiotherapist": {
+    "breadcrumb": {
+      "organization": "Organización",
+      "staff": "Staff",
+      "addNew": "Agregar nuevo"
+    },
+    "title": "Registrar nuevo fisioterapeuta",
+    "subtitle": "Incorpora un nuevo clínico al roster de tu clínica.",
+    "actions": {
+      "cancel": "Cancelar",
+      "save": "Guardar perfil"
+    },
+    "personal": {
+      "title": "Información personal",
+      "fullName": "Nombre completo",
+      "fullNamePlaceholder": "Dr. Sarah Johnson",
+      "specialty": "Especialidad",
+      "specialtyPlaceholder": "Fisioterapia ortopédica",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "sarah.j@clinic.com",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+1 (555) 000-0000"
+    },
+    "credentials": {
+      "title": "Credenciales clínicas",
+      "licenseNumber": "Número de licencia",
+      "licenseNumberPlaceholder": "PT-98234-X",
+      "summary": "Resumen profesional",
+      "summaryPlaceholder": "Breve descripción de la experiencia clínica y años de práctica..."
+    },
+    "photo": {
+      "title": "Foto de perfil",
+      "upload": "Haz clic para subir",
+      "formats": "Sube una foto profesional en alta resolución. JPEG, PNG o GIF. Máx. 5MB."
+    },
+    "quickTip": {
+      "title": "Consejo rápido",
+      "description": "Completar las credenciales clínicas asegura el emparejamiento óptimo con dispositivos IoT para análisis de marcha.",
+      "verified": "Los clínicos verificados acceden a la base de datos global de investigación."
+    },
+    "enrollments": {
+      "title": "Inscripciones recientes",
+      "dbConnected": "Base de datos conectada",
+      "sslSecured": "Ruta segura SSL",
+      "activeClinicians": "12 clínicos activos"
+    }
+  },
+  "deviceDiagnostics": {
+    "eyebrow": "Modo mantenimiento",
+    "title": "Diagnóstico del sistema",
+    "actions": {
+      "recalibrate": "Recalibrar",
+      "exportReport": "Exportar informe"
+    },
+    "liveScan": {
+      "title": "Estado del escaneo en vivo",
+      "subtitle": "Escaneando arreglos de nodos internos y sensores de presión.",
+      "activeScan": "Escaneo activo"
+    },
+    "hardwareId": "ID de hardware",
+    "metrics": {
+      "battery": "Salud de batería",
+      "batteryUnit": "Capacidad",
+      "signal": "Intensidad de señal",
+      "temperature": "Temperatura operativa"
+    },
+    "log": {
+      "clear": "Limpiar registros"
+    }
   },
   "signIn": {
     "subtitle": "Plataforma Clínica de Telerehabilitación",
