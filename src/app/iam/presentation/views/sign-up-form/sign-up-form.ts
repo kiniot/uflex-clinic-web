@@ -8,6 +8,7 @@ import {ButtonModule} from 'primeng/button';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {InputGroupModule} from 'primeng/inputgroup';
 import {InputGroupAddonModule} from 'primeng/inputgroupaddon';
+import {AuthShell} from '../../../../shared/presentation/components/auth-shell/auth-shell';
 import {BaseForm} from '../../../../shared/presentation/components/base-form/base-form';
 import {IamStore} from '../../../application/iam.store';
 import {SignUpCommand} from '../../../domain/model/sign-up.command';
@@ -37,7 +38,8 @@ interface RoleOption {
     ButtonModule,
     SelectButtonModule,
     InputGroupModule,
-    InputGroupAddonModule
+    InputGroupAddonModule,
+    AuthShell
   ],
   templateUrl: './sign-up-form.html',
   styleUrl: './sign-up-form.scss'
@@ -74,11 +76,14 @@ export class SignUpForm extends BaseForm {
   }
 
   performSignUp() {
+    this.form.markAllAsTouched();
     if (this.form.invalid) return;
+    const role = this.form.value.role!;
+    const redirectTo = role === 'clinicAdmin' ? '/clinic-admin/therapy' : '/physiotherapist';
     const signUpCommand = new SignUpCommand({
       username: this.form.value.email!,
       password: this.form.value.password!
     });
-    this.store.signUp(signUpCommand, this.router);
+    this.store.signUp(signUpCommand, this.router, redirectTo);
   }
 }
