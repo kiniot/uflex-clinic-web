@@ -1,17 +1,22 @@
-import {BaseResource, BaseResponse} from '../../shared/infrastructure/base-response';
+import { BaseResource, BaseResponse } from '../../shared/infrastructure/base-response';
 
 /**
- * Resource interface for sign-in operations.
- * Represents the data returned after a successful sign-in, including authentication token.
+ * Resource returned after a successful sign-in.
+ * Mirrors the backend `AuthenticatedUserResource(id, email, roles, token)`.
  */
 export interface SignInResource extends BaseResource {
-  id: number;
-  username: string;
+  id: string;
+  email: string;
+  roles: string[];
   token: string;
 }
 
 /**
  * Response interface for sign-in API calls.
- * Extends BaseResponse and SignInResource.
  */
-export interface SignInResponse extends BaseResponse, SignInResource {}
+export interface SignInResponse extends BaseResponse {
+  id: string;
+  email: string;
+  roles: string[];
+  token: string;
+}

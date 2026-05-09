@@ -1,49 +1,39 @@
 /**
  * Command object for user sign-up operations in the domain layer of the IAM bounded context.
- * Contains the username and password for registration.
+ * Carries the email, password and selected role(s) for registration.
  */
 export class SignUpCommand {
-  private _username: string;
+  private _email: string;
   private _password: string;
+  private _roles: string[];
 
-  /**
-   * Creates a new SignUpCommand instance.
-   * @param resource An object containing username and password.
-   */
-  constructor(resource: {username: string, password: string}) {
-    this._username = resource.username;
+  constructor(resource: { email: string; password: string; roles: string[] }) {
+    this._email = resource.email;
     this._password = resource.password;
+    this._roles = resource.roles;
   }
 
-  /**
-   * Gets the username for sign-up.
-   * @returns The username.
-   */
-  get username(): string {
-    return this._username;
+  get email(): string {
+    return this._email;
   }
 
-  /**
-   * Sets the username for sign-up.
-   * @param value The username.
-   */
-  set username(value: string) {
-    this._username = value;
+  set email(value: string) {
+    this._email = value;
   }
 
-  /**
-   * Gets the password for sign-up.
-   * @returns The password.
-   */
   get password(): string {
     return this._password;
   }
 
-  /**
-   * Sets the password for sign-up.
-   * @param value The password.
-   */
   set password(value: string) {
     this._password = value;
+  }
+
+  get roles(): string[] {
+    return this._roles;
+  }
+
+  set roles(value: string[]) {
+    this._roles = value;
   }
 }

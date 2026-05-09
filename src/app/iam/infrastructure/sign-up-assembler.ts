@@ -1,32 +1,28 @@
-import {SignUpRequest} from './sign-up.request';
-import {SignUpCommand} from '../domain/model/sign-up.command';
-import {SignUpResource, SignUpResponse} from './sign-up-response';
+import { SignUpRequest } from './sign-up.request';
+import { SignUpCommand } from '../domain/model/sign-up.command';
+import { SignUpResource, SignUpResponse } from './sign-up-response';
 
-/**
- * Assembler for converting between sign-up commands, requests, and responses in the infrastructure layer of the IAM bounded context.
- */
+const ROLE_NAME_TO_BACKEND: Record<string, string> = {
+  physiotherapist: 'ROLE_PHYSIOTHERAPIST',
+  clinicAdmin: 'ROLE_CLINIC_ADMIN',
+  patient: 'ROLE_PATIENT',
+  user: 'ROLE_USER'
+};
+
 export class SignUpAssembler {
-  /**
-   * Converts a sign-up response to a sign-up resource.
-   * @param response The response from the API.
-   * @returns The assembled sign-up resource.
-   */
   toResourceFromResponse(response: SignUpResponse): SignUpResource {
     return {
       id: response.id,
-      username: response.username,
+      email: response.email,
+      roles: response.roles
     } as SignUpResource;
   }
 
-  /**
-   * Converts a sign-up command to a sign-up request.
-   * @param command The sign-up command.
-   * @returns The assembled sign-up request.
-   */
   toRequestFromCommand(command: SignUpCommand): SignUpRequest {
     return {
-      username: command.username,
+      email: command.email,
       password: command.password,
+      roles: command.roles.map((r) => ROLE_NAME_TO_BACKEND[r] ?? r)
     } as SignUpRequest;
   }
 }

@@ -61,3 +61,28 @@
   background: var(--p-surface-200);
   color: var(--p-text-color);
 }
+
+.portal__user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  margin-left: 4px;
+  max-width: 180px;
+}
+
+.portal__user-email {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal__user-role {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+}
