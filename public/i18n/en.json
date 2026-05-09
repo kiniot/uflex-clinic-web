@@ -518,9 +518,9 @@
   },
   "signIn": {
     "subtitle": "Clinical Telerehabilitation Platform",
-    "username": {
-      "label": "Username",
-      "placeholder": "Enter your username"
+    "email": {
+      "label": "Email address",
+      "placeholder": "Enter your email"
     },
     "password": {
       "label": "Password",
@@ -569,6 +569,30 @@
     "submit": "Create Account",
     "haveAccount": "Already have an account?",
     "signInLink": "Sign In"
+  },
+  "changePassword": {
+    "title": "Change Password",
+    "currentLabel": "Current password",
+    "currentPlaceholder": "Enter your current password",
+    "currentRequired": "Current password is required.",
+    "newLabel": "New password",
+    "newPlaceholder": "Min. 8 characters",
+    "newMinLength": "New password must be at least 8 characters.",
+    "confirmLabel": "Confirm new password",
+    "confirmPlaceholder": "Re-enter your new password",
+    "mismatch": "Passwords do not match.",
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "success": "Password updated successfully.",
+    "error": {
+      "invalidCurrent": "Current password is incorrect.",
+      "generic": "Could not change the password. Please try again."
+    }
+  },
+  "topbar": {
+    "settings": "Settings",
+    "changePassword": "Change password"
   },
   "physiotherapist": {
     "brand": {

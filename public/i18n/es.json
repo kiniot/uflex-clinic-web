@@ -518,9 +518,9 @@
   },
   "signIn": {
     "subtitle": "Plataforma Clínica de Telerehabilitación",
-    "username": {
-      "label": "Nombre de usuario",
-      "placeholder": "Ingresa tu nombre de usuario"
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "Ingresa tu correo"
     },
     "password": {
       "label": "Contraseña",
@@ -569,6 +569,30 @@
     "submit": "Crear cuenta",
     "haveAccount": "¿Ya tienes una cuenta?",
     "signInLink": "Iniciar sesión"
+  },
+  "changePassword": {
+    "title": "Cambiar contraseña",
+    "currentLabel": "Contraseña actual",
+    "currentPlaceholder": "Ingresa tu contraseña actual",
+    "currentRequired": "La contraseña actual es obligatoria.",
+    "newLabel": "Nueva contraseña",
+    "newPlaceholder": "Mínimo 8 caracteres",
+    "newMinLength": "La nueva contraseña debe tener al menos 8 caracteres.",
+    "confirmLabel": "Confirmar nueva contraseña",
+    "confirmPlaceholder": "Vuelve a ingresar la nueva contraseña",
+    "mismatch": "Las contraseñas no coinciden.",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "success": "Contraseña actualizada correctamente.",
+    "error": {
+      "invalidCurrent": "La contraseña actual es incorrecta.",
+      "generic": "No se pudo cambiar la contraseña. Intenta de nuevo."
+    }
+  },
+  "topbar": {
+    "settings": "Configuración",
+    "changePassword": "Cambiar contraseña"
   },
   "physiotherapist": {
     "brand": {

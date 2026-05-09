@@ -1,8 +1,8 @@
 /**
- * Request interface for sign-in API calls in the infrastructure layer of the IAM bounded context.
- * Contains the credentials needed to authenticate a user.
+ * Request payload for `POST /api/v1/authentication/sign-in`.
+ * Field names must match the backend `SignInResource` record exactly.
  */
 export interface SignInRequest {
-  username: string;
+  email: string;
   password: string;
 }

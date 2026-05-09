@@ -10,16 +10,16 @@
 
     <form class="sign-in__form" [formGroup]="form" (ngSubmit)="performSignIn()">
       <div class="sign-in__field">
-        <label for="username">{{ 'signIn.username.label' | translate }}</label>
+        <label for="email">{{ 'signIn.email.label' | translate }}</label>
         <input pInputText
-               id="username"
-               type="text"
-               formControlName="username"
-               [placeholder]="'signIn.username.placeholder' | translate"
-               [class.ng-invalid]="isInvalidControl(form,'username')"
-               [class.ng-dirty]="isInvalidControl(form,'username')" />
-        @if (isInvalidControl(form,'username')) {
-          <small class="sign-in__error">{{ errorMessagesForControl(form,'username') }}</small>
+               id="email"
+               type="email"
+               formControlName="email"
+               [placeholder]="'signIn.email.placeholder' | translate"
+               [class.ng-invalid]="isInvalidControl(form,'email')"
+               [class.ng-dirty]="isInvalidControl(form,'email')" />
+        @if (isInvalidControl(form,'email')) {
+          <small class="sign-in__error">{{ errorMessagesForControl(form,'email') }}</small>
         }
       </div>
 

@@ -1,16 +1,17 @@
-import {BaseResource, BaseResponse} from '../../shared/infrastructure/base-response';
+import { BaseResource, BaseResponse } from '../../shared/infrastructure/base-response';
 
 /**
- * Resource interface for user data in the infrastructure layer of the IAM bounded context.
+ * Resource interface for user data, mirroring the backend `UserResource`.
  */
 export interface UserResource extends BaseResource {
-  id: number;
-  username: string;
+  id: string;
+  email: string;
+  roles: string[];
 }
 
 /**
- * Response interface for users API calls in the infrastructure layer of the IAM bounded context.
+ * Response interface for users API calls.
  */
 export interface UsersResponse extends BaseResponse {
-  courses: UserResource[];
+  users: UserResource[];
 }
