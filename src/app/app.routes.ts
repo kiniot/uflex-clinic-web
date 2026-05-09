@@ -33,6 +33,6 @@ export const routes: Routes = [
     loadChildren: subscriptionRoutes,
     title: `${baseTitle} - Subscription`,
   },
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/iam/sign-in', pathMatch: 'full' },
   { path: '**', loadComponent: pageNotFound, title: `${baseTitle} - Page Not Found` },
 ];
