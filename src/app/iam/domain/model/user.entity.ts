@@ -1,51 +1,41 @@
-import {BaseEntity} from '../../../shared/domain/model/base-entity';
+import { BaseEntity } from '../../../shared/domain/model/base-entity';
 
 /**
  * Represents a user entity in the domain layer of the IAM bounded context.
- * Implements the BaseEntity interface.
+ * Mirrors the backend `UserResource(id, email, roles)`.
  */
 export class User implements BaseEntity {
-  private _id: number;
-  private _username: string;
+  private _id: string;
+  private _email: string;
+  private _roles: string[];
 
-  /**
-   * Creates a new User instance.
-   * @param user An object containing the user's ID and username.
-   */
-  constructor(user:{id: number, username: string}) {
+  constructor(user: { id: string; email: string; roles?: string[] }) {
     this._id = user.id;
-    this._username = user.username;
+    this._email = user.email;
+    this._roles = user.roles ?? [];
   }
 
-  /**
-   * Sets the username of the user.
-   * @param value The new username.
-   */
-  set username(value: string) {
-    this._username = value;
+  get id(): string {
+    return this._id;
   }
 
-  /**
-   * Sets the ID of the user.
-   * @param value The new ID.
-   */
-  set id(value: number) {
+  set id(value: string) {
     this._id = value;
   }
 
-  /**
-   * Gets the username of the user.
-   * @returns The username.
-   */
-  get username(): string {
-    return this._username;
+  get email(): string {
+    return this._email;
   }
 
-  /**
-   * Gets the ID of the user.
-   * @returns The ID.
-   */
-  get id(): number {
-    return this._id;
+  set email(value: string) {
+    this._email = value;
+  }
+
+  get roles(): string[] {
+    return this._roles;
+  }
+
+  set roles(value: string[]) {
+    this._roles = value;
   }
 }

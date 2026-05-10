@@ -12,12 +12,22 @@
       <i class="pi pi-bell" aria-hidden="true"></i>
       <span class="portal__icon-dot" aria-hidden="true"></span>
     </button>
-    <button type="button" class="portal__icon-btn" aria-label="Settings">
+    <button type="button" class="portal__icon-btn"
+            [attr.aria-label]="changePasswordTooltip()"
+            [title]="changePasswordTooltip()"
+            (click)="openChangePassword()">
       <i class="pi pi-cog" aria-hidden="true"></i>
     </button>
-    <p-avatar shape="circle" size="normal" styleClass="portal__avatar"
-              icon="pi pi-user"/>
+    <p-avatar shape="circle" size="normal" styleClass="portal__avatar" icon="pi pi-user" />
+    @if (currentEmail()) {
+      <div class="portal__user-info">
+        <span class="portal__user-email">{{ currentEmail() }}</span>
+        <span class="portal__user-role">{{ currentRoleLabel() }}</span>
+      </div>
+    }
   </div>
 
-  <router-outlet/>
+  <router-outlet />
 </app-admin-shell>
+
+<app-change-password-dialog [(visible)]="changePasswordVisible" />

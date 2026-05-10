@@ -39,7 +39,7 @@ export class SignInForm extends BaseForm {
    * `rememberMe` is a presentation-only control; it is not forwarded to SignInCommand.
    */
   form = new FormGroup({
-    username: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
+    email: new FormControl('', {nonNullable: true, validators: [Validators.required, Validators.email]}),
     password: new FormControl('', {nonNullable: true, validators: [Validators.required]}),
     rememberMe: new FormControl(false, {nonNullable: true})
   });
@@ -50,7 +50,7 @@ export class SignInForm extends BaseForm {
   performSignIn() {
     if (this.form.invalid) return;
     const signInCommand = new SignInCommand({
-      username: this.form.value.username!,
+      email: this.form.value.email!,
       password: this.form.value.password!
     });
     this.store.signIn(signInCommand, this.router);

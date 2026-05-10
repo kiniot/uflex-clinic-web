@@ -1,16 +1,20 @@
-import {BaseResource, BaseResponse} from '../../shared/infrastructure/base-response';
+import { BaseResource, BaseResponse } from '../../shared/infrastructure/base-response';
 
 /**
- * Resource interface for sign-up operations in the infrastructure layer of the IAM bounded context.
- * Represents the data returned after a successful sign-up.
+ * Resource returned after a successful sign-up.
+ * Mirrors the backend `UserResource(id, email, roles)`.
  */
 export interface SignUpResource extends BaseResource {
-  id: number;
-  username: string;
+  id: string;
+  email: string;
+  roles: string[];
 }
 
 /**
- * Response interface for sign-up API calls in the infrastructure layer of the IAM bounded context.
- * Extends BaseResponse and SignUpResource.
+ * Response interface for sign-up API calls.
  */
-export interface SignUpResponse extends BaseResponse, SignUpResource {}
+export interface SignUpResponse extends BaseResponse {
+  id: string;
+  email: string;
+  roles: string[];
+}

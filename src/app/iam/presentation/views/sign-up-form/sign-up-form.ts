@@ -79,11 +79,11 @@ export class SignUpForm extends BaseForm {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
     const role = this.form.value.role!;
-    const redirectTo = role === 'clinicAdmin' ? '/clinic-admin/therapy' : '/physiotherapist';
     const signUpCommand = new SignUpCommand({
-      username: this.form.value.email!,
-      password: this.form.value.password!
+      email: this.form.value.email!,
+      password: this.form.value.password!,
+      roles: [role]
     });
-    this.store.signUp(signUpCommand, this.router, redirectTo);
+    this.store.signUp(signUpCommand, this.router);
   }
 }
