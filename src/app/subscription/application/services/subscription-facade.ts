@@ -1,16 +1,18 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { finalize, forkJoin } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import { BillingCycle } from '../../domain/models/billing-cycle.enum';
 import { Invoice } from '../../domain/models/invoice';
 import { Subscription } from '../../domain/models/subscription';
 import { SubscriptionPlan } from '../../domain/models/subscription-plan';
 import { CancelSubscriptionUseCase } from '../use-cases/cancel-subscription.use-case';
 import { ChangePlanUseCase } from '../use-cases/change-plan.use-case';
+import { CreateStripeCheckoutSessionUseCase } from '../use-cases/create-stripe-checkout-session.use-case';
 import { GetCurrentSubscriptionUseCase } from '../use-cases/get-current-subscription.use-case';
 import { GetInvoiceHistoryUseCase } from '../use-cases/get-invoice-history.use-case';
 import { GetPlansUseCase } from '../use-cases/get-plans.use-case';
 import { PurchaseSubscriptionUseCase } from '../use-cases/purchase-subscription.use-case';
-import { UpdatePaymentMethodUseCase } from '../use-cases/update-payment-method.use-case';
 
 /**
  * Signal facade that coordinates Subscription use cases for the presentation layer.
@@ -23,7 +25,7 @@ export class SubscriptionFacade {
   private readonly purchaseSubscriptionUseCase = inject(PurchaseSubscriptionUseCase);
   private readonly cancelSubscriptionUseCase = inject(CancelSubscriptionUseCase);
   private readonly changePlanUseCase = inject(ChangePlanUseCase);
-  private readonly updatePaymentMethodUseCase = inject(UpdatePaymentMethodUseCase);
+  private readonly createStripeCheckoutSessionUseCase = inject(CreateStripeCheckoutSessionUseCase);
 
   private readonly plansSignal = signal<Array<SubscriptionPlan>>([]);
   private readonly currentSubscriptionSignal = signal<Subscription | null>(null);
@@ -37,7 +39,8 @@ export class SubscriptionFacade {
   readonly loading = this.loadingSignal.asReadonly();
   readonly error = this.errorSignal.asReadonly();
 
-  load(clinicId = 'clinic-demo-001'): void {
+  load(clinicId = environment.subscription.clinicId): void {
+    // TODO: reemplazar clinicId demo por tenant real desde IAM/Organization.
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
@@ -52,19 +55,42 @@ export class SubscriptionFacade {
           this.currentSubscriptionSignal.set(currentSubscription);
           this.loadInvoices(currentSubscription?.id ?? null);
         },
-        error: () => this.errorSignal.set('No se pudo cargar la información de suscripción.'),
+        error: (error: unknown) => this.setLoadError(error),
       });
   }
 
-  purchase(planId: string, billingCycle: BillingCycle, paymentToken = 'mock-token'): void {
+  purchase(planId: string, billingCycle: BillingCycle): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
+
     this.purchaseSubscriptionUseCase
-      .execute(planId, billingCycle, paymentToken)
+      .execute(planId, billingCycle, 'stripe_checkout_mock')
       .pipe(finalize(() => this.loadingSignal.set(false)))
       .subscribe({
         next: (subscription) => this.setSubscription(subscription),
-        error: () => this.errorSignal.set('No se pudo iniciar la suscripción.'),
+        error: (error: unknown) => this.setActionError(error, 'No se pudo iniciar la suscripcion.'),
+      });
+  }
+
+  startCheckout(planId: string, billingCycle: BillingCycle): void {
+    if (environment.subscription.useMockApi) {
+      this.purchase(planId, billingCycle);
+      return;
+    }
+
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+
+    // TODO: Reemplazar clinicId demo por tenant real desde IAM/Organization.
+    this.createStripeCheckoutSessionUseCase
+      .execute(environment.subscription.clinicId, planId, billingCycle)
+      .pipe(finalize(() => this.loadingSignal.set(false)))
+      .subscribe({
+        next: () => {
+          // StripeCheckoutService redirects to the checkoutUrl returned by the backend.
+        },
+        error: (error: unknown) =>
+          this.setActionError(error, 'No se pudo iniciar Stripe Checkout. Intentalo nuevamente.'),
       });
   }
 
@@ -76,7 +102,8 @@ export class SubscriptionFacade {
       .pipe(finalize(() => this.loadingSignal.set(false)))
       .subscribe({
         next: (subscription) => this.currentSubscriptionSignal.set(subscription),
-        error: () => this.errorSignal.set('No se pudo cancelar la suscripción.'),
+        error: (error: unknown) =>
+          this.setActionError(error, 'No se pudo cancelar la suscripcion.'),
       });
   }
 
@@ -88,20 +115,15 @@ export class SubscriptionFacade {
       .pipe(finalize(() => this.loadingSignal.set(false)))
       .subscribe({
         next: (subscription) => this.setSubscription(subscription),
-        error: () => this.errorSignal.set('No se pudo cambiar el plan.'),
+        error: (error: unknown) => this.setActionError(error, 'No se pudo cambiar el plan.'),
       });
   }
 
-  updatePaymentMethod(subscriptionId: string, paymentToken = 'mock-token'): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-    this.updatePaymentMethodUseCase
-      .execute(subscriptionId, paymentToken)
-      .pipe(finalize(() => this.loadingSignal.set(false)))
-      .subscribe({
-        next: (subscription) => this.currentSubscriptionSignal.set(subscription),
-        error: () => this.errorSignal.set('No se pudo actualizar el método de pago.'),
-      });
+  updatePaymentMethod(subscriptionId: string): void {
+    void subscriptionId;
+    this.errorSignal.set(
+      'El metodo de pago se actualizara de forma segura mediante Stripe Checkout cuando el backend exponga ese flujo.',
+    );
   }
 
   private setSubscription(subscription: Subscription): void {
@@ -117,7 +139,44 @@ export class SubscriptionFacade {
 
     this.getInvoiceHistoryUseCase.execute(subscriptionId).subscribe({
       next: (invoices) => this.invoicesSignal.set(invoices),
-      error: () => this.errorSignal.set('No se pudo cargar el historial de facturas.'),
+      error: (error: unknown) =>
+        this.setActionError(error, 'No se pudo cargar el historial de facturas.'),
     });
   }
+
+  private setLoadError(error: unknown): void {
+    if (isUnauthorized(error)) {
+      this.errorSignal.set('Debes iniciar sesion para consultar la suscripcion.');
+      return;
+    }
+
+    if (isConnectionError(error)) {
+      this.errorSignal.set('No se pudo conectar con el backend de Subscription.');
+      return;
+    }
+
+    this.errorSignal.set('No se pudo cargar la informacion de suscripcion.');
+  }
+
+  private setActionError(error: unknown, fallbackMessage: string): void {
+    if (isUnauthorized(error)) {
+      this.errorSignal.set('Debes iniciar sesion para consultar la suscripcion.');
+      return;
+    }
+
+    if (isConnectionError(error)) {
+      this.errorSignal.set('No se pudo conectar con el backend de Subscription.');
+      return;
+    }
+
+    this.errorSignal.set(fallbackMessage);
+  }
+}
+
+function isUnauthorized(error: unknown): boolean {
+  return error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403);
+}
+
+function isConnectionError(error: unknown): boolean {
+  return error instanceof HttpErrorResponse && error.status === 0;
 }

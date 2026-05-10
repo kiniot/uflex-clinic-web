@@ -4,7 +4,7 @@ import { Subscription } from '../../domain/models/subscription';
 import { SUBSCRIPTION_REPOSITORY } from '../../domain/repositories/subscription-repository';
 
 /**
- * Application use case for replacing the tokenized payment method.
+ * Legacy use case for replacing a backend-owned payment method reference.
  */
 @Injectable({ providedIn: 'root' })
 export class UpdatePaymentMethodUseCase {

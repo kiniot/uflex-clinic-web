@@ -12,6 +12,10 @@
       <p-message severity="error" [text]="error" />
     }
 
+    @if (paymentMessage(); as message) {
+      <p-message [severity]="paymentSeverity()" [text]="message" />
+    }
+
     @if (facade.loading()) {
       <div class="loading-state">
         <p-progress-spinner ariaLabel="Loading subscription information" />
@@ -32,6 +36,7 @@
       <div class="section-heading">
         <span>Available Clinical Plans</span>
         <h2>Choose the right operating capacity</h2>
+        <p>El pago se realizará de forma segura mediante Stripe Checkout.</p>
       </div>
 
       <div class="plans-grid">

@@ -8,7 +8,7 @@ import { PaymentReference } from '../../domain/value-objects/payment-reference';
 import { mockCurrentSubscription, mockPlans } from '../mock/subscription-mock-data';
 
 /**
- * Mock repository for subscription actions; keeps Culqi and backend calls out of Part 1.
+ * Mock repository for subscription actions; keeps Stripe Checkout and backend calls out of local demos.
  */
 @Injectable({ providedIn: 'root' })
 export class MockSubscriptionRepository implements SubscriptionRepository {
