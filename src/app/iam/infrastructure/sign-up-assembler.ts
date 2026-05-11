@@ -14,7 +14,8 @@ export class SignUpAssembler {
     return {
       id: response.id,
       email: response.email,
-      roles: response.roles
+      roles: response.roles,
+      tenantId: response.tenantId ?? null
     } as SignUpResource;
   }
 

@@ -56,6 +56,7 @@ describe('IamStore', () => {
       sub: 'user-uuid',
       email: 'physio@uflex.io',
       roles: ['ROLE_PHYSIOTHERAPIST'],
+      tenantId: 'tenant-111',
       exp: farFuture
     }));
 
@@ -65,6 +66,7 @@ describe('IamStore', () => {
     expect(store.currentUserId()).toBe('user-uuid');
     expect(store.currentEmail()).toBe('physio@uflex.io');
     expect(store.currentRoles()).toEqual(['ROLE_PHYSIOTHERAPIST']);
+    expect(store.currentTenantId()).toBe('tenant-111');
   });
 
   it('discards an expired token and stays signed-out', () => {
@@ -87,6 +89,7 @@ describe('IamStore', () => {
       id: 'admin-uuid',
       email: 'admin@uflex.io',
       roles: ['ROLE_CLINIC_ADMIN'],
+      tenantId: 'tenant-123',
       token: 'jwt-token-value'
     }));
     const store = buildStore();
@@ -99,6 +102,7 @@ describe('IamStore', () => {
     expect(store.isSignedIn()).toBe(true);
     expect(store.currentEmail()).toBe('admin@uflex.io');
     expect(store.currentRoles()).toEqual(['ROLE_CLINIC_ADMIN']);
+    expect(store.currentTenantId()).toBe('tenant-123');
     expect(localStorage.getItem('token')).toBe('jwt-token-value');
     expect(routerMock.navigate).toHaveBeenCalledWith(['/clinic-admin/therapy']);
   });
