@@ -7,7 +7,7 @@ import { StripeCheckoutService } from '../../infrastructure/payment/stripe-check
 export class CreateStripeCheckoutSessionUseCase {
   private readonly stripeCheckoutService = inject(StripeCheckoutService);
 
-  execute(clinicId: string, planId: string, billingCycle: BillingCycle): Observable<string> {
-    return this.stripeCheckoutService.createCheckoutSession(clinicId, planId, billingCycle);
+  execute(clinicId: string, planId: string, billingCycle: BillingCycle): Observable<void> {
+    return this.stripeCheckoutService.startCheckout(clinicId, planId, billingCycle);
   }
 }
