@@ -17,6 +17,7 @@ export class MockSubscriptionRepository implements SubscriptionRepository {
   }
 
   purchase(
+    clinicId: string,
     planId: string,
     billingCycle: BillingCycle,
     paymentToken: string,
@@ -25,7 +26,7 @@ export class MockSubscriptionRepository implements SubscriptionRepository {
     return of(
       new Subscription(
         'sub-demo-001',
-        'clinic-demo-001',
+        clinicId,
         plan,
         SubscriptionStatus.Active,
         billingCycle,

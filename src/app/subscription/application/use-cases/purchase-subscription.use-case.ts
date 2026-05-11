@@ -12,10 +12,11 @@ export class PurchaseSubscriptionUseCase {
   private readonly subscriptionRepository = inject(SUBSCRIPTION_REPOSITORY);
 
   execute(
+    clinicId: string,
     planId: string,
     billingCycle: BillingCycle,
     paymentToken: string,
   ): Observable<Subscription> {
-    return this.subscriptionRepository.purchase(planId, billingCycle, paymentToken);
+    return this.subscriptionRepository.purchase(clinicId, planId, billingCycle, paymentToken);
   }
 }
