@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { BillingCycle } from '../../../domain/models/billing-cycle.enum';
-import { SubscriptionStatus } from '../../../domain/models/subscription-status.enum';
 import { SubscriptionFacade } from '../../../application/services/subscription-facade';
 import { CurrentSubscriptionCard } from '../../components/current-subscription-card/current-subscription-card';
 import { InvoiceHistoryTable } from '../../components/invoice-history-table/invoice-history-table';
@@ -39,7 +38,7 @@ export class SubscriptionPage implements OnInit {
 
   selectPlan(planId: string): void {
     const current = this.facade.currentSubscription();
-    if (current?.status === SubscriptionStatus.Active) {
+    if (current) {
       this.facade.changePlan(current.id, planId, BillingCycle.Monthly);
       return;
     }

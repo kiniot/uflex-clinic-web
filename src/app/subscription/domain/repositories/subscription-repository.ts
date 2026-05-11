@@ -6,6 +6,7 @@ import { Subscription } from '../models/subscription';
 export interface SubscriptionRepository {
   findCurrentByClinicId(clinicId: string): Observable<Subscription | null>;
   purchase(
+    clinicId: string,
     planId: string,
     billingCycle: BillingCycle,
     paymentToken: string,

@@ -33,12 +33,13 @@ export class HttpSubscriptionRepository implements SubscriptionRepository {
   }
 
   purchase(
+    clinicId: string,
     planId: string,
     billingCycle: BillingCycle,
     paymentToken: string,
   ): Observable<Subscription> {
     const body: PurchaseSubscriptionDto = {
-      clinicId: environment.subscription.clinicId,
+      clinicId,
       planId,
       billingCycle,
       paymentToken,
