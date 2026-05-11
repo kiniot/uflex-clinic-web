@@ -7,6 +7,7 @@ export interface UserResource extends BaseResource {
   id: string;
   email: string;
   roles: string[];
+  tenantId: string | null;
 }
 
 /**

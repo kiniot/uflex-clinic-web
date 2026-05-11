@@ -8,6 +8,7 @@ export class SignInAssembler {
       id: response.id,
       email: response.email,
       roles: response.roles ?? [],
+      tenantId: response.tenantId ?? null,
       token: response.token
     } as SignInResource;
   }

@@ -19,6 +19,7 @@ interface JwtPayload {
   sub?: string;
   email?: string;
   roles?: string[];
+  tenantId?: string | null;
   exp?: number;
 }
 
@@ -32,6 +33,7 @@ export class IamStore {
   private readonly currentEmailSignal = signal<string | null>(null);
   private readonly currentUserIdSignal = signal<string | null>(null);
   private readonly currentRolesSignal = signal<string[]>([]);
+  private readonly currentTenantIdSignal = signal<string | null>(null);
   private readonly usersSignal = signal<Array<User>>([]);
 
   readonly isSignedIn = this.isSignedInSignal.asReadonly();
@@ -39,6 +41,7 @@ export class IamStore {
   readonly currentEmail = this.currentEmailSignal.asReadonly();
   readonly currentUserId = this.currentUserIdSignal.asReadonly();
   readonly currentRoles = this.currentRolesSignal.asReadonly();
+  readonly currentTenantId = this.currentTenantIdSignal.asReadonly();
 
   /**
    * @deprecated kept for backwards compatibility — use {@link currentEmail}.
@@ -64,6 +67,7 @@ export class IamStore {
         this.currentEmailSignal.set(signInResource.email);
         this.currentUserIdSignal.set(signInResource.id);
         this.currentRolesSignal.set(signInResource.roles ?? []);
+        this.currentTenantIdSignal.set(signInResource.tenantId ?? null);
         const destination = this.resolveHomeRoute(signInResource.roles ?? []);
         router.navigate([destination]).then();
       },
@@ -113,6 +117,7 @@ export class IamStore {
     this.currentEmailSignal.set(null);
     this.currentUserIdSignal.set(null);
     this.currentRolesSignal.set([]);
+    this.currentTenantIdSignal.set(null);
   }
 
   private resolveHomeRoute(roles: string[]): string {
@@ -144,6 +149,7 @@ export class IamStore {
     this.currentUserIdSignal.set(payload.sub ?? null);
     this.currentEmailSignal.set(payload.email ?? null);
     this.currentRolesSignal.set(payload.roles ?? []);
+    this.currentTenantIdSignal.set(payload.tenantId ?? null);
   }
 
   private decodeJwtPayload(token: string): JwtPayload | null {
