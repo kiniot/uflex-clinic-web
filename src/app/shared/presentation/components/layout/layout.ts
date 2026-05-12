@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
-import {RouterOutlet} from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { ToastModule } from 'primeng/toast';
 
 /**
  * Root layout component. Renders only the routed view; chrome (headers, footers,
@@ -7,8 +8,8 @@ import {RouterOutlet} from '@angular/router';
  */
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, ToastModule],
   templateUrl: './layout.html',
-  styleUrl: './layout.scss'
+  styleUrl: './layout.scss',
 })
 export class Layout {}

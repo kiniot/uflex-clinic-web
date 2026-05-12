@@ -17,19 +17,16 @@ describe('IamStore', () => {
   const iamApiMock = {
     signIn: vi.fn(),
     signUp: vi.fn(),
-    changeMyPassword: vi.fn()
+    changeMyPassword: vi.fn(),
   };
 
   const routerMock = {
-    navigate: vi.fn().mockResolvedValue(true)
+    navigate: vi.fn().mockResolvedValue(true),
   };
 
   const buildStore = () => {
     TestBed.configureTestingModule({
-      providers: [
-        IamStore,
-        { provide: IamApi, useValue: iamApiMock }
-      ]
+      providers: [IamStore, { provide: IamApi, useValue: iamApiMock }],
     });
     return TestBed.inject(IamStore);
   };
@@ -52,13 +49,16 @@ describe('IamStore', () => {
 
   it('restores the session from a non-expired JWT in localStorage', () => {
     const farFuture = Math.floor(Date.now() / 1000) + 60 * 60;
-    localStorage.setItem('token', buildJwt({
-      sub: 'user-uuid',
-      email: 'physio@uflex.io',
-      roles: ['ROLE_PHYSIOTHERAPIST'],
-      tenantId: 'tenant-111',
-      exp: farFuture
-    }));
+    localStorage.setItem(
+      'token',
+      buildJwt({
+        sub: 'user-uuid',
+        email: 'physio@uflex.io',
+        roles: ['ROLE_PHYSIOTHERAPIST'],
+        tenantId: 'tenant-111',
+        exp: farFuture,
+      }),
+    );
 
     const store = buildStore();
 
@@ -71,12 +71,15 @@ describe('IamStore', () => {
 
   it('discards an expired token and stays signed-out', () => {
     const longGone = Math.floor(Date.now() / 1000) - 60;
-    localStorage.setItem('token', buildJwt({
-      sub: 'old',
-      email: 'old@uflex.io',
-      roles: ['ROLE_USER'],
-      exp: longGone
-    }));
+    localStorage.setItem(
+      'token',
+      buildJwt({
+        sub: 'old',
+        email: 'old@uflex.io',
+        roles: ['ROLE_USER'],
+        exp: longGone,
+      }),
+    );
 
     const store = buildStore();
 
@@ -84,19 +87,21 @@ describe('IamStore', () => {
     expect(localStorage.getItem('token')).toBeNull();
   });
 
-  it('updates state and routes to the role home on a successful sign-in', () => {
-    iamApiMock.signIn.mockReturnValue(of({
-      id: 'admin-uuid',
-      email: 'admin@uflex.io',
-      roles: ['ROLE_CLINIC_ADMIN'],
-      tenantId: 'tenant-123',
-      token: 'jwt-token-value'
-    }));
+  it('updates state and routes to the role home on a successful sign-in', async () => {
+    iamApiMock.signIn.mockReturnValue(
+      of({
+        id: 'admin-uuid',
+        email: 'admin@uflex.io',
+        roles: ['ROLE_CLINIC_ADMIN'],
+        tenantId: 'tenant-123',
+        token: 'jwt-token-value',
+      }),
+    );
     const store = buildStore();
 
-    store.signIn(
+    await store.signIn(
       new SignInCommand({ email: 'admin@uflex.io', password: 'pwd' }),
-      routerMock as unknown as Router
+      routerMock as unknown as Router,
     );
 
     expect(store.isSignedIn()).toBe(true);
@@ -107,14 +112,16 @@ describe('IamStore', () => {
     expect(routerMock.navigate).toHaveBeenCalledWith(['/clinic-admin/therapy']);
   });
 
-  it('clears the session and stays on the sign-in route when sign-in fails', () => {
+  it('clears the session and stays on the sign-in route when sign-in fails', async () => {
     iamApiMock.signIn.mockReturnValue(throwError(() => new Error('401')));
     const store = buildStore();
 
-    store.signIn(
-      new SignInCommand({ email: 'bad@uflex.io', password: 'wrong' }),
-      routerMock as unknown as Router
-    );
+    await expect(
+      store.signIn(
+        new SignInCommand({ email: 'bad@uflex.io', password: 'wrong' }),
+        routerMock as unknown as Router,
+      ),
+    ).rejects.toThrow('401');
 
     expect(store.isSignedIn()).toBe(false);
     expect(routerMock.navigate).toHaveBeenCalledWith(['/iam/sign-in']);

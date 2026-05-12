@@ -530,7 +530,12 @@
     "rememberMe": "Remember me for 30 days",
     "submit": "Sign In",
     "createAccount": "Create Account",
-    "trustMessage": "Secure clinical access for authorized medical personnel only."
+    "trustMessage": "Secure clinical access for authorized medical personnel only.",
+    "notifications": {
+      "errorSummary": "Sign-in failed",
+      "invalidCredentials": "The email or password is incorrect.",
+      "genericError": "We could not sign you in. Please try again."
+    }
   },
   "signUp": {
     "title": "Create your account",
@@ -568,7 +573,13 @@
     },
     "submit": "Create Account",
     "haveAccount": "Already have an account?",
-    "signInLink": "Sign In"
+    "signInLink": "Sign In",
+    "notifications": {
+      "successSummary": "Account created",
+      "successDetail": "Your account was registered successfully. You can now sign in.",
+      "errorSummary": "Registration failed",
+      "genericError": "We could not create the account. Please try again."
+    }
   },
   "changePassword": {
     "title": "Change Password",

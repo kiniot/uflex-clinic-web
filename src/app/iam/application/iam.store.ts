@@ -10,7 +10,7 @@ const ROLE_TO_HOME_ROUTE: Record<string, string> = {
   ROLE_CLINIC_ADMIN: '/clinic-admin/therapy',
   ROLE_PHYSIOTHERAPIST: '/physiotherapist',
   ROLE_PATIENT: '/home',
-  ROLE_USER: '/home'
+  ROLE_USER: '/home',
 };
 
 const FALLBACK_HOME_ROUTE = '/home';
@@ -49,7 +49,7 @@ export class IamStore {
   readonly currentUsername = this.currentEmailSignal.asReadonly();
 
   readonly currentToken = computed(() =>
-    this.isSignedIn() ? localStorage.getItem('token') : null
+    this.isSignedIn() ? localStorage.getItem('token') : null,
   );
 
   readonly users = this.usersSignal.asReadonly();
@@ -59,37 +59,45 @@ export class IamStore {
     this.restoreSessionFromStorage();
   }
 
-  signIn(signInCommand: SignInCommand, router: Router) {
-    this.iamApi.signIn(signInCommand).subscribe({
-      next: (signInResource) => {
-        localStorage.setItem('token', signInResource.token);
-        this.isSignedInSignal.set(true);
-        this.currentEmailSignal.set(signInResource.email);
-        this.currentUserIdSignal.set(signInResource.id);
-        this.currentRolesSignal.set(signInResource.roles ?? []);
-        this.currentTenantIdSignal.set(signInResource.tenantId ?? null);
-        const destination = this.resolveHomeRoute(signInResource.roles ?? []);
-        router.navigate([destination]).then();
-      },
-      error: (err) => {
-        console.error('Sign-in failed:', err);
-        this.clearSession();
-        router.navigate(['/iam/sign-in']).then();
-      }
+  signIn(signInCommand: SignInCommand, router: Router): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.iamApi.signIn(signInCommand).subscribe({
+        next: (signInResource) => {
+          localStorage.setItem('token', signInResource.token);
+          this.isSignedInSignal.set(true);
+          this.currentEmailSignal.set(signInResource.email);
+          this.currentUserIdSignal.set(signInResource.id);
+          this.currentRolesSignal.set(signInResource.roles ?? []);
+          this.currentTenantIdSignal.set(signInResource.tenantId ?? null);
+          const destination = this.resolveHomeRoute(signInResource.roles ?? []);
+          router.navigate([destination]).then(() => resolve());
+        },
+        error: (err) => {
+          console.error('Sign-in failed:', err);
+          this.clearSession();
+          router.navigate(['/iam/sign-in']).then(() => reject(err));
+        },
+      });
     });
   }
 
-  signUp(signUpCommand: SignUpCommand, router: Router, redirectTo: string = '/iam/sign-in') {
-    this.iamApi.signUp(signUpCommand).subscribe({
-      next: (signUpResource) => {
-        console.log('Sign-up successful:', signUpResource);
-        router.navigate([redirectTo]).then();
-      },
-      error: (err) => {
-        console.error('Sign-up failed:', err);
-        this.clearSession();
-        router.navigate(['/iam/sign-up']).then();
-      }
+  signUp(
+    signUpCommand: SignUpCommand,
+    router: Router,
+    redirectTo: string = '/iam/sign-in',
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.iamApi.signUp(signUpCommand).subscribe({
+        next: (signUpResource) => {
+          console.log('Sign-up successful:', signUpResource);
+          router.navigate([redirectTo]).then(() => resolve());
+        },
+        error: (err) => {
+          console.error('Sign-up failed:', err);
+          this.clearSession();
+          router.navigate(['/iam/sign-up']).then(() => reject(err));
+        },
+      });
     });
   }
 
@@ -107,7 +115,7 @@ export class IamStore {
     return new Promise((resolve, reject) => {
       this.iamApi.changeMyPassword(command).subscribe({
         next: () => resolve(),
-        error: (err) => reject(err)
+        error: (err) => reject(err),
       });
     });
   }
@@ -162,7 +170,7 @@ export class IamStore {
         atob(padded)
           .split('')
           .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
+          .join(''),
       );
       return JSON.parse(json) as JwtPayload;
     } catch {
