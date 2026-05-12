@@ -11,15 +11,17 @@
     <form class="sign-in__form" [formGroup]="form" (ngSubmit)="performSignIn()">
       <div class="sign-in__field">
         <label for="email">{{ 'signIn.email.label' | translate }}</label>
-        <input pInputText
-               id="email"
-               type="email"
-               formControlName="email"
-               [placeholder]="'signIn.email.placeholder' | translate"
-               [class.ng-invalid]="isInvalidControl(form,'email')"
-               [class.ng-dirty]="isInvalidControl(form,'email')" />
-        @if (isInvalidControl(form,'email')) {
-          <small class="sign-in__error">{{ errorMessagesForControl(form,'email') }}</small>
+        <input
+          pInputText
+          id="email"
+          type="email"
+          formControlName="email"
+          [placeholder]="'signIn.email.placeholder' | translate"
+          [class.ng-invalid]="isInvalidControl(form, 'email')"
+          [class.ng-dirty]="isInvalidControl(form, 'email')"
+        />
+        @if (isInvalidControl(form, 'email')) {
+          <small class="sign-in__error">{{ errorMessagesForControl(form, 'email') }}</small>
         }
       </div>
 
@@ -28,16 +30,18 @@
           <label for="password">{{ 'signIn.password.label' | translate }}</label>
           <a class="sign-in__forgot" href="#">{{ 'signIn.forgotPassword' | translate }}</a>
         </div>
-        <p-password inputId="password"
-                    formControlName="password"
-                    [feedback]="false"
-                    [toggleMask]="true"
-                    [placeholder]="'signIn.password.placeholder' | translate"
-                    styleClass="sign-in__password"
-                    [class.ng-invalid]="isInvalidControl(form,'password')"
-                    [class.ng-dirty]="isInvalidControl(form,'password')" />
-        @if (isInvalidControl(form,'password')) {
-          <small class="sign-in__error">{{ errorMessagesForControl(form,'password') }}</small>
+        <p-password
+          inputId="password"
+          formControlName="password"
+          [feedback]="false"
+          [toggleMask]="true"
+          [placeholder]="'signIn.password.placeholder' | translate"
+          styleClass="sign-in__password"
+          [class.ng-invalid]="isInvalidControl(form, 'password')"
+          [class.ng-dirty]="isInvalidControl(form, 'password')"
+        />
+        @if (isInvalidControl(form, 'password')) {
+          <small class="sign-in__error">{{ errorMessagesForControl(form, 'password') }}</small>
         }
       </div>
 
@@ -47,19 +51,28 @@
       </div>
 
       <div class="sign-in__actions">
-        <button pButton
-                type="submit"
-                severity="primary"
-                class="sign-in__btn-primary">
-          <span>{{ 'signIn.submit' | translate }}</span>
-          <i class="pi pi-sign-in sign-in__btn-icon-right" aria-hidden="true"></i>
+        <button
+          pButton
+          type="submit"
+          severity="primary"
+          [loading]="isSubmitting()"
+          [disabled]="isSubmitting()"
+          class="sign-in__btn-primary"
+        >
+          @if (!isSubmitting()) {
+            <span>{{ 'signIn.submit' | translate }}</span>
+            <i class="pi pi-sign-in sign-in__btn-icon-right" aria-hidden="true"></i>
+          }
         </button>
-        <button pButton
-                type="button"
-                severity="secondary"
-                [outlined]="true"
-                routerLink="/iam/sign-up"
-                class="sign-in__btn-secondary">
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="true"
+          [disabled]="isSubmitting()"
+          routerLink="/iam/sign-up"
+          class="sign-in__btn-secondary"
+        >
           <span>{{ 'signIn.createAccount' | translate }}</span>
         </button>
       </div>

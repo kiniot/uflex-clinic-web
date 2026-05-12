@@ -7,6 +7,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { iamInterceptor } from './iam/infrastructure/iam.interceptor';
 import { providePrimeNG } from 'primeng/config';
+import { MessageService } from 'primeng/api';
 import { appPreset } from './app.preset';
 import { provideSubscriptionInfrastructure } from './subscription/infrastructure/subscription-infrastructure.providers';
 
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
       fallbackLang: 'en',
     }),
     provideRouter(routes),
+    MessageService,
     providePrimeNG({
       ripple: true,
       theme: {
