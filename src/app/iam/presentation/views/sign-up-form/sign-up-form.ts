@@ -18,14 +18,12 @@ import { BaseForm } from '../../../../shared/presentation/components/base-form/b
 import { IamStore } from '../../../application/iam.store';
 import { SignUpCommand } from '../../../domain/model/sign-up.command';
 
-const SIGN_UP_ROLE = 'clinicAdmin';
-
 /**
  * Component for the sign-up form view in the presentation layer of the IAM bounded context.
  * Mirrors the card layout of sign-in and renders the Create Account fields from the Figma design.
  *
- * The backend currently only accepts email, password and roles; fullName and confirmPassword
- * are presentation-only.
+ * The backend currently only accepts email and password; fullName and confirmPassword are
+ * presentation-only.
  */
 @Component({
   selector: 'app-sign-up-form',
@@ -89,7 +87,6 @@ export class SignUpForm extends BaseForm {
     const signUpCommand = new SignUpCommand({
       email: this.form.value.email!,
       password: this.form.value.password!,
-      roles: [SIGN_UP_ROLE],
     });
     try {
       await this.store.signUp(signUpCommand, this.router);
