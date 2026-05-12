@@ -98,8 +98,7 @@ function extractTenantId(response: unknown): string | null {
     stringValue(record, 'tenant_id') ??
     stringValue(record, 'clinicId') ??
     stringValue(record, 'clinic_id') ??
-    // TODO: Este fallback usa user.id como clinicId solo para demo local.
-    // A futuro debe reemplazarse por tenantId real expuesto por IAM/Organization.
+    // TODO: Replace this compatibility fallback once IAM/Organization exposes tenantId reliably.
     stringValue(record, 'id') ??
     (data && typeof data === 'object' ? extractTenantId(data) : null)
   );

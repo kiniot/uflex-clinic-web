@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map, of, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { BillingCycle } from '../../domain/models/billing-cycle.enum';
 import { CreateStripeCheckoutSessionDto } from '../http/dtos/create-stripe-checkout-session.dto';
@@ -18,15 +18,6 @@ export class StripeCheckoutService {
   private readonly checkoutSessionUrl = `${environment.apiBaseUrl}${environment.subscription.checkoutSessionEndpoint}`;
 
   startCheckout(clinicId: string, planId: string, billingCycle: BillingCycle): Observable<void> {
-    if (!environment.stripe.enabled || environment.subscription.useMockApi) {
-      return of('/subscription?payment=success').pipe(
-        tap((checkoutUrl) => {
-          window.location.href = checkoutUrl;
-        }),
-        map(() => undefined),
-      );
-    }
-
     const body: CreateStripeCheckoutSessionDto = { clinicId, planId, billingCycle };
 
     return this.http.post<StripeCheckoutSessionResponseDto>(this.checkoutSessionUrl, body).pipe(

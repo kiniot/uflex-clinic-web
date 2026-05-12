@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { catchError, finalize, forkJoin, of, switchMap, tap } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { BillingCycle } from '../../domain/models/billing-cycle.enum';
 import { Invoice } from '../../domain/models/invoice';
 import { Subscription } from '../../domain/models/subscription';
@@ -12,14 +11,11 @@ import { CreateStripeCheckoutSessionUseCase } from '../use-cases/create-stripe-c
 import { GetCurrentSubscriptionUseCase } from '../use-cases/get-current-subscription.use-case';
 import { GetInvoiceHistoryUseCase } from '../use-cases/get-invoice-history.use-case';
 import { GetPlansUseCase } from '../use-cases/get-plans.use-case';
-import { PurchaseSubscriptionUseCase } from '../use-cases/purchase-subscription.use-case';
 import {
   MissingSubscriptionTenantError,
   MissingSubscriptionTokenError,
   SubscriptionTenantContextService,
 } from './subscription-tenant-context.service';
-
-const MOCK_CLINIC_ID = 'clinic-demo-001';
 
 /**
  * Signal facade that coordinates Subscription use cases for the presentation layer.
@@ -30,7 +26,6 @@ export class SubscriptionFacade {
   private readonly getPlansUseCase = inject(GetPlansUseCase);
   private readonly getCurrentSubscriptionUseCase = inject(GetCurrentSubscriptionUseCase);
   private readonly getInvoiceHistoryUseCase = inject(GetInvoiceHistoryUseCase);
-  private readonly purchaseSubscriptionUseCase = inject(PurchaseSubscriptionUseCase);
   private readonly cancelSubscriptionUseCase = inject(CancelSubscriptionUseCase);
   private readonly changePlanUseCase = inject(ChangePlanUseCase);
   private readonly createStripeCheckoutSessionUseCase = inject(CreateStripeCheckoutSessionUseCase);
@@ -90,34 +85,7 @@ export class SubscriptionFacade {
       });
   }
 
-  purchase(planId: string, billingCycle: BillingCycle): void {
-    this.loadingSignal.set(true);
-    this.errorSignal.set(null);
-
-    this.resolveClinicId()
-      .pipe(
-        switchMap((clinicId) =>
-          this.purchaseSubscriptionUseCase.execute(
-            clinicId,
-            planId,
-            billingCycle,
-            'stripe_checkout_mock',
-          ),
-        ),
-        finalize(() => this.loadingSignal.set(false)),
-      )
-      .subscribe({
-        next: (subscription) => this.setSubscription(subscription),
-        error: (error: unknown) => this.setActionError(error, 'No se pudo iniciar la suscripción.'),
-      });
-  }
-
   startCheckout(planId: string, billingCycle: BillingCycle): void {
-    if (environment.subscription.useMockApi) {
-      this.purchase(planId, billingCycle);
-      return;
-    }
-
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
@@ -170,7 +138,7 @@ export class SubscriptionFacade {
 
   updatePaymentMethod(subscriptionId: string): void {
     void subscriptionId;
-    if (!environment.subscription.useMockApi && !this.currentClinicIdSignal()) {
+    if (!this.currentClinicIdSignal()) {
       this.errorSignal.set('Debes iniciar sesión para gestionar la suscripción.');
       return;
     }
@@ -202,8 +170,6 @@ export class SubscriptionFacade {
   private resolveClinicId() {
     const cachedClinicId = this.currentClinicIdSignal();
     if (cachedClinicId) return of(cachedClinicId);
-    if (environment.subscription.useMockApi) return of(MOCK_CLINIC_ID);
-
     return this.tenantContext
       .resolveClinicId()
       .pipe(tap((clinicId) => this.currentClinicIdSignal.set(clinicId)));
