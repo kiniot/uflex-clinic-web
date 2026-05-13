@@ -16,6 +16,7 @@
 
 UflexClinicWeb is a modern health-tech web application built with Angular 21, designed to provide comprehensive digital rehabilitation solutions. The project adheres to strict Domain-Driven Design (DDD) principles and high-performance development standards.
 
+
 ## Technical Stack
 
 - **Framework**: Angular 21 with standalone components.
@@ -25,14 +26,17 @@ UflexClinicWeb is a modern health-tech web application built with Angular 21, de
 - **Testing**: Vitest for unit testing.
 - **Package Manager**: pnpm (requires Node >=24 and pnpm >=10.16).
 
+
 ## Development Workflow
 
 This project strictly uses `pnpm` for dependency management.
+
 
 ### Installation
 
 To install dependencies, run:
 `pnpm install`
+
 
 ### Development Server
 
@@ -41,6 +45,7 @@ To start a local development server, run:
 
 The application is served at `http://localhost:4200/`. It uses `environment.development.ts` via file replacements for local configuration.
 
+
 ### Building for Production
 
 To build the project for production, run:
@@ -48,10 +53,12 @@ To build the project for production, run:
 
 The production build enforces strict bundle size limits (1MB for the initial bundle and 8KB per component style).
 
+
 ### Testing
 
 To execute unit tests using the Vitest test runner, run:
 `pnpm test`
+
 
 ## Architecture and Conventions
 
@@ -62,10 +69,12 @@ The repository follows a **DDD-style layered architecture organized by bounded c
 3. **Infrastructure**: Handles external concerns including HTTP endpoints, assemblers, DTOs, and guards.
 4. **Presentation**: Contains standalone components, views, and context-specific routing.
 
+
 ### Data Pipeline
 
 The application implements a strict assembler pattern for data flow:
 `Command (domain) -> Request DTO (infra) -> Endpoint (infra) -> Response/Resource (infra) -> Store (application)`
+
 
 ### Key Conventions
 
@@ -75,6 +84,7 @@ The application implements a strict assembler pattern for data flow:
 - **Styling**: SCSS is the default style language. Do not hardcode colors; reference PrimeNG Aura preset tokens defined in `app.preset.ts`.
 - **Formatting**: Code formatting is handled via Prettier. To format files, run:
   `npx prettier --write <path>`
+
 
 ## Additional Documentation
 
