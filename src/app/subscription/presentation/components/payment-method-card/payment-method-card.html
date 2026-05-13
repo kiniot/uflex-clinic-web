@@ -8,13 +8,20 @@
   </div>
 
   @if (paymentReference(); as payment) {
-    <div class="card-number">{{ payment.brand | titlecase }} ending in {{ payment.last4 }}</div>
-    <dl>
-      <div>
-        <dt>Expires</dt>
-        <dd>{{ payment.expiresOn }}</dd>
-      </div>
-    </dl>
+    <div class="card-number">Provider STRIPE</div>
+    @if (hasLast4(payment)) {
+      <p>{{ payment.brand | titlecase }} ending in {{ payment.last4 }}</p>
+    } @else {
+      <p>Payment method registered with Stripe.</p>
+    }
+    @if (hasExpiration(payment)) {
+      <dl>
+        <div>
+          <dt>Expires</dt>
+          <dd>{{ payment.expiresOn }}</dd>
+        </div>
+      </dl>
+    }
     <button
       pButton
       type="button"

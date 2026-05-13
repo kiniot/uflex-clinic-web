@@ -15,6 +15,7 @@ import { SubscriptionPlan } from '../../../domain/models/subscription-plan';
 export class PlanCard {
   plan = input.required<SubscriptionPlan>();
   isCurrent = input<boolean>(false);
+  hasActiveSubscription = input<boolean>(false);
   selected = input(false);
   planSelected = output<string>();
 
@@ -31,5 +32,10 @@ export class PlanCard {
   protected selectPlan(): void {
     if (this.isCurrentPlan()) return;
     this.planSelected.emit(this.plan().id);
+  }
+
+  protected buttonLabel(): string {
+    if (this.isCurrentPlan()) return 'Active Plan';
+    return this.hasActiveSubscription() ? 'Change plan' : 'Select plan';
   }
 }

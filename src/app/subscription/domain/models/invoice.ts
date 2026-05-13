@@ -12,6 +12,7 @@ export class Invoice {
     private readonly dueAtValue: Date,
     private readonly amountValue: Money,
     private readonly statusValue: InvoiceStatus,
+    private readonly paidAtValue: Date | null = null,
   ) {}
 
   get id(): string {
@@ -36,5 +37,9 @@ export class Invoice {
 
   get status(): InvoiceStatus {
     return this.statusValue;
+  }
+
+  get paidAt(): Date | null {
+    return this.paidAtValue;
   }
 }

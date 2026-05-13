@@ -54,43 +54,13 @@ export class SubscriptionFacade {
   readonly loading = this.loadingSignal.asReadonly();
   readonly error = this.errorSignal.asReadonly();
 
-  load(options: { checkoutSessionId?: string; onCheckoutConfirmed?: () => void } = {}): void {
+  load(): void {
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
     this.invoicesSignal.set([]);
 
-    this.confirmCheckoutSessionIfNeeded(options.checkoutSessionId, options.onCheckoutConfirmed)
-      .pipe(
-        switchMap(() =>
-          forkJoin({
-            plans: this.getPlansUseCase.execute().pipe(
-              catchError((error: unknown) => {
-                this.setLoadError(error);
-                return of([]);
-              }),
-            ),
-            currentSubscription: this.getCurrentSubscriptionUseCase.execute().pipe(
-              catchError((error: unknown) => {
-                this.setLoadError(error);
-                return of(null);
-              }),
-            ),
-            paymentReference: this.getPaymentMethodUseCase.execute().pipe(
-              catchError((error: unknown) => {
-                this.setActionError(error, 'No se pudo cargar el método de pago.');
-                return of(null);
-              }),
-            ),
-            invoices: this.getInvoiceHistoryUseCase.execute().pipe(
-              catchError((error: unknown) => {
-                this.setActionError(error, 'No se pudo cargar el historial de facturas.');
-                return of([]);
-              }),
-            ),
-          }),
-        ),
-        finalize(() => this.loadingSignal.set(false)),
-      )
+    this.loadSubscriptionSnapshot()
+      .pipe(finalize(() => this.loadingSignal.set(false)))
       .subscribe({
         next: ({ plans, currentSubscription, paymentReference, invoices }) => {
           this.plansSignal.set(plans);
@@ -103,18 +73,71 @@ export class SubscriptionFacade {
       });
   }
 
-  startCheckout(planId: string, billingCycle: BillingCycle): void {
-    if (!planId) {
-      this.errorSignal.set('Selecciona un plan válido para continuar.');
+  confirmCheckoutSession(sessionId: string, onConfirmed?: () => void): void {
+    const checkoutSessionId = sessionId.trim();
+    if (!checkoutSessionId) {
+      this.load();
+      return;
+    }
+
+    this.loadingSignal.set(true);
+    this.errorSignal.set(null);
+    this.invoicesSignal.set([]);
+
+    this.confirmStripeCheckoutSessionUseCase
+      .execute(checkoutSessionId)
+      .pipe(
+        tap((subscription) => {
+          this.currentSubscriptionSignal.set(subscription);
+          this.currentClinicIdSignal.set(subscription.clinicId);
+          this.paymentReferenceSignal.set(subscription.paymentReference);
+          onConfirmed?.();
+        }),
+        switchMap((subscription) => this.loadSubscriptionSnapshot(subscription)),
+        finalize(() => this.loadingSignal.set(false)),
+      )
+      .subscribe({
+        next: ({ plans, currentSubscription, paymentReference, invoices }) => {
+          const activeSubscription = currentSubscription ?? this.currentSubscriptionSignal();
+          this.plansSignal.set(plans);
+          this.currentSubscriptionSignal.set(activeSubscription);
+          this.currentClinicIdSignal.set(activeSubscription?.clinicId ?? null);
+          this.paymentReferenceSignal.set(paymentReference ?? activeSubscription?.paymentReference ?? null);
+          this.invoicesSignal.set(invoices);
+        },
+        error: (error: unknown) =>
+          this.setActionError(error, 'No se pudo confirmar el pago de Stripe Checkout.'),
+      });
+  }
+
+  startCheckout(planId: string, billingCycle?: BillingCycle | null): void {
+    const checkoutPlanId = planId?.trim();
+    const checkoutBillingCycle = normalizeBillingCycle(billingCycle);
+
+    if (!checkoutPlanId) {
+      this.errorSignal.set('Selecciona un plan válido.');
       return;
     }
 
     this.loadingSignal.set(true);
     this.errorSignal.set(null);
 
-    this.createStripeCheckoutSessionUseCase
-      .execute(planId, billingCycle)
-      .pipe(finalize(() => this.loadingSignal.set(false)))
+    this.resolveClinicId()
+      .pipe(
+        switchMap((clinicId) => {
+          const checkoutClinicId = clinicId.trim();
+          if (!checkoutClinicId) {
+            throw new MissingSubscriptionTenantError();
+          }
+
+          return this.createStripeCheckoutSessionUseCase.execute(
+            checkoutClinicId,
+            checkoutPlanId,
+            checkoutBillingCycle,
+          );
+        }),
+        finalize(() => this.loadingSignal.set(false)),
+      )
       .subscribe({
         next: () => {
           // StripeCheckoutService redirects to the checkoutUrl returned by the backend.
@@ -173,23 +196,40 @@ export class SubscriptionFacade {
   }
 
   private resolveClinicId() {
-    const cachedClinicId = this.currentClinicIdSignal();
+    const cachedClinicId = this.currentClinicIdSignal()?.trim();
     if (cachedClinicId) return of(cachedClinicId);
     return this.tenantContext
       .resolveClinicId()
-      .pipe(tap((clinicId) => this.currentClinicIdSignal.set(clinicId)));
+      .pipe(tap((clinicId) => this.currentClinicIdSignal.set(clinicId.trim())));
   }
 
-  private confirmCheckoutSessionIfNeeded(sessionId?: string, onConfirmed?: () => void) {
-    if (!sessionId) return of(undefined);
-
-    return this.confirmStripeCheckoutSessionUseCase.execute(sessionId).pipe(
-      tap(() => onConfirmed?.()),
-      catchError((error: unknown) => {
-        this.setActionError(error, 'No se pudo confirmar el pago de Stripe Checkout.');
-        return of(undefined);
-      }),
-    );
+  private loadSubscriptionSnapshot(confirmedSubscription: Subscription | null = null) {
+    return forkJoin({
+      plans: this.getPlansUseCase.execute().pipe(
+        catchError((error: unknown) => {
+          this.setLoadError(error);
+          return of([]);
+        }),
+      ),
+      currentSubscription: this.getCurrentSubscriptionUseCase.execute().pipe(
+        catchError((error: unknown) => {
+          this.setLoadError(error);
+          return of(confirmedSubscription);
+        }),
+      ),
+      paymentReference: this.getPaymentMethodUseCase.execute().pipe(
+        catchError((error: unknown) => {
+          this.setActionError(error, 'No se pudo cargar el método de pago.');
+          return of(confirmedSubscription?.paymentReference ?? null);
+        }),
+      ),
+      invoices: this.getInvoiceHistoryUseCase.execute().pipe(
+        catchError((error: unknown) => {
+          this.setActionError(error, 'No se pudo cargar el historial de facturas.');
+          return of([]);
+        }),
+      ),
+    });
   }
 
   private setLoadError(error: unknown): void {
@@ -213,7 +253,7 @@ export class SubscriptionFacade {
     }
 
     if (error instanceof MissingSubscriptionTenantError) {
-      this.errorSignal.set('Tu usuario todavía no tiene una clínica asociada.');
+      this.errorSignal.set('No se pudo resolver la clínica del usuario.');
       return;
     }
 
@@ -281,4 +321,8 @@ function errorMessage(errorBody: unknown): string {
   const record = errorBody as Record<string, unknown>;
   const values = [record['message'], record['error'], record['detail'], record['description']];
   return values.filter((value): value is string => typeof value === 'string').join(' ');
+}
+
+function normalizeBillingCycle(billingCycle?: BillingCycle | null): BillingCycle {
+  return billingCycle === BillingCycle.Yearly ? BillingCycle.Yearly : BillingCycle.Monthly;
 }

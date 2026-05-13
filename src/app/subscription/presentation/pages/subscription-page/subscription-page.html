@@ -44,6 +44,7 @@
           <app-plan-card
             [plan]="plan"
             [isCurrent]="isCurrentPlan(plan.id)"
+            [hasActiveSubscription]="hasActiveSubscription()"
             (planSelected)="selectPlan($event)"
           />
         }

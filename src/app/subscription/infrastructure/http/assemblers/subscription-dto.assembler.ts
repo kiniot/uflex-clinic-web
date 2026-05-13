@@ -29,8 +29,8 @@ export class SubscriptionDtoAssembler {
       dateValue(backendDto, 'nextBillingDate', 'next_billing_date'),
       new PaymentReference(
         stringValue(paymentReference, 'providerToken') || 'stripe',
-        stringValue(paymentReference, 'last4', 'cardLast4') || '****',
-        stringValue(paymentReference, 'expiresOn', 'expiration') || '--/----',
+        stringValue(paymentReference, 'last4', 'cardLast4'),
+        stringValue(paymentReference, 'expiresOn', 'expiration'),
         stringValue(paymentReference, 'brand', 'cardBrand') || 'card',
       ),
     );

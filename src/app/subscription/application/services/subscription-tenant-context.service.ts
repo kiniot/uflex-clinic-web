@@ -37,9 +37,14 @@ export class SubscriptionTenantContextService {
       return throwError(() => new MissingSubscriptionTokenError());
     }
 
-    const tenantId = this.iamStore.currentTenantId();
+    const tenantId = nonEmptyString(this.iamStore.currentTenantId());
     if (tenantId) {
       return of(tenantId);
+    }
+
+    const userId = nonEmptyString(this.iamStore.currentUserId()) ?? this.userIdFromToken(token);
+    if (userId) {
+      return of(userId);
     }
 
     const email = this.iamStore.currentEmail() ?? this.emailFromToken(token);
@@ -70,6 +75,15 @@ export class SubscriptionTenantContextService {
     try {
       const payload = decodeJwtPayload(token);
       return payload?.email ?? payload?.sub ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  private userIdFromToken(token: string): string | null {
+    try {
+      const payload = decodeJwtPayload(token);
+      return nonEmptyString(payload?.sub);
     } catch {
       return null;
     }
@@ -111,5 +125,12 @@ function extractTenantId(response: unknown): string | null {
 
 function stringValue(record: Record<string, unknown>, key: string): string | null {
   const value = record[key];
-  return typeof value === 'string' && value.length > 0 ? value : null;
+  return nonEmptyString(value);
+}
+
+function nonEmptyString(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+
+  const trimmedValue = value.trim();
+  return trimmedValue.length > 0 ? trimmedValue : null;
 }

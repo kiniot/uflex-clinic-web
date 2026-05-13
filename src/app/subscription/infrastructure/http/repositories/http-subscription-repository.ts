@@ -135,7 +135,7 @@ function toPaymentReferenceFromDto(dto: PaymentReferenceDto): PaymentReference {
     stringValue(record, 'providerToken', 'paymentToken') ||
       stringValue(record, 'token') ||
       'stripe',
-    stringValue(record, 'last4', 'cardLast4') || '****',
+    stringValue(record, 'last4', 'cardLast4'),
     expirationValue(record),
     brand,
   );
@@ -147,7 +147,7 @@ function expirationValue(dto: Record<string, unknown>): string {
 
   const expMonth = numberValue(dto, 'expMonth');
   const expYear = numberValue(dto, 'expYear');
-  if (!expMonth || !expYear) return '--/----';
+  if (!expMonth || !expYear) return '';
 
   return `${expMonth}/${expYear}`;
 }

@@ -21,6 +21,7 @@ export class InvoiceDtoAssembler {
         stringValue(backendDto, 'currency', undefined, 'PEN'),
       ),
       enumValue(backendDto, 'status', InvoiceStatus.Pending),
+      nullableDateValue(backendDto, 'paidAt', 'paid_at'),
     );
   }
 }
@@ -43,6 +44,15 @@ function numberValue(dto: Record<string, unknown>, key: string): number {
 function dateValue(dto: Record<string, unknown>, key: string, alternateKey: string): Date {
   const value = stringValue(dto, key, alternateKey);
   return value ? new Date(value) : new Date();
+}
+
+function nullableDateValue(
+  dto: Record<string, unknown>,
+  key: string,
+  alternateKey: string,
+): Date | null {
+  const value = stringValue(dto, key, alternateKey);
+  return value ? new Date(value) : null;
 }
 
 function enumValue<T extends string>(dto: Record<string, unknown>, key: string, fallback: T): T {

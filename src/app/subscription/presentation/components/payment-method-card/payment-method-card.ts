@@ -16,4 +16,12 @@ import { PaymentReference } from '../../../domain/value-objects/payment-referenc
 export class PaymentMethodCard {
   paymentReference = input.required<PaymentReference | null>();
   updateRequested = output<void>();
+
+  hasLast4(paymentReference: PaymentReference): boolean {
+    return Boolean(paymentReference.last4 && paymentReference.last4 !== '****');
+  }
+
+  hasExpiration(paymentReference: PaymentReference): boolean {
+    return Boolean(paymentReference.expiresOn && paymentReference.expiresOn !== '--/----');
+  }
 }

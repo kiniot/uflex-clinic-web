@@ -5,7 +5,7 @@
       <h3>{{ plan().name }}</h3>
     </div>
     @if (isCurrentPlan()) {
-      <span class="current-pill">Current</span>
+      <span class="current-pill">Active Plan</span>
     }
   </div>
   <p class="plan-description">{{ plan().code }} operating capacity for clinical teams.</p>
@@ -28,7 +28,7 @@
   <button
     pButton
     type="button"
-    [label]="isCurrentPlan() ? 'Current plan' : 'Select plan'"
+    [label]="buttonLabel()"
     [disabled]="isCurrentPlan()"
     icon="pi pi-arrow-right"
     iconPos="right"

@@ -4,6 +4,7 @@ import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SubscriptionFacade } from '../../../application/services/subscription-facade';
 import { BillingCycle } from '../../../domain/models/billing-cycle.enum';
+import { SubscriptionStatus } from '../../../domain/models/subscription-status.enum';
 import { CurrentSubscriptionCard } from '../../components/current-subscription-card/current-subscription-card';
 import { InvoiceHistoryTable } from '../../components/invoice-history-table/invoice-history-table';
 import { PaymentMethodCard } from '../../components/payment-method-card/payment-method-card';
@@ -49,9 +50,15 @@ export class SubscriptionPage implements OnInit {
   }
 
   isCurrentPlan(planId: string): boolean {
+    const current = this.facade.currentSubscription();
     return (
-      normalizePlanKey(this.facade.currentSubscription()?.plan.id) === normalizePlanKey(planId)
+      current?.status === SubscriptionStatus.Active &&
+      normalizePlanKey(current.plan.id) === normalizePlanKey(planId)
     );
+  }
+
+  hasActiveSubscription(): boolean {
+    return this.facade.currentSubscription()?.status === SubscriptionStatus.Active;
   }
 
   updatePaymentMethod(): void {
@@ -62,10 +69,15 @@ export class SubscriptionPage implements OnInit {
 
   private handleStripeReturn(): void {
     const payment = this.route.snapshot.queryParamMap.get('payment');
+    const sessionId = this.route.snapshot.queryParamMap.get('session_id');
 
     if (payment === 'success') {
       this.paymentSeverity.set('success');
-      this.paymentMessage.set('Pago procesado. Estamos actualizando tu suscripción.');
+      this.paymentMessage.set(
+        sessionId
+          ? 'Pago procesado. Tu suscripción fue activada.'
+          : 'Pago procesado. Estamos actualizando tu suscripción.',
+      );
       return;
     }
 
@@ -81,16 +93,18 @@ export class SubscriptionPage implements OnInit {
     const payment = this.route.snapshot.queryParamMap.get('payment');
     const sessionId = this.route.snapshot.queryParamMap.get('session_id');
 
-    this.facade.load({
-      checkoutSessionId: payment === 'success' ? (sessionId ?? undefined) : undefined,
-      onCheckoutConfirmed: () => {
+    if (payment === 'success' && sessionId) {
+      this.facade.confirmCheckoutSession(sessionId, () => {
         void this.router.navigate([], {
           relativeTo: this.route,
           queryParams: {},
           replaceUrl: true,
         });
-      },
-    });
+      });
+      return;
+    }
+
+    this.facade.load();
   }
 }
 
