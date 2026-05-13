@@ -1,0 +1,195 @@
+:host { display: block; }
+
+.users-table__scroll { overflow-x: auto; }
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+.users-table th,
+.users-table td {
+  padding: 14px 20px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.users-table thead th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-50);
+  border-top: 1px solid var(--p-surface-200);
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .users-table thead th {
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-300);
+}
+
+.users-table__row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--p-surface-100);
+  transition: background-color 120ms ease;
+}
+
+:host-context(.app-dark) .users-table__row {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.users-table__row:last-child { border-bottom: 0; }
+
+.users-table__row:hover {
+  background: var(--p-surface-50);
+}
+
+:host-context(.app-dark) .users-table__row:hover {
+  background: var(--p-surface-200);
+}
+
+.users-table__person {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+:host ::ng-deep .users-table__avatar {
+  background: color-mix(in srgb, var(--p-primary-color) 16%, var(--p-surface-100));
+  color: var(--p-primary-color);
+  font-weight: 600;
+}
+
+.users-table__person-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.users-table__name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.users-table__email {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+/* Role pill — colored by role */
+.users-table__role {
+  display: inline-flex;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.users-table__role--physio {
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
+}
+
+.users-table__role--patient {
+  background: rgba(123, 187, 218, 0.18);
+  color: #2f7da6;
+}
+
+.users-table__role--admin {
+  background: color-mix(in srgb, var(--p-primary-color) 18%, transparent);
+  color: var(--p-primary-color);
+}
+
+:host-context(.app-dark) .users-table__role--patient { color: #7bbbda; }
+
+/* Status pill with leading dot */
+.users-table__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.users-table__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.users-table__status--active {
+  background: rgba(52, 199, 155, 0.16);
+  color: #16785a;
+}
+.users-table__status--active .users-table__dot { background: #34c79b; }
+
+.users-table__status--pending {
+  background: rgba(232, 159, 65, 0.18);
+  color: #b16614;
+}
+.users-table__status--pending .users-table__dot { background: #e89f41; }
+
+.users-table__status--suspended {
+  background: rgba(217, 83, 79, 0.18);
+  color: #b6322f;
+}
+.users-table__status--suspended .users-table__dot { background: #d9534f; }
+
+:host-context(.app-dark) .users-table__status--active { color: #34c79b; }
+:host-context(.app-dark) .users-table__status--pending { color: #e89f41; }
+:host-context(.app-dark) .users-table__status--suspended { color: #ff8a87; }
+
+/* Verification badge */
+.users-table__verification {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.users-table__verification i { font-size: 13px; }
+
+.users-table__verification--verified { color: #16785a; }
+.users-table__verification--awaiting-docs { color: var(--p-text-muted-color); }
+
+:host-context(.app-dark) .users-table__verification--verified { color: #34c79b; }
+
+.users-table__last-login {
+  color: var(--p-text-muted-color);
+  font-size: 12px;
+}
+
+.users-table__actions-col {
+  text-align: right;
+  width: 60px;
+}
+
+.users-table__action {
+  background: transparent;
+  border: 0;
+  color: var(--p-text-muted-color);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+}
+
+.users-table__action:hover {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+}
+
+:host-context(.app-dark) .users-table__action:hover {
+  background: var(--p-surface-200);
+}

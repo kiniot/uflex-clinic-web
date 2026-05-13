@@ -1,0 +1,32 @@
+.invoice-panel {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 16px;
+  padding: 1.25rem;
+}
+
+.section-heading span {
+  color: var(--p-turquoise-500);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+h2 {
+  color: var(--p-primary-500);
+  font-size: 1.45rem;
+  margin: 0.2rem 0 1rem;
+}
+
+:host ::ng-deep .p-datatable-table {
+  min-width: 42rem;
+}
+
+:host ::ng-deep .p-datatable-thead > tr > th {
+  background: var(--p-surface-50);
+  color: var(--p-primary-700);
+  font-size: 0.8rem;
+}
+
+:host ::ng-deep .p-datatable-tbody > tr > td {
+  color: var(--p-surface-800);
+}

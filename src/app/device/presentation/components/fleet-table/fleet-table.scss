@@ -1,0 +1,226 @@
+:host {
+  display: block;
+}
+
+.fleet {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+:host-context(.app-dark) .fleet {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.fleet__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .fleet__header {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.fleet__title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--p-text-color);
+  margin: 0;
+}
+
+.fleet__filter-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--p-surface-200);
+  background: var(--p-surface-0);
+  color: var(--p-text-muted-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fleet__filter-btn:hover {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+}
+
+.fleet__scroll {
+  overflow-x: auto;
+}
+
+.fleet__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+.fleet__table th,
+.fleet__table td {
+  padding: 14px 20px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.fleet__table thead th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-50);
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .fleet__table thead th {
+  background: var(--p-surface-200);
+  border-bottom-color: var(--p-surface-300);
+}
+
+.fleet__table tbody tr {
+  border-bottom: 1px solid var(--p-surface-100);
+}
+
+:host-context(.app-dark) .fleet__table tbody tr {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.fleet__table tbody tr:last-child {
+  border-bottom: 0;
+}
+
+.fleet__table tbody tr:hover {
+  background: var(--p-surface-50);
+}
+
+:host-context(.app-dark) .fleet__table tbody tr:hover {
+  background: var(--p-surface-200);
+}
+
+.fleet__kit-id {
+  color: var(--p-primary-color);
+  font-weight: 600;
+}
+
+.fleet__muted {
+  color: var(--p-text-muted-color);
+}
+
+.fleet__firmware {
+  color: var(--p-text-muted-color);
+}
+
+.fleet__actions-col {
+  text-align: right;
+  width: 60px;
+}
+
+/* Battery */
+.fleet-battery {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fleet-battery__bar {
+  width: 56px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--p-surface-200);
+  overflow: hidden;
+}
+
+:host-context(.app-dark) .fleet-battery__bar {
+  background: var(--p-surface-300);
+}
+
+.fleet-battery__fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 200ms ease;
+}
+
+.fleet-battery--high { background: #34c79b; }
+.fleet-battery--medium { background: #1f3a4d; }
+.fleet-battery--low { background: #d9534f; }
+
+.fleet-battery__label {
+  font-weight: 500;
+  color: var(--p-text-color);
+  min-width: 36px;
+}
+
+/* Bluetooth */
+.fleet__bt {
+  font-size: 16px;
+}
+
+.fleet__bt--on { color: var(--p-primary-color); }
+.fleet__bt--off { color: var(--p-text-muted-color); opacity: 0.5; }
+
+/* Calibration */
+.fleet__cal {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.fleet__cal i { font-size: 13px; }
+
+.fleet__cal--valid { color: #1c7e5d; }
+.fleet__cal--expired { color: #c73a3a; }
+.fleet__cal--pending { color: var(--p-text-muted-color); }
+
+/* Status pill */
+.fleet__status {
+  display: inline-flex;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fleet__status--online {
+  background: rgba(52, 199, 155, 0.18);
+  color: #16785a;
+}
+
+.fleet__status--idle {
+  background: var(--p-surface-200);
+  color: var(--p-text-muted-color);
+}
+
+.fleet__status--offline {
+  background: rgba(217, 83, 79, 0.16);
+  color: #b6322f;
+}
+
+.fleet__row-action {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--p-text-muted-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fleet__row-action:hover {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+}

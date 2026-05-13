@@ -1,0 +1,22 @@
+<div class="alerts-feed">
+  @for (alert of alerts(); track alert.id) {
+    <article class="alerts-feed__card alerts-feed__card--{{ alert.severity }}">
+      <header class="alerts-feed__header">
+        <strong class="alerts-feed__patient">{{ alert.patientName }}</strong>
+        <span class="alerts-feed__ago">{{ alert.agoLabel }}</span>
+      </header>
+      <p class="alerts-feed__message">{{ alert.message }}</p>
+      <div class="alerts-feed__actions">
+        @for (action of alert.actions; track action.label) {
+          <button pButton type="button"
+                  class="alerts-feed__action alerts-feed__action--{{ action.variant }}"
+                  [severity]="action.variant === 'primary' ? 'danger' : 'secondary'"
+                  [outlined]="action.variant === 'secondary'"
+                  (click)="onAction(alert, action)">
+            <span>{{ action.label | uppercase }}</span>
+          </button>
+        }
+      </div>
+    </article>
+  }
+</div>

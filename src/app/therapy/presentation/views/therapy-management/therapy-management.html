@@ -1,0 +1,25 @@
+<app-page-header
+  [title]="'clinicAdmin.therapy.title' | translate"
+  [subtitle]="'clinicAdmin.therapy.subtitle' | translate">
+  <button pButton type="button" severity="primary" class="therapy__primary-btn"
+          routerLink="register">
+    <i class="pi pi-plus" aria-hidden="true"></i>
+    <span>{{ 'clinicAdmin.therapy.registerNew' | translate }}</span>
+  </button>
+</app-page-header>
+
+<app-exercise-filters class="therapy__filters"
+                      [(search)]="search"
+                      [(category)]="category"
+                      [(difficulty)]="difficulty"
+                      [(equipment)]="equipment"/>
+
+<section class="therapy__grid">
+  @for (exercise of filteredExercises(); track exercise.id) {
+    <app-exercise-card [exercise]="exercise"
+                       (viewDetails)="onViewDetails($event)"
+                       (addToList)="onAddToList($event)"/>
+  } @empty {
+    <p class="therapy__empty">{{ 'therapyManagement.empty' | translate }}</p>
+  }
+</section>

@@ -1,0 +1,84 @@
+<a class="detail__back" routerLink="/clinic-admin/device">
+  <i class="pi pi-arrow-left" aria-hidden="true"></i>
+  <span>{{ 'deviceDetails.backToInventory' | translate }}</span>
+</a>
+
+@if (device(); as device) {
+  <app-page-header
+    [title]="'deviceDetails.title' | translate"
+    [subtitle]="'deviceDetails.subtitle' | translate: { kitId: device.kitId }">
+  </app-page-header>
+
+  <section class="detail__content">
+    <article class="detail__card">
+      <header class="detail__card-header">
+        <h2 class="detail__card-title">{{ 'deviceDetails.summary.title' | translate }}</h2>
+      </header>
+      <div class="detail__grid">
+        <div class="detail__item">
+          <span class="detail__label">{{ 'deviceDetails.summary.kitId' | translate }}</span>
+          <span class="detail__value">{{ device.kitId }}</span>
+        </div>
+        <div class="detail__item">
+          <span class="detail__label">{{ 'deviceDetails.summary.linkedPatient' | translate }}</span>
+          <span class="detail__value">
+            @if (device.linkedPatient) {
+              {{ device.linkedPatient }}
+            } @else {
+              <span class="detail__muted">{{ 'deviceManagement.unassigned' | translate }}</span>
+            }
+          </span>
+        </div>
+        <div class="detail__item">
+          <span class="detail__label">{{ 'deviceDetails.summary.batteryLevel' | translate }}</span>
+          <span class="detail__value">{{ device.batteryLevel }}%</span>
+        </div>
+        <div class="detail__item">
+          <span class="detail__label">{{ 'deviceDetails.summary.firmware' | translate }}</span>
+          <span class="detail__value">{{ device.firmwareVersion }}</span>
+        </div>
+      </div>
+    </article>
+
+    <article class="detail__card">
+      <header class="detail__card-header">
+        <h2 class="detail__card-title">{{ 'deviceDetails.status.title' | translate }}</h2>
+        <p class="detail__card-subtitle">{{ 'deviceDetails.status.subtitle' | translate }}</p>
+      </header>
+
+      <form class="detail__form" [formGroup]="form" (ngSubmit)="onSave()">
+        <label for="status">{{ 'deviceDetails.status.label' | translate }}</label>
+        <p-select inputId="status"
+                  formControlName="status"
+                  [options]="statusOptions()"
+                  optionLabel="label"
+                  optionValue="value"
+                  [placeholder]="'deviceDetails.status.placeholder' | translate"
+                  [class.ng-invalid]="isInvalidControl(form,'status')"
+                  [class.ng-dirty]="isInvalidControl(form,'status')"/>
+
+        <div class="detail__actions">
+          <button type="button" pButton severity="secondary" [outlined]="true"
+                  class="detail__btn"
+                  (click)="onCancel()">
+            {{ 'deviceDetails.actions.cancel' | translate }}
+          </button>
+          <button type="submit" pButton severity="primary"
+                  class="detail__btn detail__btn--primary">
+            {{ 'deviceDetails.actions.save' | translate }}
+          </button>
+        </div>
+      </form>
+    </article>
+  </section>
+} @else {
+  <section class="detail__empty">
+    <p>{{ 'deviceDetails.empty' | translate }}</p>
+    <button type="button" pButton severity="secondary" [outlined]="true"
+            class="detail__btn"
+            (click)="onCancel()">
+      {{ 'deviceDetails.actions.cancel' | translate }}
+    </button>
+  </section>
+}
+

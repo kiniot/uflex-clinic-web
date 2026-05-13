@@ -1,0 +1,54 @@
+<section class="subscription-page">
+  <div class="page-shell">
+    <header class="page-heading">
+      <div>
+        <span class="eyebrow">Clinic SaaS Billing</span>
+        <h1>Subscription</h1>
+        <p>Gestiona el plan SaaS, facturación y método de pago de la clínica.</p>
+      </div>
+    </header>
+
+    @if (facade.error(); as error) {
+      <p-message severity="error" [text]="error" />
+    }
+
+    @if (paymentMessage(); as message) {
+      <p-message [severity]="paymentSeverity()" [text]="message" />
+    }
+
+    @if (facade.loading()) {
+      <div class="loading-state">
+        <p-progress-spinner ariaLabel="Loading subscription information" />
+      </div>
+    }
+
+    <div class="overview-grid">
+      <app-current-subscription-card [subscription]="facade.currentSubscription()" />
+      <app-payment-method-card
+        [paymentReference]="facade.paymentReference()"
+        (updateRequested)="updatePaymentMethod()"
+      />
+    </div>
+
+    <app-invoice-history-table [invoices]="facade.invoices()" />
+
+    <section class="plans-section">
+      <div class="section-heading">
+        <span>Available Clinical Plans</span>
+        <h2>Choose the right operating capacity</h2>
+        <p>El pago se realizará de forma segura mediante Stripe Checkout.</p>
+      </div>
+
+      <div class="plans-grid">
+        @for (plan of facade.plans(); track plan.id) {
+          <app-plan-card
+            [plan]="plan"
+            [isCurrent]="isCurrentPlan(plan.id)"
+            [hasActiveSubscription]="hasActiveSubscription()"
+            (planSelected)="selectPlan($event)"
+          />
+        }
+      </div>
+    </section>
+  </div>
+</section>

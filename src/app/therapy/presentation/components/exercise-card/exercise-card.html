@@ -1,0 +1,30 @@
+<article class="exercise-card" [attr.data-category]="exercise().category">
+  <div class="exercise-card__media">
+    <span class="exercise-card__tag">{{ categoryKey() | translate }}</span>
+    <i class="pi {{ exercise().icon }} exercise-card__media-icon" aria-hidden="true"></i>
+  </div>
+
+  <div class="exercise-card__body">
+    <h3 class="exercise-card__title">{{ exercise().name }}</h3>
+    <p class="exercise-card__description">{{ exercise().description }}</p>
+
+    <ul class="exercise-card__metrics">
+      @for (metric of exercise().metrics; track metric.label) {
+        <li class="exercise-card__metric">
+          <i class="pi {{ metric.icon }} exercise-card__metric-icon" aria-hidden="true"></i>
+          <span>{{ metric.label }}</span>
+        </li>
+      }
+    </ul>
+
+    <div class="exercise-card__actions">
+      <button type="button" class="exercise-card__btn-details" (click)="onViewDetails()">
+        {{ 'therapyManagement.viewDetails' | translate }}
+      </button>
+      <button type="button" class="exercise-card__btn-add" (click)="onAddToList()"
+              [attr.aria-label]="'therapyManagement.addToList' | translate">
+        <i class="pi pi-plus" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,31 @@
+<section class="diag-progress">
+  <header class="diag-progress__header">
+    <div class="diag-progress__heading">
+      <h2 class="diag-progress__title">{{ 'deviceDiagnostics.liveScan.title' | translate }}</h2>
+      <p class="diag-progress__subtitle">{{ 'deviceDiagnostics.liveScan.subtitle' | translate }}</p>
+    </div>
+    <span class="diag-progress__badge">
+      <span class="diag-progress__badge-dot" aria-hidden="true"></span>
+      {{ 'deviceDiagnostics.liveScan.activeScan' | translate }}
+    </span>
+  </header>
+
+  <div class="diag-progress__readout">
+    <span class="diag-progress__pct">
+      {{ progressPct() }}<span class="diag-progress__pct-suffix">%</span>
+    </span>
+    <span class="diag-progress__eta">{{ estimatedRemaining() }}</span>
+  </div>
+
+  <div class="diag-progress__bar">
+    <div class="diag-progress__bar-fill" [style.width.%]="progressPct()"></div>
+  </div>
+
+  <ul class="diag-progress__phases">
+    @for (phase of phases(); track phase.id) {
+      <li class="diag-progress__phase" [class.diag-progress__phase--active]="phase.active">
+        {{ phase.label }}
+      </li>
+    }
+  </ul>
+</section>

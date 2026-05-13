@@ -1,0 +1,120 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--p-text-muted-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.detail__back:hover {
+  color: var(--p-text-color);
+}
+
+.detail__content {
+  display: grid;
+  gap: 16px;
+}
+
+.detail__card {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+:host-context(.app-dark) .detail__card {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.detail__card-header {
+  margin-bottom: 16px;
+}
+
+.detail__card-title {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.detail__card-subtitle {
+  margin: 6px 0 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+}
+
+.detail__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.detail__item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+}
+
+.detail__value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.detail__muted {
+  color: var(--p-text-muted-color);
+}
+
+.detail__form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 320px;
+  font-family: 'Inter', sans-serif;
+}
+
+.detail__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+:host ::ng-deep .detail__btn,
+:host ::ng-deep .detail__btn .p-button {
+  height: 40px;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.detail__empty {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px dashed var(--p-surface-300);
+  color: var(--p-text-muted-color);
+}
+

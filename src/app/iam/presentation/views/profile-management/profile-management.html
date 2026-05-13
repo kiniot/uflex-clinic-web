@@ -1,0 +1,72 @@
+<app-page-header
+  [title]="'profile.title' | translate"
+  [subtitle]="'profile.subtitle' | translate">
+  <button pButton type="button" severity="secondary" [outlined]="true"
+          class="profile-mgmt__btn"
+          (click)="onFilter()">
+    <i class="pi pi-filter" aria-hidden="true"></i>
+    <span>{{ 'profile.actions.filter' | translate }}</span>
+  </button>
+  <button pButton type="button" severity="primary"
+          class="profile-mgmt__btn profile-mgmt__btn--primary"
+          (click)="onInvite()">
+    <i class="pi pi-user-plus" aria-hidden="true"></i>
+    <span>{{ 'profile.actions.inviteUser' | translate }}</span>
+  </button>
+</app-page-header>
+
+<section class="profile-mgmt__cards">
+  <article class="profile-mgmt__action-card">
+    <span class="profile-mgmt__action-icon profile-mgmt__action-icon--primary" aria-hidden="true">
+      <i class="pi pi-shield"></i>
+    </span>
+    <div class="profile-mgmt__action-text">
+      <h3 class="profile-mgmt__action-title">{{ 'profile.actionCards.verifyUser' | translate }}</h3>
+      <p class="profile-mgmt__action-desc">{{ 'profile.actionCards.verifyUserDesc' | translate }}</p>
+    </div>
+  </article>
+
+  <article class="profile-mgmt__action-card">
+    <span class="profile-mgmt__action-icon profile-mgmt__action-icon--danger" aria-hidden="true">
+      <i class="pi pi-ban"></i>
+    </span>
+    <div class="profile-mgmt__action-text">
+      <h3 class="profile-mgmt__action-title">{{ 'profile.actionCards.suspendAccess' | translate }}</h3>
+      <p class="profile-mgmt__action-desc">{{ 'profile.actionCards.suspendAccessDesc' | translate }}</p>
+    </div>
+  </article>
+
+  <article class="profile-mgmt__action-card">
+    <span class="profile-mgmt__action-icon profile-mgmt__action-icon--accent" aria-hidden="true">
+      <i class="pi pi-ellipsis-h"></i>
+    </span>
+    <div class="profile-mgmt__action-text">
+      <h3 class="profile-mgmt__action-title">{{ 'profile.actionCards.resetPassword' | translate }}</h3>
+      <p class="profile-mgmt__action-desc">{{ 'profile.actionCards.resetPasswordDesc' | translate }}</p>
+    </div>
+  </article>
+
+  <app-stat-card class="profile-mgmt__metric"
+                 [title]="'profile.actionCards.totalActiveUsers' | translate">
+    <div class="profile-mgmt__metric-body">
+      <span class="profile-mgmt__metric-value">{{ totalActiveUsers() | number }}</span>
+      <span class="profile-mgmt__metric-decoration" aria-hidden="true"></span>
+    </div>
+  </app-stat-card>
+</section>
+
+<section class="profile-mgmt__table-card">
+  <app-users-table [users]="users()"
+                   (rowOpen)="onRowOpen($event)"
+                   (rowAction)="onRowAction($event)"/>
+
+  <footer class="profile-mgmt__footer">
+    <span class="profile-mgmt__counter">
+      {{ 'profile.showingCount' | translate: {visible: users().length, total: totalActiveUsers()} }}
+    </span>
+    <div class="profile-mgmt__pager">
+      <button type="button" aria-label="prev" disabled><i class="pi pi-chevron-left"></i></button>
+      <button type="button" aria-label="next"><i class="pi pi-chevron-right"></i></button>
+    </div>
+  </footer>
+</section>

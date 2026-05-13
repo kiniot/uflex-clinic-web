@@ -1,0 +1,187 @@
+:host { display: block; }
+
+.trajectory {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+:host-context(.app-dark) .trajectory {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.trajectory__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.trajectory__title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-text-color);
+  margin: 0;
+}
+
+.trajectory__fab {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0;
+  background: #34c79b;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trajectory__chart {
+  position: relative;
+  height: 140px;
+  border-radius: 12px;
+  background: var(--p-surface-50);
+  overflow: hidden;
+}
+
+:host-context(.app-dark) .trajectory__chart { background: var(--p-surface-200); }
+
+.trajectory__chart-pattern {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(40% 60% at 50% 80%, rgba(52, 199, 155, 0.15), transparent 70%),
+    repeating-linear-gradient(0deg, var(--p-surface-100) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, var(--p-surface-100) 0 1px, transparent 1px 40px);
+  opacity: 0.7;
+}
+
+:host-context(.app-dark) .trajectory__chart-pattern {
+  background:
+    radial-gradient(40% 60% at 50% 80%, rgba(52, 199, 155, 0.2), transparent 70%),
+    repeating-linear-gradient(0deg, var(--p-surface-300) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(90deg, var(--p-surface-300) 0 1px, transparent 1px 40px);
+}
+
+.trajectory__pin {
+  position: absolute;
+  top: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: #34c79b;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.trajectory__pin-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34c79b;
+  border: 2px solid #ffffff;
+  margin-top: 2px;
+}
+
+.trajectory__stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .trajectory__stats { grid-template-columns: 1fr; }
+}
+
+.trajectory__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trajectory__stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+}
+
+.trajectory__stat-value {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.trajectory__stat-value--low { color: #16785a; }
+.trajectory__stat-value--medium { color: #b16614; }
+.trajectory__stat-value--high { color: #b6322f; }
+
+:host-context(.app-dark) .trajectory__stat-value--low { color: #34c79b; }
+:host-context(.app-dark) .trajectory__stat-value--medium { color: #e89f41; }
+:host-context(.app-dark) .trajectory__stat-value--high { color: #ff8a87; }
+
+.trajectory__stat-sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trajectory__stat-sub--ahead { color: #16785a; }
+:host-context(.app-dark) .trajectory__stat-sub--ahead { color: #34c79b; }
+.trajectory__stat-sub--behind { color: #b6322f; }
+.trajectory__stat-sub i { font-size: 12px; }
+
+.trajectory__bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--p-surface-100);
+  overflow: hidden;
+}
+
+:host-context(.app-dark) .trajectory__bar { background: var(--p-surface-200); }
+
+.trajectory__bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: #34c79b;
+}
+
+.trajectory__risk-bars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.trajectory__risk-bar {
+  width: 16px;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--p-surface-200);
+}
+
+:host-context(.app-dark) .trajectory__risk-bar { background: var(--p-surface-300); }
+
+.trajectory__risk-bar--filled--low { background: #34c79b; }
+.trajectory__risk-bar--filled--medium { background: #e89f41; }
+.trajectory__risk-bar--filled--high { background: #d9534f; }

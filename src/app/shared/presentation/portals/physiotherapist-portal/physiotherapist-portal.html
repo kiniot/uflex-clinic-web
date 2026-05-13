@@ -1,0 +1,34 @@
+<app-admin-shell
+  [brand]="brand()"
+  [navItems]="navItems()"
+  [bottomItems]="bottomItems()"
+  [searchPlaceholder]="searchPlaceholder()">
+  <div topbar-actions class="portal__actions">
+    <button type="button" class="portal__role-pill">
+      <i class="pi pi-id-card" aria-hidden="true"></i>
+      <span>{{ rolePillLabel() }}</span>
+    </button>
+    <button type="button" class="portal__icon-btn" aria-label="Notifications">
+      <i class="pi pi-bell" aria-hidden="true"></i>
+      <span class="portal__icon-dot" aria-hidden="true"></span>
+    </button>
+    <button type="button" class="portal__icon-btn"
+            [attr.aria-label]="changePasswordTooltip()"
+            [title]="changePasswordTooltip()"
+            (click)="openChangePassword()">
+      <i class="pi pi-cog" aria-hidden="true"></i>
+    </button>
+    <div class="portal__profile">
+      <div class="portal__profile-text">
+        <strong class="portal__profile-name">{{ currentEmail() ?? '' }}</strong>
+        <span class="portal__profile-sub">{{ currentRoleLabel() }}</span>
+      </div>
+      <p-avatar shape="circle" size="normal" styleClass="portal__avatar"
+                [label]="avatarInitials()" />
+    </div>
+  </div>
+
+  <router-outlet />
+</app-admin-shell>
+
+<app-change-password-dialog [(visible)]="changePasswordVisible" />

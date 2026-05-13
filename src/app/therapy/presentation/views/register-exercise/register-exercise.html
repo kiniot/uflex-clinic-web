@@ -1,0 +1,129 @@
+<app-page-header
+  [title]="'therapyManagement.register.title' | translate"
+  [subtitle]="'therapyManagement.register.subtitle' | translate"/>
+
+<section class="register-card">
+  <form class="register__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="register__field">
+      <label for="exName">{{ 'therapyManagement.register.exerciseName' | translate }}</label>
+      <input pInputText
+             id="exName"
+             type="text"
+             formControlName="name"
+             [placeholder]="'therapyManagement.register.exerciseNamePlaceholder' | translate"
+             [class.ng-invalid]="isInvalidControl(form,'name')"
+             [class.ng-dirty]="isInvalidControl(form,'name')"/>
+    </div>
+
+    <div class="register__row register__row--2">
+      <div class="register__field">
+        <label for="exCategory">{{ 'therapyManagement.register.category' | translate }}</label>
+        <p-select inputId="exCategory"
+                  formControlName="category"
+                  [options]="categoryOptions()"
+                  optionLabel="label"
+                  optionValue="value"
+                  [placeholder]="'therapyManagement.register.categoryPlaceholder' | translate"
+                  [class.ng-invalid]="isInvalidControl(form,'category')"
+                  [class.ng-dirty]="isInvalidControl(form,'category')"/>
+      </div>
+      <div class="register__field">
+        <label for="exBodyPart">{{ 'therapyManagement.register.bodyPart' | translate }}</label>
+        <p-select inputId="exBodyPart"
+                  formControlName="bodyPart"
+                  [options]="bodyPartOptions()"
+                  optionLabel="label"
+                  optionValue="value"
+                  [placeholder]="'therapyManagement.register.bodyPartPlaceholder' | translate"
+                  [class.ng-invalid]="isInvalidControl(form,'bodyPart')"
+                  [class.ng-dirty]="isInvalidControl(form,'bodyPart')"/>
+      </div>
+    </div>
+
+    <div class="register__field">
+      <label for="exDescription">{{ 'therapyManagement.register.description' | translate }}</label>
+      <textarea pTextarea
+                id="exDescription"
+                rows="4"
+                formControlName="description"
+                [placeholder]="'therapyManagement.register.descriptionPlaceholder' | translate"
+                [class.ng-invalid]="isInvalidControl(form,'description')"
+                [class.ng-dirty]="isInvalidControl(form,'description')"></textarea>
+    </div>
+
+    <hr class="register__divider"/>
+
+    <h3 class="register__section">{{ 'therapyManagement.register.prescriptionParameters' | translate }}</h3>
+
+    <div class="register__row register__row--3">
+      <div class="register__field">
+        <label for="exSets">{{ 'therapyManagement.register.defaultSets' | translate }}</label>
+        <input pInputText id="exSets" type="number" min="1" formControlName="defaultSets"/>
+      </div>
+      <div class="register__field">
+        <label for="exReps">{{ 'therapyManagement.register.defaultReps' | translate }}</label>
+        <input pInputText id="exReps" type="number" min="1" formControlName="defaultReps"/>
+      </div>
+      <div class="register__field">
+        <label for="exHold">{{ 'therapyManagement.register.holdDuration' | translate }}</label>
+        <input pInputText id="exHold" type="number" min="0" formControlName="holdDurationSec"/>
+      </div>
+    </div>
+
+    <div class="register__field">
+      <label>{{ 'therapyManagement.register.difficultyLevel' | translate }}</label>
+      <div class="register__radios">
+        <div class="register__radio">
+          <p-radiobutton inputId="diffBeginner" name="difficulty" value="beginner" formControlName="difficulty"/>
+          <label for="diffBeginner">{{ 'therapyManagement.difficulty.beginner' | translate }}</label>
+        </div>
+        <div class="register__radio">
+          <p-radiobutton inputId="diffIntermediate" name="difficulty" value="intermediate" formControlName="difficulty"/>
+          <label for="diffIntermediate">{{ 'therapyManagement.difficulty.intermediate' | translate }}</label>
+        </div>
+        <div class="register__radio">
+          <p-radiobutton inputId="diffAdvanced" name="difficulty" value="advanced" formControlName="difficulty"/>
+          <label for="diffAdvanced">{{ 'therapyManagement.difficulty.advanced' | translate }}</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="register__field">
+      <label for="exEquipment">{{ 'therapyManagement.register.equipmentNeeded' | translate }}</label>
+      <input pInputText
+             id="exEquipment"
+             type="text"
+             formControlName="equipment"
+             [placeholder]="'therapyManagement.register.equipmentNeededPlaceholder' | translate"/>
+    </div>
+
+    <hr class="register__divider"/>
+
+    <h3 class="register__section">{{ 'therapyManagement.register.media' | translate }}</h3>
+
+    <label class="register__upload">
+      <input type="file" accept=".svg,.png,.jpg,.jpeg,.mp4" hidden (change)="onFilePicked($event)"/>
+      <i class="pi pi-cloud-upload register__upload-icon" aria-hidden="true"></i>
+      <span class="register__upload-hint">
+        @if (mediaFileName()) {
+          {{ mediaFileName() }}
+        } @else {
+          {{ 'therapyManagement.register.uploadHint' | translate }}
+        }
+      </span>
+      <span class="register__upload-formats">{{ 'therapyManagement.register.uploadFormats' | translate }}</span>
+    </label>
+
+    <footer class="register__actions">
+      <button type="button" pButton severity="secondary" [outlined]="true"
+              class="register__btn register__btn--cancel"
+              (click)="onCancel()">
+        {{ 'therapyManagement.register.cancel' | translate }}
+      </button>
+      <button type="submit" pButton severity="primary"
+              class="register__btn register__btn--save">
+        {{ 'therapyManagement.register.save' | translate }}
+      </button>
+    </footer>
+  </form>
+</section>

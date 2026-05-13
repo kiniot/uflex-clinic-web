@@ -1,0 +1,16 @@
+<section class="diag-log">
+  <header class="diag-log__header">
+    <div class="diag-log__dots" aria-hidden="true">
+      <span class="diag-log__dot diag-log__dot--red"></span>
+      <span class="diag-log__dot diag-log__dot--yellow"></span>
+      <span class="diag-log__dot diag-log__dot--green"></span>
+    </div>
+    <span class="diag-log__filename">{{ filename() }}</span>
+    <button type="button" class="diag-log__clear" (click)="onClear()">
+      {{ 'deviceDiagnostics.log.clear' | translate }}
+    </button>
+  </header>
+
+  <pre class="diag-log__body"><code>@for (entry of entries(); track $index) {<span class="diag-log__line"><span class="diag-log__time">[{{ entry.timestamp }}]</span> <span class="diag-log__scope diag-log__scope--{{ entry.scopeColor || 'info' }}">{{ entry.scope }}:</span> <span class="diag-log__msg">{{ entry.message }}</span>@if (entry.highlight) { <span class="diag-log__hl diag-log__hl--{{ entry.highlight.severity }}">{{ entry.highlight.text }}</span>}
+</span>}</code></pre>
+</section>

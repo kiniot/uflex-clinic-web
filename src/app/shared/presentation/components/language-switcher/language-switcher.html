@@ -1,0 +1,9 @@
+<p-selectButton
+  [options]="languageOptions"
+  [ngModel]="currentLang"
+  (ngModelChange)="useLanguage($event)"
+  optionLabel="label"
+  optionValue="value"
+  [allowEmpty]="false"
+  size="small"
+  ariaLabelledBy="Preferred language" />

@@ -1,0 +1,905 @@
+{
+  "option": {
+    "home": "Inicio",
+    "about": "Acerca de"
+  },
+  "about": {
+    "title": "Acerca de nosotros",
+    "content": "KinIoT uFlex es una plataforma de rehabilitación, parte de KinIoT Corporation."
+  },
+  "home": {
+    "title": "Bienvenido",
+    "content": "Bienvenido a KinIoT uFlex."
+  },
+  "page-not-found": {
+    "title": "Página no encontrada",
+    "content": "La ruta <strong>{{ invalid_path }}</strong> es inválida.",
+    "go-home": "Ir a Inicio"
+  },
+  "footer": {
+    "rights": "Todos los derechos reservados.",
+    "powered-by": "Desarrollado con",
+    "and": "y"
+  },
+  "roles": {
+    "physiotherapist": "Fisioterapeuta",
+    "clinicAdmin": "Administrador de Clínica"
+  },
+  "clinicAdmin": {
+    "brand": {
+      "name": "uFlex",
+      "subtitle": "Portal Clínico",
+      "badge": "ADMIN"
+    },
+    "nav": {
+      "therapy": "Terapia",
+      "device": "Dispositivos",
+      "organization": "Organización",
+      "subscription": "Suscripción",
+      "profile": "Perfil",
+      "support": "Soporte",
+      "logout": "Cerrar sesión"
+    },
+    "topbar": {
+      "searchPlaceholder": "Buscar pacientes o dispositivos...",
+      "clinicSelector": "Selector de clínica"
+    },
+    "therapy": {
+      "title": "Gestión de terapias",
+      "subtitle": "Ejercicios especializados de telerrehabilitación para lesiones de brazo y muñeca.",
+      "registerNew": "Registrar nuevo ejercicio"
+    },
+    "device": {
+      "title": "Gestión de dispositivos",
+      "subtitle": "Dispositivos de rehabilitación conectados y sus emparejamientos."
+    },
+    "organization": {
+      "title": "Organización",
+      "subtitle": "Perfil de la clínica, sedes y miembros del equipo."
+    },
+    "subscription": {
+      "title": "Suscripción",
+      "subtitle": "Plan, facturación y comprobantes."
+    },
+    "profile": {
+      "title": "Perfil",
+      "subtitle": "Configuración y preferencias de tu cuenta."
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "subtitle": "Administra roles, permisos y acceso a la plataforma.",
+    "actions": {
+      "filter": "Filtrar",
+      "inviteUser": "Invitar usuario"
+    },
+    "actionCards": {
+      "verifyUser": "Verificar usuario",
+      "verifyUserDesc": "Revisa documentos de identidad pendientes",
+      "suspendAccess": "Suspender acceso",
+      "suspendAccessDesc": "Revoca privilegios del sistema",
+      "resetPassword": "Restablecer contraseña",
+      "resetPasswordDesc": "Envía enlaces de recuperación",
+      "totalActiveUsers": "Usuarios activos totales"
+    },
+    "columns": {
+      "userDetails": "Usuario",
+      "role": "Rol",
+      "status": "Estado",
+      "verification": "Verificación",
+      "lastLogin": "Último ingreso",
+      "actions": "Acciones"
+    },
+    "role": {
+      "physio": "Fisio",
+      "patient": "Paciente",
+      "admin": "Admin"
+    },
+    "status": {
+      "active": "Activo",
+      "pending": "Pendiente",
+      "suspended": "Suspendido"
+    },
+    "verification": {
+      "verified": "Verificado",
+      "awaiting-docs": "Documentos pendientes"
+    },
+    "showingCount": "Mostrando 1 a {{visible}} de {{total}} usuarios"
+  },
+  "therapyManagement": {
+    "filters": {
+      "searchPlaceholder": "Buscar ejercicios por nombre...",
+      "allCategories": "Todas las categorías",
+      "anyDifficulty": "Cualquier dificultad",
+      "anyEquipment": "Equipamiento"
+    },
+    "category": {
+      "mobility": "Movilidad",
+      "strength": "Fuerza",
+      "endurance": "Resistencia"
+    },
+    "difficulty": {
+      "beginner": "Principiante",
+      "intermediate": "Intermedio",
+      "advanced": "Avanzado"
+    },
+    "equipment": {
+      "therapyBall": "Pelota de terapia",
+      "resistanceBand": "Banda elástica",
+      "none": "Sin equipamiento"
+    },
+    "viewDetails": "Ver detalles",
+    "addToList": "Agregar a la lista",
+    "empty": "Ningún ejercicio coincide con los filtros actuales.",
+    "register": {
+      "title": "Registrar nuevo ejercicio",
+      "subtitle": "Agrega un nuevo ejercicio a la biblioteca maestra de terapias.",
+      "exerciseName": "Nombre del ejercicio",
+      "exerciseNamePlaceholder": "ej. Flexión de muñeca con mancuerna",
+      "category": "Categoría",
+      "categoryPlaceholder": "Selecciona categoría",
+      "bodyPart": "Parte del cuerpo objetivo",
+      "bodyPartPlaceholder": "Selecciona parte del cuerpo",
+      "description": "Descripción / Instrucciones",
+      "descriptionPlaceholder": "Proporciona instrucciones paso a paso para el paciente...",
+      "prescriptionParameters": "Parámetros de prescripción",
+      "defaultSets": "Series por defecto",
+      "defaultReps": "Repeticiones por defecto",
+      "holdDuration": "Duración de retención (seg)",
+      "difficultyLevel": "Nivel de dificultad",
+      "equipmentNeeded": "Equipamiento necesario",
+      "equipmentNeededPlaceholder": "ej. Banda elástica, Mancuerna de 1kg",
+      "media": "Medio",
+      "uploadHint": "Haz clic para subir o arrastra y suelta",
+      "uploadFormats": "SVG, PNG, JPG o MP4 (máx. 800x400px)",
+      "cancel": "Cancelar",
+      "save": "Guardar ejercicio"
+    },
+    "bodyPart": {
+      "wrist": "Muñeca",
+      "elbow": "Codo",
+      "shoulder": "Hombro",
+      "hand": "Mano",
+      "forearm": "Antebrazo",
+      "knee": "Rodilla",
+      "ankle": "Tobillo",
+      "other": "Otro"
+    }
+  },
+  "deviceManagement": {
+    "title": "Inventario de dispositivos",
+    "subtitle": "Administra, monitorea y aprovisiona los kits IoT uFlex.",
+    "actions": {
+      "runDiagnostics": "Ejecutar diagnóstico",
+      "calibrate": "Calibrar",
+      "linkToPatient": "Vincular paciente",
+      "registerDevice": "Registrar dispositivo"
+    },
+    "stats": {
+      "totalActiveKits": "Kits activos totales",
+      "requiresCalibration": "Requieren calibración",
+      "networkStatus": "Estado de red",
+      "delta": "+4 esta semana",
+      "within7Days": "En 7 días",
+      "online": "En línea"
+    },
+    "fleetStatus": "Estado de la flota",
+    "columns": {
+      "kitId": "ID del kit IoT",
+      "linkedPatient": "Paciente vinculado",
+      "batteryLevel": "Nivel de batería",
+      "bluetooth": "Bluetooth",
+      "calibration": "Calibración",
+      "firmware": "Firmware",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "calibration": {
+      "valid": "Válida",
+      "expired": "Expirada",
+      "pending": "Pendiente"
+    },
+    "status": {
+      "online": "En línea",
+      "idle": "Inactivo",
+      "offline": "Desconectado"
+    },
+    "unassigned": "Sin asignar"
+  },
+  "deviceDetails": {
+    "backToInventory": "Volver al inventario",
+    "title": "Detalles del IoT",
+    "subtitle": "Kit {{kitId}}",
+    "summary": {
+      "title": "Resumen del dispositivo",
+      "kitId": "ID del kit IoT",
+      "linkedPatient": "Paciente vinculado",
+      "batteryLevel": "Nivel de batería",
+      "firmware": "Firmware"
+    },
+    "status": {
+      "title": "Estado del dispositivo",
+      "subtitle": "Actualiza el estado operativo de este kit.",
+      "label": "Estado",
+      "placeholder": "Selecciona estado"
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "save": "Guardar estado"
+    },
+    "empty": "No se encontró un dispositivo para este kit."
+  },
+  "deviceCalibration": {
+    "title": "Calibración de dispositivo",
+    "subtitle": "Sensor: {{sensor}} — ID: #{{id}}",
+    "actions": {
+      "restartGuide": "Reiniciar guía",
+      "complete": "Completar calibración"
+    },
+    "liveAlignment": "Alineación espacial en vivo",
+    "axes": {
+      "x": "Eje X",
+      "y": "Eje Y",
+      "z": "Eje Z"
+    },
+    "readings": {
+      "pitch": "Pitch (X)",
+      "yaw": "Yaw (Y)",
+      "roll": "Roll (Z)"
+    },
+    "steps": {
+      "title": "Pasos de calibración"
+    },
+    "hardwareIntegrity": "Integridad del hardware",
+    "integrity": {
+      "optimal": "ÓPTIMO",
+      "warning": "ADVERTENCIA",
+      "degraded": "DEGRADADO"
+    },
+    "telemetry": {
+      "batteryHealth": "Salud de batería",
+      "capacity": "Capacidad",
+      "firmware": "Firmware",
+      "connection": "Conexión",
+      "lastSync": "Última sincronización"
+    }
+  },
+  "deviceRegister": {
+    "backToInventory": "Volver al inventario",
+    "title": "Registrar nuevo dispositivo",
+    "subtitle": "Conecta tu hardware uFlex IoT al portal clínico para monitoreo remoto.",
+    "quickEntry": {
+      "title": "Entrada rápida",
+      "description": "Usa la cámara del dispositivo para escanear el código QR ubicado en la parte inferior del hub uFlex y completar los campos automáticamente.",
+      "scanLabel": "Escanear código QR",
+      "openScanner": "Abrir escáner"
+    },
+    "hardware": {
+      "title": "Especificaciones de hardware",
+      "kitSerial": "Número de serie del kit",
+      "kitSerialPlaceholder": "ej. UF-2024-X982",
+      "batchId": "ID de lote",
+      "batchIdPlaceholder": "ej. BT-0092-A",
+      "hardwareVersion": "Versión de hardware",
+      "hardwareVersionPlaceholder": "Selecciona versión",
+      "firmwareVersion": "Versión de firmware",
+      "firmwareVersionPlaceholder": "ej. 1.0.4-stable",
+      "firmwareCurrent": "Actual",
+      "versions": {
+        "flex30": "FlexSense v3.0",
+        "flex40": "FlexSense v4.0",
+        "flex42": "FlexSense v4.2"
+      }
+    },
+    "actions": {
+      "discard": "Descartar",
+      "complete": "Completar registro"
+    },
+    "status": {
+      "title": "Estado del registro",
+      "subtitle": "Seguimiento en vivo",
+      "in-progress": "En curso",
+      "pending": "Pendiente",
+      "complete": "Completo",
+      "stepCounter": "Paso {{current}} de {{total}}: Verificación"
+    },
+    "bestPractices": {
+      "title": "Buenas prácticas",
+      "powerPrecheck": {
+        "title": "Verificación de energía",
+        "description": "Asegúrate de que el hub esté conectado a una fuente estable antes de iniciar el registro."
+      },
+      "firmwareMatch": {
+        "title": "Coincidencia de firmware",
+        "description": "El portal verificará actualizaciones OTA automáticamente después de registrar el dispositivo."
+      },
+      "assetTagging": {
+        "title": "Etiquetado del activo",
+        "description": "Recomendamos colocar una etiqueta física en el hardware para auditorías manuales de inventario."
+      }
+    },
+    "promo": {
+      "title": "Nuevos sensores Gen-4",
+      "description": "Actualiza tus kits actuales a los nuevos arreglos de sensores de alta fidelidad para mejores datos clínicos.",
+      "learnMore": "Más información"
+    }
+  },
+  "deviceLink": {
+    "title": "Vincular dispositivo IoT",
+    "subtitle": "Asigna un kit uFlex a un perfil de paciente activo.",
+    "selectPatient": "Seleccionar paciente",
+    "filterPlaceholder": "Filtrar por nombre o MRN",
+    "columns": {
+      "patient": "Detalles del paciente",
+      "mrn": "MRN",
+      "status": "Estado"
+    },
+    "status": {
+      "active": "Activo",
+      "waitlist": "Lista de espera",
+      "discharged": "Dado de alta"
+    },
+    "empty": "Ningún paciente coincide con el filtro.",
+    "assignKit": {
+      "title": "Asignar kit IoT",
+      "available": "Dispositivos uFlex disponibles",
+      "placeholder": "Selecciona del inventario activo",
+      "calibration": {
+        "title": "Estado de calibración",
+        "description": "Última calibración: Hoy, 08:30 AM. Intensidad de señal: Excelente."
+      }
+    },
+    "finalAssignment": {
+      "title": "Asignación final",
+      "reviewBadge": "REVISIÓN",
+      "assignedPatient": "Paciente asignado",
+      "kitIdentification": "Identificación del kit",
+      "protocolDuration": "Duración del protocolo",
+      "confirm": "Confirmar asignación",
+      "cancel": "Cancelar operación"
+    },
+    "hardwareView": {
+      "caption": "Vista de hardware: Sensor uFlex Gen-4"
+    },
+    "protocolDurationDefault": "12 semanas / Uso diario",
+    "unselectedPatient": "Ningún paciente seleccionado",
+    "unselectedKit": "Ningún kit seleccionado"
+  },
+  "organization": {
+    "actions": {
+      "editClinic": "Editar Perfil de la Clínica",
+      "addPhysiotherapist": "Añadir Fisioterapeuta"
+    },
+    "stats": {
+      "totalPatients": "Pacientes totales",
+      "activePhysiotherapists": "Fisioterapeutas activos",
+      "availableIotKits": "Kits IoT disponibles",
+      "onLeave": "De baja"
+    },
+    "tabs": {
+      "physiotherapists": "Fisioterapeutas",
+      "patients": "Pacientes"
+    },
+    "patientsTabEmpty": "El roster de pacientes vive en el contexto Planning. Próximamente en esta vista.",
+    "showingCount": "Mostrando {{visible}} de {{total}} miembros del staff",
+    "columns": {
+      "staffMember": "Miembro del staff",
+      "specializedRole": "Rol especializado",
+      "activePatients": "Pacientes activos",
+      "status": "Estado",
+      "actions": "Acciones"
+    },
+    "role": {
+      "neuro-rehab": "Neuro-Rehab",
+      "post-op-recovery": "Post-Op Recovery",
+      "geriatric-mobility": "Movilidad geriátrica",
+      "iot-mobility": "Movilidad IoT",
+      "sports-rehab": "Rehab deportiva"
+    },
+    "status": {
+      "active": "Activo",
+      "on-leave": "De baja",
+      "inactive": "Inactivo"
+    },
+    "performance": {
+      "title": "Resumen de desempeño",
+      "description": "La tasa de éxito en recuperación de la organización subió 7.4% en el último trimestre. La retención de pacientes en sesiones remotas está en 92%.",
+      "cta": "Ver analíticas detalladas"
+    },
+    "recentUpdates": {
+      "title": "Actualizaciones recientes",
+      "firmware": "Nuevo firmware IoT (v2.4.1) desplegado en 86 kits.",
+      "subscription": "Suscripción renovada para el próximo ciclo de facturación."
+    }
+  },
+  "subscription": {
+    "title": "Suscripción",
+    "subtitle": "Administra licencias clínicas, métodos de pago e historial de facturación.",
+    "actions": {
+      "downloadAudit": "Descargar informe de auditoría",
+      "upgradePlan": "Mejorar plan"
+    },
+    "active": {
+      "badge": "Plan activo",
+      "billedMonthly": "facturado mensualmente",
+      "changeCycle": "Cambiar ciclo de facturación",
+      "cancel": "Cancelar suscripción",
+      "activeLicenses": "Licencias activas",
+      "storageUsage": "Uso de almacenamiento",
+      "apiStatus": "Estado de API",
+      "api": {
+        "healthy": "Saludable",
+        "degraded": "Degradado",
+        "down": "Caída"
+      }
+    },
+    "payment": {
+      "title": "Método de pago",
+      "cardHolder": "Titular de la tarjeta",
+      "expires": "Vence",
+      "update": "Actualizar método de pago"
+    },
+    "billing": {
+      "title": "Historial de facturación",
+      "viewAll": "Ver todas las facturas",
+      "columns": {
+        "amount": "Monto",
+        "plan": "Plan",
+        "status": "Estado"
+      },
+      "status": {
+        "paid": "Pagada",
+        "pending": "Pendiente",
+        "failed": "Fallida"
+      }
+    },
+    "upsell": {
+      "title": "Avanza tu práctica",
+      "description": "Desbloquea funciones clínicas exclusivas al pasar al tier de Clinical Research.",
+      "feature1": "Analíticas avanzadas de marcha",
+      "feature2": "Acceso a base de datos global de investigación",
+      "feature3": "Portal de pacientes con marca blanca",
+      "cta": "Aprende más sobre Clinical Research"
+    },
+    "plans": {
+      "title": "Planes clínicos disponibles",
+      "perMonth": "/mes",
+      "selected": "Seleccionado",
+      "currentPlan": "Plan actual",
+      "alreadyActive": "Ya activo"
+    }
+  },
+  "registerPhysiotherapist": {
+    "breadcrumb": {
+      "organization": "Organización",
+      "staff": "Staff",
+      "addNew": "Agregar nuevo"
+    },
+    "title": "Registrar nuevo fisioterapeuta",
+    "subtitle": "Incorpora un nuevo clínico al roster de tu clínica.",
+    "actions": {
+      "cancel": "Cancelar",
+      "save": "Guardar perfil"
+    },
+    "personal": {
+      "title": "Información personal",
+      "fullName": "Nombre completo",
+      "fullNamePlaceholder": "Dr. Sarah Johnson",
+      "specialty": "Especialidad",
+      "specialtyPlaceholder": "Fisioterapia ortopédica",
+      "email": "Correo electrónico",
+      "emailPlaceholder": "sarah.j@clinic.com",
+      "phone": "Teléfono",
+      "phonePlaceholder": "+1 (555) 000-0000"
+    },
+    "credentials": {
+      "title": "Credenciales clínicas",
+      "licenseNumber": "Número de licencia",
+      "licenseNumberPlaceholder": "PT-98234-X",
+      "summary": "Resumen profesional",
+      "summaryPlaceholder": "Breve descripción de la experiencia clínica y años de práctica..."
+    },
+    "photo": {
+      "title": "Foto de perfil",
+      "upload": "Haz clic para subir",
+      "formats": "Sube una foto profesional en alta resolución. JPEG, PNG o GIF. Máx. 5MB."
+    },
+    "quickTip": {
+      "title": "Consejo rápido",
+      "description": "Completar las credenciales clínicas asegura el emparejamiento óptimo con dispositivos IoT para análisis de marcha.",
+      "verified": "Los clínicos verificados acceden a la base de datos global de investigación."
+    },
+    "enrollments": {
+      "title": "Inscripciones recientes",
+      "dbConnected": "Base de datos conectada",
+      "sslSecured": "Ruta segura SSL",
+      "activeClinicians": "12 clínicos activos"
+    }
+  },
+  "deviceDiagnostics": {
+    "eyebrow": "Modo mantenimiento",
+    "title": "Diagnóstico del sistema",
+    "actions": {
+      "recalibrate": "Recalibrar",
+      "exportReport": "Exportar informe"
+    },
+    "liveScan": {
+      "title": "Estado del escaneo en vivo",
+      "subtitle": "Escaneando arreglos de nodos internos y sensores de presión.",
+      "activeScan": "Escaneo activo"
+    },
+    "hardwareId": "ID de hardware",
+    "metrics": {
+      "battery": "Salud de batería",
+      "batteryUnit": "Capacidad",
+      "signal": "Intensidad de señal",
+      "temperature": "Temperatura operativa"
+    },
+    "log": {
+      "clear": "Limpiar registros"
+    }
+  },
+  "signIn": {
+    "subtitle": "Plataforma Clínica de Telerehabilitación",
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "Ingresa tu correo"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Ingresa tu contraseña"
+    },
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "rememberMe": "Recuérdame por 30 días",
+    "submit": "Iniciar sesión",
+    "createAccount": "Crear cuenta",
+    "trustMessage": "Acceso clínico seguro solo para personal médico autorizado.",
+    "notifications": {
+      "errorSummary": "No se pudo iniciar sesión",
+      "invalidCredentials": "El correo o la contraseña son incorrectos.",
+      "genericError": "No pudimos iniciar sesión. Intenta nuevamente."
+    }
+  },
+  "signUp": {
+    "title": "Crea tu cuenta",
+    "subtitle": "Únete a la red de rehabilitación conectada.",
+    "roleLabel": "Selecciona tu rol",
+    "roles": {
+      "physiotherapist": "Fisioterapeuta",
+      "clinicAdmin": "Administrador de Clínica"
+    },
+    "fullName": {
+      "label": "Nombre completo",
+      "placeholder": "Ingresa tu nombre completo"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "Ingresa tu correo"
+    },
+    "username": {
+      "label": "Nombre de usuario",
+      "placeholder": "Elige un nombre de usuario"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "Crea una contraseña"
+    },
+    "confirmPassword": {
+      "label": "Confirmar contraseña",
+      "placeholder": "Vuelve a ingresar tu contraseña",
+      "mismatch": "Las contraseñas no coinciden."
+    },
+    "invitationCode": {
+      "label": "Código de invitación de clínica",
+      "optional": "(Opcional)",
+      "placeholder": "ej. CLINIC-1234"
+    },
+    "submit": "Crear cuenta",
+    "haveAccount": "¿Ya tienes una cuenta?",
+    "signInLink": "Iniciar sesión",
+    "notifications": {
+      "successSummary": "Cuenta creada",
+      "successDetail": "Tu cuenta se registró correctamente. Ahora puedes iniciar sesión.",
+      "errorSummary": "No se pudo registrar",
+      "genericError": "No pudimos crear la cuenta. Intenta nuevamente."
+    }
+  },
+  "changePassword": {
+    "title": "Cambiar contraseña",
+    "currentLabel": "Contraseña actual",
+    "currentPlaceholder": "Ingresa tu contraseña actual",
+    "currentRequired": "La contraseña actual es obligatoria.",
+    "newLabel": "Nueva contraseña",
+    "newPlaceholder": "Mínimo 8 caracteres",
+    "newMinLength": "La nueva contraseña debe tener al menos 8 caracteres.",
+    "confirmLabel": "Confirmar nueva contraseña",
+    "confirmPlaceholder": "Vuelve a ingresar la nueva contraseña",
+    "mismatch": "Las contraseñas no coinciden.",
+    "save": "Guardar",
+    "saving": "Guardando…",
+    "cancel": "Cancelar",
+    "success": "Contraseña actualizada correctamente.",
+    "error": {
+      "invalidCurrent": "La contraseña actual es incorrecta.",
+      "generic": "No se pudo cambiar la contraseña. Intenta de nuevo."
+    }
+  },
+  "topbar": {
+    "settings": "Configuración",
+    "changePassword": "Cambiar contraseña"
+  },
+  "physiotherapist": {
+    "brand": {
+      "name": "uFlex",
+      "subtitle": "PORTAL CLÍNICO"
+    },
+    "nav": {
+      "dashboard": "Panel",
+      "therapy": "Terapia",
+      "planning": "Planificación",
+      "device": "Dispositivos",
+      "organization": "Organización",
+      "support": "Soporte",
+      "logout": "Cerrar sesión"
+    },
+    "topbar": {
+      "searchPlaceholder": "Buscar pacientes, dispositivos o reportes...",
+      "rolePill": "Fisioterapeuta"
+    },
+    "dashboard": {
+      "greeting": "Buenos días, {{name}}",
+      "summary": "Tienes {{sessions}} sesiones programadas para hoy. {{urgent}} requieren revisión inmediata.",
+      "registerPatient": "Registrar paciente",
+      "complianceRate": "Tasa de adherencia",
+      "monthlyProgress": "Progreso mensual",
+      "activePatients": "Pacientes activos",
+      "newPatientsThisWeek": "{{count}} nuevos esta semana",
+      "recoveryMilestones": "Hitos de recuperación",
+      "goalAchievement": "Tasa de logro de objetivos",
+      "dailySchedule": "Agenda del día",
+      "viewFullCalendar": "Ver calendario completo",
+      "urgentAlerts": "Alertas urgentes",
+      "releaseBanner": "Nuevo motor de analítica: v2.4 activo",
+      "clinicalSummary": "Resumen clínico",
+      "clinicalSummaryBody": "El análisis cruzado de pacientes muestra una correlación significativa entre la consistencia de las sesiones matutinas y una recuperación de movilidad un 15% más rápida en la población.",
+      "clinicVsNational": "Clínica vs. promedio nacional"
+    }
+  },
+  "planning": {
+    "title": "Planificación",
+    "subtitle": "Pacientes y programas de rehabilitación.",
+    "status": {
+      "active": "Activo",
+      "waitlist": "Lista de espera",
+      "discharged": "Dado de alta"
+    }
+  },
+  "therapyRoster": {
+    "eyebrow": "Casos activos",
+    "title": "Gestión de terapia",
+    "subtitle": "Supervisa la recuperación de los pacientes y monitorea las métricas IoT en tiempo real.",
+    "registerPatient": "Registrar paciente",
+    "kpi": {
+      "throughput": "Rendimiento clínico",
+      "throughputSub": "Velocidad de recuperación este mes",
+      "throughputBadge": "Portal clínico",
+      "active": "Activos",
+      "devicesSub": "Dispositivos IoT enlazados",
+      "reviews": "Revisiones",
+      "reviewsSub": "Evaluación pendiente",
+      "actionRequired": "Acción requerida"
+    },
+    "roster": "Lista de pacientes",
+    "tabs": {
+      "all": "Todos",
+      "connected": "Conectados"
+    },
+    "columns": {
+      "profile": "Perfil del paciente",
+      "injury": "Contexto de la lesión",
+      "lastSession": "Última sesión",
+      "iotStatus": "Estado IoT",
+      "action": "Acción"
+    },
+    "iot": {
+      "connected": "Conectado",
+      "offline": "Desconectado"
+    },
+    "mrn": "ID:",
+    "review": "Revisar terapia",
+    "showingCount": "Mostrando {{visible}} de {{total}} pacientes activos",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "promo": {
+      "title": "Integración IoT avanzada para cuidados postoperatorios",
+      "body": "Sincroniza sensores ortopédicos vestibles para monitorear el rango de movimiento en tiempo real durante sesiones remotas.",
+      "cta": "Explorar kits de sensores"
+    },
+    "template": {
+      "title": "Crear nueva plantilla",
+      "body": "Ahorra tiempo creando protocolos reutilizables para tipos de lesión comunes."
+    }
+  },
+  "therapyRoadmap": {
+    "breadcrumb": {
+      "patients": "Pacientes",
+      "therapyPlanning": "Planificación de terapia"
+    },
+    "title": "Roadmap terapéutico",
+    "subtitle": "Diseña una ruta de rehabilitación personalizada seleccionando ejercicios validados y configurando parámetros de recuperación precisos.",
+    "saveDraft": "Guardar borrador",
+    "finalize": "Finalizar e implementar",
+    "patient": "Paciente",
+    "currentPhase": "Fase actual de recuperación",
+    "dayOf": "Día {{day}} de {{total}}",
+    "complete": "completado",
+    "library": {
+      "title": "Biblioteca de ejercicios",
+      "subtitle": "Selecciona protocolos clínicos",
+      "tags": {
+        "knee": "Rodilla",
+        "strength": "Fuerza",
+        "mobility": "Movilidad"
+      }
+    },
+    "insight": {
+      "title": "Insight del protocolo",
+      "body": "Basado en la fase actual de {{patient}} (Transición de fuerza), los protocolos sugieren aumentar el volumen un 15% esta semana.",
+      "cta": "Ver evidencia clínica"
+    },
+    "builder": {
+      "title": "Rutina diaria",
+      "subtitle": "Personaliza parámetros por sesión",
+      "dropTitle": "Arrastra más ejercicios aquí",
+      "dropHint": "O selecciona uno de la biblioteca a la izquierda"
+    },
+    "trajectory": {
+      "title": "Trayectoria a largo plazo",
+      "currentPoint": "Punto actual",
+      "estimatedRtp": "RTP estimado",
+      "complianceScore": "Puntaje de adherencia",
+      "riskAssessment": "Evaluación de riesgo",
+      "scheduleStatus": {
+        "ahead": "Adelantado",
+        "on-track": "En tiempo",
+        "behind": "Retrasado"
+      },
+      "risk": {
+        "low": "Bajo",
+        "medium": "Medio",
+        "high": "Alto"
+      }
+    }
+  },
+  "deviceInventory": {
+    "breadcrumb": {
+      "fleet": "Gestión de flota",
+      "sensors": "Sensores IoT Flex"
+    },
+    "title": "Inventario de dispositivos",
+    "subtitle": "Administra y monitorea tu flota de sensores clínicos. Controla la salud de la batería, el estado de conectividad y asigna dispositivos a tratamientos activos.",
+    "assignToPatient": "Asignar a paciente",
+    "connectivity": {
+      "title": "Conectividad de flota",
+      "active": "Dispositivos activos",
+      "available": "Unidades disponibles",
+      "inService": "En servicio",
+      "fromLastWeek": "vs. semana pasada",
+      "maintenanceRequired": "Mantenimiento requerido"
+    },
+    "battery": {
+      "title": "Salud de batería",
+      "high": "80-100% (Alta)",
+      "mid": "20-80% (Media)",
+      "low": "0-20% (Baja)",
+      "units": "unidades",
+      "chargingReport": "Ver reporte de carga"
+    },
+    "table": {
+      "title": "Inventario",
+      "filter": "Filtrar",
+      "export": "Exportar"
+    },
+    "columns": {
+      "deviceId": "ID Dispositivo",
+      "model": "Modelo",
+      "status": "Estado",
+      "battery": "Batería",
+      "lastSync": "Última sincronización",
+      "assignment": "Asignación",
+      "action": "Acción"
+    },
+    "status": {
+      "available": "Disponible",
+      "active": "Activo",
+      "offline": "Desconectado"
+    },
+    "actions": {
+      "assign": "Asignar",
+      "manage": "Gestionar"
+    },
+    "showingCount": "Mostrando {{visible}} de {{total}} dispositivos",
+    "maintenance": {
+      "title": "Mantenimiento requerido",
+      "body": "4 dispositivos fueron marcados para diagnóstico de hardware tras reportar datos de calibración inconsistentes.",
+      "cta": "Solicitar servicio"
+    },
+    "quick": {
+      "title": "Asignación rápida",
+      "body": "Asigna rápidamente sensores disponibles a nuevos pacientes.",
+      "cta": "Iniciar asistente"
+    },
+    "monitor": {
+      "title": "Monitor de conectividad",
+      "body": "Estado en tiempo real del gateway local y la malla Bluetooth.",
+      "gateway": "Gateway",
+      "statusValue": {
+        "stable": "Estable",
+        "degraded": "Degradado",
+        "down": "Caído"
+      }
+    }
+  },
+  "organizationView": {
+    "title": "Vista organizacional",
+    "subtitle": "Supervisa el desempeño clínico, gestiona cargas de trabajo y optimiza la asignación de pacientes.",
+    "summary": {
+      "totalStaff": "Personal total",
+      "avgProductivity": "Productividad prom."
+    },
+    "queue": {
+      "title": "Pacientes sin asignar",
+      "awaiting": "{{count}} en espera",
+      "tags": {
+        "critical-care": "Cuidado crítico",
+        "home-visit": "Visita a domicilio",
+        "outpatient": "Ambulatorio",
+        "iot-syncing": "IoT sincronizando"
+      },
+      "assignToSelf": "Asignarme",
+      "help": {
+        "title": "¿Necesitas ayuda?",
+        "body": "Coordina con los fisioterapeutas líderes para asistencia en triaje de pacientes."
+      }
+    },
+    "directory": {
+      "title": "Directorio y productividad",
+      "filter": "Filtrar",
+      "export": "Exportar reporte",
+      "columns": {
+        "clinician": "Clínico",
+        "specialization": "Especialización",
+        "caseload": "Carga"
+      },
+      "showingCount": "Mostrando {{visible}} de {{total}} miembros del personal"
+    },
+    "fleet": {
+      "title": "Salud de la flota IoT",
+      "body": "{{pct}}% de los dispositivos están reportando datos sin alertas críticas.",
+      "online": "En línea",
+      "syncing": "Sincronizando"
+    },
+    "efficiency": {
+      "title": "Eficiencia clínica",
+      "mom": "MoM",
+      "cta": "Ver reporte de eficiencia"
+    }
+  },
+  "planningDashboard": {
+    "schedule": {
+      "time": "Hora",
+      "patient": "Paciente",
+      "focusArea": "Área de enfoque",
+      "iotStatus": "Estado IoT",
+      "actions": "Acciones"
+    },
+    "iot": {
+      "connected": "Conectado",
+      "offline": "Desconectado",
+      "upcoming": "Próximo"
+    },
+    "summary": {
+      "chartCaption": "Velocidad semanal de rehabilitación"
+    }
+  }
+}

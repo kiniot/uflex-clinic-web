@@ -1,0 +1,88 @@
+:host {
+  display: block;
+}
+
+.portal__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.portal__clinic-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 0;
+  background: transparent;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--p-text-color);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.portal__clinic-selector:hover {
+  background: var(--p-surface-100);
+}
+
+.portal__icon-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 0;
+  background: transparent;
+  color: var(--p-text-muted-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal__icon-btn:hover {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+}
+
+.portal__icon-dot {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--p-red-500);
+  border: 2px solid var(--p-surface-0);
+}
+
+:host ::ng-deep .portal__avatar {
+  background: var(--p-surface-200);
+  color: var(--p-text-color);
+}
+
+.portal__user-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  margin-left: 4px;
+  max-width: 180px;
+}
+
+.portal__user-email {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-text-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal__user-role {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+}
