@@ -5,6 +5,7 @@ import {InventoryDevice} from '../domain/model/inventory-device.entity';
 import {MOCK_DEVICES} from '../infrastructure/device.mock';
 import {MOCK_BATTERY_HEALTH, MOCK_CONNECTIVITY_GATEWAY, MOCK_FLEET_CONNECTIVITY} from '../infrastructure/fleet-snapshot.mock';
 import {MOCK_INVENTORY_DEVICES, MOCK_INVENTORY_TOTAL} from '../infrastructure/inventory-device.mock';
+import {DeviceStatus} from '../domain/model/device.types';
 
 /**
  * Application-layer store for the Device bounded context. Exposes the
@@ -51,4 +52,22 @@ export class DeviceStore {
     if (c.totalUnits === 0) return 0;
     return Math.round((c.availableUnits / c.totalUnits) * 100);
   });
+
+  updateDeviceStatus(id: number, status: DeviceStatus) {
+    this.devicesSignal.update(devices =>
+      devices.map(device => {
+        if (device.id !== id) return device;
+        return new Device({
+          id: device.id,
+          kitId: device.kitId,
+          linkedPatient: device.linkedPatient,
+          batteryLevel: device.batteryLevel,
+          bluetoothConnected: device.bluetoothConnected,
+          calibrationStatus: device.calibrationStatus,
+          firmwareVersion: device.firmwareVersion,
+          status
+        });
+      })
+    );
+  }
 }

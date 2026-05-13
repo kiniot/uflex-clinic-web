@@ -206,6 +206,29 @@
     },
     "unassigned": "Unassigned"
   },
+  "deviceDetails": {
+    "backToInventory": "Back to Inventory",
+    "title": "IoT Details",
+    "subtitle": "Kit {{kitId}}",
+    "summary": {
+      "title": "Device Overview",
+      "kitId": "IoT Kit ID",
+      "linkedPatient": "Linked Patient",
+      "batteryLevel": "Battery Level",
+      "firmware": "Firmware"
+    },
+    "status": {
+      "title": "Device Status",
+      "subtitle": "Update the operational status for this kit.",
+      "label": "Status",
+      "placeholder": "Select status"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save Status"
+    },
+    "empty": "No device found for this kit."
+  },
   "deviceCalibration": {
     "title": "Device Calibration",
     "subtitle": "Sensor: {{sensor}} — ID: #{{id}}",

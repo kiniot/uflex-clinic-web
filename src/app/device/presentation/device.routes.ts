@@ -10,6 +10,8 @@ const registerDevice = () =>
   import('./views/register-device/register-device').then(m => m.RegisterDevice);
 const linkPatient = () =>
   import('./views/link-patient/link-patient').then(m => m.LinkPatient);
+const deviceDetails = () =>
+  import('./views/device-details/device-details').then(m => m.DeviceDetails);
 
 /**
  * Routes for the Device bounded context. Portals mount these under their
@@ -19,6 +21,7 @@ const linkPatient = () =>
  */
 export const deviceRoutes: Routes = [
   {path: '', loadComponent: deviceManagement},
+  {path: 'details/:id', loadComponent: deviceDetails},
   {path: 'calibrate', loadComponent: deviceCalibration},
   {path: 'diagnostics', loadComponent: deviceDiagnostics},
   {path: 'register', loadComponent: registerDevice},
