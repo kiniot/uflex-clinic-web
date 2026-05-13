@@ -2,9 +2,11 @@ import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BillingCycle } from '../models/billing-cycle.enum';
 import { Subscription } from '../models/subscription';
+import { PaymentReference } from '../value-objects/payment-reference';
 
 export interface SubscriptionRepository {
-  findCurrentByClinicId(clinicId: string): Observable<Subscription | null>;
+  findCurrent(): Observable<Subscription | null>;
+  findPaymentMethod(): Observable<PaymentReference | null>;
   purchase(
     clinicId: string,
     planId: string,

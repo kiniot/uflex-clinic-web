@@ -77,14 +77,22 @@ describe('IamStore', () => {
       roles: ['ROLE_USER'],
       exp: longGone
     }));
+    localStorage.setItem('jwt_token', 'legacy-token');
+    localStorage.setItem('userEmail', 'old@uflex.io');
 
     const store = buildStore();
 
     expect(store.isSignedIn()).toBe(false);
     expect(localStorage.getItem('token')).toBeNull();
+    expect(localStorage.getItem('jwt_token')).toBeNull();
+    expect(localStorage.getItem('userEmail')).toBeNull();
   });
 
   it('updates state and routes to the role home on a successful sign-in', () => {
+    localStorage.setItem('jwt_token', 'legacy-token');
+    localStorage.setItem('userEmail', 'perro@hotmail.com');
+    localStorage.setItem('userId', '16');
+    localStorage.setItem('userType', 'client');
     iamApiMock.signIn.mockReturnValue(of({
       id: 'admin-uuid',
       email: 'admin@uflex.io',
@@ -104,7 +112,46 @@ describe('IamStore', () => {
     expect(store.currentRoles()).toEqual(['ROLE_CLINIC_ADMIN']);
     expect(store.currentTenantId()).toBe('tenant-123');
     expect(localStorage.getItem('token')).toBe('jwt-token-value');
+    expect(store.currentToken()).toBe('jwt-token-value');
+    expect(localStorage.getItem('email')).toBe('admin@uflex.io');
+    expect(localStorage.getItem('tenantId')).toBe('tenant-123');
+    expect(localStorage.getItem('roles')).toBe(JSON.stringify(['ROLE_CLINIC_ADMIN']));
+    expect(localStorage.getItem('jwt_token')).toBeNull();
+    expect(localStorage.getItem('userEmail')).toBeNull();
+    expect(localStorage.getItem('userId')).toBeNull();
+    expect(localStorage.getItem('userType')).toBeNull();
     expect(routerMock.navigate).toHaveBeenCalledWith(['/clinic-admin/therapy']);
+  });
+
+  it('replaces the in-memory token when signing in again during an existing session', () => {
+    iamApiMock.signIn
+      .mockReturnValueOnce(of({
+        id: 'admin-uuid',
+        email: 'admin@uflex.io',
+        roles: ['ROLE_CLINIC_ADMIN'],
+        tenantId: 'tenant-123',
+        token: 'first-jwt-token'
+      }))
+      .mockReturnValueOnce(of({
+        id: 'admin-uuid',
+        email: 'admin@uflex.io',
+        roles: ['ROLE_CLINIC_ADMIN'],
+        tenantId: 'tenant-123',
+        token: 'second-jwt-token'
+      }));
+    const store = buildStore();
+
+    store.signIn(
+      new SignInCommand({ email: 'admin@uflex.io', password: 'pwd' }),
+      routerMock as unknown as Router
+    );
+    store.signIn(
+      new SignInCommand({ email: 'admin@uflex.io', password: 'pwd' }),
+      routerMock as unknown as Router
+    );
+
+    expect(localStorage.getItem('token')).toBe('second-jwt-token');
+    expect(store.currentToken()).toBe('second-jwt-token');
   });
 
   it('clears the session and stays on the sign-in route when sign-in fails', () => {
@@ -122,11 +169,23 @@ describe('IamStore', () => {
 
   it('removes the token and clears the session on sign-out', () => {
     localStorage.setItem('token', 'whatever');
+    localStorage.setItem('jwt_token', 'legacy-token');
+    localStorage.setItem('userEmail', 'perro@hotmail.com');
+    localStorage.setItem('userId', '16');
+    localStorage.setItem('userType', 'client');
+    localStorage.setItem('tenantId', 'tenant-123');
+    localStorage.setItem('roles', JSON.stringify(['ROLE_USER']));
     const store = buildStore();
 
     store.signOut(routerMock as unknown as Router);
 
     expect(localStorage.getItem('token')).toBeNull();
+    expect(localStorage.getItem('jwt_token')).toBeNull();
+    expect(localStorage.getItem('userEmail')).toBeNull();
+    expect(localStorage.getItem('userId')).toBeNull();
+    expect(localStorage.getItem('userType')).toBeNull();
+    expect(localStorage.getItem('tenantId')).toBeNull();
+    expect(localStorage.getItem('roles')).toBeNull();
     expect(store.isSignedIn()).toBe(false);
     expect(routerMock.navigate).toHaveBeenCalledWith(['/iam/sign-in']);
   });

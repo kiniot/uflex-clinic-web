@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { User } from '../domain/model/user.entity';
 import { SignInCommand } from '../domain/model/sign-in.command';
 import { Router } from '@angular/router';
@@ -14,6 +14,15 @@ const ROLE_TO_HOME_ROUTE: Record<string, string> = {
 };
 
 const FALLBACK_HOME_ROUTE = '/home';
+
+const SESSION_STORAGE_KEYS = {
+  token: 'token',
+  email: 'email',
+  tenantId: 'tenantId',
+  roles: 'roles',
+} as const;
+
+const LEGACY_SESSION_STORAGE_KEYS = ['jwt_token', 'userEmail', 'userId', 'userType'] as const;
 
 interface JwtPayload {
   sub?: string;
@@ -34,6 +43,7 @@ export class IamStore {
   private readonly currentUserIdSignal = signal<string | null>(null);
   private readonly currentRolesSignal = signal<string[]>([]);
   private readonly currentTenantIdSignal = signal<string | null>(null);
+  private readonly currentTokenSignal = signal<string | null>(null);
   private readonly usersSignal = signal<Array<User>>([]);
 
   readonly isSignedIn = this.isSignedInSignal.asReadonly();
@@ -42,15 +52,12 @@ export class IamStore {
   readonly currentUserId = this.currentUserIdSignal.asReadonly();
   readonly currentRoles = this.currentRolesSignal.asReadonly();
   readonly currentTenantId = this.currentTenantIdSignal.asReadonly();
+  readonly currentToken = this.currentTokenSignal.asReadonly();
 
   /**
    * @deprecated kept for backwards compatibility — use {@link currentEmail}.
    */
   readonly currentUsername = this.currentEmailSignal.asReadonly();
-
-  readonly currentToken = computed(() =>
-    this.isSignedIn() ? localStorage.getItem('token') : null
-  );
 
   readonly users = this.usersSignal.asReadonly();
   readonly isLoadingUsers = this.loadingUsers.asReadonly();
@@ -62,7 +69,7 @@ export class IamStore {
   signIn(signInCommand: SignInCommand, router: Router) {
     this.iamApi.signIn(signInCommand).subscribe({
       next: (signInResource) => {
-        localStorage.setItem('token', signInResource.token);
+        this.storeSession(signInResource);
         this.isSignedInSignal.set(true);
         this.currentEmailSignal.set(signInResource.email);
         this.currentUserIdSignal.set(signInResource.id);
@@ -73,6 +80,7 @@ export class IamStore {
       },
       error: (err) => {
         console.error('Sign-in failed:', err);
+        this.clearSessionStorage();
         this.clearSession();
         router.navigate(['/iam/sign-in']).then();
       }
@@ -87,6 +95,7 @@ export class IamStore {
       },
       error: (err) => {
         console.error('Sign-up failed:', err);
+        this.clearSessionStorage();
         this.clearSession();
         router.navigate(['/iam/sign-up']).then();
       }
@@ -94,7 +103,7 @@ export class IamStore {
   }
 
   signOut(router: Router) {
-    localStorage.removeItem('token');
+    this.clearSessionStorage();
     this.clearSession();
     router.navigate(['/iam/sign-in']).then();
   }
@@ -118,6 +127,32 @@ export class IamStore {
     this.currentUserIdSignal.set(null);
     this.currentRolesSignal.set([]);
     this.currentTenantIdSignal.set(null);
+    this.currentTokenSignal.set(null);
+  }
+
+  private storeSession(resource: {
+    email: string;
+    roles?: string[];
+    tenantId?: string | null;
+    token: string;
+  }): void {
+    this.clearSessionStorage();
+    localStorage.setItem(SESSION_STORAGE_KEYS.token, resource.token);
+    localStorage.setItem(SESSION_STORAGE_KEYS.email, resource.email);
+    localStorage.setItem(SESSION_STORAGE_KEYS.roles, JSON.stringify(resource.roles ?? []));
+    this.currentTokenSignal.set(resource.token);
+
+    if (resource.tenantId) {
+      localStorage.setItem(SESSION_STORAGE_KEYS.tenantId, resource.tenantId);
+    }
+  }
+
+  private clearSessionStorage(): void {
+    localStorage.removeItem(SESSION_STORAGE_KEYS.token);
+    localStorage.removeItem(SESSION_STORAGE_KEYS.email);
+    localStorage.removeItem(SESSION_STORAGE_KEYS.tenantId);
+    localStorage.removeItem(SESSION_STORAGE_KEYS.roles);
+    this.removeLegacySessionStorage();
   }
 
   private resolveHomeRoute(roles: string[]): string {
@@ -134,22 +169,47 @@ export class IamStore {
    * If the token is missing, malformed or expired, the session is cleared.
    */
   private restoreSessionFromStorage() {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem(SESSION_STORAGE_KEYS.token);
     if (!token) {
+      this.clearSessionStorage();
       this.clearSession();
       return;
     }
     const payload = this.decodeJwtPayload(token);
     if (!payload || (payload.exp != null && payload.exp * 1000 < Date.now())) {
-      localStorage.removeItem('token');
+      this.clearSessionStorage();
       this.clearSession();
       return;
     }
+    this.removeLegacySessionStorage();
     this.isSignedInSignal.set(true);
+    this.currentTokenSignal.set(token);
     this.currentUserIdSignal.set(payload.sub ?? null);
-    this.currentEmailSignal.set(payload.email ?? null);
-    this.currentRolesSignal.set(payload.roles ?? []);
-    this.currentTenantIdSignal.set(payload.tenantId ?? null);
+    this.currentEmailSignal.set(payload.email ?? localStorage.getItem(SESSION_STORAGE_KEYS.email));
+    this.currentRolesSignal.set(payload.roles ?? this.readStoredRoles());
+    this.currentTenantIdSignal.set(
+      payload.tenantId ?? localStorage.getItem(SESSION_STORAGE_KEYS.tenantId),
+    );
+  }
+
+  private removeLegacySessionStorage(): void {
+    for (const key of LEGACY_SESSION_STORAGE_KEYS) {
+      localStorage.removeItem(key);
+    }
+  }
+
+  private readStoredRoles(): string[] {
+    const storedRoles = localStorage.getItem(SESSION_STORAGE_KEYS.roles);
+    if (!storedRoles) return [];
+
+    try {
+      const parsedRoles = JSON.parse(storedRoles);
+      return Array.isArray(parsedRoles)
+        ? parsedRoles.filter((role): role is string => typeof role === 'string')
+        : [];
+    } catch {
+      return [];
+    }
   }
 
   private decodeJwtPayload(token: string): JwtPayload | null {

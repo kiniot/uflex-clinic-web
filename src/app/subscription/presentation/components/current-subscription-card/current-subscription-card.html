@@ -10,8 +10,10 @@
 
     <div class="price-line">
       <span>{{ current.plan.monthlyPrice.formatted() }}</span>
-      <small>{{ current.billingCycle }}</small>
+      <small>{{ billingCycleLabel(current) }}</small>
     </div>
+
+    <p class="status-line">Status: {{ statusLabel(current.status) }}</p>
 
     <div class="period-grid">
       <div>

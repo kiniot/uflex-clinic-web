@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { IamStore } from '../../../iam/application/iam.store';
 
@@ -35,6 +35,11 @@ export class SubscriptionTenantContextService {
     const token = this.iamStore.currentToken();
     if (!token) {
       return throwError(() => new MissingSubscriptionTokenError());
+    }
+
+    const tenantId = this.iamStore.currentTenantId();
+    if (tenantId) {
+      return of(tenantId);
     }
 
     const email = this.iamStore.currentEmail() ?? this.emailFromToken(token);

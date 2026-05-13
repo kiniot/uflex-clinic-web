@@ -17,6 +17,13 @@ export class CurrentSubscriptionCard {
   subscription = input.required<Subscription | null>();
 
   statusLabel(status: string): string {
-    return status.replace('_', ' ');
+    return status
+      .toLowerCase()
+      .replaceAll('_', ' ')
+      .replace(/^\w/, (letter) => letter.toUpperCase());
+  }
+
+  billingCycleLabel(subscription: Subscription): string {
+    return subscription.billingCycle === 'YEARLY' ? '/ year' : '/ month';
   }
 }

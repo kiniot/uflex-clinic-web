@@ -10,7 +10,7 @@ export class PlanDtoAssembler {
     const currency = stringValue(backendDto, 'currency', 'PEN');
 
     return new SubscriptionPlan(
-      stringValue(backendDto, 'id'),
+      normalizePlanId(backendDto),
       stringValue(backendDto, 'name'),
       stringValue(backendDto, 'code'),
       new Money(numberValue(backendDto, 'monthlyPrice', 'monthly_price'), currency),
@@ -21,6 +21,26 @@ export class PlanDtoAssembler {
       booleanValue(backendDto, 'active', true),
     );
   }
+}
+
+function normalizePlanId(dto: Record<string, unknown>): string {
+  const id = stringValue(dto, 'id');
+  if (id) return normalizePlanKey(id);
+
+  const code = stringValue(dto, 'code');
+  if (code) return normalizePlanKey(code);
+
+  return normalizePlanKey(stringValue(dto, 'name'));
+}
+
+function normalizePlanKey(value: string): string {
+  const normalized = value.trim().toLowerCase().replaceAll('_', '-').replaceAll(' ', '-');
+
+  if (normalized.includes('starter')) return 'starter';
+  if (normalized.includes('professional')) return 'professional';
+  if (normalized.includes('enterprise')) return 'enterprise';
+
+  return normalized;
 }
 
 function stringValue(dto: Record<string, unknown>, key: string, fallback = ''): string {

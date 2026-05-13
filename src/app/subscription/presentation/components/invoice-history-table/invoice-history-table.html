@@ -16,7 +16,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-invoice>
       <tr>
-        <td>{{ invoice.id }}</td>
+        <td>{{ invoiceLabel(invoice) }}</td>
         <td>{{ invoice.issuedAt | date: 'MMM d, y' }}</td>
         <td>{{ invoice.dueAt | date: 'MMM d, y' }}</td>
         <td>{{ invoice.amount.formatted() }}</td>

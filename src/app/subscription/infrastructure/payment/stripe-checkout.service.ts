@@ -17,8 +17,9 @@ export class StripeCheckoutService {
   private readonly http = inject(HttpClient);
   private readonly checkoutSessionUrl = `${environment.apiBaseUrl}${environment.subscription.checkoutSessionEndpoint}`;
 
-  startCheckout(clinicId: string, planId: string, billingCycle: BillingCycle): Observable<void> {
-    const body: CreateStripeCheckoutSessionDto = { clinicId, planId, billingCycle };
+  startCheckout(planId: string, billingCycle: BillingCycle): Observable<void> {
+    const body: CreateStripeCheckoutSessionDto = { planId, billingCycle };
+    console.log('Checkout payload', body);
 
     return this.http.post<StripeCheckoutSessionResponseDto>(this.checkoutSessionUrl, body).pipe(
       map((response) => {
@@ -33,5 +34,11 @@ export class StripeCheckoutService {
       }),
       map(() => undefined),
     );
+  }
+
+  confirmCheckoutSession(sessionId: string): Observable<void> {
+    return this.http
+      .post<void>(`${this.checkoutSessionUrl}/confirm`, { sessionId })
+      .pipe(map(() => undefined));
   }
 }

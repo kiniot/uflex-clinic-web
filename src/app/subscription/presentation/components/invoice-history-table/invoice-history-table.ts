@@ -17,6 +17,10 @@ import { InvoiceStatus } from '../../../domain/models/invoice-status.enum';
 export class InvoiceHistoryTable {
   invoices = input.required<Array<Invoice>>();
 
+  invoiceLabel(invoice: Invoice): string {
+    return invoice.id || 'Invoice';
+  }
+
   statusSeverity(status: InvoiceStatus): 'success' | 'warn' | 'danger' | 'secondary' {
     if (status === InvoiceStatus.Paid) return 'success';
     if (status === InvoiceStatus.Pending) return 'warn';

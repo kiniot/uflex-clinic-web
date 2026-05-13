@@ -1,11 +1,11 @@
-<p-card styleClass="subscription-card plan-card" [class.plan-card--selected]="isCurrentPlan()">
+<p-card [styleClass]="cardStyleClass()">
   <div class="plan-heading">
     <div>
       <span class="plan-code">{{ plan().code }}</span>
       <h3>{{ plan().name }}</h3>
     </div>
     @if (isCurrentPlan()) {
-      <span class="current-pill">Active</span>
+      <span class="current-pill">Current</span>
     }
   </div>
   <p class="plan-description">{{ plan().code }} operating capacity for clinical teams.</p>

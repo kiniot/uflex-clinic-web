@@ -10,7 +10,9 @@ export class InvoiceDtoAssembler {
     const backendDto = dto as BackendInvoiceDto;
 
     return new Invoice(
-      stringValue(backendDto, 'id'),
+      stringValue(backendDto, 'invoiceNumber', 'number') ||
+        stringValue(backendDto, 'id') ||
+        stringValue(backendDto, 'invoiceId', 'invoice_id'),
       stringValue(backendDto, 'subscriptionId', 'subscription_id'),
       dateValue(backendDto, 'issuedAt', 'issued_at'),
       dateValue(backendDto, 'dueAt', 'due_at'),

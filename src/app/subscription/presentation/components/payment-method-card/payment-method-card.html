@@ -7,16 +7,12 @@
     </div>
   </div>
 
-  @if (subscription(); as current) {
-    <div class="card-number">**** **** **** {{ current.paymentReference.last4 }}</div>
+  @if (paymentReference(); as payment) {
+    <div class="card-number">{{ payment.brand | titlecase }} ending in {{ payment.last4 }}</div>
     <dl>
       <div>
-        <dt>Provider token</dt>
-        <dd>{{ current.paymentReference.providerToken }}</dd>
-      </div>
-      <div>
         <dt>Expires</dt>
-        <dd>{{ current.paymentReference.expiresOn }}</dd>
+        <dd>{{ payment.expiresOn }}</dd>
       </div>
     </dl>
     <button

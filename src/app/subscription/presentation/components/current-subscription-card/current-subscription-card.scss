@@ -52,6 +52,12 @@ h2 {
   font-weight: 700;
 }
 
+.status-line {
+  color: var(--p-surface-700);
+  font-weight: 700;
+  margin: -0.75rem 0 1.5rem;
+}
+
 .period-grid {
   display: grid;
   gap: 1rem;
