@@ -206,6 +206,29 @@
     },
     "unassigned": "Sin asignar"
   },
+  "deviceDetails": {
+    "backToInventory": "Volver al inventario",
+    "title": "Detalles del IoT",
+    "subtitle": "Kit {{kitId}}",
+    "summary": {
+      "title": "Resumen del dispositivo",
+      "kitId": "ID del kit IoT",
+      "linkedPatient": "Paciente vinculado",
+      "batteryLevel": "Nivel de batería",
+      "firmware": "Firmware"
+    },
+    "status": {
+      "title": "Estado del dispositivo",
+      "subtitle": "Actualiza el estado operativo de este kit.",
+      "label": "Estado",
+      "placeholder": "Selecciona estado"
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "save": "Guardar estado"
+    },
+    "empty": "No se encontró un dispositivo para este kit."
+  },
   "deviceCalibration": {
     "title": "Calibración de dispositivo",
     "subtitle": "Sensor: {{sensor}} — ID: #{{id}}",
