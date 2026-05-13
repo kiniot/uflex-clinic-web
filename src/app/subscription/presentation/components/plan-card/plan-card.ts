@@ -22,7 +22,14 @@ export class PlanCard {
     return this.isCurrent();
   }
 
+  protected cardStyleClass(): string {
+    return this.isCurrentPlan()
+      ? 'subscription-card plan-card plan-card--selected'
+      : 'subscription-card plan-card';
+  }
+
   protected selectPlan(): void {
+    if (this.isCurrentPlan()) return;
     this.planSelected.emit(this.plan().id);
   }
 }

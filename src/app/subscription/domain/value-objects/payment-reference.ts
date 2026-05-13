@@ -6,6 +6,7 @@ export class PaymentReference {
     private readonly providerTokenValue: string,
     private readonly last4Value: string,
     private readonly expiresOnValue: string,
+    private readonly brandValue = 'card',
   ) {}
 
   get providerToken(): string {
@@ -18,5 +19,9 @@ export class PaymentReference {
 
   get expiresOn(): string {
     return this.expiresOnValue;
+  }
+
+  get brand(): string {
+    return this.brandValue;
   }
 }

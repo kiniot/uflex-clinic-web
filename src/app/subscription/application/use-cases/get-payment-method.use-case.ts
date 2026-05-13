@@ -1,16 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Subscription } from '../../domain/models/subscription';
+import { PaymentReference } from '../../domain/value-objects/payment-reference';
 import { SUBSCRIPTION_REPOSITORY } from '../../domain/repositories/subscription-repository';
 
-/**
- * Application use case for retrieving the current clinic subscription.
- */
 @Injectable({ providedIn: 'root' })
-export class GetCurrentSubscriptionUseCase {
+export class GetPaymentMethodUseCase {
   private readonly subscriptionRepository = inject(SUBSCRIPTION_REPOSITORY);
 
-  execute(): Observable<Subscription | null> {
-    return this.subscriptionRepository.findCurrent();
+  execute(): Observable<PaymentReference | null> {
+    return this.subscriptionRepository.findPaymentMethod();
   }
 }

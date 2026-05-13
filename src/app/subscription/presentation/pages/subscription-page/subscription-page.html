@@ -25,7 +25,7 @@
     <div class="overview-grid">
       <app-current-subscription-card [subscription]="facade.currentSubscription()" />
       <app-payment-method-card
-        [subscription]="facade.currentSubscription()"
+        [paymentReference]="facade.paymentReference()"
         (updateRequested)="updatePaymentMethod()"
       />
     </div>

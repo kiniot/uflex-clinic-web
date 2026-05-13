@@ -10,7 +10,7 @@ import { INVOICE_REPOSITORY } from '../../domain/repositories/invoice-repository
 export class GetInvoiceHistoryUseCase {
   private readonly invoiceRepository = inject(INVOICE_REPOSITORY);
 
-  execute(subscriptionId: string): Observable<Array<Invoice>> {
-    return this.invoiceRepository.findBySubscriptionId(subscriptionId);
+  execute(): Observable<Array<Invoice>> {
+    return this.invoiceRepository.findAll();
   }
 }
