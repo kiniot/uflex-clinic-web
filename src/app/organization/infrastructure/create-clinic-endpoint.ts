@@ -6,7 +6,10 @@ import { CreateClinicCommand } from '../domain/model/create-clinic.command';
 import { CreateClinicAssembler } from './create-clinic-assembler';
 import { ClinicResource, CreateClinicResponse } from './create-clinic-response';
 
-const createClinicApiEndpointUrl = `${environment.platformProviderApiBaseUrl}${environment.platformProviderCreateClinicEndpointPath}`;
+const createClinicApiEndpointUrl = buildCreateClinicEndpointUrl(
+  environment.apiBaseUrl,
+  environment.platformProviderCreateClinicEndpointPath,
+);
 
 /**
  * API endpoint for creating clinics during onboarding.
@@ -26,4 +29,9 @@ export class CreateClinicApiEndpoint extends ErrorHandlingEnabledBaseType {
       catchError(this.handleError('Failed to create clinic')),
     );
   }
+}
+
+function buildCreateClinicEndpointUrl(apiBaseUrl: string, endpointPath: string): string {
+  const normalizedPath = endpointPath.replace(/^\/api\/v1(?=\/|$)/, '');
+  return `${apiBaseUrl}${normalizedPath.startsWith('/') ? '' : '/'}${normalizedPath}`;
 }
