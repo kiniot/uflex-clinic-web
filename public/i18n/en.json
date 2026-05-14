@@ -597,11 +597,49 @@
     "submit": "Create Account",
     "haveAccount": "Already have an account?",
     "signInLink": "Sign In",
+    "clinicStep": {
+      "title": "Create your clinic",
+      "subtitle": "Complete your onboarding by registering the clinic that will operate in uFlex.",
+      "legalName": {
+        "label": "Legal Name",
+        "placeholder": "Enter the clinic's legal name"
+      },
+      "commercialName": {
+        "label": "Commercial Name",
+        "placeholder": "Enter the clinic's commercial name"
+      },
+      "ruc": {
+        "label": "RUC",
+        "placeholder": "11-digit tax id",
+        "error": "Enter a valid 11-digit RUC."
+      },
+      "email": {
+        "label": "Clinic Email",
+        "placeholder": "Enter the clinic email"
+      },
+      "countryCode": {
+        "label": "Country Code",
+        "placeholder": "e.g. +51",
+        "error": "Enter a valid international code."
+      },
+      "phoneNumber": {
+        "label": "Phone Number",
+        "placeholder": "Enter the clinic phone number",
+        "error": "Enter a valid phone number."
+      },
+      "back": "Back",
+      "submit": "Create Clinic",
+      "footer": "Step 2 of 2: register your clinic to finish the onboarding flow."
+    },
     "notifications": {
-      "successSummary": "Account created",
-      "successDetail": "Your account was registered successfully. You can now sign in.",
+      "accountCreatedSummary": "Account created",
+      "accountCreatedDetail": "Your account is ready. Now register your clinic to finish onboarding.",
+      "successSummary": "Clinic created",
+      "successDetail": "Your account and clinic were registered successfully. You can now sign in.",
       "errorSummary": "Registration failed",
-      "genericError": "We could not create the account. Please try again."
+      "genericError": "We could not create the account. Please try again.",
+      "clinicErrorSummary": "Clinic registration failed",
+      "clinicGenericError": "We could not create the clinic. Please try again."
     }
   },
   "changePassword": {
