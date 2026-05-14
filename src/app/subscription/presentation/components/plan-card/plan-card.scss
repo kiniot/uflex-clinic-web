@@ -8,6 +8,11 @@
   height: 100%;
 }
 
+:host ::ng-deep .plan-card--selected {
+  border-color: var(--p-primary-500);
+  box-shadow: 0 0 0 2px var(--p-highlight-background);
+}
+
 :host ::ng-deep .plan-card .p-card-body {
   height: 100%;
 }

@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ButtonModule} from 'primeng/button';
 import {PageHeader} from '../../../../shared/presentation/components/page-header/page-header';
@@ -21,6 +21,8 @@ import {FleetTable} from '../../components/fleet-table/fleet-table';
 })
 export class DeviceManagement {
   private readonly store = inject(DeviceStore);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   protected readonly devices = this.store.devices;
   protected readonly totalActiveKits = this.store.totalActiveKits;
@@ -28,6 +30,6 @@ export class DeviceManagement {
   protected readonly onlinePercentage = this.store.onlinePercentage;
 
   protected onRowAction(device: Device) {
-    console.log('Row action for device', device.kitId);
+    this.router.navigate(['details', device.id], {relativeTo: this.route});
   }
 }

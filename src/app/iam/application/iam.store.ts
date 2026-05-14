@@ -59,7 +59,7 @@ export class IamStore {
     this.restoreSessionFromStorage();
   }
 
-  signIn(signInCommand: SignInCommand, router: Router): Promise<void> {
+  signIn(signInCommand: SignInCommand, router: Router, redirectTo?: string | null): Promise<void> {
     return new Promise((resolve, reject) => {
       this.iamApi.signIn(signInCommand).subscribe({
         next: (signInResource) => {
@@ -69,7 +69,11 @@ export class IamStore {
           this.currentUserIdSignal.set(signInResource.id);
           this.currentRolesSignal.set(signInResource.roles ?? []);
           this.currentTenantIdSignal.set(signInResource.tenantId ?? null);
-          const destination = this.resolveHomeRoute(signInResource.roles ?? []);
+          if (redirectTo === null) {
+            resolve();
+            return;
+          }
+          const destination = redirectTo ?? this.resolveHomeRoute(signInResource.roles ?? []);
           router.navigate([destination]).then(() => resolve());
         },
         error: (err) => {
@@ -84,12 +88,16 @@ export class IamStore {
   signUp(
     signUpCommand: SignUpCommand,
     router: Router,
-    redirectTo: string = '/iam/sign-in',
+    redirectTo: string | null = '/iam/sign-in',
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       this.iamApi.signUp(signUpCommand).subscribe({
         next: (signUpResource) => {
           console.log('Sign-up successful:', signUpResource);
+          if (!redirectTo) {
+            resolve();
+            return;
+          }
           router.navigate([redirectTo]).then(() => resolve());
         },
         error: (err) => {

@@ -4,6 +4,7 @@ import { of, throwError } from 'rxjs';
 import { IamStore } from './iam.store';
 import { IamApi } from '../infrastructure/iam-api';
 import { SignInCommand } from '../domain/model/sign-in.command';
+import { SignUpCommand } from '../domain/model/sign-up.command';
 
 const buildJwt = (payload: Record<string, unknown>) => {
   const encode = (obj: object) =>
@@ -110,6 +111,49 @@ describe('IamStore', () => {
     expect(store.currentTenantId()).toBe('tenant-123');
     expect(localStorage.getItem('token')).toBe('jwt-token-value');
     expect(routerMock.navigate).toHaveBeenCalledWith(['/clinic-admin/therapy']);
+  });
+
+  it('allows sign-in to complete without redirecting when onboarding continues in-place', async () => {
+    iamApiMock.signIn.mockReturnValue(
+      of({
+        id: 'admin-uuid',
+        email: 'admin@uflex.io',
+        roles: ['ROLE_CLINIC_ADMIN'],
+        tenantId: 'tenant-123',
+        token: 'jwt-token-value',
+      }),
+    );
+    const store = buildStore();
+
+    await store.signIn(
+      new SignInCommand({ email: 'admin@uflex.io', password: 'pwd' }),
+      routerMock as unknown as Router,
+      null,
+    );
+
+    expect(store.isSignedIn()).toBe(true);
+    expect(localStorage.getItem('token')).toBe('jwt-token-value');
+    expect(routerMock.navigate).not.toHaveBeenCalled();
+  });
+
+  it('allows sign-up to complete without redirecting when the flow continues in-place', async () => {
+    iamApiMock.signUp.mockReturnValue(
+      of({
+        id: 'user-uuid',
+        email: 'new@uflex.io',
+        roles: ['ROLE_CLINIC_ADMIN'],
+        tenantId: null,
+      }),
+    );
+    const store = buildStore();
+
+    await store.signUp(
+      new SignUpCommand({ email: 'new@uflex.io', password: 'password123' }),
+      routerMock as unknown as Router,
+      null,
+    );
+
+    expect(routerMock.navigate).not.toHaveBeenCalled();
   });
 
   it('clears the session and stays on the sign-in route when sign-in fails', async () => {

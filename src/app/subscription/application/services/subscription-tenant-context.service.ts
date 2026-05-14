@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { IamStore } from '../../../iam/application/iam.store';
 
@@ -37,6 +37,16 @@ export class SubscriptionTenantContextService {
       return throwError(() => new MissingSubscriptionTokenError());
     }
 
+    const tenantId = nonEmptyString(this.iamStore.currentTenantId());
+    if (tenantId) {
+      return of(tenantId);
+    }
+
+    const userId = nonEmptyString(this.iamStore.currentUserId()) ?? this.userIdFromToken(token);
+    if (userId) {
+      return of(userId);
+    }
+
     const email = this.iamStore.currentEmail() ?? this.emailFromToken(token);
     if (!email) {
       return throwError(() => new MissingSubscriptionTenantError());
@@ -65,6 +75,15 @@ export class SubscriptionTenantContextService {
     try {
       const payload = decodeJwtPayload(token);
       return payload?.email ?? payload?.sub ?? null;
+    } catch {
+      return null;
+    }
+  }
+
+  private userIdFromToken(token: string): string | null {
+    try {
+      const payload = decodeJwtPayload(token);
+      return nonEmptyString(payload?.sub);
     } catch {
       return null;
     }
@@ -98,8 +117,7 @@ function extractTenantId(response: unknown): string | null {
     stringValue(record, 'tenant_id') ??
     stringValue(record, 'clinicId') ??
     stringValue(record, 'clinic_id') ??
-    // TODO: Este fallback usa user.id como clinicId solo para demo local.
-    // A futuro debe reemplazarse por tenantId real expuesto por IAM/Organization.
+    // TODO: Replace this compatibility fallback once IAM/Organization exposes tenantId reliably.
     stringValue(record, 'id') ??
     (data && typeof data === 'object' ? extractTenantId(data) : null)
   );
@@ -107,5 +125,12 @@ function extractTenantId(response: unknown): string | null {
 
 function stringValue(record: Record<string, unknown>, key: string): string | null {
   const value = record[key];
-  return typeof value === 'string' && value.length > 0 ? value : null;
+  return nonEmptyString(value);
+}
+
+function nonEmptyString(value: unknown): string | null {
+  if (typeof value !== 'string') return null;
+
+  const trimmedValue = value.trim();
+  return trimmedValue.length > 0 ? trimmedValue : null;
 }

@@ -7,18 +7,21 @@
     </div>
   </div>
 
-  @if (subscription(); as current) {
-    <div class="card-number">**** **** **** {{ current.paymentReference.last4 }}</div>
-    <dl>
-      <div>
-        <dt>Provider token</dt>
-        <dd>{{ current.paymentReference.providerToken }}</dd>
-      </div>
-      <div>
-        <dt>Expires</dt>
-        <dd>{{ current.paymentReference.expiresOn }}</dd>
-      </div>
-    </dl>
+  @if (paymentReference(); as payment) {
+    <div class="card-number">Provider STRIPE</div>
+    @if (hasLast4(payment)) {
+      <p>{{ payment.brand | titlecase }} ending in {{ payment.last4 }}</p>
+    } @else {
+      <p>Payment method registered with Stripe.</p>
+    }
+    @if (hasExpiration(payment)) {
+      <dl>
+        <div>
+          <dt>Expires</dt>
+          <dd>{{ payment.expiresOn }}</dd>
+        </div>
+      </dl>
+    }
     <button
       pButton
       type="button"

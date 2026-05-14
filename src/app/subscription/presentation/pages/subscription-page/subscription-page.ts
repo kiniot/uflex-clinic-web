@@ -1,9 +1,10 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageModule } from 'primeng/message';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { BillingCycle } from '../../../domain/models/billing-cycle.enum';
 import { SubscriptionFacade } from '../../../application/services/subscription-facade';
+import { BillingCycle } from '../../../domain/models/billing-cycle.enum';
+import { SubscriptionStatus } from '../../../domain/models/subscription-status.enum';
 import { CurrentSubscriptionCard } from '../../components/current-subscription-card/current-subscription-card';
 import { InvoiceHistoryTable } from '../../components/invoice-history-table/invoice-history-table';
 import { PaymentMethodCard } from '../../components/payment-method-card/payment-method-card';
@@ -28,17 +29,19 @@ import { PlanCard } from '../../components/plan-card/plan-card';
 export class SubscriptionPage implements OnInit {
   readonly facade = inject(SubscriptionFacade);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
   protected readonly paymentMessage = signal<string | null>(null);
   protected readonly paymentSeverity = signal<'success' | 'warn'>('success');
 
   ngOnInit(): void {
-    this.handleStripeReturn();
-    this.facade.load();
+    this.loadSubscription();
   }
 
   selectPlan(planId: string): void {
+    if (!planId || this.isCurrentPlan(planId)) return;
+
     const current = this.facade.currentSubscription();
-    if (current) {
+    if (current?.id) {
       this.facade.changePlan(current.id, planId, BillingCycle.Monthly);
       return;
     }
@@ -47,7 +50,15 @@ export class SubscriptionPage implements OnInit {
   }
 
   isCurrentPlan(planId: string): boolean {
-    return this.facade.currentSubscription()?.plan.id === planId;
+    const current = this.facade.currentSubscription();
+    return (
+      current?.status === SubscriptionStatus.Active &&
+      normalizePlanKey(current.plan.id) === normalizePlanKey(planId)
+    );
+  }
+
+  hasActiveSubscription(): boolean {
+    return this.facade.currentSubscription()?.status === SubscriptionStatus.Active;
   }
 
   updatePaymentMethod(): void {
@@ -58,10 +69,15 @@ export class SubscriptionPage implements OnInit {
 
   private handleStripeReturn(): void {
     const payment = this.route.snapshot.queryParamMap.get('payment');
+    const sessionId = this.route.snapshot.queryParamMap.get('session_id');
 
     if (payment === 'success') {
       this.paymentSeverity.set('success');
-      this.paymentMessage.set('Pago procesado. Estamos actualizando tu suscripción.');
+      this.paymentMessage.set(
+        sessionId
+          ? 'Pago procesado. Tu suscripción fue activada.'
+          : 'Pago procesado. Estamos actualizando tu suscripción.',
+      );
       return;
     }
 
@@ -70,4 +86,28 @@ export class SubscriptionPage implements OnInit {
       this.paymentMessage.set('Pago cancelado. Puedes intentarlo nuevamente.');
     }
   }
+
+  private loadSubscription(): void {
+    this.handleStripeReturn();
+
+    const payment = this.route.snapshot.queryParamMap.get('payment');
+    const sessionId = this.route.snapshot.queryParamMap.get('session_id');
+
+    if (payment === 'success' && sessionId) {
+      this.facade.confirmCheckoutSession(sessionId, () => {
+        void this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {},
+          replaceUrl: true,
+        });
+      });
+      return;
+    }
+
+    this.facade.load();
+  }
+}
+
+function normalizePlanKey(planId: string | null | undefined): string {
+  return (planId ?? '').trim().toLowerCase().replaceAll('_', '-').replaceAll(' ', '-');
 }

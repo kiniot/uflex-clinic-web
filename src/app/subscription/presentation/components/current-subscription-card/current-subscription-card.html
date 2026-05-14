@@ -1,32 +1,38 @@
 <p-card styleClass="subscription-card current-card">
   @if (subscription(); as current) {
-    <div class="card-heading">
-      <div>
+    @if (isActive(current)) {
+      <div class="card-heading">
+        <div>
+          <span class="eyebrow">Current Plan</span>
+          <h2>{{ current.plan.name }}</h2>
+        </div>
+        <p-tag [value]="current.status" severity="success" />
+      </div>
+
+      <div class="price-line">
+        <span>{{ planPrice(current) }}</span>
+        <small>{{ billingCycleLabel(current) }}</small>
+      </div>
+
+      <p class="status-line">Billing cycle: {{ current.billingCycle }}</p>
+
+      <div class="period-grid">
+        <div>
+          <span>Current period end</span>
+          <strong>{{ current.currentPeriodEnd | date: 'MMM d, y' }}</strong>
+        </div>
+        <div>
+          <span>Next billing</span>
+          <strong>{{ current.nextBillingDate | date: 'MMM d, y' }}</strong>
+        </div>
+      </div>
+    } @else {
+      <div class="empty-state">
         <span class="eyebrow">Current Plan</span>
-        <h2>{{ current.plan.name }}</h2>
+        <h2>No active subscription</h2>
+        <p>La clínica todavía no tiene una suscripción activa. Selecciona un plan para comenzar.</p>
       </div>
-      <p-tag [value]="statusLabel(current.status)" severity="success" />
-    </div>
-
-    <div class="price-line">
-      <span>{{ current.plan.monthlyPrice.formatted() }}</span>
-      <small>{{ current.billingCycle }}</small>
-    </div>
-
-    <div class="period-grid">
-      <div>
-        <span>Period start</span>
-        <strong>{{ current.currentPeriodStart | date: 'MMM d, y' }}</strong>
-      </div>
-      <div>
-        <span>Period end</span>
-        <strong>{{ current.currentPeriodEnd | date: 'MMM d, y' }}</strong>
-      </div>
-      <div>
-        <span>Next billing</span>
-        <strong>{{ current.nextBillingDate | date: 'MMM d, y' }}</strong>
-      </div>
-    </div>
+    }
   } @else {
     <div class="empty-state">
       <span class="eyebrow">Current Plan</span>

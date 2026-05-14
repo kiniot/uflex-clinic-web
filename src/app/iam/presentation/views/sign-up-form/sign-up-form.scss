@@ -62,6 +62,13 @@
   gap: 16px;
 }
 
+.sign-up__description {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--p-text-muted-color);
+  margin: 0;
+}
+
 .sign-up__field {
   display: flex;
   flex-direction: column;
@@ -87,6 +94,10 @@
   gap: 16px;
 }
 
+.sign-up__row--phone {
+  align-items: start;
+}
+
 @media (max-width: 520px) {
   .sign-up__row {
     grid-template-columns: 1fr;
@@ -100,10 +111,58 @@
   margin-top: 8px;
 }
 
+.sign-up__actions--split {
+  flex-direction: row;
+}
+
+@media (max-width: 520px) {
+  .sign-up__actions--split {
+    flex-direction: column-reverse;
+  }
+}
+
 .sign-up__error {
   color: var(--p-red-500);
   font-family: 'Inter', sans-serif;
   font-size: 12px;
+}
+
+.sign-up__stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.sign-up__step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: 1px solid var(--p-surface-300);
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-0);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sign-up__step--active {
+  border-color: var(--p-primary-color);
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+.sign-up__step-line {
+  width: 72px;
+  height: 2px;
+  background: var(--p-surface-300);
+}
+
+.sign-up__step-line--active {
+  background: var(--p-primary-color);
 }
 
 .sign-up__signin-row {
@@ -192,6 +251,23 @@
 
 :host ::ng-deep .sign-up__btn-primary {
   display: block;
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+:host ::ng-deep .sign-up__btn-secondary {
+  display: block;
+  width: 100%;
+  height: 48px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+:host ::ng-deep .sign-up__btn-secondary .p-button {
   width: 100%;
   height: 48px;
   border-radius: 8px;

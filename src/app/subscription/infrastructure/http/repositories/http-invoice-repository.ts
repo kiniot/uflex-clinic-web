@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
 import { Invoice } from '../../../domain/models/invoice';
 import { InvoiceRepository } from '../../../domain/repositories/invoice-repository';
@@ -10,17 +10,21 @@ import { InvoiceDto } from '../dtos/invoice.dto';
 @Injectable({ providedIn: 'root' })
 export class HttpInvoiceRepository implements InvoiceRepository {
   private readonly http = inject(HttpClient);
-  private readonly subscriptionsUrl = `${environment.apiBaseUrl}${environment.subscription.subscriptionsEndpoint}`;
+  private readonly invoicesUrl = `${environment.apiBaseUrl}${environment.subscription.invoicesEndpoint}`;
 
-  findBySubscriptionId(subscriptionId: string): Observable<Array<Invoice>> {
+  findAll(): Observable<Array<Invoice>> {
     return this.http
-      .get<unknown>(`${this.subscriptionsUrl}/${encodeURIComponent(subscriptionId)}/invoices`)
+      .get<unknown>(this.invoicesUrl)
       .pipe(
         map((response) =>
           extractArray<InvoiceDto>(response).map((invoice) =>
             InvoiceDtoAssembler.toModelFromDto(invoice),
           ),
         ),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 404) return of([]);
+          throw error;
+        }),
       );
   }
 }

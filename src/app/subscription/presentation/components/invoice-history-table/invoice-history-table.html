@@ -10,15 +10,17 @@
         <th>Invoice</th>
         <th>Issued</th>
         <th>Due</th>
+        <th>Paid</th>
         <th>Amount</th>
         <th>Status</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-invoice>
       <tr>
-        <td>{{ invoice.id }}</td>
+        <td>{{ invoiceLabel(invoice) }}</td>
         <td>{{ invoice.issuedAt | date: 'MMM d, y' }}</td>
         <td>{{ invoice.dueAt | date: 'MMM d, y' }}</td>
+        <td>{{ invoice.paidAt ? (invoice.paidAt | date: 'MMM d, y') : '-' }}</td>
         <td>{{ invoice.amount.formatted() }}</td>
         <td>
           <p-tag [value]="invoice.status" [severity]="statusSeverity(invoice.status)" />
