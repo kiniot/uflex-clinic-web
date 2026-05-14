@@ -1,12 +1,16 @@
-import {environment} from '../../../environments/environment';
-import {ErrorHandlingEnabledBaseType} from '../../shared/infrastructure/error-handling-enabled-base-type';
-import {HttpClient} from '@angular/common/http';
-import {catchError, map, Observable} from 'rxjs';
-import {SignUpAssembler} from './sign-up-assembler';
-import {SignUpResource, SignUpResponse} from './sign-up-response';
-import {SignUpCommand} from '../domain/model/sign-up.command';
+import { environment } from '../../../environments/environment';
+import { ErrorHandlingEnabledBaseType } from '../../shared/infrastructure/error-handling-enabled-base-type';
+import { HttpClient } from '@angular/common/http';
+import { catchError, map, Observable } from 'rxjs';
+import { SignUpAssembler } from './sign-up-assembler';
+import { SignUpResource, SignUpResponse } from './sign-up-response';
+import { SignUpCommand } from '../domain/model/sign-up.command';
+import { buildApiUrl } from '../../shared/infrastructure/api-url';
 
-const signUpApiEndpointUrl = `${environment.platformProviderApiBaseUrl}${environment.platformProviderSignUpEndpointPath}`;
+const signUpApiEndpointUrl = buildApiUrl(
+  environment.apiBaseUrl,
+  environment.platformProviderSignUpEndpointPath,
+);
 
 /**
  * API endpoint for handling user sign-up operations in the infrastructure layer of the IAM bounded context.
@@ -18,7 +22,10 @@ export class SignUpApiEndpoint extends ErrorHandlingEnabledBaseType {
    * @param http The HttpClient for making HTTP requests.
    * @param assembler The assembler for converting between commands, requests, and responses.
    */
-  constructor(private http: HttpClient, private assembler: SignUpAssembler) {
+  constructor(
+    private http: HttpClient,
+    private assembler: SignUpAssembler,
+  ) {
     super();
   }
 
@@ -30,8 +37,8 @@ export class SignUpApiEndpoint extends ErrorHandlingEnabledBaseType {
   signUp(signUpCommand: SignUpCommand): Observable<SignUpResource> {
     const signUpRequest = this.assembler.toRequestFromCommand(signUpCommand);
     return this.http.post<SignUpResponse>(signUpApiEndpointUrl, signUpRequest).pipe(
-      map(response => this.assembler.toResourceFromResponse(response)),
-      catchError(this.handleError('Failed to sign-up'))
+      map((response) => this.assembler.toResourceFromResponse(response)),
+      catchError(this.handleError('Failed to sign-up')),
     );
   }
 }

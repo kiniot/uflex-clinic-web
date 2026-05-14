@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { buildApiUrl } from '../../../../shared/infrastructure/api-url';
 import { BillingCycle } from '../../../domain/models/billing-cycle.enum';
 import { Subscription } from '../../../domain/models/subscription';
 import { SubscriptionRepository } from '../../../domain/repositories/subscription-repository';
@@ -17,7 +18,10 @@ import { UpdatePaymentMethodDto } from '../dtos/update-payment-method.dto';
 @Injectable({ providedIn: 'root' })
 export class HttpSubscriptionRepository implements SubscriptionRepository {
   private readonly http = inject(HttpClient);
-  private readonly subscriptionsUrl = `${environment.apiBaseUrl}${environment.subscription.subscriptionsEndpoint}`;
+  private readonly subscriptionsUrl = buildApiUrl(
+    environment.apiBaseUrl,
+    environment.subscription.subscriptionsEndpoint,
+  );
 
   findCurrent(): Observable<Subscription | null> {
     return this.http.get<unknown>(`${this.subscriptionsUrl}/current`).pipe(

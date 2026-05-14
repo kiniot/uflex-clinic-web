@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { buildApiUrl } from '../../../../shared/infrastructure/api-url';
 import { Invoice } from '../../../domain/models/invoice';
 import { InvoiceRepository } from '../../../domain/repositories/invoice-repository';
 import { InvoiceDtoAssembler } from '../assemblers/invoice-dto.assembler';
@@ -10,22 +11,23 @@ import { InvoiceDto } from '../dtos/invoice.dto';
 @Injectable({ providedIn: 'root' })
 export class HttpInvoiceRepository implements InvoiceRepository {
   private readonly http = inject(HttpClient);
-  private readonly invoicesUrl = `${environment.apiBaseUrl}${environment.subscription.invoicesEndpoint}`;
+  private readonly invoicesUrl = buildApiUrl(
+    environment.apiBaseUrl,
+    environment.subscription.invoicesEndpoint,
+  );
 
   findAll(): Observable<Array<Invoice>> {
-    return this.http
-      .get<unknown>(this.invoicesUrl)
-      .pipe(
-        map((response) =>
-          extractArray<InvoiceDto>(response).map((invoice) =>
-            InvoiceDtoAssembler.toModelFromDto(invoice),
-          ),
+    return this.http.get<unknown>(this.invoicesUrl).pipe(
+      map((response) =>
+        extractArray<InvoiceDto>(response).map((invoice) =>
+          InvoiceDtoAssembler.toModelFromDto(invoice),
         ),
-        catchError((error: HttpErrorResponse) => {
-          if (error.status === 404) return of([]);
-          throw error;
-        }),
-      );
+      ),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) return of([]);
+        throw error;
+      }),
+    );
   }
 }
 

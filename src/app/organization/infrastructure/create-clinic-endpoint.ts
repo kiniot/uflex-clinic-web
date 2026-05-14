@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { buildApiUrl } from '../../shared/infrastructure/api-url';
 import { ErrorHandlingEnabledBaseType } from '../../shared/infrastructure/error-handling-enabled-base-type';
 import { CreateClinicCommand } from '../domain/model/create-clinic.command';
 import { CreateClinicAssembler } from './create-clinic-assembler';
 import { ClinicResource, CreateClinicResponse } from './create-clinic-response';
 
-const createClinicApiEndpointUrl = buildCreateClinicEndpointUrl(
+const createClinicApiEndpointUrl = buildApiUrl(
   environment.apiBaseUrl,
   environment.platformProviderCreateClinicEndpointPath,
 );
@@ -29,9 +30,4 @@ export class CreateClinicApiEndpoint extends ErrorHandlingEnabledBaseType {
       catchError(this.handleError('Failed to create clinic')),
     );
   }
-}
-
-function buildCreateClinicEndpointUrl(apiBaseUrl: string, endpointPath: string): string {
-  const normalizedPath = endpointPath.replace(/^\/api\/v1(?=\/|$)/, '');
-  return `${apiBaseUrl}${normalizedPath.startsWith('/') ? '' : '/'}${normalizedPath}`;
 }
