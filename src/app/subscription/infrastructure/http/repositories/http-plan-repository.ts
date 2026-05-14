@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
+import { buildApiUrl } from '../../../../shared/infrastructure/api-url';
 import { SubscriptionPlan } from '../../../domain/models/subscription-plan';
 import { PlanRepository } from '../../../domain/repositories/plan-repository';
 import { PlanDtoAssembler } from '../assemblers/plan-dto.assembler';
@@ -10,7 +11,10 @@ import { PlanDto } from '../dtos/plan.dto';
 @Injectable({ providedIn: 'root' })
 export class HttpPlanRepository implements PlanRepository {
   private readonly http = inject(HttpClient);
-  private readonly plansUrl = `${environment.apiBaseUrl}${environment.subscription.plansEndpoint}`;
+  private readonly plansUrl = buildApiUrl(
+    environment.apiBaseUrl,
+    environment.subscription.plansEndpoint,
+  );
 
   findAllActive(): Observable<Array<SubscriptionPlan>> {
     return this.http

@@ -4,6 +4,7 @@ import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { IamStore } from '../../../iam/application/iam.store';
+import { buildApiUrl } from '../../../shared/infrastructure/api-url';
 
 export class MissingSubscriptionTokenError extends Error {
   constructor() {
@@ -29,7 +30,7 @@ interface JwtPayload {
 export class SubscriptionTenantContextService {
   private readonly http = inject(HttpClient);
   private readonly iamStore = inject(IamStore);
-  private readonly usersUrl = `${environment.apiBaseUrl}/users`;
+  private readonly usersUrl = buildApiUrl(environment.apiBaseUrl, '/users');
 
   resolveClinicId(): Observable<string> {
     const token = this.iamStore.currentToken();

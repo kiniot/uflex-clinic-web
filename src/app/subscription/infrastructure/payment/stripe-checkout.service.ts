@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, map, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { buildApiUrl } from '../../../shared/infrastructure/api-url';
 import { BillingCycle } from '../../domain/models/billing-cycle.enum';
 import { Subscription } from '../../domain/models/subscription';
 import { SubscriptionDtoAssembler } from '../http/assemblers/subscription-dto.assembler';
@@ -18,7 +19,10 @@ export class MissingStripeCheckoutUrlError extends Error {
 @Injectable({ providedIn: 'root' })
 export class StripeCheckoutService {
   private readonly http = inject(HttpClient);
-  private readonly checkoutSessionUrl = `${environment.apiBaseUrl}${environment.subscription.checkoutSessionEndpoint}`;
+  private readonly checkoutSessionUrl = buildApiUrl(
+    environment.apiBaseUrl,
+    environment.subscription.checkoutSessionEndpoint,
+  );
 
   startCheckout(clinicId: string, planId: string, billingCycle: BillingCycle): Observable<void> {
     const body: CreateStripeCheckoutSessionDto = { clinicId, planId, billingCycle };
@@ -42,7 +46,9 @@ export class StripeCheckoutService {
   confirmCheckoutSession(sessionId: string): Observable<Subscription> {
     return this.http
       .post<unknown>(`${this.checkoutSessionUrl}/confirm`, { sessionId })
-      .pipe(map((response) => SubscriptionDtoAssembler.toModelFromDto(extractSubscription(response))));
+      .pipe(
+        map((response) => SubscriptionDtoAssembler.toModelFromDto(extractSubscription(response))),
+      );
   }
 }
 

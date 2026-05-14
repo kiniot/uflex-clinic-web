@@ -71,7 +71,7 @@ function environmentFile({ production }) {
     ),
     platformProviderCreateClinicEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_CREATE_CLINIC_ENDPOINT_PATH',
-      '/clinics',
+      '/api/v1/clinics',
     ),
     subscription: {
       useMockApi: booleanValue('NG_APP_SUBSCRIPTION_USE_MOCK_API', true),
