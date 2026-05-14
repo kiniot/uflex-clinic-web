@@ -69,6 +69,10 @@ function environmentFile({ production }) {
       'NG_APP_PLATFORM_PROVIDER_SIGN_UP_ENDPOINT_PATH',
       '/authentication/sign-up',
     ),
+    platformProviderCreateClinicEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_CREATE_CLINIC_ENDPOINT_PATH',
+      '/clinics',
+    ),
     subscription: {
       useMockApi: booleanValue('NG_APP_SUBSCRIPTION_USE_MOCK_API', true),
       clinicId: value('NG_APP_SUBSCRIPTION_CLINIC_ID', '11111111-1111-1111-1111-111111111111'),
