@@ -372,20 +372,24 @@
     },
     "stats": {
       "totalPatients": "Total Patients",
-      "activePhysiotherapists": "Active Physiotherapists",
+      "totalPhysiotherapists": "Total Physiotherapists",
       "availableIotKits": "Available IoT Kits",
-      "onLeave": "On Leave"
+      "inactive": "Inactive"
     },
     "tabs": {
       "physiotherapists": "Physiotherapists",
       "patients": "Patients"
     },
+    "filters": {
+      "status": "Status"
+    },
     "patientsTabEmpty": "Patient roster lives in the Planning context. Coming soon to this view.",
     "showingCount": "Showing {{visible}} of {{total}} staff members",
     "columns": {
-      "staffMember": "Staff Member",
-      "specializedRole": "Specialized Role",
-      "activePatients": "Active Patients",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "licenseNumber": "License Number",
+      "patients": "Patients",
       "status": "Status",
       "actions": "Actions"
     },
@@ -405,7 +409,31 @@
     "status": {
       "ACTIVE": "Active",
       "INACTIVE": "Inactive",
-      "SUSPENDED": "Suspended"
+      "SUSPENDED": "Suspended",
+      "UNASSIGNED": "Unassigned",
+      "IN_TREATMENT": "In Treatment",
+      "COMPLETED": "Completed",
+      "DISCHARGED": "Discharged",
+      "ON_LEAVE": "On Leave"
+    },
+    "treatmentPlan": {
+      "unassigned": "Not assigned"
+    },
+    "patientColumns": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "condition": "Condition",
+      "dni": "DNI",
+      "status": "Status",
+      "treatmentPlan": "Treatment Plan",
+      "actions": "Actions"
+    },
+    "fleetHealth": {
+      "title": "IoT Fleet Health",
+      "reporting": "{{pct}}% reporting",
+      "online": "{{count}} online",
+      "syncing": "{{count}} syncing",
+      "noAlerts": "Zero critical alerts"
     },
     "performance": {
       "title": "Performance Overview",
@@ -493,10 +521,12 @@
       "fullNamePlaceholder": "Dr. Sarah Johnson",
       "specialty": "Specialty",
       "specialtyPlaceholder": "Orthopedic PT",
+      "countryCode": "Country Code",
       "email": "Email Address",
       "emailPlaceholder": "sarah.j@clinic.com",
       "phone": "Phone Number",
-      "phonePlaceholder": "+1 (555) 000-0000"
+      "phonePlaceholder": "+1 (555) 000-0000",
+      "yearsOfExperience": "Years of Experience"
     },
     "credentials": {
       "title": "Clinical Credentials",

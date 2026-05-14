@@ -43,12 +43,12 @@
     </div>
   </app-stat-card>
 
-  <app-stat-card [title]="'organization.stats.activePhysiotherapists' | translate">
+  <app-stat-card [title]="'organization.stats.totalPhysiotherapists' | translate">
     <div class="org-stat">
       <i class="pi pi-id-card org-stat__icon" aria-hidden="true"></i>
       <div class="org-stat__body">
-        <span class="org-stat__value">{{ store.activePhysiotherapistsCount() }}</span>
-        <span class="org-stat__sub">{{ store.physiotherapistsOnLeaveCount() }} {{ 'organization.stats.onLeave' | translate }}</span>
+        <span class="org-stat__value">{{ store.teamMembers().length }}</span>
+        <span class="org-stat__sub">{{ store.physiotherapistsOnLeaveCount() }} {{ 'organization.stats.inactive' | translate }}</span>
       </div>
     </div>
   </app-stat-card>
@@ -83,15 +83,21 @@
       </button>
     </div>
     <div class="org-tabs__filters">
-      <p-select class="org-tabs__select"
-                [options]="statusOptions"
-                [ngModel]="statusFilter()"
-                (ngModelChange)="statusFilter.set($event)"
-                optionLabel="label"
-                optionValue="value"/>
-      <button type="button" class="org-tabs__more" aria-label="more">
-        <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
-      </button>
+      @if (activeTab() === 'physiotherapists') {
+        <p-select class="org-tabs__select"
+                  [options]="physioStatusOptions"
+                  [ngModel]="statusFilter()"
+                  (ngModelChange)="statusFilter.set($event)"
+                  optionLabel="label"
+                  optionValue="value"/>
+      } @else {
+        <p-select class="org-tabs__select"
+                  [options]="patientStatusOptions"
+                  [ngModel]="patientStatusFilter()"
+                  (ngModelChange)="patientStatusFilter.set($event)"
+                  optionLabel="label"
+                  optionValue="value"/>
+      }
     </div>
   </header>
 
@@ -102,7 +108,8 @@
     @if (allPatients().length === 0) {
       <p class="org-table-card__empty">{{ 'organization.patientsTabEmpty' | translate }}</p>
     } @else {
-      <p class="org-table-card__info">{{ allPatients().length }} pacientes registrados</p>
+      <app-patient-table [patients]="visiblePatients()"
+                         (rowOpen)="onPatientOpen($event)"/>
     }
   }
 
@@ -125,13 +132,43 @@
     </header>
     <ul class="org-card__list">
       <li>
-        <i class="pi pi-circle-fill org-card__bullet" aria-hidden="true"></i>
+        <i class="pi pi-check org-card__list-icon" aria-hidden="true"></i>
         <span>{{ 'organization.recentUpdates.firmware' | translate }}</span>
       </li>
       <li>
-        <i class="pi pi-circle-fill org-card__bullet" aria-hidden="true"></i>
+        <i class="pi pi-check org-card__list-icon" aria-hidden="true"></i>
         <span>{{ 'organization.recentUpdates.subscription' | translate }}</span>
       </li>
     </ul>
+  </article>
+
+  <article class="org-card">
+    <header class="org-card__header">
+      <i class="pi pi-heart org-card__icon" aria-hidden="true"></i>
+      <h2 class="org-card__title">{{ 'organization.fleetHealth.title' | translate }}</h2>
+    </header>
+    <div class="org-card__stats">
+      <div class="org-card__stat">
+        <i class="pi pi-wifi org-card__stat-icon" aria-hidden="true"></i>
+        <span class="org-card__stat-value">{{ fleetHealth().reportingPct }}%</span>
+        <span class="org-card__stat-label">reporting</span>
+      </div>
+      <div class="org-card__stat">
+        <i class="pi pi-check-circle org-card__stat-icon" aria-hidden="true"></i>
+        <span class="org-card__stat-value">{{ fleetHealth().onlineCount }}</span>
+        <span class="org-card__stat-label">online</span>
+      </div>
+      <div class="org-card__stat">
+        <i class="pi pi-sync org-card__stat-icon" aria-hidden="true"></i>
+        <span class="org-card__stat-value">{{ fleetHealth().syncingCount }}</span>
+        <span class="org-card__stat-label">syncing</span>
+      </div>
+    </div>
+    @if (fleetHealth().hasZeroAlerts) {
+      <div class="org-card__alert">
+        <i class="pi pi-shield-check" aria-hidden="true"></i>
+        <span>{{ 'organization.fleetHealth.noAlerts' | translate }}</span>
+      </div>
+    }
   </article>
 </section>

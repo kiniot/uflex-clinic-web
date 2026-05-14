@@ -3,6 +3,8 @@ import {PhysiotherapistStatus, Specialty} from './team-member.types';
 
 export class TeamMember implements BaseEntity {
   private _id: string;
+  private _firstName: string;
+  private _lastName: string;
   private _fullName: string;
   private _email: string;
   private _specialty: Specialty;
@@ -18,6 +20,8 @@ export class TeamMember implements BaseEntity {
 
   constructor(data: {
     id: string;
+    firstName: string;
+    lastName: string;
     fullName: string;
     email: string;
     specialty: Specialty;
@@ -32,6 +36,8 @@ export class TeamMember implements BaseEntity {
     activePatients: number;
   }) {
     this._id = data.id;
+    this._firstName = data.firstName;
+    this._lastName = data.lastName;
     this._fullName = data.fullName;
     this._email = data.email;
     this._specialty = data.specialty;
@@ -48,6 +54,12 @@ export class TeamMember implements BaseEntity {
 
   get id(): string { return this._id; }
   set id(value: string) { this._id = value; }
+
+  get firstName(): string { return this._firstName; }
+  set firstName(value: string) { this._firstName = value; }
+
+  get lastName(): string { return this._lastName; }
+  set lastName(value: string) { this._lastName = value; }
 
   get fullName(): string { return this._fullName; }
   set fullName(value: string) { this._fullName = value; }

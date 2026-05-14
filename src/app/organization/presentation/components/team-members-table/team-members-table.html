@@ -2,9 +2,10 @@
   <table class="team-table">
     <thead>
       <tr>
-        <th>{{ 'organization.columns.staffMember' | translate }}</th>
-        <th>{{ 'organization.columns.specializedRole' | translate }}</th>
-        <th>{{ 'organization.columns.activePatients' | translate }}</th>
+        <th>{{ 'organization.columns.firstName' | translate }}</th>
+        <th>{{ 'organization.columns.lastName' | translate }}</th>
+        <th>{{ 'organization.columns.licenseNumber' | translate }}</th>
+        <th>{{ 'organization.columns.patients' | translate }}</th>
         <th>{{ 'organization.columns.status' | translate }}</th>
         <th class="team-table__chevron-col">{{ 'organization.columns.actions' | translate }}</th>
       </tr>
@@ -13,26 +14,16 @@
       @for (member of members(); track member.id) {
         <tr class="team-table__row" (click)="onRowOpen(member)">
           <td>
-            <div class="team-table__person">
-              <p-avatar [label]="member.avatarInitials" shape="circle" size="normal"
-                        styleClass="team-table__avatar"/>
-              <div class="team-table__person-text">
-                <span class="team-table__name">{{ member.fullName }}</span>
-                <span class="team-table__email">{{ member.email }}</span>
-              </div>
-            </div>
+            <span class="team-table__name">{{ member.firstName }}</span>
           </td>
           <td>
-            <span class="team-table__role-tag">{{ 'organization.specialty.' + member.specialty | translate }}</span>
+            <span class="team-table__name">{{ member.lastName }}</span>
           </td>
           <td>
-            <div class="team-table__patients">
-              <span class="team-table__patients-value">{{ member.activePatients }}</span>
-              <div class="team-table__patients-bar">
-                <div class="team-table__patients-fill"
-                     [style.width.%]="progressFor(member.activePatients)"></div>
-              </div>
-            </div>
+            <span class="team-table__license">{{ member.licenseNumber }}</span>
+          </td>
+          <td>
+            <span class="team-table__patients-value">{{ member.activePatients }}</span>
           </td>
           <td>
             <span class="team-table__status team-table__status--{{ member.status }}">

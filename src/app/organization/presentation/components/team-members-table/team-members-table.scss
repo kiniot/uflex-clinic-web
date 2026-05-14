@@ -97,6 +97,24 @@
   font-weight: 600;
 }
 
+.team-table__license {
+  display: inline-flex;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .team-table__license {
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-300);
+}
+
 .team-table__patients {
   display: inline-flex;
   align-items: center;
@@ -133,26 +151,42 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .team-table__dot {
-  width: 7px;
-  height: 7px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   display: inline-block;
 }
 
-.team-table__status--active { color: #16785a; }
-.team-table__status--active .team-table__dot { background: #34c79b; }
+.team-table__status--ACTIVE {
+  background: rgba(52, 199, 155, 0.16);
+  color: #16785a;
+}
+.team-table__status--ACTIVE .team-table__dot { background: #34c79b; }
 
-.team-table__status--on-leave { color: #b6322f; }
-.team-table__status--on-leave .team-table__dot { background: #d9534f; }
+.team-table__status--INACTIVE {
+  background: rgba(107, 114, 128, 0.16);
+  color: #6b7280;
+}
+.team-table__status--INACTIVE .team-table__dot { background: #9ca3af; }
 
-.team-table__status--inactive { color: var(--p-text-muted-color); }
-.team-table__status--inactive .team-table__dot { background: var(--p-text-muted-color); }
+.team-table__status--SUSPENDED {
+  background: rgba(217, 83, 79, 0.18);
+  color: #b6322f;
+}
+.team-table__status--SUSPENDED .team-table__dot { background: #d9534f; }
+
+:host-context(.app-dark) .team-table__status--ACTIVE { color: #34c79b; }
+:host-context(.app-dark) .team-table__status--INACTIVE { color: #9ca3af; }
+:host-context(.app-dark) .team-table__status--SUSPENDED { color: #ff8a87; }
 
 .team-table__chevron-col {
   text-align: right;

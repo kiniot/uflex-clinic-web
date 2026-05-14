@@ -1,0 +1,122 @@
+:host {
+  display: block;
+}
+
+.patient-table__scroll { overflow-x: auto; }
+
+.patient-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+.patient-table th,
+.patient-table td {
+  padding: 14px 20px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.patient-table thead th {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-50);
+  border-top: 1px solid var(--p-surface-200);
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .patient-table thead th {
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-300);
+}
+
+.patient-table__row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--p-surface-100);
+  transition: background-color 120ms ease;
+}
+
+:host-context(.app-dark) .patient-table__row {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.patient-table__row:last-child { border-bottom: 0; }
+
+.patient-table__row:hover {
+  background: var(--p-surface-50);
+}
+
+:host-context(.app-dark) .patient-table__row:hover {
+  background: var(--p-surface-200);
+}
+
+.patient-table__name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.patient-table__condition {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-color);
+}
+
+.patient-table__dni {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+}
+
+.patient-table__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.patient-table__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.patient-table__status--UNASSIGNED { color: #b6322f; }
+.patient-table__status--UNASSIGNED .patient-table__dot { background: #d9534f; }
+
+.patient-table__status--IN_TREATMENT { color: #16785a; }
+.patient-table__status--IN_TREATMENT .patient-table__dot { background: #34c79b; }
+
+.patient-table__status--COMPLETED { color: #2563eb; }
+.patient-table__status--COMPLETED .patient-table__dot { background: #3b82f6; }
+
+.patient-table__status--DISCHARGED { color: #6b7280; }
+.patient-table__status--DISCHARGED .patient-table__dot { background: #9ca3af; }
+
+.patient-table__status--INACTIVE { color: #6b7280; }
+.patient-table__status--INACTIVE .patient-table__dot { background: #9ca3af; }
+
+.patient-table__plan {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+}
+
+.patient-table__chevron-col {
+  text-align: right;
+  width: 60px;
+}
+
+.patient-table__chevron {
+  color: var(--p-text-muted-color);
+  font-size: 14px;
+}

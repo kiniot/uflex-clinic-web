@@ -37,9 +37,14 @@ export class PhysiotherapistAssembler {
     };
   }
 
-  toEntityFromResource(resource: PhysiotherapistResource): TeamMember {
+  toEntityFromResource(resource: PhysiotherapistResource, activePatients: number = 0): TeamMember {
+    const nameParts = resource.fullName.trim().split(/\s+/);
+    const firstName = nameParts[0] || '';
+    const lastName = nameParts.slice(1).join(' ') || '';
     return new TeamMember({
       id: resource.id,
+      firstName,
+      lastName,
       fullName: resource.fullName,
       email: resource.email,
       specialty: resource.specialty,
@@ -48,10 +53,10 @@ export class PhysiotherapistAssembler {
       countryCode: resource.countryCode,
       licenseNumber: resource.licenseNumber,
       professionalSummary: resource.professionalSummary,
-      photoUrl: resource.photoUrl,
+      photoUrl: resource.photoUrl || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(resource.fullName) + '&background=random&color=fff&size=128',
       yearsOfExperience: resource.yearsOfExperience,
       hireDate: resource.hireDate,
-      activePatients: 0
+      activePatients
     });
   }
 

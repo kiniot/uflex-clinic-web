@@ -372,20 +372,24 @@
     },
     "stats": {
       "totalPatients": "Pacientes totales",
-      "activePhysiotherapists": "Fisioterapeutas activos",
+      "totalPhysiotherapists": "Fisioterapeutas totales",
       "availableIotKits": "Kits IoT disponibles",
-      "onLeave": "De baja"
+      "inactive": "Inactivos"
     },
     "tabs": {
       "physiotherapists": "Fisioterapeutas",
       "patients": "Pacientes"
     },
+    "filters": {
+      "status": "Estado"
+    },
     "patientsTabEmpty": "El roster de pacientes vive en el contexto Planning. Próximamente en esta vista.",
     "showingCount": "Mostrando {{visible}} de {{total}} miembros del staff",
     "columns": {
-      "staffMember": "Miembro del staff",
-      "specializedRole": "Rol especializado",
-      "activePatients": "Pacientes activos",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "licenseNumber": "Número de Licencia",
+      "patients": "Pacientes",
       "status": "Estado",
       "actions": "Acciones"
     },
@@ -405,7 +409,31 @@
     "status": {
       "ACTIVE": "Activo",
       "INACTIVE": "Inactivo",
-      "SUSPENDED": "Suspendido"
+      "SUSPENDED": "Suspendido",
+      "UNASSIGNED": "Sin asignar",
+      "IN_TREATMENT": "En tratamiento",
+      "COMPLETED": "Completado",
+      "DISCHARGED": "Alta",
+      "INACTIVE": "Inactivo"
+    },
+    "treatmentPlan": {
+      "unassigned": "Sin asignar"
+    },
+    "patientColumns": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "condition": "Condición",
+      "dni": "DNI",
+      "status": "Estado",
+      "treatmentPlan": "Plan de Tratamiento",
+      "actions": "Acciones"
+    },
+    "fleetHealth": {
+      "title": "Salud de Flota IoT",
+      "reporting": "{{pct}}% reportando",
+      "online": "{{count}} en línea",
+      "syncing": "{{count}} sincronizando",
+      "noAlerts": "Sin alertas críticas"
     },
     "performance": {
       "title": "Resumen de desempeño",
@@ -493,10 +521,12 @@
       "fullNamePlaceholder": "Dr. Sarah Johnson",
       "specialty": "Especialidad",
       "specialtyPlaceholder": "Fisioterapia ortopédica",
+      "countryCode": "Código de país",
       "email": "Correo electrónico",
       "emailPlaceholder": "sarah.j@clinic.com",
       "phone": "Teléfono",
-      "phonePlaceholder": "+1 (555) 000-0000"
+      "phonePlaceholder": "+1 (555) 000-0000",
+      "yearsOfExperience": "Años de experiencia"
     },
     "credentials": {
       "title": "Credenciales clínicas",

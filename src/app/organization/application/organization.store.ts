@@ -61,6 +61,17 @@ export class OrganizationStore {
     this.teamMembersSignal().filter(m => m.status !== 'ACTIVE').length
   );
 
+  readonly patientsByPhysiotherapist = computed(() => {
+    const patients = this.allPatientsSignal();
+    const map = new Map<string, number>();
+    patients.forEach(p => {
+      if (p.assignedPhysiotherapistId) {
+        map.set(p.assignedPhysiotherapistId, (map.get(p.assignedPhysiotherapistId) || 0) + 1);
+      }
+    });
+    return map;
+  });
+
   constructor(api: OrganizationApi) {
     this.api = api;
   }
@@ -69,21 +80,15 @@ export class OrganizationStore {
     console.log('[OrganizationStore] loadAll() called');
     this.loadingSignal.set(true);
 
-    this.api.getPhysiotherapists().subscribe({
-      next: (physios) => {
-        console.log('[OrganizationStore] getPhysiotherapists success:', physios.length, 'physios');
-        this.teamMembersSignal.set(physios);
-        this.staffDirectorySignal.set(physios.map(p => new StaffClinician({
-          id: p.id,
-          fullName: p.fullName,
-          email: p.email,
-          specialty: p.specialty,
-          caseloadCurrent: p.activePatients,
-          caseloadMax: 20
-        })));
+    this.api.getPatients().subscribe({
+      next: (patients) => {
+        console.log('[OrganizationStore] getPatients success:', patients.length, 'patients');
+        this.totalPatientsSignal.set(patients.length);
+        this.allPatientsSignal.set(patients);
+        this.updateTeamMembersWithPatientCounts();
       },
       error: (err) => {
-        console.error('[OrganizationStore] getPhysiotherapists error:', err);
+        console.error('[OrganizationStore] getPatients error:', err);
         this.loadingSignal.set(false);
       }
     });
@@ -98,16 +103,78 @@ export class OrganizationStore {
       }
     });
 
-    this.api.getPatients().subscribe({
-      next: (patients) => {
-        console.log('[OrganizationStore] getPatients success:', patients.length, 'patients');
-        this.totalPatientsSignal.set(patients.length);
-        this.allPatientsSignal.set(patients);
+    this.api.getPhysiotherapists().subscribe({
+      next: (physios) => {
+        console.log('[OrganizationStore] getPhysiotherapists success:', physios.length, 'physios');
+        this.refreshTeamMembers(physios);
       },
       error: (err) => {
-        console.error('[OrganizationStore] getPatients error:', err);
+        console.error('[OrganizationStore] getPhysiotherapists error:', err);
+        this.loadingSignal.set(false);
       }
     });
+  }
+
+  private updateTeamMembersWithPatientCounts() {
+    const physios = this.teamMembersSignal();
+    if (physios.length === 0) return;
+    const patientsMap = this.patientsByPhysiotherapist();
+    const updatedPhysios = physios.map(p => {
+      const activePats = patientsMap.get(p.id) || 0;
+      if (p.activePatients === activePats) return p;
+      return new TeamMember({
+        id: p.id,
+        firstName: p.firstName,
+        lastName: p.lastName,
+        fullName: p.fullName,
+        email: p.email,
+        specialty: p.specialty,
+        status: p.status,
+        phoneNumber: p.phoneNumber,
+        countryCode: p.countryCode,
+        licenseNumber: p.licenseNumber,
+        professionalSummary: p.professionalSummary,
+        photoUrl: p.photoUrl,
+        yearsOfExperience: p.yearsOfExperience,
+        hireDate: p.hireDate,
+        activePatients: activePats
+      });
+    });
+    this.teamMembersSignal.set(updatedPhysios);
+  }
+
+  private refreshTeamMembers(physios: TeamMember[]) {
+    const patientsMap = this.patientsByPhysiotherapist();
+    const physiosWithPatients = physios.map(p => {
+      const activePats = patientsMap.get(p.id) || 0;
+      return new TeamMember({
+        id: p.id,
+        firstName: p.firstName,
+        lastName: p.lastName,
+        fullName: p.fullName,
+        email: p.email,
+        specialty: p.specialty,
+        status: p.status,
+        phoneNumber: p.phoneNumber,
+        countryCode: p.countryCode,
+        licenseNumber: p.licenseNumber,
+        professionalSummary: p.professionalSummary,
+        photoUrl: p.photoUrl,
+        yearsOfExperience: p.yearsOfExperience,
+        hireDate: p.hireDate,
+        activePatients: activePats
+      });
+    });
+    this.teamMembersSignal.set(physiosWithPatients);
+    this.staffDirectorySignal.set(physiosWithPatients.map(p => new StaffClinician({
+      id: p.id,
+      fullName: p.fullName,
+      email: p.email,
+      specialty: p.specialty,
+      caseloadCurrent: p.activePatients,
+      caseloadMax: 20
+    })));
+    this.loadingSignal.set(false);
   }
 
   registerPhysiotherapist(command: {

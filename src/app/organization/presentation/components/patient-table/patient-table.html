@@ -1,0 +1,51 @@
+<div class="patient-table__scroll">
+  <table class="patient-table">
+    <thead>
+      <tr>
+        <th>{{ 'organization.patientColumns.firstName' | translate }}</th>
+        <th>{{ 'organization.patientColumns.lastName' | translate }}</th>
+        <th>{{ 'organization.patientColumns.condition' | translate }}</th>
+        <th>{{ 'organization.patientColumns.dni' | translate }}</th>
+        <th>{{ 'organization.patientColumns.status' | translate }}</th>
+        <th>{{ 'organization.patientColumns.treatmentPlan' | translate }}</th>
+        <th class="patient-table__chevron-col">{{ 'organization.patientColumns.actions' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (patient of patients(); track patient.id) {
+        <tr class="patient-table__row" (click)="onRowOpen(patient)">
+          <td>
+            <span class="patient-table__name">{{ patient.firstName }}</span>
+          </td>
+          <td>
+            <span class="patient-table__name">{{ patient.lastName }}</span>
+          </td>
+          <td>
+            <span class="patient-table__condition">{{ patient.medicalCondition || '-' }}</span>
+          </td>
+          <td>
+            <span class="patient-table__dni">{{ patient.dni }}</span>
+          </td>
+          <td>
+            <span class="patient-table__status patient-table__status--{{ patient.status }}">
+              <span class="patient-table__dot" aria-hidden="true"></span>
+              {{ 'organization.status.' + patient.status | translate }}
+            </span>
+          </td>
+          <td>
+            <span class="patient-table__plan">
+              @if (patient.treatmentPlanId) {
+                {{ patient.treatmentPlanId }}
+              } @else {
+                {{ 'organization.treatmentPlan.unassigned' | translate }}
+              }
+            </span>
+          </td>
+          <td class="patient-table__chevron-col">
+            <i class="pi pi-chevron-right patient-table__chevron" aria-hidden="true"></i>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

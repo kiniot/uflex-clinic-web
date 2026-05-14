@@ -63,7 +63,7 @@ export class RegisterPhysiotherapist extends BaseForm {
       phoneNumber: value.phoneNumber,
       licenseNumber: value.licenseNumber,
       professionalSummary: value.professionalSummary,
-      photoUrl: null,
+      photoUrl: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(value.fullName) + '&background=random&color=fff&size=128',
       yearsOfExperience: value.yearsOfExperience
     }).subscribe({
       next: () => {
