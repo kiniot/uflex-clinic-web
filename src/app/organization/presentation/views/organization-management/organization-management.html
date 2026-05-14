@@ -38,11 +38,7 @@
     <div class="org-stat">
       <i class="pi pi-users org-stat__icon" aria-hidden="true"></i>
       <div class="org-stat__body">
-        <span class="org-stat__value">{{ clinic().totalPatients | number }}</span>
-        <span class="org-stat__delta org-stat__delta--positive">
-          <i class="pi pi-arrow-up" aria-hidden="true"></i>
-          {{ clinic().patientsTrendPct }}%
-        </span>
+        <span class="org-stat__value">{{ store.totalPatients() | number }}</span>
       </div>
     </div>
   </app-stat-card>
@@ -51,8 +47,8 @@
     <div class="org-stat">
       <i class="pi pi-id-card org-stat__icon" aria-hidden="true"></i>
       <div class="org-stat__body">
-        <span class="org-stat__value">{{ clinic().activePhysiotherapists }}</span>
-        <span class="org-stat__sub">{{ clinic().physiotherapistsOnLeave }} {{ 'organization.stats.onLeave' | translate }}</span>
+        <span class="org-stat__value">{{ store.activePhysiotherapistsCount() }}</span>
+        <span class="org-stat__sub">{{ store.physiotherapistsOnLeaveCount() }} {{ 'organization.stats.onLeave' | translate }}</span>
       </div>
     </div>
   </app-stat-card>
@@ -103,12 +99,16 @@
     <app-team-members-table [members]="visibleMembers()"
                             (rowOpen)="onMemberOpen($event)"/>
   } @else {
-    <p class="org-table-card__empty">{{ 'organization.patientsTabEmpty' | translate }}</p>
+    @if (allPatients().length === 0) {
+      <p class="org-table-card__empty">{{ 'organization.patientsTabEmpty' | translate }}</p>
+    } @else {
+      <p class="org-table-card__info">{{ allPatients().length }} pacientes registrados</p>
+    }
   }
 
   <footer class="org-table-card__footer">
     <span class="org-table-card__counter">
-      {{ 'organization.showingCount' | translate: {visible: visibleMembers().length, total: clinic().activePhysiotherapists} }}
+      {{ 'organization.showingCount' | translate: {visible: visibleMembers().length, total: teamMembers().length} }}
     </span>
     <div class="org-table-card__pager">
       <button type="button" aria-label="prev" disabled><i class="pi pi-chevron-left"></i></button>
@@ -118,18 +118,6 @@
 </section>
 
 <section class="org-bottom">
-  <article class="org-card">
-    <header class="org-card__header">
-      <i class="pi pi-chart-line org-card__icon" aria-hidden="true"></i>
-      <h2 class="org-card__title">{{ 'organization.performance.title' | translate }}</h2>
-    </header>
-    <p class="org-card__body">{{ 'organization.performance.description' | translate }}</p>
-    <a class="org-card__link" href="#">
-      {{ 'organization.performance.cta' | translate }}
-      <i class="pi pi-arrow-right" aria-hidden="true"></i>
-    </a>
-  </article>
-
   <article class="org-card">
     <header class="org-card__header">
       <i class="pi pi-clock org-card__icon" aria-hidden="true"></i>

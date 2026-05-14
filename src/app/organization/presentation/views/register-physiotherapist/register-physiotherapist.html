@@ -19,7 +19,8 @@
     </button>
     <button pButton type="button" severity="primary"
             class="register-pt__btn register-pt__btn--primary"
-            (click)="onSubmit()">
+            (click)="onSubmit()"
+            [loading]="loading()">
       <i class="pi pi-save" aria-hidden="true"></i>
       <span>{{ 'registerPhysiotherapist.actions.save' | translate }}</span>
     </button>
@@ -57,11 +58,25 @@
                    [class.ng-dirty]="isInvalidControl(form,'email')"/>
           </div>
           <div class="register-pt__field">
+            <label for="ptCountryCode">{{ 'registerPhysiotherapist.personal.countryCode' | translate }}</label>
+            <input pInputText id="ptCountryCode" type="text" formControlName="countryCode"
+                   [placeholder]="'+51'"
+                   [class.ng-invalid]="isInvalidControl(form,'countryCode')"
+                   [class.ng-dirty]="isInvalidControl(form,'countryCode')"/>
+          </div>
+          <div class="register-pt__field">
             <label for="ptPhone">{{ 'registerPhysiotherapist.personal.phone' | translate }}</label>
-            <input pInputText id="ptPhone" type="tel" formControlName="phone"
+            <input pInputText id="ptPhone" type="tel" formControlName="phoneNumber"
                    [placeholder]="'registerPhysiotherapist.personal.phonePlaceholder' | translate"
-                   [class.ng-invalid]="isInvalidControl(form,'phone')"
-                   [class.ng-dirty]="isInvalidControl(form,'phone')"/>
+                   [class.ng-invalid]="isInvalidControl(form,'phoneNumber')"
+                   [class.ng-dirty]="isInvalidControl(form,'phoneNumber')"/>
+          </div>
+          <div class="register-pt__field">
+            <label for="ptYears">{{ 'registerPhysiotherapist.personal.yearsOfExperience' | translate }}</label>
+            <input pInputText id="ptYears" type="number" formControlName="yearsOfExperience"
+                   [placeholder]="'0'"
+                   [class.ng-invalid]="isInvalidControl(form,'yearsOfExperience')"
+                   [class.ng-dirty]="isInvalidControl(form,'yearsOfExperience')"/>
           </div>
         </div>
       </article>

@@ -13,15 +13,6 @@
         <strong class="orgv__summary-value">{{ summary().totalStaff }}</strong>
       </div>
     </article>
-    <article class="orgv__summary-chip">
-      <span class="orgv__summary-icon" aria-hidden="true">
-        <i class="pi pi-chart-line"></i>
-      </span>
-      <div class="orgv__summary-text">
-        <span class="orgv__summary-label">{{ 'organizationView.summary.avgProductivity' | translate }}</span>
-        <strong class="orgv__summary-value">{{ summary().avgProductivityPct }}%</strong>
-      </div>
-    </article>
   </div>
 </header>
 
@@ -101,12 +92,12 @@
                   <p-avatar [label]="clinician.avatarInitials" shape="circle" size="normal"
                             styleClass="orgv__clinician-avatar"/>
                   <div class="orgv__clinician-text">
-                    <strong class="orgv__clinician-name">{{ clinician.name }}</strong>
+                    <strong class="orgv__clinician-name">{{ clinician.fullName }}</strong>
                     <span class="orgv__clinician-email">{{ clinician.email }}</span>
                   </div>
                 </div>
               </td>
-              <td class="orgv__spec">{{ clinician.specialization }}</td>
+              <td class="orgv__spec">{{ 'organization.specialty.' + clinician.specialty | translate }}</td>
               <td>
                 <div class="orgv__caseload">
                   <span class="orgv__caseload-value">{{ clinician.caseloadCurrent }}/{{ clinician.caseloadMax }}</span>
@@ -157,21 +148,6 @@
             {{ fleet().syncingCount }} {{ 'organizationView.fleet.syncing' | translate }}
           </span>
         </div>
-      </article>
-
-      <article class="orgv__efficiency">
-        <header class="orgv__efficiency-header">
-          <span class="orgv__efficiency-icon" aria-hidden="true">
-            <i class="pi pi-chart-line"></i>
-          </span>
-          <span class="orgv__efficiency-delta">+{{ efficiency().deltaPct }}% {{ 'organizationView.efficiency.mom' | translate }}</span>
-        </header>
-        <h3 class="orgv__efficiency-title">{{ 'organizationView.efficiency.title' | translate }}</h3>
-        <p class="orgv__efficiency-body">{{ efficiency().body }}</p>
-        <button type="button" class="orgv__efficiency-link" (click)="onEfficiencyReport()">
-          {{ 'organizationView.efficiency.cta' | translate }}
-          <i class="pi pi-arrow-right" aria-hidden="true"></i>
-        </button>
       </article>
     </div>
   </section>

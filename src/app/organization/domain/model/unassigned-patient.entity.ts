@@ -2,21 +2,15 @@ import {BaseEntity} from '../../../shared/domain/model/base-entity';
 import {CareTag} from './unassigned-patient.types';
 
 interface UnassignedPatientProps {
-  id: number;
+  id: string;
   name: string;
   condition: string;
   arrivedLabel: string;
   tags: CareTag[];
 }
 
-/**
- * Patient queued for physiotherapist assignment. Modeled in the
- * Organization bounded context because the queue is an
- * organization-wide allocation concern (not part of any individual
- * clinician's caseload yet).
- */
 export class UnassignedPatient implements BaseEntity {
-  private _id: number;
+  private _id: string;
   private _name: string;
   private _condition: string;
   private _arrivedLabel: string;
@@ -30,8 +24,8 @@ export class UnassignedPatient implements BaseEntity {
     this._tags = props.tags;
   }
 
-  get id(): number { return this._id; }
-  set id(value: number) { this._id = value; }
+  get id(): string { return this._id; }
+  set id(value: string) { this._id = value; }
 
   get name(): string { return this._name; }
   set name(value: string) { this._name = value; }

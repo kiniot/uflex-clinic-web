@@ -17,13 +17,13 @@
               <p-avatar [label]="member.avatarInitials" shape="circle" size="normal"
                         styleClass="team-table__avatar"/>
               <div class="team-table__person-text">
-                <span class="team-table__name">{{ member.name }}</span>
+                <span class="team-table__name">{{ member.fullName }}</span>
                 <span class="team-table__email">{{ member.email }}</span>
               </div>
             </div>
           </td>
           <td>
-            <span class="team-table__role-tag">{{ 'organization.role.' + member.role | translate }}</span>
+            <span class="team-table__role-tag">{{ 'organization.specialty.' + member.specialty | translate }}</span>
           </td>
           <td>
             <div class="team-table__patients">

@@ -1,5 +1,5 @@
 import {DecimalPipe} from '@angular/common';
-import {Component, computed, inject, signal} from '@angular/core';
+import {Component, computed, inject, signal, OnInit} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {RouterLink} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -28,20 +28,25 @@ interface SelectOption<T> {
   templateUrl: './organization-management.html',
   styleUrl: './organization-management.scss'
 })
-export class OrganizationManagement {
-  private readonly store = inject(OrganizationStore);
+export class OrganizationManagement implements OnInit {
+  protected readonly store = inject(OrganizationStore);
 
   protected readonly clinic = this.store.clinic;
   protected readonly teamMembers = this.store.teamMembers;
+  protected readonly allPatients = this.store.allPatients;
 
   protected readonly activeTab = signal<OrgTab>('physiotherapists');
   protected readonly statusFilter = signal<string>('all');
 
+  ngOnInit() {
+    this.store.loadAll();
+  }
+
   protected readonly statusOptions: SelectOption<string>[] = [
     {label: 'Status: All', value: 'all'},
-    {label: 'Active', value: 'active'},
-    {label: 'On Leave', value: 'on-leave'},
-    {label: 'Inactive', value: 'inactive'}
+    {label: 'Active', value: 'ACTIVE'},
+    {label: 'Inactive', value: 'INACTIVE'},
+    {label: 'Suspended', value: 'SUSPENDED'}
   ];
 
   protected readonly visibleMembers = computed(() => {
@@ -60,7 +65,7 @@ export class OrganizationManagement {
   protected onTab(tab: OrgTab) { this.activeTab.set(tab); }
 
   protected onMemberOpen(member: TeamMember) {
-    console.log('Open member detail', member.name);
+    console.log('Open member detail', member.fullName);
   }
 
   protected onEditClinic() { console.log('Edit clinic profile'); }

@@ -396,10 +396,16 @@
       "iot-mobility": "IoT Mobility",
       "sports-rehab": "Sports Rehab"
     },
+    "specialty": {
+      "TRAUMATOLOGICAL": "Traumatological",
+      "NEUROLOGICAL": "Neurological",
+      "SPORTS": "Sports",
+      "GENERAL": "General"
+    },
     "status": {
-      "active": "Active",
-      "on-leave": "On Leave",
-      "inactive": "Inactive"
+      "ACTIVE": "Active",
+      "INACTIVE": "Inactive",
+      "SUSPENDED": "Suspended"
     },
     "performance": {
       "title": "Performance Overview",

@@ -1,52 +1,49 @@
 import {BaseEntity} from '../../../shared/domain/model/base-entity';
+import {Specialty} from './team-member.types';
 
-interface StaffClinicianProps {
-  id: number;
-  name: string;
-  email: string;
-  specialization: string;
-  caseloadCurrent: number;
-  caseloadMax: number;
-  avatarInitials: string;
-}
-
-/**
- * Read projection of a clinician for the physiotherapist's Staff
- * Directory. Carries identity plus their named specialization and
- * caseload usage (current/max), which is what the directory table
- * surfaces. Distinct from the broader TeamMember entity used by the
- * clinic admin view.
- */
 export class StaffClinician implements BaseEntity {
-  private _id: number;
-  private _name: string;
+  private _id: string;
+  private _fullName: string;
   private _email: string;
-  private _specialization: string;
+  private _specialty: Specialty;
   private _caseloadCurrent: number;
   private _caseloadMax: number;
   private _avatarInitials: string;
 
-  constructor(props: StaffClinicianProps) {
-    this._id = props.id;
-    this._name = props.name;
-    this._email = props.email;
-    this._specialization = props.specialization;
-    this._caseloadCurrent = props.caseloadCurrent;
-    this._caseloadMax = props.caseloadMax;
-    this._avatarInitials = props.avatarInitials;
+  constructor(data: {
+    id: string;
+    fullName: string;
+    email: string;
+    specialty: Specialty;
+    caseloadCurrent: number;
+    caseloadMax?: number;
+  }) {
+    this._id = data.id;
+    this._fullName = data.fullName;
+    this._email = data.email;
+    this._specialty = data.specialty;
+    this._caseloadCurrent = data.caseloadCurrent;
+    this._caseloadMax = data.caseloadMax ?? 20;
+    this._avatarInitials = this.computeInitials(data.fullName);
   }
 
-  get id(): number { return this._id; }
-  set id(value: number) { this._id = value; }
+  private computeInitials(name: string): string {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
 
-  get name(): string { return this._name; }
-  set name(value: string) { this._name = value; }
+  get id(): string { return this._id; }
+  set id(value: string) { this._id = value; }
+
+  get fullName(): string { return this._fullName; }
+  set fullName(value: string) { this._fullName = value; }
 
   get email(): string { return this._email; }
   set email(value: string) { this._email = value; }
 
-  get specialization(): string { return this._specialization; }
-  set specialization(value: string) { this._specialization = value; }
+  get specialty(): Specialty { return this._specialty; }
+  set specialty(value: Specialty) { this._specialty = value; }
 
   get caseloadCurrent(): number { return this._caseloadCurrent; }
   set caseloadCurrent(value: number) { this._caseloadCurrent = value; }
@@ -55,5 +52,4 @@ export class StaffClinician implements BaseEntity {
   set caseloadMax(value: number) { this._caseloadMax = value; }
 
   get avatarInitials(): string { return this._avatarInitials; }
-  set avatarInitials(value: string) { this._avatarInitials = value; }
 }

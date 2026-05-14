@@ -1,4 +1,4 @@
-import {Component, computed, inject} from '@angular/core';
+import {Component, computed, inject, OnInit} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
 import {AvatarModule} from 'primeng/avatar';
 import {ButtonModule} from 'primeng/button';
@@ -16,9 +16,9 @@ import {UnassignedPatient} from '../../../domain/model/unassigned-patient.entity
   selector: 'app-organization-view',
   imports: [TranslatePipe, AvatarModule, ButtonModule],
   templateUrl: './organization-view.html',
-  styleUrl: './organization-view.scss'
+  styleUrl: './organization-view.scss',
 })
-export class OrganizationView {
+export class OrganizationView implements OnInit {
   private readonly store = inject(OrganizationStore);
 
   protected readonly unassigned = this.store.unassignedPatients;
@@ -26,25 +26,33 @@ export class OrganizationView {
   protected readonly staff = this.store.staffDirectory;
   protected readonly summary = this.store.staffSummary;
   protected readonly fleet = this.store.fleetHealthSnapshot;
-  protected readonly efficiency = this.store.clinicEfficiency;
+
+  ngOnInit() {
+    this.store.loadAll();
+  }
 
   protected readonly capacity = computed(() => {
     const list = this.staff();
     if (list.length === 0) return 1;
-    return Math.max(...list.map(s => s.caseloadMax));
+    return Math.max(...list.map((s) => s.caseloadMax));
   });
 
   protected onAssignSelf(patient: UnassignedPatient) {
     console.log('Assign to self', patient.name);
   }
 
-  protected onFilter() { console.log('Filter staff'); }
-  protected onExport() { console.log('Export report'); }
-  protected onTriageHelp() { console.log('Open triage help'); }
-  protected onEfficiencyReport() { console.log('Open efficiency report'); }
+  protected onFilter() {
+    console.log('Filter staff');
+  }
+  protected onExport() {
+    console.log('Export report');
+  }
+  protected onTriageHelp() {
+    console.log('Open triage help');
+  }
 
   protected onClinicianOpen(clinician: StaffClinician) {
-    console.log('Open clinician', clinician.name);
+    console.log('Open clinician', clinician.fullName);
   }
 
   protected caseloadPct(current: number, max: number): number {

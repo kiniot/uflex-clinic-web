@@ -1,11 +1,7 @@
 import {BaseEntity} from '../../../shared/domain/model/base-entity';
 
-/**
- * Clinic entity in the Organization bounded context. Represents the
- * facility that owns staff, devices, and patient enrollment data.
- */
 export class Clinic implements BaseEntity {
-  private _id: number;
+  private _id: string;
   private _name: string;
   private _addressLine: string;
   private _phone: string;
@@ -17,7 +13,7 @@ export class Clinic implements BaseEntity {
   private _totalIotKits: number;
 
   constructor(data: {
-    id: number;
+    id: string;
     name: string;
     addressLine: string;
     phone: string;
@@ -40,8 +36,8 @@ export class Clinic implements BaseEntity {
     this._totalIotKits = data.totalIotKits;
   }
 
-  get id(): number { return this._id; }
-  set id(value: number) { this._id = value; }
+  get id(): string { return this._id; }
+  set id(value: string) { this._id = value; }
 
   get name(): string { return this._name; }
   set name(value: string) { this._name = value; }
