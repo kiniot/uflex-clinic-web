@@ -1,106 +1,237 @@
-<app-auth-shell>
-  <div class="sign-up__card">
-    <div class="sign-up__brand">
-      <div class="sign-up__brand-icon" aria-hidden="true">
-        <i class="pi pi-heart-fill"></i>
-      </div>
-      <h1 class="sign-up__brand-title">uFlex</h1>
-      <p class="sign-up__brand-subtitle">{{ 'signUp.title' | translate }}</p>
-    </div>
+<app-auth-shell
+  [style.--auth-shell-toolbar-max-width]="uiStage() === 'selected' ? '804px' : '1120px'"
+>
+  <div
+    class="sign-up"
+    [class.sign-up--with-plan]="uiStage() === 'selected'"
+    [class.sign-up--selection]="uiStage() === 'selection'"
+    [class.sign-up--transitioning-selection]="isTransitioning() && uiStage() === 'selection'"
+    [class.sign-up--transitioning-selected]="isTransitioning() && uiStage() === 'selected'"
+  >
+    @if (uiStage() === 'selection') {
+      <section class="sign-up__plans-panel">
+        <div class="sign-up__plans-header">
+          <div class="sign-up__brand">
+            <div class="sign-up__brand-icon" aria-hidden="true">
+              <i class="pi pi-heart-fill"></i>
+            </div>
+            <h1 class="sign-up__brand-title">uFlex</h1>
+          </div>
 
-    <form class="sign-up__form" [formGroup]="form" (ngSubmit)="performSignUp()">
-      <div class="sign-up__field">
-        <label for="fullName">{{ 'signUp.fullName.label' | translate }}</label>
-        <input
-          pInputText
-          id="fullName"
-          type="text"
-          formControlName="fullName"
-          [placeholder]="'signUp.fullName.placeholder' | translate"
-          [class.ng-invalid]="isInvalidControl(form, 'fullName')"
-          [class.ng-dirty]="isInvalidControl(form, 'fullName')"
-        />
-        @if (isInvalidControl(form, 'fullName')) {
-          <small class="sign-up__error">{{ errorMessagesForControl(form, 'fullName') }}</small>
-        }
-      </div>
-
-      <div class="sign-up__field">
-        <label for="email">{{ 'signUp.email.label' | translate }}</label>
-        <input
-          pInputText
-          id="email"
-          type="email"
-          formControlName="email"
-          [placeholder]="'signUp.email.placeholder' | translate"
-          [class.ng-invalid]="isInvalidControl(form, 'email')"
-          [class.ng-dirty]="isInvalidControl(form, 'email')"
-        />
-        @if (isInvalidControl(form, 'email')) {
-          <small class="sign-up__error">{{ errorMessagesForControl(form, 'email') }}</small>
-        }
-      </div>
-
-      <div class="sign-up__row">
-        <div class="sign-up__field">
-          <label for="password">{{ 'signUp.password.label' | translate }}</label>
-          <p-password
-            inputId="password"
-            formControlName="password"
-            [feedback]="false"
-            [toggleMask]="true"
-            [placeholder]="'signUp.password.placeholder' | translate"
-            styleClass="sign-up__password"
-            [class.ng-invalid]="isInvalidControl(form, 'password')"
-            [class.ng-dirty]="isInvalidControl(form, 'password')"
-          />
-          @if (isInvalidControl(form, 'password')) {
-            <small class="sign-up__error">{{ errorMessagesForControl(form, 'password') }}</small>
-          }
+          <div class="sign-up__intro">
+            <h2 class="sign-up__plans-title">{{ 'signUp.planSelection.title' | translate }}</h2>
+            <p class="sign-up__plans-subtitle">
+              {{ 'signUp.planSelection.subtitle' | translate }}
+            </p>
+          </div>
         </div>
 
-        <div class="sign-up__field">
-          <label for="confirmPassword">{{ 'signUp.confirmPassword.label' | translate }}</label>
-          <p-password
-            inputId="confirmPassword"
-            formControlName="confirmPassword"
-            [feedback]="false"
-            [toggleMask]="false"
-            [placeholder]="'signUp.confirmPassword.placeholder' | translate"
-            styleClass="sign-up__password"
-            [class.ng-invalid]="isInvalidControl(form, 'confirmPassword')"
-            [class.ng-dirty]="isInvalidControl(form, 'confirmPassword')"
-          />
-          @if (isInvalidControl(form, 'confirmPassword')) {
-            <small class="sign-up__error">{{
-              'signUp.confirmPassword.mismatch' | translate
-            }}</small>
+        <div class="sign-up__plans-grid">
+          @for (plan of plans; track plan.id) {
+            <article
+              class="sign-up__plan-card"
+              [class.sign-up__plan-card--highlighted]="plan.highlighted"
+              [class.sign-up__plan-card--selected]="selectedPlanId() === plan.id"
+            >
+              <div class="sign-up__plan-badge-row">
+                <span class="sign-up__plan-badge">{{ plan.badgeKey | translate }}</span>
+                @if (plan.highlighted) {
+                  <span class="sign-up__plan-pill">{{
+                    'signUp.planSelection.mostChosen' | translate
+                  }}</span>
+                }
+              </div>
+
+              <div class="sign-up__plan-body">
+                <h3 class="sign-up__plan-name">{{ plan.nameKey | translate }}</h3>
+                <p class="sign-up__plan-price">{{ plan.priceKey | translate }}</p>
+                <p class="sign-up__plan-description">{{ plan.descriptionKey | translate }}</p>
+
+                <ul class="sign-up__plan-features">
+                  @for (feature of plan.featuresKeys; track feature) {
+                    <li class="sign-up__plan-feature">
+                      <i class="pi pi-check" aria-hidden="true"></i>
+                      <span>{{ feature | translate }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+
+              <button
+                pButton
+                type="button"
+                [severity]="plan.highlighted ? 'primary' : 'secondary'"
+                [outlined]="!plan.highlighted"
+                class="sign-up__plan-action"
+                [disabled]="isTransitioning()"
+                (click)="selectPlan(plan.id)"
+              >
+                <span>{{ plan.ctaKey | translate }}</span>
+              </button>
+            </article>
           }
         </div>
-      </div>
+      </section>
+    }
 
-      <div class="sign-up__actions">
-        <button
-          pButton
-          type="submit"
-          severity="primary"
-          [loading]="isSubmitting()"
-          [disabled]="isSubmitting()"
-          class="sign-up__btn-primary"
-        >
-          @if (!isSubmitting()) {
-            <span>{{ 'signUp.submit' | translate }}</span>
-            <i class="pi pi-user-plus sign-up__btn-icon-right" aria-hidden="true"></i>
-          }
-        </button>
-      </div>
-    </form>
+    @if (uiStage() === 'selected' && selectedPlan(); as plan) {
+      <section class="sign-up__selected-plan-card">
+        <div class="sign-up__brand sign-up__brand--compact">
+          <div class="sign-up__brand-icon" aria-hidden="true">
+            <i class="pi pi-heart-fill"></i>
+          </div>
+          <h1 class="sign-up__brand-title">uFlex</h1>
+        </div>
 
-    <footer class="sign-up__signin-row">
-      {{ 'signUp.haveAccount' | translate }}
-      <a class="sign-up__signin-link" routerLink="/iam/sign-in">{{
-        'signUp.signInLink' | translate
-      }}</a>
-    </footer>
+        <div class="sign-up__selected-plan-header">
+          <div class="sign-up__selected-plan-topline">
+            <span class="sign-up__selected-label">{{ 'signUp.selectedPlan' | translate }}</span>
+            @if (plan.highlighted) {
+              <span class="sign-up__plan-pill">{{
+                'signUp.planSelection.mostChosen' | translate
+              }}</span>
+            }
+          </div>
+
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            [text]="true"
+            class="sign-up__change-plan"
+            [disabled]="isTransitioning()"
+            (click)="clearSelectedPlan()"
+          >
+            <i class="pi pi-arrow-left" aria-hidden="true"></i>
+            <span>{{ 'signUp.changePlan' | translate }}</span>
+          </button>
+        </div>
+
+        <div class="sign-up__selected-plan-body">
+          <div>
+            <p class="sign-up__selected-badge">{{ plan.badgeKey | translate }}</p>
+            <h2 class="sign-up__selected-name">{{ plan.nameKey | translate }}</h2>
+            <p class="sign-up__selected-price">{{ plan.priceKey | translate }}</p>
+          </div>
+
+          <ul class="sign-up__selected-features">
+            @for (feature of plan.featuresKeys; track feature) {
+              <li class="sign-up__plan-feature">
+                <i class="pi pi-check" aria-hidden="true"></i>
+                <span>{{ feature | translate }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </section>
+
+      <section class="sign-up__card">
+        <div class="sign-up__card-header">
+          <div>
+            <p class="sign-up__card-title">{{ 'signUp.title' | translate }}</p>
+            <p class="sign-up__card-subtitle">
+              {{ 'signUp.completeWithPlan' | translate: { plan: (plan.nameKey | translate) } }}
+            </p>
+          </div>
+        </div>
+
+        <form class="sign-up__form" [formGroup]="form" (ngSubmit)="performSignUp()">
+          <div class="sign-up__field">
+            <label for="fullName">{{ 'signUp.fullName.label' | translate }}</label>
+            <input
+              pInputText
+              id="fullName"
+              type="text"
+              formControlName="fullName"
+              [placeholder]="'signUp.fullName.placeholder' | translate"
+              [class.ng-invalid]="isInvalidControl(form, 'fullName')"
+              [class.ng-dirty]="isInvalidControl(form, 'fullName')"
+            />
+            @if (isInvalidControl(form, 'fullName')) {
+              <small class="sign-up__error">{{ errorMessagesForControl(form, 'fullName') }}</small>
+            }
+          </div>
+
+          <div class="sign-up__field">
+            <label for="email">{{ 'signUp.email.label' | translate }}</label>
+            <input
+              pInputText
+              id="email"
+              type="email"
+              formControlName="email"
+              [placeholder]="'signUp.email.placeholder' | translate"
+              [class.ng-invalid]="isInvalidControl(form, 'email')"
+              [class.ng-dirty]="isInvalidControl(form, 'email')"
+            />
+            @if (isInvalidControl(form, 'email')) {
+              <small class="sign-up__error">{{ errorMessagesForControl(form, 'email') }}</small>
+            }
+          </div>
+
+          <div class="sign-up__row">
+            <div class="sign-up__field">
+              <label for="password">{{ 'signUp.password.label' | translate }}</label>
+              <p-password
+                inputId="password"
+                formControlName="password"
+                [feedback]="false"
+                [toggleMask]="true"
+                [placeholder]="'signUp.password.placeholder' | translate"
+                styleClass="sign-up__password"
+                [class.ng-invalid]="isInvalidControl(form, 'password')"
+                [class.ng-dirty]="isInvalidControl(form, 'password')"
+              />
+              @if (isInvalidControl(form, 'password')) {
+                <small class="sign-up__error">{{
+                  errorMessagesForControl(form, 'password')
+                }}</small>
+              }
+            </div>
+
+            <div class="sign-up__field">
+              <label for="confirmPassword">{{ 'signUp.confirmPassword.label' | translate }}</label>
+              <p-password
+                inputId="confirmPassword"
+                formControlName="confirmPassword"
+                [feedback]="false"
+                [toggleMask]="false"
+                [placeholder]="'signUp.confirmPassword.placeholder' | translate"
+                styleClass="sign-up__password"
+                [class.ng-invalid]="isInvalidControl(form, 'confirmPassword')"
+                [class.ng-dirty]="isInvalidControl(form, 'confirmPassword')"
+              />
+              @if (isInvalidControl(form, 'confirmPassword')) {
+                <small class="sign-up__error">{{
+                  'signUp.confirmPassword.mismatch' | translate
+                }}</small>
+              }
+            </div>
+          </div>
+
+          <div class="sign-up__actions">
+            <button
+              pButton
+              type="submit"
+              severity="primary"
+              [loading]="isSubmitting()"
+              [disabled]="isSubmitting()"
+              class="sign-up__btn-primary"
+            >
+              @if (!isSubmitting()) {
+                <span>{{ 'signUp.submit' | translate }}</span>
+                <i class="pi pi-user-plus sign-up__btn-icon-right" aria-hidden="true"></i>
+              }
+            </button>
+          </div>
+        </form>
+
+        <footer class="sign-up__signin-row">
+          {{ 'signUp.haveAccount' | translate }}
+          <a class="sign-up__signin-link" routerLink="/iam/sign-in">{{
+            'signUp.signInLink' | translate
+          }}</a>
+        </footer>
+      </section>
+    }
   </div>
 </app-auth-shell>

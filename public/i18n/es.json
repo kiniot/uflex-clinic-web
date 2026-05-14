@@ -563,10 +563,57 @@
   "signUp": {
     "title": "Crea tu cuenta",
     "subtitle": "Únete a la red de rehabilitación conectada.",
+    "planSelection": {
+      "eyebrow": "Suscripción clínica",
+      "title": "Escoge el plan que mejor se adapta a tu operación",
+      "subtitle": "Selecciona primero tu suscripción. Después completaremos el registro de tu cuenta clínica.",
+      "mostChosen": "Más elegido"
+    },
+    "selectedPlan": "Plan elegido",
+    "changePlan": "Cambiar plan",
+    "completeWithPlan": "Completa tu registro para continuar con {{plan}}.",
     "roleLabel": "Selecciona tu rol",
     "roles": {
       "physiotherapist": "Fisioterapeuta",
       "clinicAdmin": "Administrador de Clínica"
+    },
+    "plans": {
+      "starter": {
+        "badge": "Starter",
+        "name": "Piloto Clínico",
+        "price": "S/ 399/mes",
+        "description": "Ideal para validar tu flujo terapéutico con un equipo pequeño.",
+        "cta": "Elegir Starter",
+        "features": {
+          "device": "1 dispositivo uFlex",
+          "dashboard": "Dashboard básico",
+          "support": "Soporte por correo"
+        }
+      },
+      "professional": {
+        "badge": "Growth",
+        "name": "Profesional",
+        "price": "S/ 899/mes",
+        "description": "Pensado para clínicas que requieren monitoreo continuo y reportes sólidos.",
+        "cta": "Solicitar Profesional",
+        "features": {
+          "devices": "3 dispositivos uFlex",
+          "reports": "Reportes de progreso",
+          "onboarding": "Capacitación inicial"
+        }
+      },
+      "enterprise": {
+        "badge": "Enterprise",
+        "name": "Institucional",
+        "price": "Personalizado",
+        "description": "Para redes de salud, universidades y programas de investigación aplicada.",
+        "cta": "Hablar con ventas",
+        "features": {
+          "devices": "Dispositivos escalables",
+          "integrations": "Integraciones dedicadas",
+          "support": "Soporte prioritario"
+        }
+      }
     },
     "fullName": {
       "label": "Nombre completo",

@@ -8,5 +8,6 @@ const signUpForm = () => import('./views/sign-up-form/sign-up-form').then(m => m
  */
 export const iamRoutes: Routes = [
   { path: 'sign-in', loadComponent: signInForm},
-  { path: 'sign-up', loadComponent: signUpForm}
+  { path: 'sign-up', loadComponent: signUpForm},
+  { path: 'sign-up/:planId', loadComponent: signUpForm}
 ];

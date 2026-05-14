@@ -563,10 +563,57 @@
   "signUp": {
     "title": "Create your account",
     "subtitle": "Join the connected rehabilitation network.",
+    "planSelection": {
+      "eyebrow": "Clinical subscription",
+      "title": "Choose the plan that best fits your operation",
+      "subtitle": "Select your subscription first. Then we'll complete your clinical account registration.",
+      "mostChosen": "Most chosen"
+    },
+    "selectedPlan": "Selected plan",
+    "changePlan": "Change plan",
+    "completeWithPlan": "Complete your registration to continue with {{plan}}.",
     "roleLabel": "Select your role",
     "roles": {
       "physiotherapist": "Physiotherapist",
       "clinicAdmin": "Clinic Admin"
+    },
+    "plans": {
+      "starter": {
+        "badge": "Starter",
+        "name": "Clinical Pilot",
+        "price": "S/ 399/mo",
+        "description": "Ideal for validating your therapy flow with a small team.",
+        "cta": "Choose Starter",
+        "features": {
+          "device": "1 uFlex device",
+          "dashboard": "Basic dashboard",
+          "support": "Email support"
+        }
+      },
+      "professional": {
+        "badge": "Growth",
+        "name": "Professional",
+        "price": "S/ 899/mo",
+        "description": "Built for clinics needing continuous monitoring and stronger reports.",
+        "cta": "Request Professional",
+        "features": {
+          "devices": "3 uFlex devices",
+          "reports": "Progress reports",
+          "onboarding": "Initial onboarding"
+        }
+      },
+      "enterprise": {
+        "badge": "Enterprise",
+        "name": "Institutional",
+        "price": "Custom",
+        "description": "For health networks, universities, and applied research programs.",
+        "cta": "Talk to sales",
+        "features": {
+          "devices": "Scalable devices",
+          "integrations": "Dedicated integrations",
+          "support": "Priority support"
+        }
+      }
     },
     "fullName": {
       "label": "Full Name",
