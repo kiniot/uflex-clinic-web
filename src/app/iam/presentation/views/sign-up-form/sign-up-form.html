@@ -5,102 +5,277 @@
         <i class="pi pi-heart-fill"></i>
       </div>
       <h1 class="sign-up__brand-title">uFlex</h1>
-      <p class="sign-up__brand-subtitle">{{ 'signUp.title' | translate }}</p>
+      <p class="sign-up__brand-subtitle">
+        {{ (currentStep() === 'account' ? 'signUp.title' : 'signUp.clinicStep.title') | translate }}
+      </p>
     </div>
 
-    <form class="sign-up__form" [formGroup]="form" (ngSubmit)="performSignUp()">
-      <div class="sign-up__field">
-        <label for="fullName">{{ 'signUp.fullName.label' | translate }}</label>
-        <input
-          pInputText
-          id="fullName"
-          type="text"
-          formControlName="fullName"
-          [placeholder]="'signUp.fullName.placeholder' | translate"
-          [class.ng-invalid]="isInvalidControl(form, 'fullName')"
-          [class.ng-dirty]="isInvalidControl(form, 'fullName')"
-        />
-        @if (isInvalidControl(form, 'fullName')) {
-          <small class="sign-up__error">{{ errorMessagesForControl(form, 'fullName') }}</small>
-        }
-      </div>
+    <div class="sign-up__stepper" aria-hidden="true">
+      <span class="sign-up__step" [class.sign-up__step--active]="currentStep() === 'account'"
+        >1</span
+      >
+      <span
+        class="sign-up__step-line"
+        [class.sign-up__step-line--active]="currentStep() === 'clinic'"
+      ></span>
+      <span class="sign-up__step" [class.sign-up__step--active]="currentStep() === 'clinic'"
+        >2</span
+      >
+    </div>
 
-      <div class="sign-up__field">
-        <label for="email">{{ 'signUp.email.label' | translate }}</label>
-        <input
-          pInputText
-          id="email"
-          type="email"
-          formControlName="email"
-          [placeholder]="'signUp.email.placeholder' | translate"
-          [class.ng-invalid]="isInvalidControl(form, 'email')"
-          [class.ng-dirty]="isInvalidControl(form, 'email')"
-        />
-        @if (isInvalidControl(form, 'email')) {
-          <small class="sign-up__error">{{ errorMessagesForControl(form, 'email') }}</small>
-        }
-      </div>
-
-      <div class="sign-up__row">
-        <div class="sign-up__field">
-          <label for="password">{{ 'signUp.password.label' | translate }}</label>
-          <p-password
-            inputId="password"
-            formControlName="password"
-            [feedback]="false"
-            [toggleMask]="true"
-            [placeholder]="'signUp.password.placeholder' | translate"
-            styleClass="sign-up__password"
-            [class.ng-invalid]="isInvalidControl(form, 'password')"
-            [class.ng-dirty]="isInvalidControl(form, 'password')"
-          />
-          @if (isInvalidControl(form, 'password')) {
-            <small class="sign-up__error">{{ errorMessagesForControl(form, 'password') }}</small>
-          }
-        </div>
+    @if (currentStep() === 'account') {
+      <form class="sign-up__form" [formGroup]="accountForm" (ngSubmit)="performSignUp()">
+        <p class="sign-up__description">{{ 'signUp.subtitle' | translate }}</p>
 
         <div class="sign-up__field">
-          <label for="confirmPassword">{{ 'signUp.confirmPassword.label' | translate }}</label>
-          <p-password
-            inputId="confirmPassword"
-            formControlName="confirmPassword"
-            [feedback]="false"
-            [toggleMask]="false"
-            [placeholder]="'signUp.confirmPassword.placeholder' | translate"
-            styleClass="sign-up__password"
-            [class.ng-invalid]="isInvalidControl(form, 'confirmPassword')"
-            [class.ng-dirty]="isInvalidControl(form, 'confirmPassword')"
+          <label for="fullName">{{ 'signUp.fullName.label' | translate }}</label>
+          <input
+            pInputText
+            id="fullName"
+            type="text"
+            formControlName="fullName"
+            [placeholder]="'signUp.fullName.placeholder' | translate"
+            [class.ng-invalid]="isInvalidControl(accountForm, 'fullName')"
+            [class.ng-dirty]="isInvalidControl(accountForm, 'fullName')"
           />
-          @if (isInvalidControl(form, 'confirmPassword')) {
+          @if (isInvalidControl(accountForm, 'fullName')) {
             <small class="sign-up__error">{{
-              'signUp.confirmPassword.mismatch' | translate
+              errorMessagesForControl(accountForm, 'fullName')
             }}</small>
           }
         </div>
-      </div>
 
-      <div class="sign-up__actions">
-        <button
-          pButton
-          type="submit"
-          severity="primary"
-          [loading]="isSubmitting()"
-          [disabled]="isSubmitting()"
-          class="sign-up__btn-primary"
-        >
-          @if (!isSubmitting()) {
-            <span>{{ 'signUp.submit' | translate }}</span>
-            <i class="pi pi-user-plus sign-up__btn-icon-right" aria-hidden="true"></i>
+        <div class="sign-up__field">
+          <label for="email">{{ 'signUp.email.label' | translate }}</label>
+          <input
+            pInputText
+            id="email"
+            type="email"
+            formControlName="email"
+            [placeholder]="'signUp.email.placeholder' | translate"
+            [class.ng-invalid]="isInvalidControl(accountForm, 'email')"
+            [class.ng-dirty]="isInvalidControl(accountForm, 'email')"
+          />
+          @if (isInvalidControl(accountForm, 'email')) {
+            <small class="sign-up__error">{{
+              errorMessagesForControl(accountForm, 'email')
+            }}</small>
           }
-        </button>
-      </div>
-    </form>
+        </div>
+
+        <div class="sign-up__row">
+          <div class="sign-up__field">
+            <label for="password">{{ 'signUp.password.label' | translate }}</label>
+            <p-password
+              inputId="password"
+              formControlName="password"
+              [feedback]="false"
+              [toggleMask]="true"
+              [placeholder]="'signUp.password.placeholder' | translate"
+              styleClass="sign-up__password"
+              [class.ng-invalid]="isInvalidControl(accountForm, 'password')"
+              [class.ng-dirty]="isInvalidControl(accountForm, 'password')"
+            />
+            @if (isInvalidControl(accountForm, 'password')) {
+              <small class="sign-up__error">{{
+                errorMessagesForControl(accountForm, 'password')
+              }}</small>
+            }
+          </div>
+
+          <div class="sign-up__field">
+            <label for="confirmPassword">{{ 'signUp.confirmPassword.label' | translate }}</label>
+            <p-password
+              inputId="confirmPassword"
+              formControlName="confirmPassword"
+              [feedback]="false"
+              [toggleMask]="false"
+              [placeholder]="'signUp.confirmPassword.placeholder' | translate"
+              styleClass="sign-up__password"
+              [class.ng-invalid]="isInvalidControl(accountForm, 'confirmPassword')"
+              [class.ng-dirty]="isInvalidControl(accountForm, 'confirmPassword')"
+            />
+            @if (isInvalidControl(accountForm, 'confirmPassword')) {
+              <small class="sign-up__error">{{
+                'signUp.confirmPassword.mismatch' | translate
+              }}</small>
+            }
+          </div>
+        </div>
+
+        <div class="sign-up__actions">
+          <button
+            pButton
+            type="submit"
+            severity="primary"
+            [loading]="isSubmitting()"
+            [disabled]="isSubmitting()"
+            class="sign-up__btn-primary"
+          >
+            @if (!isSubmitting()) {
+              <span>{{ 'signUp.submit' | translate }}</span>
+              <i class="pi pi-arrow-right sign-up__btn-icon-right" aria-hidden="true"></i>
+            }
+          </button>
+        </div>
+      </form>
+    } @else {
+      <form class="sign-up__form" [formGroup]="clinicForm" (ngSubmit)="performCreateClinic()">
+        <p class="sign-up__description">{{ 'signUp.clinicStep.subtitle' | translate }}</p>
+
+        <div class="sign-up__field">
+          <label for="legalName">{{ 'signUp.clinicStep.legalName.label' | translate }}</label>
+          <input
+            pInputText
+            id="legalName"
+            type="text"
+            formControlName="legalName"
+            [placeholder]="'signUp.clinicStep.legalName.placeholder' | translate"
+            [class.ng-invalid]="isInvalidControl(clinicForm, 'legalName')"
+            [class.ng-dirty]="isInvalidControl(clinicForm, 'legalName')"
+          />
+          @if (isInvalidControl(clinicForm, 'legalName')) {
+            <small class="sign-up__error">{{
+              errorMessagesForControl(clinicForm, 'legalName')
+            }}</small>
+          }
+        </div>
+
+        <div class="sign-up__field">
+          <label for="commercialName">{{
+            'signUp.clinicStep.commercialName.label' | translate
+          }}</label>
+          <input
+            pInputText
+            id="commercialName"
+            type="text"
+            formControlName="commercialName"
+            [placeholder]="'signUp.clinicStep.commercialName.placeholder' | translate"
+            [class.ng-invalid]="isInvalidControl(clinicForm, 'commercialName')"
+            [class.ng-dirty]="isInvalidControl(clinicForm, 'commercialName')"
+          />
+          @if (isInvalidControl(clinicForm, 'commercialName')) {
+            <small class="sign-up__error">{{
+              errorMessagesForControl(clinicForm, 'commercialName')
+            }}</small>
+          }
+        </div>
+
+        <div class="sign-up__row">
+          <div class="sign-up__field">
+            <label for="ruc">{{ 'signUp.clinicStep.ruc.label' | translate }}</label>
+            <input
+              pInputText
+              id="ruc"
+              type="text"
+              formControlName="ruc"
+              [placeholder]="'signUp.clinicStep.ruc.placeholder' | translate"
+              [class.ng-invalid]="isInvalidControl(clinicForm, 'ruc')"
+              [class.ng-dirty]="isInvalidControl(clinicForm, 'ruc')"
+            />
+            @if (isInvalidControl(clinicForm, 'ruc')) {
+              <small class="sign-up__error">{{ 'signUp.clinicStep.ruc.error' | translate }}</small>
+            }
+          </div>
+
+          <div class="sign-up__field">
+            <label for="clinicEmail">{{ 'signUp.clinicStep.email.label' | translate }}</label>
+            <input
+              pInputText
+              id="clinicEmail"
+              type="email"
+              formControlName="email"
+              [placeholder]="'signUp.clinicStep.email.placeholder' | translate"
+              [class.ng-invalid]="isInvalidControl(clinicForm, 'email')"
+              [class.ng-dirty]="isInvalidControl(clinicForm, 'email')"
+            />
+            @if (isInvalidControl(clinicForm, 'email')) {
+              <small class="sign-up__error">{{
+                errorMessagesForControl(clinicForm, 'email')
+              }}</small>
+            }
+          </div>
+        </div>
+
+        <div class="sign-up__row sign-up__row--phone">
+          <div class="sign-up__field">
+            <label for="countryCode">{{ 'signUp.clinicStep.countryCode.label' | translate }}</label>
+            <input
+              pInputText
+              id="countryCode"
+              type="text"
+              formControlName="countryCode"
+              [placeholder]="'signUp.clinicStep.countryCode.placeholder' | translate"
+              [class.ng-invalid]="isInvalidControl(clinicForm, 'countryCode')"
+              [class.ng-dirty]="isInvalidControl(clinicForm, 'countryCode')"
+            />
+            @if (isInvalidControl(clinicForm, 'countryCode')) {
+              <small class="sign-up__error">{{
+                'signUp.clinicStep.countryCode.error' | translate
+              }}</small>
+            }
+          </div>
+
+          <div class="sign-up__field">
+            <label for="phoneNumber">{{ 'signUp.clinicStep.phoneNumber.label' | translate }}</label>
+            <p-inputgroup>
+              <p-inputgroup-addon>{{ clinicForm.controls.countryCode.value }}</p-inputgroup-addon>
+              <input
+                pInputText
+                id="phoneNumber"
+                type="tel"
+                formControlName="phoneNumber"
+                [placeholder]="'signUp.clinicStep.phoneNumber.placeholder' | translate"
+                [class.ng-invalid]="isInvalidControl(clinicForm, 'phoneNumber')"
+                [class.ng-dirty]="isInvalidControl(clinicForm, 'phoneNumber')"
+              />
+            </p-inputgroup>
+            @if (isInvalidControl(clinicForm, 'phoneNumber')) {
+              <small class="sign-up__error">{{
+                'signUp.clinicStep.phoneNumber.error' | translate
+              }}</small>
+            }
+          </div>
+        </div>
+
+        <div class="sign-up__actions sign-up__actions--split">
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            [disabled]="isSubmitting()"
+            class="sign-up__btn-secondary"
+            (click)="goBackToAccountStep()"
+          >
+            <span>{{ 'signUp.clinicStep.back' | translate }}</span>
+          </button>
+
+          <button
+            pButton
+            type="submit"
+            severity="primary"
+            [loading]="isSubmitting()"
+            [disabled]="isSubmitting()"
+            class="sign-up__btn-primary"
+          >
+            @if (!isSubmitting()) {
+              <span>{{ 'signUp.clinicStep.submit' | translate }}</span>
+              <i class="pi pi-check sign-up__btn-icon-right" aria-hidden="true"></i>
+            }
+          </button>
+        </div>
+      </form>
+    }
 
     <footer class="sign-up__signin-row">
-      {{ 'signUp.haveAccount' | translate }}
-      <a class="sign-up__signin-link" routerLink="/iam/sign-in">{{
-        'signUp.signInLink' | translate
-      }}</a>
+      @if (currentStep() === 'account') {
+        {{ 'signUp.haveAccount' | translate }}
+        <a class="sign-up__signin-link" routerLink="/iam/sign-in">{{
+          'signUp.signInLink' | translate
+        }}</a>
+      } @else {
+        {{ 'signUp.clinicStep.footer' | translate }}
+      }
     </footer>
   </div>
 </app-auth-shell>

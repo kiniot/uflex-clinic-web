@@ -597,11 +597,49 @@
     "submit": "Crear cuenta",
     "haveAccount": "¿Ya tienes una cuenta?",
     "signInLink": "Iniciar sesión",
+    "clinicStep": {
+      "title": "Crea tu clínica",
+      "subtitle": "Completa tu onboarding registrando la clínica que operará en uFlex.",
+      "legalName": {
+        "label": "Razón social",
+        "placeholder": "Ingresa la razón social de la clínica"
+      },
+      "commercialName": {
+        "label": "Nombre comercial",
+        "placeholder": "Ingresa el nombre comercial de la clínica"
+      },
+      "ruc": {
+        "label": "RUC",
+        "placeholder": "Identificador tributario de 11 dígitos",
+        "error": "Ingresa un RUC válido de 11 dígitos."
+      },
+      "email": {
+        "label": "Correo de la clínica",
+        "placeholder": "Ingresa el correo de la clínica"
+      },
+      "countryCode": {
+        "label": "Código de país",
+        "placeholder": "ej. +51",
+        "error": "Ingresa un código internacional válido."
+      },
+      "phoneNumber": {
+        "label": "Número de teléfono",
+        "placeholder": "Ingresa el teléfono de la clínica",
+        "error": "Ingresa un número de teléfono válido."
+      },
+      "back": "Volver",
+      "submit": "Crear clínica",
+      "footer": "Paso 2 de 2: registra tu clínica para terminar el flujo de onboarding."
+    },
     "notifications": {
-      "successSummary": "Cuenta creada",
-      "successDetail": "Tu cuenta se registró correctamente. Ahora puedes iniciar sesión.",
+      "accountCreatedSummary": "Cuenta creada",
+      "accountCreatedDetail": "Tu cuenta ya está lista. Ahora registra tu clínica para completar el onboarding.",
+      "successSummary": "Clínica creada",
+      "successDetail": "Tu cuenta y tu clínica se registraron correctamente. Ahora puedes iniciar sesión.",
       "errorSummary": "No se pudo registrar",
-      "genericError": "No pudimos crear la cuenta. Intenta nuevamente."
+      "genericError": "No pudimos crear la cuenta. Intenta nuevamente.",
+      "clinicErrorSummary": "No se pudo registrar la clínica",
+      "clinicGenericError": "No pudimos crear la clínica. Intenta nuevamente."
     }
   },
   "changePassword": {
