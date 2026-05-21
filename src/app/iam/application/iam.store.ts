@@ -59,7 +59,11 @@ export class IamStore {
     this.restoreSessionFromStorage();
   }
 
-  signIn(signInCommand: SignInCommand, router: Router, redirectTo?: string | null): Promise<void> {
+  signIn(
+    signInCommand: SignInCommand,
+    router: Router,
+    redirectTo?: string | null,
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       this.iamApi.signIn(signInCommand).subscribe({
         next: (signInResource) => {
@@ -94,7 +98,7 @@ export class IamStore {
       this.iamApi.signUp(signUpCommand).subscribe({
         next: (signUpResource) => {
           console.log('Sign-up successful:', signUpResource);
-          if (!redirectTo) {
+          if (redirectTo === null) {
             resolve();
             return;
           }

@@ -1,41 +1,24 @@
-import { Component, input, output } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { SubscriptionPlan } from '../../../domain/models/subscription-plan';
+import {Component, input, output} from '@angular/core';
+import {TranslatePipe} from '@ngx-translate/core';
+import {ButtonModule} from 'primeng/button';
+import {SubscriptionPlan} from '../../../domain/model/subscription-plan.entity';
 
 /**
- * Internal visual card for available Subscription plans.
+ * Card rendering one subscription tier in the "Available Clinical Plans"
+ * comparison. The card highlights itself when it represents the user's
+ * current plan and disables the action button accordingly.
  */
 @Component({
   selector: 'app-plan-card',
-  imports: [ButtonModule, CardModule],
+  imports: [TranslatePipe, ButtonModule],
   templateUrl: './plan-card.html',
-  styleUrl: './plan-card.scss',
+  styleUrl: './plan-card.scss'
 })
 export class PlanCard {
   plan = input.required<SubscriptionPlan>();
   isCurrent = input<boolean>(false);
-  hasActiveSubscription = input<boolean>(false);
-  selected = input(false);
-  planSelected = output<string>();
 
-  protected isCurrentPlan(): boolean {
-    return this.isCurrent();
-  }
+  readonly select = output<SubscriptionPlan>();
 
-  protected cardStyleClass(): string {
-    return this.isCurrentPlan()
-      ? 'subscription-card plan-card plan-card--selected'
-      : 'subscription-card plan-card';
-  }
-
-  protected selectPlan(): void {
-    if (this.isCurrentPlan()) return;
-    this.planSelected.emit(this.plan().id);
-  }
-
-  protected buttonLabel(): string {
-    if (this.isCurrentPlan()) return 'Active Plan';
-    return this.hasActiveSubscription() ? 'Change plan' : 'Select plan';
-  }
+  protected onSelect() { this.select.emit(this.plan()); }
 }

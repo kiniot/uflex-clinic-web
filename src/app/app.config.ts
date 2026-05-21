@@ -9,7 +9,6 @@ import { iamInterceptor } from './iam/infrastructure/iam.interceptor';
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
 import { appPreset } from './app.preset';
-import { provideSubscriptionInfrastructure } from './subscription/infrastructure/subscription-infrastructure.providers';
 
 /**
  * Application configuration for dependency injection and providers in the infrastructure layer.
@@ -35,6 +34,5 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
-    provideSubscriptionInfrastructure(),
   ],
 };

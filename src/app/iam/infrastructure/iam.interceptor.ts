@@ -8,14 +8,13 @@ import { IamStore } from '../application/iam.store';
  */
 export const iamInterceptor: HttpInterceptorFn = (request, next) => {
   const store = inject(IamStore);
-  const token =
-    store.currentToken() ??
-    localStorage.getItem('token') ??
-    sessionStorage.getItem('token') ??
-    localStorage.getItem('jwt_token') ??
-    sessionStorage.getItem('jwt_token');
+  // Get the token from local storage.
+  const token = store.currentToken();
+  // If the token exists, add it to the request headers. Otherwise, send the request as is.
   const handledRequest = token
     ? request.clone({ headers: request.headers.set('Authorization', `Bearer ${token}`) })
     : request;
+  console.log(token);
+  // Return the handled request.
   return next(handledRequest);
 };

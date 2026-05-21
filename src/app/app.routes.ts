@@ -10,16 +10,11 @@ const clinicAdminPortalRoutes = () =>
   import('./shared/presentation/portals/clinic-admin-portal/clinic-admin-portal.routes').then(
     (m) => m.clinicAdminPortalRoutes,
   );
-const clinicAdminPortal = () =>
-  import('./shared/presentation/portals/clinic-admin-portal/clinic-admin-portal').then(
-    (m) => m.ClinicAdminPortal,
-  );
+
 const physiotherapistPortalRoutes = () =>
   import('./shared/presentation/portals/physiotherapist-portal/physiotherapist-portal.routes').then(
     (m) => m.physiotherapistPortalRoutes,
   );
-const subscriptionRoutes = () =>
-  import('./subscription/presentation/subscription.routes').then((m) => m.subscriptionRoutes);
 
 const baseTitle = 'KinIoT - uFlex';
 
@@ -41,13 +36,6 @@ export const routes: Routes = [
     path: 'physiotherapist',
     loadChildren: physiotherapistPortalRoutes,
     title: `${baseTitle} - Physiotherapist`,
-  },
-  {
-    path: 'subscription',
-    loadComponent: clinicAdminPortal,
-    children: [{ path: '', loadChildren: subscriptionRoutes }],
-    title: `${baseTitle} - Subscription`,
-    canActivate: [iamGuard],
   },
   { path: '', redirectTo: '/iam/sign-in', pathMatch: 'full' },
   { path: '**', loadComponent: pageNotFound, title: `${baseTitle} - Page Not Found` },
