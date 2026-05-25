@@ -4,6 +4,128 @@
   gap: 20px;
 }
 
+.sub-checkout {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.sub-checkout__card {
+  width: min(680px, 100%);
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 20px;
+  padding: 32px 32px 28px;
+  box-shadow: 0 12px 30px rgba(7, 77, 97, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-align: center;
+}
+
+:host-context(.app-dark) .sub-checkout__card {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.sub-checkout__brand-mark {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+}
+
+.sub-checkout__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.sub-checkout__eyebrow--success {
+  background: rgba(59, 196, 142, 0.18);
+  color: #16785a;
+}
+
+.sub-checkout__eyebrow--warning {
+  background: rgba(255, 173, 51, 0.18);
+  color: #9b5d06;
+}
+
+.sub-checkout__title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.sub-checkout__desc {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--p-text-muted-color);
+}
+
+.sub-checkout__summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 18px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 16px;
+  background: var(--p-surface-50);
+  border: 1px solid var(--p-surface-200);
+}
+
+@media (max-width: 640px) {
+  .sub-checkout__summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+:host-context(.app-dark) .sub-checkout__summary {
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-300);
+}
+
+.sub-checkout__summary div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: 'Inter', sans-serif;
+}
+
+.sub-checkout__summary span {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--p-text-muted-color);
+}
+
+.sub-checkout__summary strong {
+  font-size: 15px;
+  color: var(--p-text-color);
+}
+
+.sub-checkout__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.sub-checkout__actions--stack {
+  flex-wrap: wrap;
+}
+
 :host ::ng-deep .sub__btn,
 :host ::ng-deep .sub__btn .p-button {
   height: 40px;

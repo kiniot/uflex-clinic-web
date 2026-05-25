@@ -1,281 +1,548 @@
 <app-auth-shell>
-  <div class="sign-up__card">
-    <div class="sign-up__brand">
-      <div class="sign-up__brand-icon" aria-hidden="true">
-        <i class="pi pi-heart-fill"></i>
-      </div>
-      <h1 class="sign-up__brand-title">uFlex</h1>
-      <p class="sign-up__brand-subtitle">
-        {{ (currentStep() === 'account' ? 'signUp.title' : 'signUp.clinicStep.title') | translate }}
-      </p>
-    </div>
-
-    <div class="sign-up__stepper" aria-hidden="true">
-      <span class="sign-up__step" [class.sign-up__step--active]="currentStep() === 'account'"
-        >1</span
-      >
-      <span
-        class="sign-up__step-line"
-        [class.sign-up__step-line--active]="currentStep() === 'clinic'"
-      ></span>
-      <span class="sign-up__step" [class.sign-up__step--active]="currentStep() === 'clinic'"
-        >2</span
-      >
-    </div>
-
-    @if (currentStep() === 'account') {
-      <form class="sign-up__form" [formGroup]="accountForm" (ngSubmit)="performSignUp()">
-        <p class="sign-up__description">{{ 'signUp.subtitle' | translate }}</p>
-
-        <div class="sign-up__field">
-          <label for="fullName">{{ 'signUp.fullName.label' | translate }}</label>
-          <input
-            pInputText
-            id="fullName"
-            type="text"
-            formControlName="fullName"
-            [placeholder]="'signUp.fullName.placeholder' | translate"
-            [class.ng-invalid]="isInvalidControl(accountForm, 'fullName')"
-            [class.ng-dirty]="isInvalidControl(accountForm, 'fullName')"
+  <div class="sign-up" [class.sign-up--without-summary]="currentStep() === 'plan' || !selectedTier()">
+    <section class="sign-up__main">
+      <div class="sign-up__card">
+        <div class="sign-up__brand">
+          <img
+            class="sign-up__brand-mark"
+            src="/images/branding/uflex-brand-mark-original.webp"
+            alt="uFlex"
           />
-          @if (isInvalidControl(accountForm, 'fullName')) {
-            <small class="sign-up__error">{{
-              errorMessagesForControl(accountForm, 'fullName')
-            }}</small>
+          <p class="sign-up__brand-subtitle">
+            {{ ('signUp.' + currentStep() + 'Step.title') | translate }}
+          </p>
+        </div>
+
+        <div class="sign-up__stepper" aria-hidden="true">
+          @for (step of ['plan', 'account', 'clinic']; track step; let index = $index) {
+            <span
+              class="sign-up__step"
+              [class.sign-up__step--active]="currentStep() === step"
+              [class.sign-up__step--complete]="
+                (currentStep() === 'account' && step === 'plan') ||
+                (currentStep() === 'clinic' && (step === 'plan' || step === 'account'))
+              "
+            >
+              {{ index + 1 }}
+            </span>
+            @if (index < 2) {
+              <span
+                class="sign-up__step-line"
+                [class.sign-up__step-line--active]="
+                  (currentStep() === 'account' && index === 0) || currentStep() === 'clinic'
+                "
+              ></span>
+            }
           }
         </div>
 
-        <div class="sign-up__field">
-          <label for="email">{{ 'signUp.email.label' | translate }}</label>
-          <input
-            pInputText
-            id="email"
-            type="email"
-            formControlName="email"
-            [placeholder]="'signUp.email.placeholder' | translate"
-            [class.ng-invalid]="isInvalidControl(accountForm, 'email')"
-            [class.ng-dirty]="isInvalidControl(accountForm, 'email')"
-          />
-          @if (isInvalidControl(accountForm, 'email')) {
-            <small class="sign-up__error">{{
-              errorMessagesForControl(accountForm, 'email')
-            }}</small>
-          }
-        </div>
+        @if (currentStep() === 'plan') {
+          <section class="sign-up__plan-step">
+            <div class="sign-up__plan-copy">
+              <p class="sign-up__description">{{ 'signUp.planStep.subtitle' | translate }}</p>
+              <p class="sign-up__helper">{{ 'signUp.planStep.helper' | translate }}</p>
+            </div>
 
-        <div class="sign-up__row">
-          <div class="sign-up__field">
-            <label for="password">{{ 'signUp.password.label' | translate }}</label>
-            <p-password
-              inputId="password"
-              formControlName="password"
-              [feedback]="false"
-              [toggleMask]="true"
-              [placeholder]="'signUp.password.placeholder' | translate"
-              styleClass="sign-up__password"
-              [class.ng-invalid]="isInvalidControl(accountForm, 'password')"
-              [class.ng-dirty]="isInvalidControl(accountForm, 'password')"
-            />
-            @if (isInvalidControl(accountForm, 'password')) {
-              <small class="sign-up__error">{{
-                errorMessagesForControl(accountForm, 'password')
-              }}</small>
+            <div class="sign-up__controls">
+              <div class="sign-up__toggle-group">
+                <span class="sign-up__toggle-label">{{ 'signUp.planStep.billing.label' | translate }}</span>
+                <div class="sign-up__toggle">
+                  <button
+                    type="button"
+                    class="sign-up__toggle-btn"
+                    [class.sign-up__toggle-btn--active]="selectedBillingPeriod() === 'MONTHLY'"
+                    (click)="onBillingPeriodSelected('MONTHLY')"
+                  >
+                    {{ 'signUp.planStep.billing.options.monthly' | translate }}
+                  </button>
+                  <button
+                    type="button"
+                    class="sign-up__toggle-btn"
+                    [class.sign-up__toggle-btn--active]="selectedBillingPeriod() === 'YEARLY'"
+                    (click)="onBillingPeriodSelected('YEARLY')"
+                  >
+                    {{ 'signUp.planStep.billing.options.yearly' | translate }}
+                  </button>
+                </div>
+              </div>
+
+              <div class="sign-up__toggle-group">
+                <span class="sign-up__toggle-label">{{
+                  'signUp.planStep.currency.label' | translate
+                }}</span>
+                <div class="sign-up__toggle">
+                  <button
+                    type="button"
+                    class="sign-up__toggle-btn"
+                    [class.sign-up__toggle-btn--active]="selectedCurrency() === 'PEN'"
+                    (click)="onCurrencySelected('PEN')"
+                  >
+                    {{ currencyLabel('PEN') }}
+                  </button>
+                  <button
+                    type="button"
+                    class="sign-up__toggle-btn"
+                    [class.sign-up__toggle-btn--active]="selectedCurrency() === 'USD'"
+                    (click)="onCurrencySelected('USD')"
+                  >
+                    {{ currencyLabel('USD') }}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            @if (isLoadingCatalog()) {
+              <p class="sign-up__empty">{{ 'signUp.planStep.loading' | translate }}</p>
+            } @else {
+              <div class="sign-up__plans">
+                @for (tier of publicTiers(); track trackTier($index, tier)) {
+                  <article
+                    class="sign-up__plan-card"
+                    [ngClass]="{
+                      'sign-up__plan-card--selected': selectedTierSlug() === tier.slug,
+                      'sign-up__plan-card--highlighted': isTierHighlighted(tier)
+                    }"
+                    (click)="onTierSelected(tier.slug!)"
+                  >
+                    <div class="sign-up__plan-head">
+                      @if (tierBadgeKey(tier); as badgeKey) {
+                        <span class="sign-up__plan-badge">{{ badgeKey | translate }}</span>
+                      }
+                      <h2 class="sign-up__plan-name">{{
+                        ('signUp.planStep.tiers.' + tier.slug + '.name') | translate
+                      }}</h2>
+                      <p class="sign-up__plan-desc">{{ tierDescriptionKey(tier) | translate }}</p>
+                    </div>
+
+                    <div class="sign-up__plan-price">
+                      @if (tier.isContactOnly) {
+                        <span class="sign-up__plan-price-value">{{
+                          'signUp.planStep.tiers.enterprise.customPrice' | translate
+                        }}</span>
+                      } @else {
+                        <span class="sign-up__plan-price-value">{{
+                          formatMoney(tier.getPrice(selectedBillingPeriod(), selectedCurrency()), selectedCurrency())
+                        }}</span>
+                        <span class="sign-up__plan-price-suffix">
+                          / {{ billingLabel(selectedBillingPeriod()) }}
+                        </span>
+                      }
+                    </div>
+
+                    <p class="sign-up__plan-note">
+                      @if (tier.isContactOnly) {
+                        {{ 'signUp.planStep.tiers.enterprise.contactNote' | translate }}
+                      } @else {
+                        {{
+                          'signUp.planStep.kitFee'
+                            | translate
+                              : {
+                                  amount: formatMoney(
+                                    tier.getKitUnitPrice(selectedCurrency()), selectedCurrency()
+                                  )
+                                }
+                        }}
+                      }
+                    </p>
+
+                    <div class="sign-up__plan-stats">
+                      <span class="sign-up__plan-stat">
+                        {{
+                          'signUp.planStep.stats.physios'
+                            | translate : { count: tier.limits.maxPhysiotherapists ?? '∞' }
+                        }}
+                      </span>
+                      <span class="sign-up__plan-stat">
+                        {{
+                          'signUp.planStep.stats.patients'
+                            | translate : { count: tier.limits.maxPatients ?? '∞' }
+                        }}
+                      </span>
+                      <span class="sign-up__plan-stat">
+                        {{
+                          'signUp.planStep.stats.kits'
+                            | translate
+                              : {
+                                  base: tier.kits.baseKits,
+                                  max: maxKitsLabel(tier)
+                                }
+                        }}
+                      </span>
+                    </div>
+
+                    <ul class="sign-up__plan-features">
+                      @for (featureKey of tierFeatureKeys(tier); track featureKey) {
+                        <li>
+                          <i class="pi pi-check" aria-hidden="true"></i>
+                          <span>{{ ('signUp.planStep.tiers.' + tier.slug + '.' + featureKey) | translate }}</span>
+                        </li>
+                      }
+                    </ul>
+
+                    <div class="sign-up__plan-footer">
+                      @if (isKitsEditorVisible(tier) && !tier.isContactOnly) {
+                        <div class="sign-up__kits" (click)="$event.stopPropagation()">
+                          <label>{{ 'signUp.planStep.kitsLabel' | translate }}</label>
+                          <div class="sign-up__kits-stepper">
+                            <button
+                              type="button"
+                              class="sign-up__kits-btn"
+                              [disabled]="!canDecreaseKits(tier)"
+                              (click)="decreaseKits(tier); $event.stopPropagation()"
+                            >
+                              <i class="pi pi-minus" aria-hidden="true"></i>
+                            </button>
+                            <div class="sign-up__kits-value">
+                              {{ normalizedRequestedTotalKits() ?? tier.kits.baseKits }}
+                            </div>
+                            <button
+                              type="button"
+                              class="sign-up__kits-btn"
+                              [disabled]="!canIncreaseKits(tier)"
+                              (click)="increaseKits(tier); $event.stopPropagation()"
+                            >
+                              <i class="pi pi-plus" aria-hidden="true"></i>
+                            </button>
+                          </div>
+                          <p class="sign-up__kits-note">
+                            {{
+                              'signUp.planStep.kitsHint'
+                                | translate
+                                  : {
+                                      min: tier.kits.baseKits,
+                                      max: maxKitsLabel(tier)
+                                    }
+                            }}
+                          </p>
+                        </div>
+                      }
+
+                      <button
+                        type="button"
+                        class="sign-up__plan-cta"
+                        [class.sign-up__plan-cta--secondary]="!tier.isContactOnly"
+                        (click)="onPlanCta(tier); $event.stopPropagation()"
+                      >
+                        {{
+                          tier.isContactOnly
+                            ? ('signUp.planStep.contactSales' | translate)
+                            : isKitsEditorVisible(tier)
+                              ? ('signUp.planStep.continuePlan' | translate)
+                              : ('signUp.planStep.chooseKits' | translate)
+                        }}
+                      </button>
+                    </div>
+                  </article>
+                }
+              </div>
             }
-          </div>
+          </section>
+        } @else if (currentStep() === 'account') {
+          <form class="sign-up__form" [formGroup]="accountForm" (ngSubmit)="performSignUp()">
+            <p class="sign-up__description">{{ 'signUp.accountStep.subtitle' | translate }}</p>
 
-          <div class="sign-up__field">
-            <label for="confirmPassword">{{ 'signUp.confirmPassword.label' | translate }}</label>
-            <p-password
-              inputId="confirmPassword"
-              formControlName="confirmPassword"
-              [feedback]="false"
-              [toggleMask]="false"
-              [placeholder]="'signUp.confirmPassword.placeholder' | translate"
-              styleClass="sign-up__password"
-              [class.ng-invalid]="isInvalidControl(accountForm, 'confirmPassword')"
-              [class.ng-dirty]="isInvalidControl(accountForm, 'confirmPassword')"
-            />
-            @if (isInvalidControl(accountForm, 'confirmPassword')) {
-              <small class="sign-up__error">{{
-                'signUp.confirmPassword.mismatch' | translate
-              }}</small>
-            }
-          </div>
-        </div>
-
-        <div class="sign-up__actions">
-          <button
-            pButton
-            type="submit"
-            severity="primary"
-            [loading]="isSubmitting()"
-            [disabled]="isSubmitting()"
-            class="sign-up__btn-primary"
-          >
-            @if (!isSubmitting()) {
-              <span>{{ 'signUp.submit' | translate }}</span>
-              <i class="pi pi-arrow-right sign-up__btn-icon-right" aria-hidden="true"></i>
-            }
-          </button>
-        </div>
-      </form>
-    } @else {
-      <form class="sign-up__form" [formGroup]="clinicForm" (ngSubmit)="performCreateClinic()">
-        <p class="sign-up__description">{{ 'signUp.clinicStep.subtitle' | translate }}</p>
-
-        <div class="sign-up__field">
-          <label for="legalName">{{ 'signUp.clinicStep.legalName.label' | translate }}</label>
-          <input
-            pInputText
-            id="legalName"
-            type="text"
-            formControlName="legalName"
-            [placeholder]="'signUp.clinicStep.legalName.placeholder' | translate"
-            [class.ng-invalid]="isInvalidControl(clinicForm, 'legalName')"
-            [class.ng-dirty]="isInvalidControl(clinicForm, 'legalName')"
-          />
-          @if (isInvalidControl(clinicForm, 'legalName')) {
-            <small class="sign-up__error">{{
-              errorMessagesForControl(clinicForm, 'legalName')
-            }}</small>
-          }
-        </div>
-
-        <div class="sign-up__field">
-          <label for="commercialName">{{
-            'signUp.clinicStep.commercialName.label' | translate
-          }}</label>
-          <input
-            pInputText
-            id="commercialName"
-            type="text"
-            formControlName="commercialName"
-            [placeholder]="'signUp.clinicStep.commercialName.placeholder' | translate"
-            [class.ng-invalid]="isInvalidControl(clinicForm, 'commercialName')"
-            [class.ng-dirty]="isInvalidControl(clinicForm, 'commercialName')"
-          />
-          @if (isInvalidControl(clinicForm, 'commercialName')) {
-            <small class="sign-up__error">{{
-              errorMessagesForControl(clinicForm, 'commercialName')
-            }}</small>
-          }
-        </div>
-
-        <div class="sign-up__row">
-          <div class="sign-up__field">
-            <label for="ruc">{{ 'signUp.clinicStep.ruc.label' | translate }}</label>
-            <input
-              pInputText
-              id="ruc"
-              type="text"
-              formControlName="ruc"
-              [placeholder]="'signUp.clinicStep.ruc.placeholder' | translate"
-              [class.ng-invalid]="isInvalidControl(clinicForm, 'ruc')"
-              [class.ng-dirty]="isInvalidControl(clinicForm, 'ruc')"
-            />
-            @if (isInvalidControl(clinicForm, 'ruc')) {
-              <small class="sign-up__error">{{ 'signUp.clinicStep.ruc.error' | translate }}</small>
-            }
-          </div>
-
-          <div class="sign-up__field">
-            <label for="clinicEmail">{{ 'signUp.clinicStep.email.label' | translate }}</label>
-            <input
-              pInputText
-              id="clinicEmail"
-              type="email"
-              formControlName="email"
-              [placeholder]="'signUp.clinicStep.email.placeholder' | translate"
-              [class.ng-invalid]="isInvalidControl(clinicForm, 'email')"
-              [class.ng-dirty]="isInvalidControl(clinicForm, 'email')"
-            />
-            @if (isInvalidControl(clinicForm, 'email')) {
-              <small class="sign-up__error">{{
-                errorMessagesForControl(clinicForm, 'email')
-              }}</small>
-            }
-          </div>
-        </div>
-
-        <div class="sign-up__row sign-up__row--phone">
-          <div class="sign-up__field">
-            <label for="countryCode">{{ 'signUp.clinicStep.countryCode.label' | translate }}</label>
-            <input
-              pInputText
-              id="countryCode"
-              type="text"
-              formControlName="countryCode"
-              [placeholder]="'signUp.clinicStep.countryCode.placeholder' | translate"
-              [class.ng-invalid]="isInvalidControl(clinicForm, 'countryCode')"
-              [class.ng-dirty]="isInvalidControl(clinicForm, 'countryCode')"
-            />
-            @if (isInvalidControl(clinicForm, 'countryCode')) {
-              <small class="sign-up__error">{{
-                'signUp.clinicStep.countryCode.error' | translate
-              }}</small>
-            }
-          </div>
-
-          <div class="sign-up__field">
-            <label for="phoneNumber">{{ 'signUp.clinicStep.phoneNumber.label' | translate }}</label>
-            <p-inputgroup>
-              <p-inputgroup-addon>{{ clinicForm.controls.countryCode.value }}</p-inputgroup-addon>
+            <div class="sign-up__field">
+              <label for="email">{{ 'signUp.email.label' | translate }}</label>
               <input
                 pInputText
-                id="phoneNumber"
-                type="tel"
-                formControlName="phoneNumber"
-                [placeholder]="'signUp.clinicStep.phoneNumber.placeholder' | translate"
-                [class.ng-invalid]="isInvalidControl(clinicForm, 'phoneNumber')"
-                [class.ng-dirty]="isInvalidControl(clinicForm, 'phoneNumber')"
+                id="email"
+                type="email"
+                formControlName="email"
+                [placeholder]="'signUp.email.placeholder' | translate"
+                [class.ng-invalid]="isInvalidControl(accountForm, 'email')"
+                [class.ng-dirty]="isInvalidControl(accountForm, 'email')"
               />
-            </p-inputgroup>
-            @if (isInvalidControl(clinicForm, 'phoneNumber')) {
-              <small class="sign-up__error">{{
-                'signUp.clinicStep.phoneNumber.error' | translate
-              }}</small>
-            }
+              @if (isInvalidControl(accountForm, 'email')) {
+                <small class="sign-up__error">{{
+                  errorMessagesForControl(accountForm, 'email')
+                }}</small>
+              }
+            </div>
+
+            <div class="sign-up__row">
+              <div class="sign-up__field">
+                <label for="password">{{ 'signUp.password.label' | translate }}</label>
+                <p-password
+                  inputId="password"
+                  formControlName="password"
+                  [feedback]="false"
+                  [toggleMask]="true"
+                  [placeholder]="'signUp.password.placeholder' | translate"
+                  styleClass="sign-up__password"
+                  [class.ng-invalid]="isInvalidControl(accountForm, 'password')"
+                  [class.ng-dirty]="isInvalidControl(accountForm, 'password')"
+                />
+                @if (isInvalidControl(accountForm, 'password')) {
+                  <small class="sign-up__error">{{
+                    errorMessagesForControl(accountForm, 'password')
+                  }}</small>
+                }
+              </div>
+
+              <div class="sign-up__field">
+                <label for="confirmPassword">{{ 'signUp.confirmPassword.label' | translate }}</label>
+                <p-password
+                  inputId="confirmPassword"
+                  formControlName="confirmPassword"
+                  [feedback]="false"
+                  [toggleMask]="false"
+                  [placeholder]="'signUp.confirmPassword.placeholder' | translate"
+                  styleClass="sign-up__password"
+                  [class.ng-invalid]="isInvalidControl(accountForm, 'confirmPassword')"
+                  [class.ng-dirty]="isInvalidControl(accountForm, 'confirmPassword')"
+                />
+                @if (isInvalidControl(accountForm, 'confirmPassword')) {
+                  <small class="sign-up__error">{{
+                    'signUp.confirmPassword.mismatch' | translate
+                  }}</small>
+                }
+              </div>
+            </div>
+
+            <div class="sign-up__actions sign-up__actions--split">
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                [disabled]="isSubmitting()"
+                class="sign-up__btn-secondary"
+                (click)="goBackFromAccountStep()"
+              >
+                <i class="pi pi-arrow-left sign-up__btn-icon-left" aria-hidden="true"></i>
+                <span>{{ 'signUp.accountStep.back' | translate }}</span>
+              </button>
+
+              <button
+                pButton
+                type="submit"
+                severity="primary"
+                [loading]="isSubmitting()"
+                [disabled]="isSubmitting()"
+                class="sign-up__btn-primary"
+              >
+                @if (!isSubmitting()) {
+                  <span>{{ 'signUp.accountStep.submit' | translate }}</span>
+                  <i class="pi pi-arrow-right sign-up__btn-icon-right" aria-hidden="true"></i>
+                }
+              </button>
+            </div>
+          </form>
+        } @else {
+          <form class="sign-up__form" [formGroup]="clinicForm" (ngSubmit)="performCreateClinic()">
+            <p class="sign-up__description">{{ 'signUp.clinicStep.subtitle' | translate }}</p>
+
+            <div class="sign-up__field">
+              <label for="legalName">{{ 'signUp.clinicStep.legalName.label' | translate }}</label>
+              <input
+                pInputText
+                id="legalName"
+                type="text"
+                formControlName="legalName"
+                [placeholder]="'signUp.clinicStep.legalName.placeholder' | translate"
+                [class.ng-invalid]="isInvalidControl(clinicForm, 'legalName')"
+                [class.ng-dirty]="isInvalidControl(clinicForm, 'legalName')"
+              />
+              @if (isInvalidControl(clinicForm, 'legalName')) {
+                <small class="sign-up__error">{{
+                  errorMessagesForControl(clinicForm, 'legalName')
+                }}</small>
+              }
+            </div>
+
+            <div class="sign-up__field">
+              <label for="commercialName">{{
+                'signUp.clinicStep.commercialName.label' | translate
+              }}</label>
+              <input
+                pInputText
+                id="commercialName"
+                type="text"
+                formControlName="commercialName"
+                [placeholder]="'signUp.clinicStep.commercialName.placeholder' | translate"
+                [class.ng-invalid]="isInvalidControl(clinicForm, 'commercialName')"
+                [class.ng-dirty]="isInvalidControl(clinicForm, 'commercialName')"
+              />
+              @if (isInvalidControl(clinicForm, 'commercialName')) {
+                <small class="sign-up__error">{{
+                  errorMessagesForControl(clinicForm, 'commercialName')
+                }}</small>
+              }
+            </div>
+
+            <div class="sign-up__row">
+              <div class="sign-up__field">
+                <label for="ruc">{{ 'signUp.clinicStep.ruc.label' | translate }}</label>
+                <input
+                  pInputText
+                  id="ruc"
+                  type="text"
+                  formControlName="ruc"
+                  [placeholder]="'signUp.clinicStep.ruc.placeholder' | translate"
+                  [class.ng-invalid]="isInvalidControl(clinicForm, 'ruc')"
+                  [class.ng-dirty]="isInvalidControl(clinicForm, 'ruc')"
+                />
+                @if (isInvalidControl(clinicForm, 'ruc')) {
+                  <small class="sign-up__error">{{ 'signUp.clinicStep.ruc.error' | translate }}</small>
+                }
+              </div>
+
+              <div class="sign-up__field">
+                <label for="clinicEmail">{{ 'signUp.clinicStep.email.label' | translate }}</label>
+                <input
+                  pInputText
+                  id="clinicEmail"
+                  type="email"
+                  formControlName="email"
+                  [placeholder]="'signUp.clinicStep.email.placeholder' | translate"
+                  [class.ng-invalid]="isInvalidControl(clinicForm, 'email')"
+                  [class.ng-dirty]="isInvalidControl(clinicForm, 'email')"
+                />
+                @if (isInvalidControl(clinicForm, 'email')) {
+                  <small class="sign-up__error">{{
+                    errorMessagesForControl(clinicForm, 'email')
+                  }}</small>
+                }
+              </div>
+            </div>
+
+            <div class="sign-up__row sign-up__row--phone">
+              <div class="sign-up__field">
+                <label for="countryCode">{{ 'signUp.clinicStep.countryCode.label' | translate }}</label>
+                <input
+                  pInputText
+                  id="countryCode"
+                  type="text"
+                  formControlName="countryCode"
+                  [placeholder]="'signUp.clinicStep.countryCode.placeholder' | translate"
+                  [class.ng-invalid]="isInvalidControl(clinicForm, 'countryCode')"
+                  [class.ng-dirty]="isInvalidControl(clinicForm, 'countryCode')"
+                />
+                @if (isInvalidControl(clinicForm, 'countryCode')) {
+                  <small class="sign-up__error">{{
+                    'signUp.clinicStep.countryCode.error' | translate
+                  }}</small>
+                }
+              </div>
+
+              <div class="sign-up__field">
+                <label for="phoneNumber">{{ 'signUp.clinicStep.phoneNumber.label' | translate }}</label>
+                <p-inputgroup>
+                  <p-inputgroup-addon>{{ clinicForm.controls.countryCode.value }}</p-inputgroup-addon>
+                  <input
+                    pInputText
+                    id="phoneNumber"
+                    type="tel"
+                    formControlName="phoneNumber"
+                    [placeholder]="'signUp.clinicStep.phoneNumber.placeholder' | translate"
+                    [class.ng-invalid]="isInvalidControl(clinicForm, 'phoneNumber')"
+                    [class.ng-dirty]="isInvalidControl(clinicForm, 'phoneNumber')"
+                  />
+                </p-inputgroup>
+                @if (isInvalidControl(clinicForm, 'phoneNumber')) {
+                  <small class="sign-up__error">{{
+                    'signUp.clinicStep.phoneNumber.error' | translate
+                  }}</small>
+                }
+              </div>
+            </div>
+
+            <div class="sign-up__actions sign-up__actions--split">
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                [disabled]="isSubmitting()"
+                class="sign-up__btn-secondary"
+                (click)="goBackToAccountStep()"
+              >
+                <span>{{ 'signUp.clinicStep.back' | translate }}</span>
+              </button>
+
+              <button
+                pButton
+                type="submit"
+                severity="primary"
+                [loading]="isSubmitting()"
+                [disabled]="isSubmitting()"
+                class="sign-up__btn-primary"
+              >
+                @if (!isSubmitting()) {
+                  <span>{{ 'signUp.clinicStep.submit' | translate }}</span>
+                  <i class="pi pi-credit-card sign-up__btn-icon-right" aria-hidden="true"></i>
+                }
+              </button>
+            </div>
+          </form>
+        }
+
+        @if (currentStep() === 'clinic') {
+          <footer class="sign-up__signin-row">
+            {{ 'signUp.clinicStep.footer' | translate }}
+          </footer>
+        }
+      </div>
+    </section>
+
+    @if (currentStep() !== 'plan' && selectedTier()) {
+      <aside class="sign-up__summary">
+        <div class="sign-up__summary-card">
+          <header class="sign-up__summary-head">
+            <div>
+              <p class="sign-up__summary-label">{{ 'signUp.summary.label' | translate }}</p>
+              <h2 class="sign-up__summary-title">{{
+                ('signUp.planStep.tiers.' + selectedTier()!.slug + '.name') | translate
+              }}</h2>
+            </div>
+            <button type="button" class="sign-up__summary-edit" (click)="editPlanSelection()">
+              {{ 'signUp.summary.edit' | translate }}
+            </button>
+          </header>
+
+          <div class="sign-up__summary-price">
+            <span>{{ formatMoney(selectedBasePrice(), selectedCurrency()) }}</span>
+            <small>
+              / {{ billingLabel(selectedBillingPeriod()) }}
+            </small>
           </div>
-        </div>
 
-        <div class="sign-up__actions sign-up__actions--split">
-          <button
-            pButton
-            type="button"
-            severity="secondary"
-            [disabled]="isSubmitting()"
-            class="sign-up__btn-secondary"
-            (click)="goBackToAccountStep()"
-          >
-            <span>{{ 'signUp.clinicStep.back' | translate }}</span>
-          </button>
+          <ul class="sign-up__summary-list">
+            <li>
+              <span>{{ 'signUp.summary.currency' | translate }}</span>
+              <strong>{{ currencyLabel(selectedCurrency()) }}</strong>
+            </li>
+            <li>
+              <span>{{ 'signUp.summary.billing' | translate }}</span>
+              <strong>{{ billingLabel(selectedBillingPeriod()) }}</strong>
+            </li>
+            <li>
+              <span>{{ 'signUp.summary.kits' | translate }}</span>
+              <strong>{{ normalizedRequestedTotalKits() }}</strong>
+            </li>
+            <li>
+              <span>{{ 'signUp.summary.kitUnitPrice' | translate }}</span>
+              <strong>{{ formatMoney(selectedKitUnitPrice(), selectedCurrency()) }}</strong>
+            </li>
+            <li>
+              <span>{{ 'signUp.summary.kitCharge' | translate }}</span>
+              <strong>{{ formatMoney(selectedKitCharge(), selectedCurrency()) }}</strong>
+            </li>
+          </ul>
 
-          <button
-            pButton
-            type="submit"
-            severity="primary"
-            [loading]="isSubmitting()"
-            [disabled]="isSubmitting()"
-            class="sign-up__btn-primary"
-          >
-            @if (!isSubmitting()) {
-              <span>{{ 'signUp.clinicStep.submit' | translate }}</span>
-              <i class="pi pi-check sign-up__btn-icon-right" aria-hidden="true"></i>
-            }
-          </button>
+          <div class="sign-up__summary-total">
+            <span>{{ 'signUp.summary.total' | translate }}</span>
+            <strong>{{ formatMoney(selectedGrandTotal(), selectedCurrency()) }}</strong>
+          </div>
+
+          <p class="sign-up__summary-note">
+            {{
+              'signUp.summary.kitBreakdown'
+                | translate : { count: normalizedRequestedTotalKits(), extra: additionalKitCount() ?? 0 }
+            }}
+          </p>
         </div>
-      </form>
+      </aside>
     }
-
-    <footer class="sign-up__signin-row">
-      @if (currentStep() === 'account') {
-        {{ 'signUp.haveAccount' | translate }}
-        <a class="sign-up__signin-link" routerLink="/iam/sign-in">{{
-          'signUp.signInLink' | translate
-        }}</a>
-      } @else {
-        {{ 'signUp.clinicStep.footer' | translate }}
-      }
-    </footer>
   </div>
 </app-auth-shell>

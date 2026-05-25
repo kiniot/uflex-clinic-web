@@ -1,123 +1,239 @@
-<app-page-header
-  [title]="'subscription.title' | translate"
-  [subtitle]="'subscription.subtitle' | translate">
-  <button pButton type="button" severity="secondary" [outlined]="true"
-          class="sub__btn"
-          (click)="onDownloadAuditReport()">
-    {{ 'subscription.actions.downloadAudit' | translate }}
-  </button>
-  <button pButton type="button" severity="secondary" [outlined]="true"
-          class="sub__btn"
-          (click)="onUpgradePlan()">
-    {{ 'subscription.actions.upgradePlan' | translate }}
-  </button>
-</app-page-header>
+@if (isConfirmationMode()) {
+  <app-auth-shell>
+    <section class="sub-checkout">
+      <article class="sub-checkout__card">
+        <img
+          class="sub-checkout__brand-mark"
+          src="/images/branding/uflex-brand-mark-original.webp"
+          alt="uFlex"
+        />
 
-<section class="sub__row sub__row--top">
-  <article class="sub-active">
-    <div class="sub-active__left">
-      <header class="sub-active__head">
-        <span class="sub-active__badge">{{ 'subscription.active.badge' | translate }}</span>
-        <span class="sub-active__renews">{{ activeSubscription().renewsAtLabel }}</span>
-      </header>
+        @if (paymentState() === 'success') {
+          @if (isLoadingCurrentSubscription()) {
+            <span class="sub-checkout__eyebrow">{{
+              'subscription.checkout.confirmingEyebrow' | translate
+            }}</span>
+            <h1 class="sub-checkout__title">{{ 'subscription.checkout.confirmingTitle' | translate }}</h1>
+            <p class="sub-checkout__desc">{{ 'subscription.checkout.confirmingBody' | translate }}</p>
+          } @else if (currentSubscriptionSnapshot()) {
+            <span class="sub-checkout__eyebrow sub-checkout__eyebrow--success">{{
+              'subscription.checkout.successEyebrow' | translate
+            }}</span>
+            <h1 class="sub-checkout__title">{{ 'subscription.checkout.successTitle' | translate }}</h1>
+            <p class="sub-checkout__desc">{{ 'subscription.checkout.successBody' | translate }}</p>
 
-      <h2 class="sub-active__name">{{ activePlan()?.name }}</h2>
-      <p class="sub-active__desc">{{ activePlan()?.description }}</p>
+            <div class="sub-checkout__summary">
+              <div>
+                <span>{{ 'subscription.checkout.summary.plan' | translate }}</span>
+                <strong>{{
+                  displayTierName(resolvedCurrentTier(), currentSubscriptionSnapshot()!.tierId)
+                }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.billing' | translate }}</span>
+                <strong>{{ currentSubscriptionSnapshot()!.billingPeriod }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.amount' | translate }}</span>
+                <strong>{{
+                  formatMoney(
+                    currentSubscriptionSnapshot()!.amount, currentSubscriptionSnapshot()!.currency
+                  )
+                }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.status' | translate }}</span>
+                <strong>{{ currentSubscriptionSnapshot()!.status }}</strong>
+              </div>
+              @if (currentSubscriptionSnapshot()!.renewsAt) {
+                <div>
+                  <span>{{ 'subscription.checkout.summary.renewsAt' | translate }}</span>
+                  <strong>{{ currentSubscriptionSnapshot()!.renewsAt }}</strong>
+                </div>
+              }
+            </div>
+          } @else {
+            <span class="sub-checkout__eyebrow">{{
+              'subscription.checkout.pendingEyebrow' | translate
+            }}</span>
+            <h1 class="sub-checkout__title">{{ 'subscription.checkout.pendingTitle' | translate }}</h1>
+            <p class="sub-checkout__desc">{{ 'subscription.checkout.pendingBody' | translate }}</p>
+          }
 
-      <div class="sub-active__price">
-        <span class="sub-active__price-value">${{ activePlan()?.monthlyPrice }}</span>
-        <span class="sub-active__price-suffix">/ {{ 'subscription.active.billedMonthly' | translate }}</span>
-      </div>
+          <div class="sub-checkout__actions">
+            <button pButton type="button" class="sub__btn" (click)="onContinueToPortal()">
+              {{ 'subscription.checkout.continueToPortal' | translate }}
+            </button>
+          </div>
+        } @else {
+          <span class="sub-checkout__eyebrow">{{
+            'subscription.checkout.cancelEyebrow' | translate
+          }}</span>
+          <h1 class="sub-checkout__title">{{ 'subscription.checkout.cancelTitle' | translate }}</h1>
+          <p class="sub-checkout__desc">{{ 'subscription.checkout.cancelBody' | translate }}</p>
 
-      <div class="sub-active__links">
-        <a class="sub-active__link" href="#" (click)="$event.preventDefault(); onChangeBillingCycle()">
-          {{ 'subscription.active.changeCycle' | translate }} <i class="pi pi-arrow-right"></i>
-        </a>
-        <a class="sub-active__link sub-active__link--danger" href="#"
-           (click)="$event.preventDefault(); onCancelSubscription()">
-          {{ 'subscription.active.cancel' | translate }}
-        </a>
-      </div>
-    </div>
+          @if (pendingSelection(); as selection) {
+            <div class="sub-checkout__summary">
+              <div>
+                <span>{{ 'subscription.checkout.summary.plan' | translate }}</span>
+                <strong>{{ displayTierName(pendingTier(), selection.tierId) }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.billing' | translate }}</span>
+                <strong>{{ selection.billingPeriod }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.amount' | translate }}</span>
+                <strong>{{ formatMoney(selection.amount, selection.currency) }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.kits' | translate }}</span>
+                <strong>{{ selection.requestedTotalKits }}</strong>
+              </div>
+            </div>
+          }
 
-    <aside class="sub-active__right">
-      <div class="sub-active__metric">
-        <span class="sub-active__metric-label">{{ 'subscription.active.activeLicenses' | translate }}</span>
-        <span class="sub-active__metric-value">
-          {{ activeSubscription().activeLicenses }}/{{ activeSubscription().totalLicenses }}
-        </span>
-        <div class="sub-active__bar">
-          <div class="sub-active__bar-fill" [style.width.%]="licensesUsagePct()"></div>
-        </div>
-      </div>
-      <div class="sub-active__metric">
-        <span class="sub-active__metric-label">{{ 'subscription.active.storageUsage' | translate }}</span>
-        <span class="sub-active__metric-value">{{ activeSubscription().storageUsageTb }} TB</span>
-        <div class="sub-active__bar">
-          <div class="sub-active__bar-fill" [style.width.%]="storageUsagePct()"></div>
-        </div>
-      </div>
-      <div class="sub-active__metric sub-active__metric--row">
-        <span class="sub-active__metric-label">{{ 'subscription.active.apiStatus' | translate }}</span>
-        <span class="sub-active__api">
-          <span class="sub-active__dot" aria-hidden="true"></span>
-          {{ 'subscription.active.api.' + activeSubscription().apiStatus | translate }}
-        </span>
-      </div>
-    </aside>
-  </article>
-
-  <article class="sub-payment">
-    <h2 class="sub-payment__title">{{ 'subscription.payment.title' | translate }}</h2>
-    <app-payment-card [paymentMethod]="paymentMethod()"/>
+          <div class="sub-checkout__actions sub-checkout__actions--stack">
+            <button pButton type="button" class="sub__btn" (click)="onRetryCheckout()">
+              {{ 'subscription.checkout.retry' | translate }}
+            </button>
+            <button
+              pButton
+              type="button"
+              severity="secondary"
+              [outlined]="true"
+              class="sub__btn"
+              (click)="onChangePlan()"
+            >
+              {{ 'subscription.checkout.changePlan' | translate }}
+            </button>
+          </div>
+        }
+      </article>
+    </section>
+  </app-auth-shell>
+} @else {
+  <app-page-header
+    [title]="'subscription.title' | translate"
+    [subtitle]="'subscription.subtitle' | translate">
     <button pButton type="button" severity="secondary" [outlined]="true"
-            class="sub-payment__btn"
-            (click)="onUpdatePaymentMethod()">
-      <i class="pi pi-pencil" aria-hidden="true"></i>
-      <span>{{ 'subscription.payment.update' | translate }}</span>
+            class="sub__btn"
+            (click)="onDownloadAuditReport()">
+      {{ 'subscription.actions.downloadAudit' | translate }}
     </button>
-  </article>
-</section>
-
-<section class="sub__row">
-  <article class="sub-billing">
-    <header class="sub-billing__header">
-      <h2 class="sub-billing__title">{{ 'subscription.billing.title' | translate }}</h2>
-      <a class="sub-billing__link" href="#">{{ 'subscription.billing.viewAll' | translate }}</a>
-    </header>
-    <app-billing-history-table [invoices]="invoices()"/>
-  </article>
-
-  <article class="sub-upsell">
-    <h2 class="sub-upsell__title">{{ 'subscription.upsell.title' | translate }}</h2>
-    <p class="sub-upsell__desc">{{ 'subscription.upsell.description' | translate }}</p>
-    <ul class="sub-upsell__features">
-      <li>
-        <i class="pi pi-check-circle" aria-hidden="true"></i>
-        <span>{{ 'subscription.upsell.feature1' | translate }}</span>
-      </li>
-      <li>
-        <i class="pi pi-check-circle" aria-hidden="true"></i>
-        <span>{{ 'subscription.upsell.feature2' | translate }}</span>
-      </li>
-      <li>
-        <i class="pi pi-check-circle" aria-hidden="true"></i>
-        <span>{{ 'subscription.upsell.feature3' | translate }}</span>
-      </li>
-    </ul>
-    <button type="button" class="sub-upsell__btn" (click)="onLearnMore()">
-      {{ 'subscription.upsell.cta' | translate }}
+    <button pButton type="button" severity="secondary" [outlined]="true"
+            class="sub__btn"
+            (click)="onUpgradePlan()">
+      {{ 'subscription.actions.upgradePlan' | translate }}
     </button>
-  </article>
-</section>
+  </app-page-header>
 
-<section class="sub__plans">
-  <h2 class="sub__plans-title">{{ 'subscription.plans.title' | translate }}</h2>
-  <div class="sub__plans-grid">
-    @for (plan of plans(); track plan.id) {
-      <app-plan-card [plan]="plan"
-                     [isCurrent]="isCurrent(plan)"
-                     (select)="onPlanSelect($event)"/>
-    }
-  </div>
-</section>
+  <section class="sub__row sub__row--top">
+    <article class="sub-active">
+      <div class="sub-active__left">
+        <header class="sub-active__head">
+          <span class="sub-active__badge">{{ 'subscription.active.badge' | translate }}</span>
+          <span class="sub-active__renews">{{ activeSubscription().renewsAtLabel }}</span>
+        </header>
+
+        <h2 class="sub-active__name">{{ activePlan()?.name }}</h2>
+        <p class="sub-active__desc">{{ activePlan()?.description }}</p>
+
+        <div class="sub-active__price">
+          <span class="sub-active__price-value">${{ activePlan()?.monthlyPrice }}</span>
+          <span class="sub-active__price-suffix">/ {{ 'subscription.active.billedMonthly' | translate }}</span>
+        </div>
+
+        <div class="sub-active__links">
+          <a class="sub-active__link" href="#" (click)="$event.preventDefault(); onChangeBillingCycle()">
+            {{ 'subscription.active.changeCycle' | translate }} <i class="pi pi-arrow-right"></i>
+          </a>
+          <a class="sub-active__link sub-active__link--danger" href="#"
+             (click)="$event.preventDefault(); onCancelSubscription()">
+            {{ 'subscription.active.cancel' | translate }}
+          </a>
+        </div>
+      </div>
+
+      <aside class="sub-active__right">
+        <div class="sub-active__metric">
+          <span class="sub-active__metric-label">{{ 'subscription.active.activeLicenses' | translate }}</span>
+          <span class="sub-active__metric-value">
+            {{ activeSubscription().activeLicenses }}/{{ activeSubscription().totalLicenses }}
+          </span>
+          <div class="sub-active__bar">
+            <div class="sub-active__bar-fill" [style.width.%]="licensesUsagePct()"></div>
+          </div>
+        </div>
+        <div class="sub-active__metric">
+          <span class="sub-active__metric-label">{{ 'subscription.active.storageUsage' | translate }}</span>
+          <span class="sub-active__metric-value">{{ activeSubscription().storageUsageTb }} TB</span>
+          <div class="sub-active__bar">
+            <div class="sub-active__bar-fill" [style.width.%]="storageUsagePct()"></div>
+          </div>
+        </div>
+        <div class="sub-active__metric sub-active__metric--row">
+          <span class="sub-active__metric-label">{{ 'subscription.active.apiStatus' | translate }}</span>
+          <span class="sub-active__api">
+            <span class="sub-active__dot" aria-hidden="true"></span>
+            {{ 'subscription.active.api.' + activeSubscription().apiStatus | translate }}
+          </span>
+        </div>
+      </aside>
+    </article>
+
+    <article class="sub-payment">
+      <h2 class="sub-payment__title">{{ 'subscription.payment.title' | translate }}</h2>
+      <app-payment-card [paymentMethod]="paymentMethod()"/>
+      <button pButton type="button" severity="secondary" [outlined]="true"
+              class="sub-payment__btn"
+              (click)="onUpdatePaymentMethod()">
+        <i class="pi pi-pencil" aria-hidden="true"></i>
+        <span>{{ 'subscription.payment.update' | translate }}</span>
+      </button>
+    </article>
+  </section>
+
+  <section class="sub__row">
+    <article class="sub-billing">
+      <header class="sub-billing__header">
+        <h2 class="sub-billing__title">{{ 'subscription.billing.title' | translate }}</h2>
+        <a class="sub-billing__link" href="#">{{ 'subscription.billing.viewAll' | translate }}</a>
+      </header>
+      <app-billing-history-table [invoices]="invoices()"/>
+    </article>
+
+    <article class="sub-upsell">
+      <h2 class="sub-upsell__title">{{ 'subscription.upsell.title' | translate }}</h2>
+      <p class="sub-upsell__desc">{{ 'subscription.upsell.description' | translate }}</p>
+      <ul class="sub-upsell__features">
+        <li>
+          <i class="pi pi-check-circle" aria-hidden="true"></i>
+          <span>{{ 'subscription.upsell.feature1' | translate }}</span>
+        </li>
+        <li>
+          <i class="pi pi-check-circle" aria-hidden="true"></i>
+          <span>{{ 'subscription.upsell.feature2' | translate }}</span>
+        </li>
+        <li>
+          <i class="pi pi-check-circle" aria-hidden="true"></i>
+          <span>{{ 'subscription.upsell.feature3' | translate }}</span>
+        </li>
+      </ul>
+      <button type="button" class="sub-upsell__btn" (click)="onLearnMore()">
+        {{ 'subscription.upsell.cta' | translate }}
+      </button>
+    </article>
+  </section>
+
+  <section class="sub__plans">
+    <h2 class="sub__plans-title">{{ 'subscription.plans.title' | translate }}</h2>
+    <div class="sub__plans-grid">
+      @for (plan of plans(); track plan.id) {
+        <app-plan-card [plan]="plan"
+                       [isCurrent]="isCurrent(plan)"
+                       (select)="onPlanSelect($event)"/>
+      }
+    </div>
+  </section>
+}

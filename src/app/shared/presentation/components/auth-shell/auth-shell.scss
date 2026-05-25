@@ -7,22 +7,75 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 32px 16px;
-  gap: 16px;
+  justify-content: space-between;
+  padding: 24px 16px 18px;
+  gap: 24px;
   box-sizing: border-box;
+  background:
+    radial-gradient(circle at top left, rgba(72, 203, 182, 0.12), transparent 34%),
+    linear-gradient(180deg, var(--p-surface-50), color-mix(in srgb, var(--p-surface-0) 72%, white));
 }
 
 .auth-shell__toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   width: 100%;
-  max-width: 440px;
+  max-width: 1160px;
 }
 
 .auth-shell__content {
   width: 100%;
   display: flex;
   justify-content: center;
+  flex: 1 1 auto;
+  align-items: center;
+}
+
+.auth-shell__brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.auth-shell__brand-image {
+  width: auto;
+  height: 44px;
+  display: block;
+}
+
+.auth-shell__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+:host ::ng-deep .auth-shell__signin-btn,
+:host ::ng-deep .auth-shell__signin-btn .p-button {
+  min-height: 40px;
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .auth-shell {
+    padding-top: 18px;
+  }
+
+  .auth-shell__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .auth-shell__brand {
+    justify-content: center;
+  }
+
+  .auth-shell__actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }

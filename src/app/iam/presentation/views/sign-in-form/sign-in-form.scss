@@ -15,45 +15,33 @@
   padding: 40px 32px;
 }
 
+.sign-in__brand-mark {
+  display: none;
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+@media (min-width: 721px) {
+  .sign-in__brand-mark {
+    display: block;
+  }
+}
+
 :host-context(.app-dark) .sign-in__card {
   background: var(--p-surface-100);
   border-color: var(--p-surface-300);
 }
 
-.sign-in__brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  text-align: center;
-}
-
-.sign-in__brand-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
-  font-size: 26px;
-  margin-bottom: 8px;
-  box-shadow: 0 4px 12px rgba(7, 77, 97, 0.18);
-}
-
-.sign-in__brand-title {
-  font-size: 32px;
-  letter-spacing: -0.02em;
-  margin: 0;
-}
-
 .sign-in__brand-subtitle {
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  color: var(--p-text-muted-color);
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--p-text-color);
   margin: 0;
+  text-align: center;
 }
 
 .sign-in__form {
@@ -121,29 +109,6 @@
   color: var(--p-red-500);
   font-family: 'Inter', sans-serif;
   font-size: 12px;
-}
-
-.sign-in__trust {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 0 0;
-  border-top: 1px solid var(--p-surface-200);
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: var(--p-text-muted-color);
-  text-align: center;
-}
-
-:host-context(.app-dark) .sign-in__trust {
-  border-top-color: var(--p-surface-300);
-}
-
-.sign-in__trust-icon {
-  font-size: 16px;
-  color: var(--p-text-muted-color);
 }
 
 :host ::ng-deep .p-inputtext {

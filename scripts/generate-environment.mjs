@@ -71,7 +71,19 @@ function environmentFile({ production }) {
     ),
     platformProviderCreateClinicEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_CREATE_CLINIC_ENDPOINT_PATH',
-      '/api/v1/clinics',
+      '/clinics',
+    ),
+    platformProviderSubscriptionTiersEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_SUBSCRIPTION_TIERS_ENDPOINT_PATH',
+      '/subscriptions/tiers',
+    ),
+    platformProviderSubscriptionCheckoutEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_SUBSCRIPTION_CHECKOUT_ENDPOINT_PATH',
+      '/subscriptions/checkout',
+    ),
+    platformProviderCurrentSubscriptionEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_CURRENT_SUBSCRIPTION_ENDPOINT_PATH',
+      '/subscriptions/current',
     ),
     subscription: {
       useMockApi: booleanValue('NG_APP_SUBSCRIPTION_USE_MOCK_API', true),

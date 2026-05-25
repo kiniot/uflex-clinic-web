@@ -1,9 +1,24 @@
 <div class="auth-shell">
   <div class="auth-shell__toolbar">
-    <app-theme-switcher/>
-    <app-language-switcher/>
+    <a class="auth-shell__brand" href="https://uflex-landing-page.vercel.app/" aria-label="uFlex">
+      <img
+        class="auth-shell__brand-image"
+        src="/images/branding/uflex-combination-mark-original.webp"
+        alt="uFlex"
+      />
+    </a>
+
+    <div class="auth-shell__actions">
+      <app-language-switcher/>
+      <app-theme-switcher/>
+      <button pButton type="button" severity="secondary" [outlined]="true" routerLink="/sign-in"
+        class="auth-shell__signin-btn">
+        Iniciar sesión
+      </button>
+    </div>
   </div>
   <div class="auth-shell__content">
     <ng-content/>
   </div>
+  <app-footer-content/>
 </div>

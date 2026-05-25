@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { IamApi } from '../infrastructure/iam-api';
 import { SignUpCommand } from '../domain/model/sign-up.command';
 import { ChangePasswordCommand } from '../domain/model/change-password.command';
+import { SignInResource } from '../infrastructure/sign-in-response';
+import { SignUpResource } from '../infrastructure/sign-up-response';
 
 const ROLE_TO_HOME_ROUTE: Record<string, string> = {
   ROLE_CLINIC_ADMIN: '/clinic-admin/therapy',
@@ -63,27 +65,26 @@ export class IamStore {
     signInCommand: SignInCommand,
     router: Router,
     redirectTo?: string | null,
-  ): Promise<void> {
+  ): Promise<SignInResource> {
     return new Promise((resolve, reject) => {
       this.iamApi.signIn(signInCommand).subscribe({
         next: (signInResource) => {
-          localStorage.setItem('token', signInResource.token);
-          this.isSignedInSignal.set(true);
-          this.currentEmailSignal.set(signInResource.email);
-          this.currentUserIdSignal.set(signInResource.id);
-          this.currentRolesSignal.set(signInResource.roles ?? []);
-          this.currentTenantIdSignal.set(signInResource.tenantId ?? null);
+          this.applyAuthenticatedUser(signInResource);
           if (redirectTo === null) {
-            resolve();
+            resolve(signInResource);
             return;
           }
           const destination = redirectTo ?? this.resolveHomeRoute(signInResource.roles ?? []);
-          router.navigate([destination]).then(() => resolve());
+          router.navigate([destination]).then(() => resolve(signInResource));
         },
         error: (err) => {
           console.error('Sign-in failed:', err);
           this.clearSession();
-          router.navigate(['/iam/sign-in']).then(() => reject(err));
+          if (redirectTo === null) {
+            reject(err);
+            return;
+          }
+          router.navigate(['/sign-in']).then(() => reject(err));
         },
       });
     });
@@ -92,22 +93,26 @@ export class IamStore {
   signUp(
     signUpCommand: SignUpCommand,
     router: Router,
-    redirectTo: string | null = '/iam/sign-in',
-  ): Promise<void> {
+    redirectTo: string | null = '/sign-in',
+  ): Promise<SignUpResource> {
     return new Promise((resolve, reject) => {
       this.iamApi.signUp(signUpCommand).subscribe({
         next: (signUpResource) => {
           console.log('Sign-up successful:', signUpResource);
           if (redirectTo === null) {
-            resolve();
+            resolve(signUpResource);
             return;
           }
-          router.navigate([redirectTo]).then(() => resolve());
+          router.navigate([redirectTo]).then(() => resolve(signUpResource));
         },
         error: (err) => {
           console.error('Sign-up failed:', err);
           this.clearSession();
-          router.navigate(['/iam/sign-up']).then(() => reject(err));
+          if (redirectTo === null) {
+            reject(err);
+            return;
+          }
+          router.navigate(['/sign-up']).then(() => reject(err));
         },
       });
     });
@@ -116,7 +121,11 @@ export class IamStore {
   signOut(router: Router) {
     localStorage.removeItem('token');
     this.clearSession();
-    router.navigate(['/iam/sign-in']).then();
+    router.navigate(['/sign-in']).then();
+  }
+
+  resetSession() {
+    this.clearSession();
   }
 
   /**
@@ -133,6 +142,7 @@ export class IamStore {
   }
 
   private clearSession() {
+    localStorage.removeItem('token');
     this.isSignedInSignal.set(false);
     this.currentEmailSignal.set(null);
     this.currentUserIdSignal.set(null);
@@ -188,5 +198,14 @@ export class IamStore {
     } catch {
       return null;
     }
+  }
+
+  private applyAuthenticatedUser(signInResource: SignInResource) {
+    localStorage.setItem('token', signInResource.token);
+    this.isSignedInSignal.set(true);
+    this.currentEmailSignal.set(signInResource.email);
+    this.currentUserIdSignal.set(signInResource.id);
+    this.currentRolesSignal.set(signInResource.roles ?? []);
+    this.currentTenantIdSignal.set(signInResource.tenantId ?? null);
   }
 }

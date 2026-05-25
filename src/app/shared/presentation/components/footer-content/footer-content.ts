@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import {TranslatePipe} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-footer-content',
-  imports: [
-    TranslatePipe
-  ],
+  imports: [],
   templateUrl: './footer-content.html',
   styleUrl: './footer-content.scss'
 })
-export class FooterContent {
-
-}
+export class FooterContent {}

@@ -1,6 +1,9 @@
-import {Component} from '@angular/core';
-import {LanguageSwitcher} from '../language-switcher/language-switcher';
-import {ThemeSwitcher} from '../theme-switcher/theme-switcher';
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { FooterContent } from '../footer-content/footer-content';
+import { LanguageSwitcher } from '../language-switcher/language-switcher';
+import { ThemeSwitcher } from '../theme-switcher/theme-switcher';
 
 /**
  * Shell for authentication views: vertically centers projected content with a
@@ -9,7 +12,7 @@ import {ThemeSwitcher} from '../theme-switcher/theme-switcher';
  */
 @Component({
   selector: 'app-auth-shell',
-  imports: [ThemeSwitcher, LanguageSwitcher],
+  imports: [ThemeSwitcher, LanguageSwitcher, RouterLink, ButtonModule, FooterContent],
   templateUrl: './auth-shell.html',
   styleUrl: './auth-shell.scss'
 })
