@@ -31,15 +31,51 @@
 .auth-shell::before {
   opacity: 1;
   background:
-    radial-gradient(circle at top left, rgba(72, 203, 182, 0.12), transparent 34%),
-    linear-gradient(180deg, #f7f5ed 0%, #fcfbf7 100%);
+    radial-gradient(
+      circle at 18% 10%,
+      color-mix(in srgb, var(--p-sand-50) 92%, transparent) 0%,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at center right,
+      color-mix(in srgb, var(--p-primary-100) 34%, transparent) 0%,
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      color-mix(in srgb, var(--p-turquoise-100) 30%, transparent) 0%,
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--p-sand-50) 92%, white) 0%,
+      color-mix(in srgb, var(--p-sand-50) 84%, white) 100%
+    );
 }
 
 .auth-shell::after {
   opacity: 0;
   background:
-    radial-gradient(circle at top left, rgba(72, 203, 182, 0.14), transparent 34%),
-    linear-gradient(180deg, #1a1c1e 0%, #25282a 100%);
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--p-sand-300) 12%, transparent) 0%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at center right,
+      color-mix(in srgb, var(--p-primary-300) 18%, transparent) 0%,
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      color-mix(in srgb, var(--p-turquoise-300) 16%, transparent) 0%,
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--p-surface-50) 96%, black) 0%,
+      color-mix(in srgb, var(--p-surface-100) 92%, black) 100%
+    );
 }
 
 :host-context(.app-dark) .auth-shell::before {
