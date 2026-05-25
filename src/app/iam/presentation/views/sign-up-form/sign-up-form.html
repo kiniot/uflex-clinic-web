@@ -37,7 +37,7 @@
         </div>
 
         @if (currentStep() === 'plan') {
-          <section class="sign-up__plan-step">
+          <section class="sign-up__plan-step sign-up__step-stage sign-up__step-stage--plan">
             <div class="sign-up__plan-copy">
               <p class="sign-up__description">{{ 'signUp.planStep.subtitle' | translate }}</p>
               <p class="sign-up__helper">{{ 'signUp.planStep.helper' | translate }}</p>
@@ -180,40 +180,48 @@
                     </ul>
 
                     <div class="sign-up__plan-footer">
-                      @if (isKitsEditorVisible(tier) && !tier.isContactOnly) {
-                        <div class="sign-up__kits" (click)="$event.stopPropagation()">
-                          <label>{{ 'signUp.planStep.kitsLabel' | translate }}</label>
-                          <div class="sign-up__kits-stepper">
-                            <button
-                              type="button"
-                              class="sign-up__kits-btn"
-                              [disabled]="!canDecreaseKits(tier)"
-                              (click)="decreaseKits(tier); $event.stopPropagation()"
-                            >
-                              <i class="pi pi-minus" aria-hidden="true"></i>
-                            </button>
-                            <div class="sign-up__kits-value">
-                              {{ normalizedRequestedTotalKits() ?? tier.kits.baseKits }}
+                      @if (!tier.isContactOnly) {
+                        <div
+                          class="sign-up__kits-panel"
+                          [class.sign-up__kits-panel--open]="isKitsEditorVisible(tier)"
+                          (click)="$event.stopPropagation()"
+                        >
+                          <div class="sign-up__kits-panel-inner">
+                            <div class="sign-up__kits">
+                              <label>{{ 'signUp.planStep.kitsLabel' | translate }}</label>
+                              <div class="sign-up__kits-stepper">
+                                <button
+                                  type="button"
+                                  class="sign-up__kits-btn"
+                                  [disabled]="!canDecreaseKits(tier)"
+                                  (click)="decreaseKits(tier); $event.stopPropagation()"
+                                >
+                                  <i class="pi pi-minus" aria-hidden="true"></i>
+                                </button>
+                                <div class="sign-up__kits-value">
+                                  {{ normalizedRequestedTotalKits() ?? tier.kits.baseKits }}
+                                </div>
+                                <button
+                                  type="button"
+                                  class="sign-up__kits-btn"
+                                  [disabled]="!canIncreaseKits(tier)"
+                                  (click)="increaseKits(tier); $event.stopPropagation()"
+                                >
+                                  <i class="pi pi-plus" aria-hidden="true"></i>
+                                </button>
+                              </div>
+                              <p class="sign-up__kits-note">
+                                {{
+                                  'signUp.planStep.kitsHint'
+                                    | translate
+                                      : {
+                                          min: tier.kits.baseKits,
+                                          max: maxKitsLabel(tier)
+                                        }
+                                }}
+                              </p>
                             </div>
-                            <button
-                              type="button"
-                              class="sign-up__kits-btn"
-                              [disabled]="!canIncreaseKits(tier)"
-                              (click)="increaseKits(tier); $event.stopPropagation()"
-                            >
-                              <i class="pi pi-plus" aria-hidden="true"></i>
-                            </button>
                           </div>
-                          <p class="sign-up__kits-note">
-                            {{
-                              'signUp.planStep.kitsHint'
-                                | translate
-                                  : {
-                                      min: tier.kits.baseKits,
-                                      max: maxKitsLabel(tier)
-                                    }
-                            }}
-                          </p>
                         </div>
                       }
 
@@ -238,7 +246,11 @@
             }
           </section>
         } @else if (currentStep() === 'account') {
-          <form class="sign-up__form" [formGroup]="accountForm" (ngSubmit)="performSignUp()">
+          <form
+            class="sign-up__form sign-up__step-stage sign-up__step-stage--account"
+            [formGroup]="accountForm"
+            (ngSubmit)="performSignUp()"
+          >
             <p class="sign-up__description">{{ 'signUp.accountStep.subtitle' | translate }}</p>
 
             <div class="sign-up__field">
@@ -329,7 +341,11 @@
             </div>
           </form>
         } @else {
-          <form class="sign-up__form" [formGroup]="clinicForm" (ngSubmit)="performCreateClinic()">
+          <form
+            class="sign-up__form sign-up__step-stage sign-up__step-stage--clinic"
+            [formGroup]="clinicForm"
+            (ngSubmit)="performCreateClinic()"
+          >
             <p class="sign-up__description">{{ 'signUp.clinicStep.subtitle' | translate }}</p>
 
             <div class="sign-up__field">
@@ -486,7 +502,7 @@
     </section>
 
     @if (currentStep() !== 'plan' && selectedTier()) {
-      <aside class="sign-up__summary">
+      <aside class="sign-up__summary sign-up__summary--entered">
         <div class="sign-up__summary-card">
           <header class="sign-up__summary-head">
             <div>

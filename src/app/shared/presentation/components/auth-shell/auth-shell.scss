@@ -103,6 +103,13 @@
   align-items: center;
 }
 
+.auth-shell__panel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  view-transition-name: auth-shell-panel;
+}
+
 .auth-shell__brand {
   display: inline-flex;
   align-items: center;

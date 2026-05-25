@@ -16,6 +16,7 @@
   box-shadow: 0 4px 16px rgba(7, 77, 97, 0.08);
   padding: 40px 32px;
   @include theme.surface-with-shadow;
+  view-transition-name: auth-shell-card;
 }
 
 .sign-in__brand-subtitle {

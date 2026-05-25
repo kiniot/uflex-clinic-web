@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgClass } from '@angular/common';
+import { Location, NgClass } from '@angular/common';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -52,6 +52,7 @@ type SignUpStep = 'plan' | 'account' | 'clinic';
 export class SignUpForm extends BaseForm implements OnInit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly location = inject(Location);
   private readonly iamStore = inject(IamStore);
   private readonly organizationStore = inject(OrganizationStore);
   private readonly subscriptionStore = inject(SubscriptionStore);
@@ -369,11 +370,11 @@ export class SignUpForm extends BaseForm implements OnInit {
   }
 
   private syncQueryParams() {
-    void this.router.navigate([], {
+    const urlTree = this.router.createUrlTree([], {
       relativeTo: this.route,
       queryParams: this.subscriptionStore.buildQueryParams(),
-      replaceUrl: true,
     });
+    this.location.replaceState(this.router.serializeUrl(urlTree));
   }
 
   private passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {

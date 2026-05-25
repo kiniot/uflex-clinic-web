@@ -70,3 +70,47 @@ a {
 .container-with-spacing {
   padding: 1.5rem; /* 24px spacing around the container */
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(auth-shell-panel),
+  ::view-transition-new(auth-shell-panel),
+  ::view-transition-old(auth-shell-card),
+  ::view-transition-new(auth-shell-card) {
+    animation-duration: var(--app-theme-transition-duration);
+    animation-timing-function: ease;
+  }
+
+  ::view-transition-old(auth-shell-panel),
+  ::view-transition-old(auth-shell-card) {
+    animation-name: app-auth-fade-out;
+  }
+
+  ::view-transition-new(auth-shell-panel),
+  ::view-transition-new(auth-shell-card) {
+    animation-name: app-auth-fade-in;
+  }
+}
+
+@keyframes app-auth-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes app-auth-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
