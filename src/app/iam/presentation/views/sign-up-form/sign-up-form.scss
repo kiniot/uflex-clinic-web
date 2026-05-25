@@ -36,8 +36,8 @@
 
 .sign-up__card,
 .sign-up__summary-card {
-  background-color: var(--p-surface-0);
-  border: 1px solid var(--p-surface-200);
+  background-color: var(--app-surface-card);
+  border: 1px solid var(--app-surface-card-border);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(7, 77, 97, 0.08);
   @include theme.surface-with-shadow;
@@ -45,8 +45,8 @@
 
 :host-context(.app-dark) .sign-up__card,
 :host-context(.app-dark) .sign-up__summary-card {
-  background-color: var(--p-surface-100);
-  border-color: var(--p-surface-300);
+  background-color: var(--app-surface-card);
+  border-color: var(--app-surface-card-border);
 }
 
 .sign-up__card {
@@ -135,9 +135,9 @@
   width: 34px;
   height: 34px;
   border-radius: 999px;
-  border: 1px solid var(--p-surface-300);
+  border: 1px solid var(--app-surface-control-border);
   color: var(--p-text-muted-color);
-  background-color: var(--p-surface-0);
+  background-color: var(--app-surface-control);
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 700;
@@ -194,16 +194,16 @@
 
 .sign-up__toggle {
   display: inline-flex;
-  background-color: var(--p-surface-100);
-  border: 1px solid var(--p-surface-200);
+  background-color: var(--app-surface-card-alt);
+  border: 1px solid var(--app-surface-card-border);
   border-radius: 999px;
   padding: 4px;
   @include theme.surface;
 }
 
 :host-context(.app-dark) .sign-up__toggle {
-  background-color: var(--p-surface-200);
-  border-color: var(--p-surface-300);
+  background-color: var(--app-surface-card-alt);
+  border-color: var(--app-surface-card-border);
 }
 
 .sign-up__toggle-btn {
@@ -365,8 +365,17 @@
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 1.55;
-  color: var(--p-text-muted-color);
   @include theme.text;
+}
+
+.sign-up__plan-desc {
+  color: var(--p-text-muted-color);
+}
+
+.sign-up__plan-note {
+  color: var(--app-text-muted-on-card);
+  position: relative;
+  z-index: 1;
 }
 
 .sign-up__plan-price {
@@ -389,7 +398,7 @@
 .sign-up__plan-price-suffix {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: var(--p-text-muted-color);
+  color: var(--app-text-muted-on-card);
   @include theme.text;
 }
 
@@ -405,8 +414,8 @@
   display: inline-flex;
   padding: 8px 10px;
   border-radius: 999px;
-  background-color: var(--p-surface-0);
-  border: 1px solid var(--p-surface-200);
+  background-color: var(--app-surface-chip);
+  border: 1px solid var(--app-surface-chip-border);
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
@@ -415,8 +424,8 @@
 }
 
 :host-context(.app-dark) .sign-up__plan-stat {
-  background-color: var(--p-surface-100);
-  border-color: var(--p-surface-300);
+  background-color: var(--app-surface-chip);
+  border-color: var(--app-surface-chip-border);
 }
 
 .sign-up__plan-features {
@@ -437,6 +446,9 @@
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   line-height: 1.45;
+}
+
+.sign-up__plan-features span {
   color: var(--p-text-color);
   @include theme.text;
 }
@@ -507,8 +519,8 @@
   width: 44px;
   height: 44px;
   border-radius: 12px;
-  border: 1px solid var(--p-surface-300);
-  background-color: var(--p-surface-0);
+  border: 1px solid var(--app-surface-control-border);
+  background-color: var(--app-surface-control);
   color: var(--p-primary-color);
   display: inline-flex;
   align-items: center;
@@ -531,8 +543,8 @@
 .sign-up__kits-value {
   height: 44px;
   border-radius: 12px;
-  border: 1px solid var(--p-surface-300);
-  background-color: var(--p-surface-0);
+  border: 1px solid var(--app-surface-control-border);
+  background-color: var(--app-surface-control);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -548,7 +560,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   line-height: 1.45;
-  color: var(--p-text-muted-color);
+  color: var(--app-text-muted-on-card);
   @include theme.text;
 }
 

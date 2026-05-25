@@ -112,18 +112,18 @@ export const appPreset: Preset = definePreset(Aura, {
       },
       dark: {
         surface: {
-          0: '#ffffff',
-          50: '{dark.200}', // Main background color in dark mode (Black 2)
-          100: '{neutral.800}',
-          200: '{dark.300}',
-          300: '{sand.800}',
-          400: '{sand.600}',
-          500: '{sand.400}',
-          600: '{neutral.700}',
-          700: '{sand.200}',
-          800: '{neutral.600}',
-          900: '{sand.100}',
-          950: '{sand.50}', // Main text color in dark mode (Off-white)
+          0: '{sand.50}', // Highest-contrast foreground on dark surfaces
+          50: '{dark.200}', // Main application background
+          100: '{neutral.800}', // Cards / elevated panels
+          200: '{dark.300}', // Inner panels / alternative dark surfaces
+          300: '{sand.700}', // Borders on dark custom surfaces
+          400: '{sand.400}', // Generic muted tokens on dark
+          500: '{sand.700}', // Hovered form-field border / stronger dark separators
+          600: '{sand.800}', // Default form-field border / subtle dark separators
+          700: '{sand.500}',
+          800: '{sand.800}', // Checked/active control surfaces
+          900: '{neutral.800}', // Content/overlay surface
+          950: '{dark.200}', // Control/input surface
         },
         primary: {
           color: '{primary.400}',

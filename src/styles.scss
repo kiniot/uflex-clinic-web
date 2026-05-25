@@ -5,6 +5,27 @@
 
 :root {
   --app-theme-transition-duration: 0.3s;
+  /* App-level surfaces for custom UI built on top of the PrimeNG preset. */
+  --app-surface-card: var(--p-surface-0);
+  --app-surface-card-alt: var(--p-surface-100);
+  --app-surface-card-border: var(--p-surface-200);
+  --app-surface-chip: var(--p-surface-0);
+  --app-surface-chip-border: var(--p-surface-200);
+  --app-surface-control: var(--p-surface-0);
+  --app-surface-control-border: var(--p-surface-300);
+  /* Muted copy placed on tinted cards often needs stronger contrast than the default token. */
+  --app-text-muted-on-card: var(--p-surface-800);
+}
+
+html.app-dark {
+  --app-surface-card: var(--p-surface-100);
+  --app-surface-card-alt: var(--p-surface-200);
+  --app-surface-card-border: var(--p-surface-300);
+  --app-surface-chip: var(--p-surface-100);
+  --app-surface-chip-border: var(--p-surface-300);
+  --app-surface-control: var(--p-surface-100);
+  --app-surface-control-border: var(--p-surface-300);
+  --app-text-muted-on-card: var(--p-surface-0);
 }
 
 html, body {
