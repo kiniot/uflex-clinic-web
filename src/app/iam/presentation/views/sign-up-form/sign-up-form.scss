@@ -22,6 +22,10 @@
   .sign-up {
     grid-template-columns: 1fr;
   }
+
+  .sign-up__summary {
+    order: -1;
+  }
 }
 
 .sign-up__main {
