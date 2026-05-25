@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -8,11 +10,23 @@
   gap: 24px;
   width: 100%;
   max-width: 440px;
-  background: var(--p-surface-0);
-  border: 1px solid var(--p-surface-200);
+  background-color: var(--app-surface-card);
+  border: 1px solid var(--app-surface-card-border);
   border-radius: 16px;
   box-shadow: 0 4px 16px rgba(7, 77, 97, 0.08);
   padding: 40px 32px;
+  @include theme.surface-with-shadow;
+}
+
+.sign-in__brand-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  line-height: 1.1;
+  font-weight: 600;
+  color: var(--p-primary-color);
+  margin: 0;
+  text-align: center;
+  @include theme.text;
 }
 
 .sign-in__brand-mark {
@@ -27,21 +41,6 @@
   .sign-in__brand-mark {
     display: block;
   }
-}
-
-:host-context(.app-dark) .sign-in__card {
-  background: var(--p-surface-100);
-  border-color: var(--p-surface-300);
-}
-
-.sign-in__brand-subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: 28px;
-  line-height: 1.1;
-  font-weight: 700;
-  color: var(--p-text-color);
-  margin: 0;
-  text-align: center;
 }
 
 .sign-in__form {
@@ -61,6 +60,7 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--p-text-color);
+  @include theme.text;
 }
 
 .sign-in__label-row {
@@ -76,6 +76,7 @@
   font-weight: 600;
   color: var(--p-primary-color);
   text-decoration: none;
+  @include theme.text;
 }
 
 .sign-in__forgot:hover {
@@ -96,6 +97,7 @@
   color: var(--p-text-muted-color);
   cursor: pointer;
   margin: 0;
+  @include theme.text;
 }
 
 .sign-in__actions {
