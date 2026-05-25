@@ -155,7 +155,7 @@
   width: 72px;
   height: 2px;
   background-color: var(--p-surface-300);
-  @include theme.surface;
+  transition: background-color var(--app-theme-transition-duration) ease;
 }
 
 .sign-up__step-line--active {

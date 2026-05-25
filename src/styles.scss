@@ -70,22 +70,3 @@ a {
 .container-with-spacing {
   padding: 1.5rem; /* 24px spacing around the container */
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .theme-switching,
-  .theme-switching *,
-  .theme-switching *::before,
-  .theme-switching *::after {
-    transition-property:
-      background-color,
-      border-color,
-      color,
-      fill,
-      stroke,
-      box-shadow,
-      outline-color,
-      text-decoration-color;
-    transition-duration: var(--app-theme-transition-duration);
-    transition-timing-function: ease;
-  }
-}

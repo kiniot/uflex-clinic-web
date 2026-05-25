@@ -58,6 +58,7 @@ export const appPreset: Preset = definePreset(Aura, {
     },
   },
   semantic: {
+    transitionDuration: '0.3s',
     primary: {
       50: '{petroleum.50}',
       100: '{petroleum.100}',

@@ -1,19 +1,17 @@
 @mixin text {
-  transition: color var(--app-theme-transition-duration) ease;
+  transition: none;
 }
 
 @mixin surface {
   transition:
     background-color var(--app-theme-transition-duration) ease,
-    border-color var(--app-theme-transition-duration) ease,
-    color var(--app-theme-transition-duration) ease;
+    border-color var(--app-theme-transition-duration) ease;
 }
 
 @mixin surface-with-shadow {
   transition:
     background-color var(--app-theme-transition-duration) ease,
     border-color var(--app-theme-transition-duration) ease,
-    color var(--app-theme-transition-duration) ease,
     box-shadow var(--app-theme-transition-duration) ease;
 }
 
@@ -21,7 +19,6 @@
   transition:
     background-color var(--app-theme-transition-duration) ease,
     border-color var(--app-theme-transition-duration) ease,
-    color var(--app-theme-transition-duration) ease,
     box-shadow var(--app-theme-transition-duration) ease,
     transform var(--app-theme-transition-duration) ease,
     outline-color var(--app-theme-transition-duration) ease;
@@ -36,10 +33,7 @@
 }
 
 @mixin icon {
-  transition:
-    color var(--app-theme-transition-duration) ease,
-    fill var(--app-theme-transition-duration) ease,
-    stroke var(--app-theme-transition-duration) ease;
+  transition: none;
 }
 
 .theme-transition-text {
