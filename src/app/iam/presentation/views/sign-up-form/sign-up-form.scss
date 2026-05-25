@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
   width: 100%;
@@ -34,15 +36,16 @@
 
 .sign-up__card,
 .sign-up__summary-card {
-  background: var(--p-surface-0);
+  background-color: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(7, 77, 97, 0.08);
+  @include theme.surface-with-shadow;
 }
 
 :host-context(.app-dark) .sign-up__card,
 :host-context(.app-dark) .sign-up__summary-card {
-  background: var(--p-surface-100);
+  background-color: var(--p-surface-100);
   border-color: var(--p-surface-300);
 }
 
@@ -91,6 +94,7 @@
   font-weight: 700;
   color: var(--p-text-color);
   margin: 0;
+  @include theme.text;
 }
 
 .sign-up__description,
@@ -100,6 +104,7 @@
   font-family: 'Inter', sans-serif;
   color: var(--p-text-muted-color);
   margin: 0;
+  @include theme.text;
 }
 
 .sign-up__description {
@@ -132,27 +137,29 @@
   border-radius: 999px;
   border: 1px solid var(--p-surface-300);
   color: var(--p-text-muted-color);
-  background: var(--p-surface-0);
+  background-color: var(--p-surface-0);
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 700;
+  @include theme.surface;
 }
 
 .sign-up__step--active,
 .sign-up__step--complete {
   border-color: var(--p-primary-color);
-  background: var(--p-primary-color);
+  background-color: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
 }
 
 .sign-up__step-line {
   width: 72px;
   height: 2px;
-  background: var(--p-surface-300);
+  background-color: var(--p-surface-300);
+  @include theme.surface;
 }
 
 .sign-up__step-line--active {
-  background: var(--p-primary-color);
+  background-color: var(--p-primary-color);
 }
 
 .sign-up__plan-step {
@@ -182,24 +189,26 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--p-text-muted-color);
+  @include theme.text;
 }
 
 .sign-up__toggle {
   display: inline-flex;
-  background: var(--p-surface-100);
+  background-color: var(--p-surface-100);
   border: 1px solid var(--p-surface-200);
   border-radius: 999px;
   padding: 4px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .sign-up__toggle {
-  background: var(--p-surface-200);
+  background-color: var(--p-surface-200);
   border-color: var(--p-surface-300);
 }
 
 .sign-up__toggle-btn {
   border: 0;
-  background: transparent;
+  background-color: transparent;
   color: var(--p-text-muted-color);
   font-family: 'Inter', sans-serif;
   font-size: 13px;
@@ -207,10 +216,11 @@
   padding: 10px 16px;
   border-radius: 999px;
   cursor: pointer;
+  @include theme.surface;
 }
 
 .sign-up__toggle-btn--active {
-  background: var(--p-primary-color);
+  background-color: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
 }
 
@@ -234,16 +244,44 @@
   min-height: 100%;
   padding: 24px;
   border-radius: 18px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 245, 237, 0.92));
+  background-color: #f7f5ed;
   border: 1px solid var(--p-surface-200);
   overflow: hidden;
   cursor: pointer;
-  transition: border-color 140ms ease, box-shadow 140ms ease, transform 140ms ease;
+  @include theme.interactive-surface;
+  isolation: isolate;
+}
+
+.sign-up__plan-card::before,
+.sign-up__plan-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  @include theme.layer-fade;
+}
+
+.sign-up__plan-card::before {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 245, 237, 0.92));
+}
+
+.sign-up__plan-card::after {
+  opacity: 0;
+  background: linear-gradient(180deg, rgba(26, 28, 30, 0.98), rgba(37, 40, 42, 0.96));
 }
 
 :host-context(.app-dark) .sign-up__plan-card {
-  background: linear-gradient(180deg, rgba(26, 28, 30, 0.98), rgba(37, 40, 42, 0.96));
   border-color: var(--p-surface-300);
+}
+
+:host-context(.app-dark) .sign-up__plan-card::before {
+  opacity: 0;
+}
+
+:host-context(.app-dark) .sign-up__plan-card::after {
+  opacity: 1;
 }
 
 .sign-up__plan-card--highlighted {
@@ -258,33 +296,26 @@
 }
 
 .sign-up__plan-card--selected {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--p-turquoise-400) 14%, white),
-      color-mix(in srgb, var(--p-turquoise-400) 22%, var(--p-surface-50))
-    );
   outline: 2px solid color-mix(in srgb, var(--p-turquoise-400) 65%, var(--p-primary-color));
   outline-offset: 2px;
 }
 
+.sign-up__plan-card--selected::before {
+  background: linear-gradient(180deg, rgba(239, 250, 247, 0.98), rgba(220, 245, 239, 0.94));
+}
+
+.sign-up__plan-card--selected::after {
+  background: linear-gradient(180deg, rgba(28, 42, 43, 0.98), rgba(34, 53, 54, 0.96));
+}
+
 .sign-up__plan-card--selected .sign-up__plan-cta--secondary {
-  background: var(--p-primary-color);
+  background-color: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
   border-color: var(--p-primary-color);
 }
 
-:host-context(.app-dark) .sign-up__plan-card--selected {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--p-turquoise-400) 16%, rgba(26, 28, 30, 0.98)),
-      color-mix(in srgb, var(--p-turquoise-400) 20%, rgba(37, 40, 42, 0.96))
-    );
-}
-
 :host-context(.app-dark) .sign-up__plan-card--selected .sign-up__plan-cta--secondary {
-  background: var(--p-primary-color);
+  background-color: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
   border-color: var(--p-primary-color);
 }
@@ -318,12 +349,14 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   margin-bottom: 10px;
+  @include theme.surface;
 }
 
 .sign-up__plan-name {
   margin: 0;
   font-size: 24px;
   color: var(--p-text-color);
+  @include theme.text;
 }
 
 .sign-up__plan-desc,
@@ -333,6 +366,7 @@
   font-size: 14px;
   line-height: 1.55;
   color: var(--p-text-muted-color);
+  @include theme.text;
 }
 
 .sign-up__plan-price {
@@ -349,12 +383,14 @@
   font-weight: 700;
   color: var(--p-primary-color);
   letter-spacing: -0.03em;
+  @include theme.text;
 }
 
 .sign-up__plan-price-suffix {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: var(--p-text-muted-color);
+  @include theme.text;
 }
 
 .sign-up__plan-stats {
@@ -369,16 +405,17 @@
   display: inline-flex;
   padding: 8px 10px;
   border-radius: 999px;
-  background: var(--p-surface-0);
+  background-color: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
   color: var(--p-text-color);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .sign-up__plan-stat {
-  background: var(--p-surface-100);
+  background-color: var(--p-surface-100);
   border-color: var(--p-surface-300);
 }
 
@@ -401,12 +438,14 @@
   font-size: 14px;
   line-height: 1.45;
   color: var(--p-text-color);
+  @include theme.text;
 }
 
 .sign-up__plan-features i {
   color: var(--p-turquoise-400);
   font-size: 13px;
   margin-top: 3px;
+  @include theme.icon;
 }
 
 .sign-up__plan-footer {
@@ -421,22 +460,23 @@
   min-height: 48px;
   border-radius: 12px;
   border: 0;
-  background: var(--p-primary-color);
+  background-color: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
+  @include theme.surface;
 }
 
 .sign-up__plan-cta--primary {
-  background: var(--p-primary-color);
+  background-color: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
   border: 0;
 }
 
 .sign-up__plan-cta--secondary {
-  background: color-mix(in srgb, var(--p-primary-color) 8%, var(--p-surface-0));
+  background-color: color-mix(in srgb, var(--p-primary-color) 8%, var(--p-surface-0));
   color: var(--p-primary-color);
   border: 1px solid color-mix(in srgb, var(--p-primary-color) 18%, transparent);
 }
@@ -453,6 +493,7 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--p-text-color);
+  @include theme.text;
 }
 
 .sign-up__kits-stepper {
@@ -467,13 +508,19 @@
   height: 44px;
   border-radius: 12px;
   border: 1px solid var(--p-surface-300);
-  background: var(--p-surface-0);
+  background-color: var(--p-surface-0);
   color: var(--p-primary-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 13px;
   cursor: pointer;
+  @include theme.surface;
+  transition:
+    background-color var(--app-theme-transition-duration) ease,
+    border-color var(--app-theme-transition-duration) ease,
+    color var(--app-theme-transition-duration) ease,
+    opacity var(--app-theme-transition-duration) ease;
 }
 
 .sign-up__kits-btn:disabled {
@@ -485,7 +532,7 @@
   height: 44px;
   border-radius: 12px;
   border: 1px solid var(--p-surface-300);
-  background: var(--p-surface-0);
+  background-color: var(--p-surface-0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -493,6 +540,7 @@
   font-size: 18px;
   font-weight: 700;
   color: var(--p-text-color);
+  @include theme.surface;
 }
 
 .sign-up__kits-note {
@@ -501,6 +549,7 @@
   font-size: 12px;
   line-height: 1.45;
   color: var(--p-text-muted-color);
+  @include theme.text;
 }
 
 .sign-up__form {
@@ -565,6 +614,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: var(--p-text-muted-color);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .sign-up__signin-row {
@@ -576,6 +626,7 @@
   color: var(--p-primary-color);
   font-weight: 700;
   text-decoration: none;
+  @include theme.text;
 }
 
 .sign-up__summary-head {
@@ -593,17 +644,19 @@
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--p-text-muted-color);
+  @include theme.text;
 }
 
 .sign-up__summary-title {
   margin: 0;
   font-size: 22px;
   color: var(--p-text-color);
+  @include theme.text;
 }
 
 .sign-up__summary-edit {
   border: 0;
-  background: transparent;
+  background-color: transparent;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
   font-size: 13px;
@@ -617,6 +670,7 @@
   font-size: 30px;
   font-weight: 700;
   color: var(--p-primary-color);
+  @include theme.text;
 }
 
 .sign-up__summary-price small {
@@ -624,6 +678,7 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--p-text-muted-color);
+  @include theme.text;
 }
 
 .sign-up__summary-list {
@@ -644,10 +699,12 @@
   font-family: 'Inter', sans-serif;
   font-size: 14px;
   color: var(--p-text-color);
+  @include theme.text;
 }
 
 .sign-up__summary-list li span {
   color: var(--p-text-muted-color);
+  @include theme.text;
 }
 
 .sign-up__summary-total {
@@ -655,6 +712,7 @@
   border-top: 1px solid var(--p-surface-200);
   font-size: 15px;
   font-weight: 700;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .sign-up__summary-total {
@@ -686,13 +744,14 @@
   font-size: 15px;
   font-weight: 600;
   color: var(--p-text-muted-color);
-  background: var(--p-surface-100);
+  background-color: var(--p-surface-100);
   border: 1px solid var(--p-surface-300);
   border-right: 0;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) ::ng-deep .p-inputgroup .p-inputgroupaddon {
-  background: var(--p-surface-200);
+  background-color: var(--p-surface-200);
   border-color: var(--p-surface-400);
 }
 

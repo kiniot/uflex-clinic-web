@@ -1,8 +1,11 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
 
 .auth-shell {
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -11,9 +14,40 @@
   padding: 24px 16px 18px;
   gap: 24px;
   box-sizing: border-box;
+  isolation: isolate;
+  background-color: var(--p-surface-50);
+}
+
+.auth-shell::before,
+.auth-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  @include theme.layer-fade;
+}
+
+.auth-shell::before {
+  opacity: 1;
   background:
     radial-gradient(circle at top left, rgba(72, 203, 182, 0.12), transparent 34%),
-    linear-gradient(180deg, var(--p-surface-50), color-mix(in srgb, var(--p-surface-0) 72%, white));
+    linear-gradient(180deg, #f7f5ed 0%, #fcfbf7 100%);
+}
+
+.auth-shell::after {
+  opacity: 0;
+  background:
+    radial-gradient(circle at top left, rgba(72, 203, 182, 0.14), transparent 34%),
+    linear-gradient(180deg, #1a1c1e 0%, #25282a 100%);
+}
+
+:host-context(.app-dark) .auth-shell::before {
+  opacity: 0;
+}
+
+:host-context(.app-dark) .auth-shell::after {
+  opacity: 1;
 }
 
 .auth-shell__toolbar {

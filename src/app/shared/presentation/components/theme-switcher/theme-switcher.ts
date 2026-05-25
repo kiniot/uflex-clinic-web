@@ -17,6 +17,8 @@ interface ThemeOption {
   styleUrl: './theme-switcher.scss',
 })
 export class ThemeSwitcher implements OnInit {
+  private static readonly transitionDurationMs = 300;
+  private static readonly transitionCleanupBufferMs = 70;
   private transitionTimer: number | null = null;
   protected currentTheme: Theme = 'light';
 
@@ -55,6 +57,6 @@ export class ThemeSwitcher implements OnInit {
     this.transitionTimer = window.setTimeout(() => {
       html.classList.remove('theme-switching');
       this.transitionTimer = null;
-    }, 320);
+    }, ThemeSwitcher.transitionDurationMs + ThemeSwitcher.transitionCleanupBufferMs);
   }
 }
