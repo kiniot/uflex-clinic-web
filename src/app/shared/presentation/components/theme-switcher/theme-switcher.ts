@@ -17,6 +17,7 @@ interface ThemeOption {
   styleUrl: './theme-switcher.scss',
 })
 export class ThemeSwitcher implements OnInit {
+  private transitionTimer: number | null = null;
   protected currentTheme: Theme = 'light';
 
   protected themeOptions: ThemeOption[] = [
@@ -39,10 +40,21 @@ export class ThemeSwitcher implements OnInit {
 
   private applyTheme() {
     const html = document.documentElement;
+    html.classList.add('theme-switching');
+
     if (this.currentTheme === 'dark') {
       html.classList.add('app-dark');
     } else {
       html.classList.remove('app-dark');
     }
+
+    if (this.transitionTimer !== null) {
+      window.clearTimeout(this.transitionTimer);
+    }
+
+    this.transitionTimer = window.setTimeout(() => {
+      html.classList.remove('theme-switching');
+      this.transitionTimer = null;
+    }, 320);
   }
 }

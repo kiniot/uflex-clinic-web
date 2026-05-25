@@ -6,6 +6,11 @@ html, body {
   height: 100%;
 }
 
+html {
+  background-color: var(--p-surface-50);
+  transition: background-color 0.28s ease;
+}
+
 body {
   margin: 0;
   color: var(--p-surface-950);
@@ -35,4 +40,23 @@ a {
 
 .container-with-spacing {
   padding: 1.5rem; /* 24px spacing around the container */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .theme-switching,
+  .theme-switching *,
+  .theme-switching *::before,
+  .theme-switching *::after {
+    transition-property:
+      background-color,
+      border-color,
+      color,
+      fill,
+      stroke,
+      box-shadow,
+      outline-color,
+      text-decoration-color;
+    transition-duration: 0.28s;
+    transition-timing-function: ease;
+  }
 }

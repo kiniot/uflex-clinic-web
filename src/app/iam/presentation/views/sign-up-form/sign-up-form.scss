@@ -258,8 +258,35 @@
 }
 
 .sign-up__plan-card--selected {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--p-turquoise-400) 14%, white),
+      color-mix(in srgb, var(--p-turquoise-400) 22%, var(--p-surface-50))
+    );
   outline: 2px solid color-mix(in srgb, var(--p-turquoise-400) 65%, var(--p-primary-color));
   outline-offset: 2px;
+}
+
+.sign-up__plan-card--selected .sign-up__plan-cta--secondary {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  border-color: var(--p-primary-color);
+}
+
+:host-context(.app-dark) .sign-up__plan-card--selected {
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--p-turquoise-400) 16%, rgba(26, 28, 30, 0.98)),
+      color-mix(in srgb, var(--p-turquoise-400) 20%, rgba(37, 40, 42, 0.96))
+    );
+}
+
+:host-context(.app-dark) .sign-up__plan-card--selected .sign-up__plan-cta--secondary {
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  border-color: var(--p-primary-color);
 }
 
 .sign-up__plan-card button,

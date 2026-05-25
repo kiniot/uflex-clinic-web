@@ -220,7 +220,7 @@
                       <button
                         type="button"
                         class="sign-up__plan-cta"
-                        [class.sign-up__plan-cta--secondary]="!tier.isContactOnly"
+                        [class.sign-up__plan-cta--secondary]="true"
                         (click)="onPlanCta(tier); $event.stopPropagation()"
                       >
                         {{
