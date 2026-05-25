@@ -117,7 +117,7 @@ export const appPreset: Preset = definePreset(Aura, {
           100: '{neutral.800}', // Cards / elevated panels
           200: '{dark.300}', // Inner panels / alternative dark surfaces
           300: '{sand.700}', // Borders on dark custom surfaces
-          400: '{sand.400}', // Generic muted tokens on dark
+          400: '{sand.300}', // Generic muted tokens on dark
           500: '{sand.700}', // Hovered form-field border / stronger dark separators
           600: '{sand.800}', // Default form-field border / subtle dark separators
           700: '{sand.500}',

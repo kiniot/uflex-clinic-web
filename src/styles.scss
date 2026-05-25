@@ -15,6 +15,8 @@
   --app-surface-control-border: var(--p-surface-300);
   /* Muted copy placed on tinted cards often needs stronger contrast than the default token. */
   --app-text-muted-on-card: var(--p-surface-800);
+  /* Soft-muted copy for dark or tinted surfaces, sourced from the sand palette. */
+  --app-text-muted-soft: var(--p-sand-400);
 }
 
 html.app-dark {
@@ -26,6 +28,7 @@ html.app-dark {
   --app-surface-control: var(--p-surface-100);
   --app-surface-control-border: var(--p-surface-300);
   --app-text-muted-on-card: var(--p-surface-0);
+  --app-text-muted-soft: var(--p-sand-400);
 }
 
 html, body {

@@ -373,7 +373,7 @@
 }
 
 .sign-up__plan-note {
-  color: var(--app-text-muted-on-card);
+  color: var(--app-text-muted-soft);
   position: relative;
   z-index: 1;
 }
@@ -398,7 +398,7 @@
 .sign-up__plan-price-suffix {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  color: var(--app-text-muted-on-card);
+  color: var(--app-text-muted-soft);
   @include theme.text;
 }
 
@@ -449,7 +449,7 @@
 }
 
 .sign-up__plan-features span {
-  color: var(--p-text-color);
+  color: var(--p-text-muted-color);
   @include theme.text;
 }
 
@@ -560,7 +560,7 @@
   font-family: 'Inter', sans-serif;
   font-size: 12px;
   line-height: 1.45;
-  color: var(--app-text-muted-on-card);
+  color: var(--app-text-muted-soft);
   @include theme.text;
 }
 
