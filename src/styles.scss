@@ -38,8 +38,13 @@ html, body {
 }
 
 html {
+  color-scheme: light;
   background-color: var(--p-surface-50);
   @include theme.surface;
+}
+
+html.app-dark {
+  color-scheme: dark;
 }
 
 body {

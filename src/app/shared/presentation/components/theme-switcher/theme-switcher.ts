@@ -50,7 +50,5 @@ export class ThemeSwitcher implements OnInit {
     } else {
       html.classList.remove('app-dark');
     }
-
-    html.style.colorScheme = this.currentTheme;
   }
 }
