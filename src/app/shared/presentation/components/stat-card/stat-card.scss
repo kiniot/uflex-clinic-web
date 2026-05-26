@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
   height: 100%;
@@ -13,6 +15,7 @@
   border-radius: 12px;
   padding: 18px 20px;
   box-sizing: border-box;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .stat-card {

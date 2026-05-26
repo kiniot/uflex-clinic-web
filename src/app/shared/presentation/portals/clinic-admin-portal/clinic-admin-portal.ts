@@ -3,13 +3,14 @@ import { Router, RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AvatarModule } from 'primeng/avatar';
-import { ButtonModule } from 'primeng/button';
 import {
   AdminBottomItem,
   AdminBrand,
   AdminNavItem,
   AdminShell
 } from '../../components/admin-shell/admin-shell';
+import { LanguageSwitcher } from '../../components/language-switcher/language-switcher';
+import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
 import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
 
@@ -28,7 +29,14 @@ const ROLE_LABELS: Record<string, string> = {
  */
 @Component({
   selector: 'app-clinic-admin-portal',
-  imports: [RouterOutlet, AdminShell, AvatarModule, ButtonModule, ChangePasswordDialog],
+  imports: [
+    RouterOutlet,
+    AdminShell,
+    AvatarModule,
+    LanguageSwitcher,
+    ThemeSwitcher,
+    ChangePasswordDialog,
+  ],
   templateUrl: './clinic-admin-portal.html',
   styleUrl: './clinic-admin-portal.scss'
 })
@@ -59,7 +67,6 @@ export class ClinicAdminPortal {
       'clinicAdmin.nav.support',
       'clinicAdmin.nav.logout',
       'clinicAdmin.topbar.searchPlaceholder',
-      'clinicAdmin.topbar.clinicSelector',
       'topbar.changePassword'
     ]),
     { initialValue: {} as Record<string, string> }
@@ -86,7 +93,6 @@ export class ClinicAdminPortal {
   ]);
 
   protected searchPlaceholder = computed(() => this.translations()['clinicAdmin.topbar.searchPlaceholder'] ?? '');
-  protected clinicSelectorLabel = computed(() => this.translations()['clinicAdmin.topbar.clinicSelector'] ?? '');
   protected changePasswordTooltip = computed(() => this.translations()['topbar.changePassword'] ?? 'Change password');
 
   protected openChangePassword() {

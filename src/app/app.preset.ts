@@ -36,14 +36,14 @@ export const appPreset: Preset = definePreset(Aura, {
       300: '#32393B', // Black 3
     },
     sand: {
-      50: '#F7F5ED', // White (Off-white)
-      100: '#E6E4D9', // Gray 5
-      200: '#CDCBC0', // Gray 4
-      300: '#B8B6AC',
-      400: '#8C8A81', // Gray 3
-      500: '#716F68',
-      600: '#5C5B54', // Gray 2
-      700: '#4D4C46',
+      50: '#FAF8F2',
+      100: '#F7F5ED', // White (Off-white)
+      200: '#E6E4D9', // Gray 5
+      300: '#CDCBC0', // Gray 4
+      400: '#B8B6AC',
+      500: '#8C8A81', // Gray 3
+      600: '#716F68',
+      700: '#5C5B54', // Gray 2
       800: '#3D3C37', // Gray 1
     },
     sky: { 500: '#00B4D8' }, // Info

@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
   height: 100%;
@@ -13,6 +15,7 @@
   border-radius: 14px;
   padding: 22px 24px 18px;
   box-sizing: border-box;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .diag-progress {
@@ -108,6 +111,7 @@
   border-radius: 999px;
   background: var(--p-surface-200);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .diag-progress__bar {

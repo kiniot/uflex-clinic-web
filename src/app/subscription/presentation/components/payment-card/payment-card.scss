@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -18,6 +20,7 @@
   );
   overflow: hidden;
   box-sizing: border-box;
+  @include theme.surface-with-shadow;
 }
 
 .pay-card::after {
@@ -29,6 +32,7 @@
   height: 220px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
+  @include theme.surface;
 }
 
 .pay-card__top {
@@ -56,6 +60,7 @@
   background: rgba(255, 255, 255, 0.85);
   color: color-mix(in srgb, var(--p-primary-color) 70%, #000);
   font-size: 12px;
+  @include theme.surface;
 }
 
 .pay-card__number {

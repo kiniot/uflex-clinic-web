@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
   height: 100%;
@@ -12,7 +14,7 @@
   border-radius: 14px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(7, 77, 97, 0.04);
-  transition: box-shadow 160ms ease, transform 160ms ease;
+  @include theme.interactive-surface;
 }
 
 .exercise-card:hover {
@@ -32,6 +34,7 @@
   justify-content: center;
   height: 130px;
   background: var(--p-surface-100);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .exercise-card__media {
@@ -51,6 +54,7 @@
   background: var(--p-surface-0);
   color: var(--p-text-color);
   border: 1px solid var(--p-surface-200);
+  @include theme.surface;
 }
 
 .exercise-card[data-category='mobility'] .exercise-card__tag {
@@ -149,7 +153,7 @@
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 120ms ease, border-color 120ms ease;
+  @include theme.surface;
 }
 
 .exercise-card__btn-details:hover {
@@ -174,7 +178,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 120ms ease;
+  @include theme.surface;
 }
 
 .exercise-card__btn-add:hover {

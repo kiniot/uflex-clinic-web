@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -63,6 +65,7 @@
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .patients {
@@ -78,6 +81,7 @@
   padding: 16px 20px;
   border-bottom: 1px solid var(--p-surface-200);
   flex-wrap: wrap;
+  @include theme.border;
 }
 
 :host-context(.app-dark) .patients__header {
@@ -130,6 +134,7 @@
   color: var(--p-text-muted-color);
   background: var(--p-surface-50);
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .patients__table thead th {
@@ -140,7 +145,7 @@
 .patients__row {
   cursor: pointer;
   border-bottom: 1px solid var(--p-surface-100);
-  transition: background-color 120ms ease;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .patients__row {
@@ -169,6 +174,7 @@
   background: color-mix(in srgb, var(--p-primary-color) 16%, var(--p-surface-100));
   color: var(--p-primary-color);
   font-weight: 600;
+  @include theme.surface;
 }
 
 .patients__person-text {
@@ -237,6 +243,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .kit {

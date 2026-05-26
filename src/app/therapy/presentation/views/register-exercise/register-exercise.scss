@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -9,6 +11,7 @@
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
   padding: 28px 32px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .register-card {
@@ -73,6 +76,7 @@
   border: 0;
   border-top: 1px solid var(--p-surface-200);
   margin: 4px 0 0;
+  @include theme.border;
 }
 
 :host-context(.app-dark) .register__divider {
@@ -120,7 +124,7 @@
   background: var(--p-surface-50);
   cursor: pointer;
   text-align: center;
-  transition: border-color 120ms ease, background-color 120ms ease;
+  @include theme.surface;
 }
 
 .register__upload:hover {
@@ -165,6 +169,7 @@
   gap: 12px;
   padding-top: 16px;
   border-top: 1px solid var(--p-surface-200);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .register__actions {

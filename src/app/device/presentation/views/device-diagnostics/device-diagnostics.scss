@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -136,6 +138,7 @@
   background: var(--p-surface-200);
   overflow: hidden;
   margin-top: 2px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .diag-metric__bar {
@@ -160,6 +163,7 @@
   width: 4px;
   border-radius: 1px;
   background: var(--p-surface-200);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .diag-metric__bar-segment {

@@ -5,6 +5,7 @@
 
 :root {
   --app-theme-transition-duration: 0.3s;
+  --app-surface-canvas: var(--p-surface-100);
   /* App-level surfaces for custom UI built on top of the PrimeNG preset. */
   --app-surface-card: var(--p-surface-0);
   --app-surface-card-alt: var(--p-surface-100);
@@ -20,6 +21,7 @@
 }
 
 html.app-dark {
+  --app-surface-canvas: var(--p-surface-50);
   --app-surface-card: var(--p-surface-100);
   --app-surface-card-alt: var(--p-surface-200);
   --app-surface-card-border: var(--p-surface-300);

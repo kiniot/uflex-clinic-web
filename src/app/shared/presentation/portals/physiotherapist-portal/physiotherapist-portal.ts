@@ -3,13 +3,14 @@ import { Router, RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { AvatarModule } from 'primeng/avatar';
-import { ButtonModule } from 'primeng/button';
 import {
   AdminBottomItem,
   AdminBrand,
   AdminNavItem,
   AdminShell
 } from '../../components/admin-shell/admin-shell';
+import { LanguageSwitcher } from '../../components/language-switcher/language-switcher';
+import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
 import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
 
@@ -28,7 +29,14 @@ const ROLE_LABELS: Record<string, string> = {
  */
 @Component({
   selector: 'app-physiotherapist-portal',
-  imports: [RouterOutlet, AdminShell, AvatarModule, ButtonModule, ChangePasswordDialog],
+  imports: [
+    RouterOutlet,
+    AdminShell,
+    AvatarModule,
+    LanguageSwitcher,
+    ThemeSwitcher,
+    ChangePasswordDialog,
+  ],
   templateUrl: './physiotherapist-portal.html',
   styleUrl: './physiotherapist-portal.scss'
 })

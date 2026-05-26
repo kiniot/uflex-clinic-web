@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -44,6 +46,7 @@
   border-radius: 12px;
   background: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .orgv__summary-chip {
@@ -60,6 +63,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .orgv__summary-text {
@@ -153,6 +157,7 @@
   flex-direction: column;
   gap: 8px;
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .orgv__queue-card {
@@ -221,6 +226,7 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--p-text-muted-color);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .orgv__queue-card-tag { background: var(--p-surface-200); }
@@ -335,6 +341,7 @@
   font-weight: 600;
   color: var(--p-text-color);
   cursor: pointer;
+  @include theme.surface;
 }
 
 .orgv__icon-btn:hover { background: var(--p-surface-50); }
@@ -349,6 +356,7 @@
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .orgv__directory-scroll {
@@ -378,6 +386,7 @@
   text-transform: uppercase;
   color: var(--p-text-muted-color);
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .orgv__directory-table thead th { border-bottom-color: var(--p-surface-300); }
@@ -385,6 +394,7 @@
 .orgv__directory-row {
   cursor: pointer;
   border-bottom: 1px solid var(--p-surface-100);
+  @include theme.surface;
 }
 
 .orgv__directory-row:last-child { border-bottom: 0; }
@@ -406,6 +416,7 @@
   color: var(--p-text-muted-color);
   font-weight: 600;
   font-size: 11px;
+  @include theme.surface;
 }
 
 .orgv__clinician-text {
@@ -449,6 +460,7 @@
   border-radius: 999px;
   background: var(--p-surface-100);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .orgv__caseload-bar { background: var(--p-surface-200); }
@@ -485,6 +497,7 @@
   border: 1px solid var(--p-surface-200);
   background: var(--p-surface-0);
   cursor: pointer;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .orgv__pager button {
@@ -516,6 +529,7 @@
 .orgv__fleet {
   background: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
+  @include theme.surface;
 }
 
 .orgv__fleet-header {
@@ -533,6 +547,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .orgv__fleet-info {
@@ -547,6 +562,7 @@
   align-items: center;
   justify-content: center;
   font-size: 11px;
+  @include theme.surface;
 }
 
 .orgv__fleet-title {
@@ -596,6 +612,7 @@
 .orgv__efficiency {
   background: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .orgv__efficiency {

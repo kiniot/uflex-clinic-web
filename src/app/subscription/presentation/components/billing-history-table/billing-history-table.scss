@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -22,6 +24,7 @@
   text-transform: uppercase;
   color: var(--p-text-muted-color);
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .billing thead th {
@@ -30,6 +33,7 @@
 
 .billing tbody tr {
   border-bottom: 1px solid var(--p-surface-100);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .billing tbody tr {
@@ -54,6 +58,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  @include theme.surface;
 }
 
 .billing__status--paid {

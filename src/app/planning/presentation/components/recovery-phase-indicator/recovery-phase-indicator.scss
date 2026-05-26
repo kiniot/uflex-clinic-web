@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host { display: block; }
 
 .phase-indicator {
@@ -28,6 +30,7 @@
   border: 2px solid var(--p-surface-200);
   background: var(--p-surface-0);
   color: var(--p-text-muted-color);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .phase-indicator__circle {
@@ -68,6 +71,7 @@
   background: var(--p-surface-200);
   margin-bottom: 22px;
   border-radius: 1px;
+  @include theme.surface;
 }
 
 .phase-indicator__connector--completed {
