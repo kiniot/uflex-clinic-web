@@ -16,10 +16,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
   <script>
     (function() {
+      const savedLanguage = localStorage.getItem('language');
+      const language = savedLanguage === 'es' || savedLanguage === 'en' ? savedLanguage : 'en';
+      document.documentElement.lang = language;
+      if (!savedLanguage) {
+        localStorage.setItem('language', language);
+      }
       const savedTheme = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.classList.add('app-dark');
+      const theme =
+        savedTheme === 'dark' || savedTheme === 'light'
+          ? savedTheme
+          : prefersDark
+            ? 'dark'
+            : 'light';
+      document.documentElement.classList.toggle('app-dark', theme === 'dark');
+      document.documentElement.style.colorScheme = theme;
+      if (!savedTheme) {
+        localStorage.setItem('theme', theme);
       }
     })();
   </script>

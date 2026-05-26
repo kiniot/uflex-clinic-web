@@ -1,7 +1,9 @@
-import {Component, inject} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
 import {SelectButtonModule} from 'primeng/selectbutton';
+
+type SupportedLanguage = 'en' | 'es';
 
 @Component({
   selector: 'app-language-switcher',
@@ -9,8 +11,8 @@ import {SelectButtonModule} from 'primeng/selectbutton';
   templateUrl: './language-switcher.html',
   styleUrl: './language-switcher.scss'
 })
-export class LanguageSwitcher {
-  protected currentLang: string = 'en';
+export class LanguageSwitcher implements OnInit {
+  protected currentLang: SupportedLanguage = 'en';
 
   /** Options consumed by p-selectButton (label shown, value used as lang code). */
   protected languageOptions = [
@@ -23,16 +25,26 @@ export class LanguageSwitcher {
 
   constructor() {
     this.translate = inject(TranslateService);
-    this.currentLang = this.translate.getCurrentLang();
+  }
+
+  ngOnInit() {
+    const currentLanguage = this.translate.getCurrentLang();
+    this.currentLang = this.isSupportedLanguage(currentLanguage) ? currentLanguage : 'en';
   }
 
   /**
    * Changes the application's current language.
    * Updates both the translation service and the component's local state.
    */
-  useLanguage(language: string) {
+  useLanguage(language: SupportedLanguage) {
     if (!language || language === this.currentLang) return;
+    localStorage.setItem('language', language);
+    document.documentElement.lang = language;
     this.translate.use(language);
     this.currentLang = language;
+  }
+
+  private isSupportedLanguage(language: string | null | undefined): language is SupportedLanguage {
+    return language === 'en' || language === 'es';
   }
 }
