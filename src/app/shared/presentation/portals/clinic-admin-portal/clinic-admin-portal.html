@@ -2,14 +2,19 @@
   [brand]="brand()"
   [navItems]="navItems()"
   [bottomItems]="bottomItems()"
-  [searchPlaceholder]="searchPlaceholder()">
+  [searchPlaceholder]="searchPlaceholder()"
+>
   <div topbar-actions class="portal__actions">
+    <span class="portal__role-pill">{{ rolePillLabel() }}</span>
     <app-language-switcher />
     <app-theme-switcher />
-    <button type="button" class="portal__icon-btn"
-            [attr.aria-label]="changePasswordTooltip()"
-            [title]="changePasswordTooltip()"
-            (click)="openChangePassword()">
+    <button
+      type="button"
+      class="portal__icon-btn"
+      [attr.aria-label]="changePasswordTooltip()"
+      [title]="changePasswordTooltip()"
+      (click)="openChangePassword()"
+    >
       <i class="pi pi-cog" aria-hidden="true"></i>
     </button>
     <p-avatar shape="circle" size="normal" styleClass="portal__avatar" icon="pi pi-user" />

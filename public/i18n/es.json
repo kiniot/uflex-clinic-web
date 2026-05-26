@@ -29,8 +29,7 @@
   "clinicAdmin": {
     "brand": {
       "name": "uFlex",
-      "subtitle": "Portal Clínico",
-      "badge": "ADMIN"
+      "subtitle": "Portal Clínico"
     },
     "nav": {
       "therapy": "Terapia",
@@ -43,6 +42,7 @@
     },
     "topbar": {
       "searchPlaceholder": "Buscar pacientes o dispositivos...",
+      "rolePill": "Admin",
       "clinicSelector": "Selector de clínica"
     },
     "therapy": {
@@ -764,7 +764,7 @@
   "physiotherapist": {
     "brand": {
       "name": "uFlex",
-      "subtitle": "PORTAL CLÍNICO"
+      "subtitle": "Portal Clínico"
     },
     "nav": {
       "dashboard": "Panel",

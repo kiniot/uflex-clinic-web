@@ -1,6 +1,6 @@
-import {Component, input, output} from '@angular/core';
-import {RouterLink, RouterLinkActive} from '@angular/router';
-import {SearchInput} from '../search-input/search-input';
+import { Component, input, output } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { SearchInput } from '../search-input/search-input';
 
 /**
  * Single nav entry rendered inside the AdminShell sidebar.
@@ -26,14 +26,12 @@ export interface AdminBottomItem {
 }
 
 /**
- * Identity block at the top of the sidebar — logo monogram, brand name,
- * subtitle, and an optional badge (e.g. "ADMIN").
+ * Identity block at the top of the sidebar — brand mark, brand name,
+ * and subtitle.
  */
 export interface AdminBrand {
-  monogram: string;
   name: string;
   subtitle: string;
-  badge?: string;
 }
 
 /**
@@ -46,7 +44,7 @@ export interface AdminBrand {
   selector: 'app-admin-shell',
   imports: [RouterLink, RouterLinkActive, SearchInput],
   templateUrl: './admin-shell.html',
-  styleUrl: './admin-shell.scss'
+  styleUrl: './admin-shell.scss',
 })
 export class AdminShell {
   brand = input.required<AdminBrand>();

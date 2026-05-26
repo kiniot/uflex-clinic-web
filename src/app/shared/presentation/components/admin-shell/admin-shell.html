@@ -1,21 +1,24 @@
 <div class="admin-shell">
   <aside class="admin-shell__sidebar">
     <div class="admin-shell__brand">
-      <div class="admin-shell__brand-mark">{{ brand().monogram }}</div>
+      <img
+        class="admin-shell__brand-mark"
+        src="/images/branding/uflex-brand-mark-original.webp"
+        alt="uFlex"
+      />
       <div class="admin-shell__brand-text">
         <strong class="admin-shell__brand-name">{{ brand().name }}</strong>
         <span class="admin-shell__brand-subtitle">{{ brand().subtitle }}</span>
       </div>
-      @if (brand().badge) {
-        <span class="admin-shell__brand-badge">{{ brand().badge }}</span>
-      }
     </div>
 
     <nav class="admin-shell__nav">
       @for (item of navItems(); track item.route) {
-        <a class="admin-shell__nav-item"
-           [routerLink]="item.route"
-           routerLinkActive="admin-shell__nav-item--active">
+        <a
+          class="admin-shell__nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="admin-shell__nav-item--active"
+        >
           <i class="pi {{ item.icon }} admin-shell__nav-icon" aria-hidden="true"></i>
           <span>{{ item.label }}</span>
         </a>
@@ -30,9 +33,11 @@
             <span>{{ item.label }}</span>
           </a>
         } @else {
-          <button type="button"
-                  class="admin-shell__nav-item admin-shell__nav-item--button"
-                  (click)="runBottomItem(item)">
+          <button
+            type="button"
+            class="admin-shell__nav-item admin-shell__nav-item--button"
+            (click)="runBottomItem(item)"
+          >
             <i class="pi {{ item.icon }} admin-shell__nav-icon" aria-hidden="true"></i>
             <span>{{ item.label }}</span>
           </button>
@@ -43,17 +48,19 @@
 
   <div class="admin-shell__main">
     <header class="admin-shell__topbar">
-      <app-search-input class="admin-shell__search"
-                        [placeholder]="searchPlaceholder()"
-                        [value]="searchValue()"
-                        (valueChange)="onSearch($event)"/>
+      <app-search-input
+        class="admin-shell__search"
+        [placeholder]="searchPlaceholder()"
+        [value]="searchValue()"
+        (valueChange)="onSearch($event)"
+      />
       <div class="admin-shell__topbar-actions">
-        <ng-content select="[topbar-actions]"/>
+        <ng-content select="[topbar-actions]" />
       </div>
     </header>
 
     <section class="admin-shell__content">
-      <ng-content/>
+      <ng-content />
     </section>
   </div>
 </div>

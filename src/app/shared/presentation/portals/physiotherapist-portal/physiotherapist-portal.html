@@ -2,18 +2,19 @@
   [brand]="brand()"
   [navItems]="navItems()"
   [bottomItems]="bottomItems()"
-  [searchPlaceholder]="searchPlaceholder()">
+  [searchPlaceholder]="searchPlaceholder()"
+>
   <div topbar-actions class="portal__actions">
-    <button type="button" class="portal__role-pill">
-      <i class="pi pi-id-card" aria-hidden="true"></i>
-      <span>{{ rolePillLabel() }}</span>
-    </button>
+    <span class="portal__role-pill">{{ rolePillLabel() }}</span>
     <app-language-switcher />
     <app-theme-switcher />
-    <button type="button" class="portal__icon-btn"
-            [attr.aria-label]="changePasswordTooltip()"
-            [title]="changePasswordTooltip()"
-            (click)="openChangePassword()">
+    <button
+      type="button"
+      class="portal__icon-btn"
+      [attr.aria-label]="changePasswordTooltip()"
+      [title]="changePasswordTooltip()"
+      (click)="openChangePassword()"
+    >
       <i class="pi pi-cog" aria-hidden="true"></i>
     </button>
     <div class="portal__profile">
@@ -21,8 +22,12 @@
         <strong class="portal__profile-name">{{ currentEmail() ?? '' }}</strong>
         <span class="portal__profile-sub">{{ currentRoleLabel() }}</span>
       </div>
-      <p-avatar shape="circle" size="normal" styleClass="portal__avatar"
-                [label]="avatarInitials()" />
+      <p-avatar
+        shape="circle"
+        size="normal"
+        styleClass="portal__avatar"
+        [label]="avatarInitials()"
+      />
     </div>
   </div>
 
