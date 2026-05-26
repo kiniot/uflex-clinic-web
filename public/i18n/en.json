@@ -415,59 +415,63 @@
   },
   "subscription": {
     "title": "Subscription",
-    "subtitle": "Manage your clinical licensing, payment methods, and billing history.",
+    "subtitle": "Review your clinic's active commercial subscription and plan capacity.",
     "actions": {
       "downloadAudit": "Download Audit Report",
       "upgradePlan": "Upgrade Plan"
     },
     "active": {
       "badge": "Active Plan",
-      "billedMonthly": "billed monthly",
-      "changeCycle": "Change billing cycle",
-      "cancel": "Cancel subscription",
-      "activeLicenses": "Active Licenses",
-      "storageUsage": "Storage Usage",
-      "apiStatus": "API Status",
-      "api": {
-        "healthy": "Healthy",
-        "degraded": "Degraded",
-        "down": "Down"
-      }
+      "startedAt": "Started",
+      "renewsAt": "Renews",
+      "endsAt": "Ends",
+      "currency": "Currency"
     },
-    "payment": {
-      "title": "Payment Method",
-      "cardHolder": "Card Holder",
-      "expires": "Expires",
-      "update": "Update Payment Method"
+    "loading": {
+      "eyebrow": "Syncing subscription",
+      "title": "Loading current plan",
+      "body": "We are retrieving the active subscription registered for this clinic."
     },
-    "billing": {
-      "title": "Billing History",
-      "viewAll": "View All Invoices",
-      "columns": {
-        "amount": "Mount",
-        "plan": "Plan",
-        "status": "Status"
+    "empty": {
+      "eyebrow": "No active record",
+      "title": "No active subscription was found",
+      "body": "The platform did not return an active commercial subscription for this clinic yet."
+    },
+    "capacity": {
+      "eyebrow": "Plan coverage",
+      "title": "Current operating capacity",
+      "description": "These limits come directly from the subscription tier currently assigned to your clinic.",
+      "maxPhysiotherapists": "Physiotherapists",
+      "maxPatients": "Patients",
+      "maxKits": "IoT kits",
+      "baseKits": "Base kits included",
+      "additionalKits": {
+        "label": "Additional kits",
+        "none": "Not available for this plan",
+        "unlimited": "Available without an upper limit",
+        "limited": "Up to {{count}} additional kits"
+      },
+      "unavailable": "Tier capacity details are not available for the active subscription."
+    },
+    "tiers": {
+      "trial": "Trial",
+      "pilot": "Pilot",
+      "professional": "Professional",
+      "enterprise": "Enterprise"
+    },
+    "values": {
+      "unlimited": "Unlimited",
+      "notApplicable": "Not applicable",
+      "billing": {
+        "monthly": "monthly",
+        "yearly": "yearly"
       },
       "status": {
-        "paid": "Paid",
+        "active": "Active",
         "pending": "Pending",
-        "failed": "Failed"
+        "cancelled": "Cancelled",
+        "expired": "Expired"
       }
-    },
-    "upsell": {
-      "title": "Advance Your Practice",
-      "description": "Unlock exclusive clinical features by upgrading to Clinical Research tier.",
-      "feature1": "Advanced Gait Analytics",
-      "feature2": "Global Research DB Access",
-      "feature3": "White-label Patient Portal",
-      "cta": "Learn More about Clinical Research"
-    },
-    "plans": {
-      "title": "Available Clinical Plans",
-      "perMonth": "/mo",
-      "selected": "Selected",
-      "currentPlan": "Current Plan",
-      "alreadyActive": "Already Active"
     },
     "checkout": {
       "confirmingEyebrow": "Confirming payment",

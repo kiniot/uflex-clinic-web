@@ -415,59 +415,63 @@
   },
   "subscription": {
     "title": "Suscripción",
-    "subtitle": "Administra licencias clínicas, métodos de pago e historial de facturación.",
+    "subtitle": "Revisa la suscripción comercial activa de tu clínica y la capacidad incluida en el plan.",
     "actions": {
       "downloadAudit": "Descargar informe de auditoría",
       "upgradePlan": "Mejorar plan"
     },
     "active": {
       "badge": "Plan activo",
-      "billedMonthly": "facturado mensualmente",
-      "changeCycle": "Cambiar ciclo de facturación",
-      "cancel": "Cancelar suscripción",
-      "activeLicenses": "Licencias activas",
-      "storageUsage": "Uso de almacenamiento",
-      "apiStatus": "Estado de API",
-      "api": {
-        "healthy": "Saludable",
-        "degraded": "Degradado",
-        "down": "Caída"
-      }
+      "startedAt": "Inicio",
+      "renewsAt": "Renueva",
+      "endsAt": "Finaliza",
+      "currency": "Moneda"
     },
-    "payment": {
-      "title": "Método de pago",
-      "cardHolder": "Titular de la tarjeta",
-      "expires": "Vence",
-      "update": "Actualizar método de pago"
+    "loading": {
+      "eyebrow": "Sincronizando suscripción",
+      "title": "Cargando plan actual",
+      "body": "Estamos recuperando la suscripción activa registrada para esta clínica."
     },
-    "billing": {
-      "title": "Historial de facturación",
-      "viewAll": "Ver todas las facturas",
-      "columns": {
-        "amount": "Monto",
-        "plan": "Plan",
-        "status": "Estado"
+    "empty": {
+      "eyebrow": "Sin registro activo",
+      "title": "No se encontró una suscripción activa",
+      "body": "La plataforma todavía no devolvió una suscripción comercial activa para esta clínica."
+    },
+    "capacity": {
+      "eyebrow": "Cobertura del plan",
+      "title": "Capacidad operativa actual",
+      "description": "Estos límites provienen directamente del tier de suscripción asignado actualmente a tu clínica.",
+      "maxPhysiotherapists": "Fisioterapeutas",
+      "maxPatients": "Pacientes",
+      "maxKits": "Kits IoT",
+      "baseKits": "Kits base incluidos",
+      "additionalKits": {
+        "label": "Kits adicionales",
+        "none": "No disponibles para este plan",
+        "unlimited": "Disponibles sin límite superior",
+        "limited": "Hasta {{count}} kits adicionales"
+      },
+      "unavailable": "Los detalles de capacidad del tier no están disponibles para la suscripción activa."
+    },
+    "tiers": {
+      "trial": "Trial",
+      "pilot": "Pilot",
+      "professional": "Professional",
+      "enterprise": "Enterprise"
+    },
+    "values": {
+      "unlimited": "Ilimitado",
+      "notApplicable": "No aplica",
+      "billing": {
+        "monthly": "mensual",
+        "yearly": "anual"
       },
       "status": {
-        "paid": "Pagada",
+        "active": "Activa",
         "pending": "Pendiente",
-        "failed": "Fallida"
+        "cancelled": "Cancelada",
+        "expired": "Expirada"
       }
-    },
-    "upsell": {
-      "title": "Avanza tu práctica",
-      "description": "Desbloquea funciones clínicas exclusivas al pasar al tier de Clinical Research.",
-      "feature1": "Analíticas avanzadas de marcha",
-      "feature2": "Acceso a base de datos global de investigación",
-      "feature3": "Portal de pacientes con marca blanca",
-      "cta": "Aprende más sobre Clinical Research"
-    },
-    "plans": {
-      "title": "Planes clínicos disponibles",
-      "perMonth": "/mes",
-      "selected": "Seleccionado",
-      "currentPlan": "Plan actual",
-      "alreadyActive": "Ya activo"
     },
     "checkout": {
       "confirmingEyebrow": "Confirmando pago",

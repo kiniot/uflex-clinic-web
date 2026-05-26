@@ -1,6 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { ActiveSubscription } from '../domain/model/active-subscription.entity';
 import {
   CurrentSubscriptionSnapshot,
   PersistedSubscriptionSelection,
@@ -10,38 +9,27 @@ import {
 } from '../domain/model/subscription-catalog.types';
 import { SubscriptionCheckoutCommand } from '../domain/model/subscription-checkout.command';
 import { SubscriptionTier } from '../domain/model/subscription-tier.entity';
-import { Invoice } from '../domain/model/invoice.entity';
-import { PaymentMethod } from '../domain/model/payment-method.entity';
-import { SubscriptionPlan } from '../domain/model/subscription-plan.entity';
-import {
-  MOCK_ACTIVE_SUBSCRIPTION,
-  MOCK_INVOICES,
-  MOCK_PAYMENT_METHOD,
-  MOCK_PLANS,
-} from '../infrastructure/subscription.mock';
 import { SubscriptionApi } from '../infrastructure/subscription-api';
 
 /**
- * Application-layer store for the Subscription bounded context. Exposes
- * the active subscription, available plans, billing history, and payment
- * method as signals; computed signals derive license/storage usage
- * percentages and resolve the currently-active plan reference.
+ * Application-layer store for the Subscription bounded context. Handles
+ * the public catalog used in onboarding plus the authenticated clinic
+ * subscription snapshot used in the clinic-admin portal.
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class SubscriptionStore {
   private static readonly pendingSelectionStorageKey = 'pendingSubscriptionCheckout';
 
-  private readonly plansSignal = signal<SubscriptionPlan[]>(MOCK_PLANS);
-  private readonly activeSubscriptionSignal = signal<ActiveSubscription>(MOCK_ACTIVE_SUBSCRIPTION);
-  private readonly paymentMethodSignal = signal<PaymentMethod>(MOCK_PAYMENT_METHOD);
-  private readonly invoicesSignal = signal<Invoice[]>(MOCK_INVOICES);
   private readonly tiersSignal = signal<SubscriptionTier[]>([]);
   private readonly loadingCatalogSignal = signal(false);
+  private readonly catalogResolvedSignal = signal(false);
   private readonly currentTierSlugSignal = signal<PublicSubscriptionTierSlug | null>(null);
   private readonly currentBillingSignal = signal<SubscriptionBillingPeriod>('MONTHLY');
   private readonly currentCurrencySignal = signal<SubscriptionCurrency>('PEN');
   private readonly requestedTotalKitsSignal = signal<number | null>(null);
-  private readonly currentSubscriptionSnapshotSignal = signal<CurrentSubscriptionSnapshot | null>(null);
+  private readonly currentSubscriptionSnapshotSignal = signal<CurrentSubscriptionSnapshot | null>(
+    null,
+  );
   private readonly loadingCurrentSubscriptionSignal = signal(false);
   private readonly currentSubscriptionResolvedSignal = signal(false);
   private readonly pendingSelectionSignal = signal<PersistedSubscriptionSelection | null>(null);
@@ -50,10 +38,6 @@ export class SubscriptionStore {
     this.pendingSelectionSignal.set(this.readPendingSelectionFromStorage());
   }
 
-  readonly plans = this.plansSignal.asReadonly();
-  readonly activeSubscription = this.activeSubscriptionSignal.asReadonly();
-  readonly paymentMethod = this.paymentMethodSignal.asReadonly();
-  readonly invoices = this.invoicesSignal.asReadonly();
   readonly tiers = this.tiersSignal.asReadonly();
   readonly isLoadingCatalog = this.loadingCatalogSignal.asReadonly();
   readonly selectedTierSlug = this.currentTierSlugSignal.asReadonly();
@@ -64,23 +48,6 @@ export class SubscriptionStore {
   readonly isLoadingCurrentSubscription = this.loadingCurrentSubscriptionSignal.asReadonly();
   readonly hasResolvedCurrentSubscription = this.currentSubscriptionResolvedSignal.asReadonly();
   readonly pendingSelection = this.pendingSelectionSignal.asReadonly();
-
-  readonly activePlan = computed<SubscriptionPlan | null>(() => {
-    const planId = this.activeSubscription().planId;
-    return this.plans().find((p) => p.id === planId) ?? null;
-  });
-
-  readonly licensesUsagePct = computed(() => {
-    const sub = this.activeSubscription();
-    if (sub.totalLicenses === 0) return 0;
-    return Math.round((sub.activeLicenses / sub.totalLicenses) * 100);
-  });
-
-  /** Storage usage as a percentage of an assumed 2TB cap (mock). */
-  readonly storageUsagePct = computed(() => {
-    const cap = 2;
-    return Math.min(100, Math.round((this.activeSubscription().storageUsageTb / cap) * 100));
-  });
 
   readonly publicTiers = computed(() =>
     this.tiers()
@@ -143,7 +110,13 @@ export class SubscriptionStore {
     const tier = this.selectedTier();
     const amount = this.selectedBasePrice();
     const requestedTotalKits = this.normalizedRequestedTotalKits();
-    if (!tier || tier.slug == null || amount == null || requestedTotalKits == null || tier.isContactOnly) {
+    if (
+      !tier ||
+      tier.slug == null ||
+      amount == null ||
+      requestedTotalKits == null ||
+      tier.isContactOnly
+    ) {
       return null;
     }
 
@@ -157,16 +130,46 @@ export class SubscriptionStore {
     };
   });
 
-  async loadCatalog(): Promise<void> {
+  async loadCatalog({ force = false }: { force?: boolean } = {}): Promise<void> {
     if (this.loadingCatalogSignal()) return;
+    if (this.catalogResolvedSignal() && !force) return;
 
     this.loadingCatalogSignal.set(true);
     try {
       const tiers = await firstValueFrom(this.subscriptionApi.getTiers());
       this.tiersSignal.set(tiers);
+      this.catalogResolvedSignal.set(true);
       this.normalizeSelection();
     } finally {
       this.loadingCatalogSignal.set(false);
+    }
+  }
+
+  async loadCurrentSubscriptionOnce({
+    force = false,
+  }: {
+    force?: boolean;
+  } = {}): Promise<CurrentSubscriptionSnapshot | null> {
+    if (this.loadingCurrentSubscriptionSignal()) {
+      return this.currentSubscriptionSnapshotSignal();
+    }
+    if (this.currentSubscriptionResolvedSignal() && !force) {
+      return this.currentSubscriptionSnapshotSignal();
+    }
+
+    this.loadingCurrentSubscriptionSignal.set(true);
+    try {
+      const subscription = await firstValueFrom(this.subscriptionApi.getCurrentSubscription());
+      this.currentSubscriptionSnapshotSignal.set(subscription);
+      this.currentSubscriptionResolvedSignal.set(true);
+
+      if (subscription) {
+        this.clearPendingSelection();
+      }
+
+      return subscription;
+    } finally {
+      this.loadingCurrentSubscriptionSignal.set(false);
     }
   }
 
@@ -236,10 +239,7 @@ export class SubscriptionStore {
   persistCurrentSelection() {
     const selection = this.currentSelection();
     if (!selection) return;
-    sessionStorage.setItem(
-      SubscriptionStore.pendingSelectionStorageKey,
-      JSON.stringify(selection),
-    );
+    sessionStorage.setItem(SubscriptionStore.pendingSelectionStorageKey, JSON.stringify(selection));
     this.pendingSelectionSignal.set(selection);
   }
 
