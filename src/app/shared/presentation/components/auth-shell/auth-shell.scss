@@ -1,28 +1,191 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
 
 .auth-shell {
+  position: relative;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 32px 16px;
-  gap: 16px;
+  justify-content: space-between;
+  padding: 24px 16px 18px;
+  gap: 24px;
   box-sizing: border-box;
+  isolation: isolate;
+  background-color: var(--p-surface-50);
+}
+
+.auth-shell::before,
+.auth-shell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  @include theme.layer-fade;
+}
+
+.auth-shell::before {
+  opacity: 1;
+  background:
+    radial-gradient(
+      circle at 18% 10%,
+      color-mix(in srgb, var(--p-sand-50) 92%, transparent) 0%,
+      transparent 42%
+    ),
+    radial-gradient(
+      circle at center right,
+      color-mix(in srgb, var(--p-primary-100) 34%, transparent) 0%,
+      transparent 36%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      color-mix(in srgb, var(--p-turquoise-100) 30%, transparent) 0%,
+      transparent 38%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--p-sand-50) 92%, white) 0%,
+      color-mix(in srgb, var(--p-sand-50) 84%, white) 100%
+    );
+}
+
+.auth-shell::after {
+  opacity: 0;
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--p-sand-300) 12%, transparent) 0%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at center right,
+      color-mix(in srgb, var(--p-primary-300) 18%, transparent) 0%,
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at bottom left,
+      color-mix(in srgb, var(--p-turquoise-300) 16%, transparent) 0%,
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--p-surface-50) 96%, black) 0%,
+      color-mix(in srgb, var(--p-surface-100) 92%, black) 100%
+    );
+}
+
+:host-context(.app-dark) .auth-shell::before {
+  opacity: 0;
+}
+
+:host-context(.app-dark) .auth-shell::after {
+  opacity: 1;
 }
 
 .auth-shell__toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   width: 100%;
-  max-width: 440px;
+  max-width: 1160px;
 }
 
 .auth-shell__content {
   width: 100%;
   display: flex;
   justify-content: center;
+  flex: 1 1 auto;
+  align-items: center;
+}
+
+.auth-shell__panel {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  view-transition-name: auth-shell-panel;
+}
+
+.auth-shell__brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.auth-shell__brand-image {
+  width: auto;
+  height: 44px;
+  display: block;
+}
+
+.auth-shell__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+:host ::ng-deep .auth-shell__signin-btn,
+:host ::ng-deep .auth-shell__signin-btn .p-button {
+  min-height: 38px;
+  padding: 0 15px;
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+:host ::ng-deep .auth-shell__signin-btn {
+  border-color: color-mix(in srgb, var(--p-primary-color) 18%, var(--p-surface-300));
+  background-color: color-mix(in srgb, #ffffff 72%, var(--p-surface-0));
+  color: var(--p-primary-color);
+  box-shadow:
+    0 1px 2px rgba(7, 77, 97, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  @include theme.surface-with-shadow;
+}
+
+:host ::ng-deep .auth-shell__signin-btn:hover {
+  background-color: color-mix(in srgb, var(--p-turquoise-50) 52%, #ffffff);
+  border-color: color-mix(in srgb, var(--p-turquoise-300) 45%, var(--p-primary-color));
+  color: var(--p-primary-600);
+}
+
+:host-context(.app-dark) ::ng-deep .auth-shell__signin-btn {
+  background-color: color-mix(in srgb, var(--p-surface-950) 72%, transparent);
+  border-color: color-mix(in srgb, var(--p-surface-100) 82%, transparent);
+  color: var(--p-surface-0);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+:host-context(.app-dark) ::ng-deep .auth-shell__signin-btn:hover {
+  background-color: color-mix(in srgb, var(--p-primary-color) 18%, var(--p-surface-950));
+  border-color: color-mix(in srgb, var(--p-turquoise-300) 38%, var(--p-surface-0));
+  color: var(--p-surface-0);
+}
+
+@media (max-width: 720px) {
+  .auth-shell {
+    padding-top: 18px;
+  }
+
+  .auth-shell__toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .auth-shell__brand {
+    justify-content: center;
+  }
+
+  .auth-shell__actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }

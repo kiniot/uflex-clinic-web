@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -109,6 +111,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .register-pt__card {
@@ -190,7 +193,7 @@
   border-radius: 50%;
   background: var(--p-surface-50);
   cursor: pointer;
-  transition: border-color 120ms ease, background-color 120ms ease;
+  @include theme.surface;
 }
 
 .register-pt__photo:hover {
@@ -241,6 +244,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  @include theme.surface;
 }
 
 .register-pt__quick-tip-title {

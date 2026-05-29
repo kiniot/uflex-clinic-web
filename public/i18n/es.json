@@ -17,6 +17,7 @@
     "go-home": "Ir a Inicio"
   },
   "footer": {
+    "copyright": "Copyright © 2026 KinIoT.",
     "rights": "Todos los derechos reservados.",
     "powered-by": "Desarrollado con",
     "and": "y"
@@ -28,8 +29,7 @@
   "clinicAdmin": {
     "brand": {
       "name": "uFlex",
-      "subtitle": "Portal Clínico",
-      "badge": "ADMIN"
+      "subtitle": "Portal Clínico"
     },
     "nav": {
       "therapy": "Terapia",
@@ -42,6 +42,7 @@
     },
     "topbar": {
       "searchPlaceholder": "Buscar pacientes o dispositivos...",
+      "rolePill": "Admin",
       "clinicSelector": "Selector de clínica"
     },
     "therapy": {
@@ -414,59 +415,90 @@
   },
   "subscription": {
     "title": "Suscripción",
-    "subtitle": "Administra licencias clínicas, métodos de pago e historial de facturación.",
+    "subtitle": "Revisa la suscripción comercial activa de tu clínica y la capacidad incluida en el plan.",
     "actions": {
       "downloadAudit": "Descargar informe de auditoría",
       "upgradePlan": "Mejorar plan"
     },
     "active": {
       "badge": "Plan activo",
-      "billedMonthly": "facturado mensualmente",
-      "changeCycle": "Cambiar ciclo de facturación",
-      "cancel": "Cancelar suscripción",
-      "activeLicenses": "Licencias activas",
-      "storageUsage": "Uso de almacenamiento",
-      "apiStatus": "Estado de API",
-      "api": {
-        "healthy": "Saludable",
-        "degraded": "Degradado",
-        "down": "Caída"
-      }
+      "startedAt": "Inicio",
+      "renewsAt": "Renueva",
+      "endsAt": "Finaliza",
+      "currency": "Moneda"
     },
-    "payment": {
-      "title": "Método de pago",
-      "cardHolder": "Titular de la tarjeta",
-      "expires": "Vence",
-      "update": "Actualizar método de pago"
+    "loading": {
+      "eyebrow": "Sincronizando suscripción",
+      "title": "Cargando plan actual",
+      "body": "Estamos recuperando la suscripción activa registrada para esta clínica."
     },
-    "billing": {
-      "title": "Historial de facturación",
-      "viewAll": "Ver todas las facturas",
-      "columns": {
-        "amount": "Monto",
-        "plan": "Plan",
-        "status": "Estado"
+    "empty": {
+      "eyebrow": "Sin registro activo",
+      "title": "No se encontró una suscripción activa",
+      "body": "La plataforma todavía no devolvió una suscripción comercial activa para esta clínica."
+    },
+    "capacity": {
+      "eyebrow": "Cobertura del plan",
+      "title": "Capacidad operativa actual",
+      "description": "Estos límites provienen directamente del tier de suscripción asignado actualmente a tu clínica.",
+      "maxPhysiotherapists": "Fisioterapeutas",
+      "maxPatients": "Pacientes",
+      "maxKits": "Kits IoT",
+      "baseKits": "Kits base incluidos",
+      "additionalKits": {
+        "label": "Kits adicionales",
+        "none": "No disponibles para este plan",
+        "unlimited": "Disponibles sin límite superior",
+        "limited": "Hasta {{count}} kits adicionales"
+      },
+      "unavailable": "Los detalles de capacidad del tier no están disponibles para la suscripción activa."
+    },
+    "tiers": {
+      "trial": "Trial",
+      "pilot": "Pilot",
+      "professional": "Professional",
+      "enterprise": "Enterprise"
+    },
+    "values": {
+      "unlimited": "Ilimitado",
+      "notApplicable": "No aplica",
+      "billing": {
+        "monthly": "mensual",
+        "yearly": "anual"
       },
       "status": {
-        "paid": "Pagada",
+        "active": "Activa",
         "pending": "Pendiente",
-        "failed": "Fallida"
+        "cancelled": "Cancelada",
+        "expired": "Expirada"
       }
     },
-    "upsell": {
-      "title": "Avanza tu práctica",
-      "description": "Desbloquea funciones clínicas exclusivas al pasar al tier de Clinical Research.",
-      "feature1": "Analíticas avanzadas de marcha",
-      "feature2": "Acceso a base de datos global de investigación",
-      "feature3": "Portal de pacientes con marca blanca",
-      "cta": "Aprende más sobre Clinical Research"
-    },
-    "plans": {
-      "title": "Planes clínicos disponibles",
-      "perMonth": "/mes",
-      "selected": "Seleccionado",
-      "currentPlan": "Plan actual",
-      "alreadyActive": "Ya activo"
+    "checkout": {
+      "confirmingEyebrow": "Confirmando pago",
+      "confirmingTitle": "Estamos validando tu suscripción",
+      "confirmingBody": "Stripe ya nos devolvió el control. Estamos esperando que tu suscripción termine de activarse en uFlex.",
+      "successEyebrow": "Pago confirmado",
+      "successTitle": "Tu suscripción ya está activa",
+      "successBody": "Tu clínica quedó configurada correctamente y ya puedes continuar con la operación dentro de uFlex.",
+      "pendingEyebrow": "Activación en proceso",
+      "pendingTitle": "Tu pago fue recibido",
+      "pendingBody": "Estamos terminando de activar tu suscripción. Puedes continuar al portal mientras completamos la sincronización final.",
+      "cancelEyebrow": "Pago cancelado",
+      "cancelTitle": "Tu checkout quedó pendiente",
+      "cancelBody": "No se completó el pago de la suscripción. Puedes reintentar el checkout o volver para cambiar tu selección comercial.",
+      "continueToPortal": "Ir al portal clínico",
+      "retry": "Reintentar pago",
+      "changePlan": "Cambiar plan",
+      "retryErrorSummary": "No se pudo reanudar el checkout",
+      "retryErrorDetail": "No pudimos generar una nueva sesión de pago. Intenta nuevamente en unos minutos.",
+      "summary": {
+        "plan": "Plan",
+        "billing": "Facturación",
+        "amount": "Monto",
+        "status": "Estado",
+        "renewsAt": "Renueva",
+        "kits": "Kits"
+      }
     }
   },
   "registerPhysiotherapist": {
@@ -540,7 +572,7 @@
     }
   },
   "signIn": {
-    "subtitle": "Plataforma Clínica de Telerehabilitación",
+    "subtitle": "Ingresa a tu cuenta",
     "email": {
       "label": "Correo electrónico",
       "placeholder": "Ingresa tu correo"
@@ -553,7 +585,6 @@
     "rememberMe": "Recuérdame por 30 días",
     "submit": "Iniciar sesión",
     "createAccount": "Crear cuenta",
-    "trustMessage": "Acceso clínico seguro solo para personal médico autorizado.",
     "notifications": {
       "errorSummary": "No se pudo iniciar sesión",
       "invalidCredentials": "El correo o la contraseña son incorrectos.",
@@ -561,12 +592,73 @@
     }
   },
   "signUp": {
-    "title": "Crea tu cuenta",
-    "subtitle": "Únete a la red de rehabilitación conectada.",
-    "roleLabel": "Selecciona tu rol",
-    "roles": {
-      "physiotherapist": "Fisioterapeuta",
-      "clinicAdmin": "Administrador de Clínica"
+    "planStep": {
+      "title": "Elige tu plan ideal",
+      "subtitle": "Activa tu clínica en minutos.",
+      "helper": "Tu selección se mantiene durante todo el registro.",
+      "billing": {
+        "label": "Facturación",
+        "options": {
+          "monthly": "Mensual",
+          "yearly": "Anual"
+        }
+      },
+      "currency": {
+        "label": "Moneda",
+        "options": {
+          "pen": "Soles",
+          "usd": "Dólares"
+        }
+      },
+      "loading": "Cargando catálogo de suscripciones...",
+      "chooseKits": "Elegir kits",
+      "continuePlan": "Continuar con este plan",
+      "contactSales": "Contactar a ventas",
+      "kitsLabel": "Kits totales de IoT",
+      "kitsHint": "Puedes elegir desde {{min}} hasta {{max}} kits para este plan.",
+      "kitFee": "Más un pago único de {{amount}} por cada kit de IoT.",
+      "unlimited": "Ilimitado",
+      "stats": {
+        "physios": "{{count}} fisioterapeutas",
+        "patients": "{{count}} pacientes",
+        "kits": "{{base}} a {{max}} kits"
+      },
+      "tiers": {
+        "pilot": {
+          "badge": "Inicial",
+          "name": "Pilot",
+          "description": "Ideal para empezar con una operación ágil, profesional y fácil de implementar.",
+          "featureAnalytics": "Dashboard web con vista de analíticas por paciente",
+          "featureRom": "Seguimiento del rango de movimiento por sesión",
+          "featureSupport": "Soporte por correo electrónico"
+        },
+        "professional": {
+          "badge": "Más elegido",
+          "name": "Professional",
+          "description": "Pensado para clínicas en crecimiento que atienden un flujo terapéutico constante.",
+          "featureAnalytics": "Analítica avanzada con tendencias",
+          "featureAlerts": "Alertas automáticas para el paciente",
+          "featureReports": "Reportes PDF automatizados",
+          "featureSupport": "Soporte prioritario por WhatsApp"
+        },
+        "enterprise": {
+          "badge": "Máximo",
+          "name": "Enterprise",
+          "description": "Para operaciones de alta demanda que requieren una propuesta a medida y despliegue amplio.",
+          "customPrice": "Personalizado",
+          "contactNote": "El modelo mensual o anual se define con el equipo comercial.",
+          "featureUnlimited": "Fisioterapeutas y pacientes ilimitados",
+          "featureHce": "Integración con HCE propia",
+          "featureWhiteLabel": "White-label con marca institucional",
+          "featureSupport24x7": "Soporte 24/7 con ejecutivo dedicado"
+        }
+      }
+    },
+    "accountStep": {
+      "title": "Crea tu cuenta",
+      "subtitle": "Usaremos esta cuenta para administrar la clínica y continuar con el checkout.",
+      "back": "Volver al plan",
+      "submit": "Crear cuenta"
     },
     "fullName": {
       "label": "Nombre completo",
@@ -589,17 +681,9 @@
       "placeholder": "Vuelve a ingresar tu contraseña",
       "mismatch": "Las contraseñas no coinciden."
     },
-    "invitationCode": {
-      "label": "Código de invitación de clínica",
-      "optional": "(Opcional)",
-      "placeholder": "ej. CLINIC-1234"
-    },
-    "submit": "Crear cuenta",
-    "haveAccount": "¿Ya tienes una cuenta?",
-    "signInLink": "Iniciar sesión",
     "clinicStep": {
-      "title": "Crea tu clínica",
-      "subtitle": "Completa tu onboarding registrando la clínica que operará en uFlex.",
+      "title": "Registra tu clínica",
+      "subtitle": "Completa la información de la clínica para activar el checkout de tu suscripción.",
       "legalName": {
         "label": "Razón social",
         "placeholder": "Ingresa la razón social de la clínica"
@@ -628,18 +712,29 @@
         "error": "Ingresa un número de teléfono válido."
       },
       "back": "Volver",
-      "submit": "Crear clínica",
-      "footer": "Paso 2 de 2: registra tu clínica para terminar el flujo de onboarding."
+      "submit": "Crear clínica y continuar al pago",
+      "footer": "El siguiente paso abrirá Stripe para completar el pago de tu suscripción."
+    },
+    "summary": {
+      "label": "Resumen del onboarding",
+      "edit": "Cambiar plan",
+      "currency": "Moneda",
+      "billing": "Facturación",
+      "kits": "Kits solicitados",
+      "kitUnitPrice": "Precio unitario kit",
+      "kitCharge": "Cargo total por kits",
+      "total": "Total estimado",
+      "kitBreakdown": "Incluye {{count}} kits en total y {{extra}} adicionales sobre la base del plan."
     },
     "notifications": {
       "accountCreatedSummary": "Cuenta creada",
       "accountCreatedDetail": "Tu cuenta ya está lista. Ahora registra tu clínica para completar el onboarding.",
-      "successSummary": "Clínica creada",
-      "successDetail": "Tu cuenta y tu clínica se registraron correctamente. Ahora puedes iniciar sesión.",
       "errorSummary": "No se pudo registrar",
       "genericError": "No pudimos crear la cuenta. Intenta nuevamente.",
       "clinicErrorSummary": "No se pudo registrar la clínica",
-      "clinicGenericError": "No pudimos crear la clínica. Intenta nuevamente."
+      "clinicGenericError": "No pudimos crear la clínica. Intenta nuevamente.",
+      "checkoutSummary": "Clínica creada",
+      "checkoutDetail": "Tu clínica ya quedó registrada. Te llevaremos a la pantalla de suscripción para que reintentes el checkout."
     }
   },
   "changePassword": {
@@ -669,7 +764,7 @@
   "physiotherapist": {
     "brand": {
       "name": "uFlex",
-      "subtitle": "PORTAL CLÍNICO"
+      "subtitle": "Portal Clínico"
     },
     "nav": {
       "dashboard": "Panel",

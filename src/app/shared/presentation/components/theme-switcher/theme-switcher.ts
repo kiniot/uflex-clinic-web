@@ -26,7 +26,12 @@ export class ThemeSwitcher implements OnInit {
 
   ngOnInit() {
     const savedTheme = localStorage.getItem('theme');
-    this.currentTheme = savedTheme === 'dark' ? 'dark' : 'light';
+    if (savedTheme === 'dark' || savedTheme === 'light') {
+      this.currentTheme = savedTheme;
+    } else {
+      this.currentTheme = document.documentElement.classList.contains('app-dark') ? 'dark' : 'light';
+      localStorage.setItem('theme', this.currentTheme);
+    }
     this.applyTheme();
   }
 
@@ -39,6 +44,7 @@ export class ThemeSwitcher implements OnInit {
 
   private applyTheme() {
     const html = document.documentElement;
+
     if (this.currentTheme === 'dark') {
       html.classList.add('app-dark');
     } else {

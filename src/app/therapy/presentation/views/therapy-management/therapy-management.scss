@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -42,4 +44,5 @@
   border: 1px dashed var(--p-surface-200);
   border-radius: 12px;
   margin: 0;
+  @include theme.surface;
 }

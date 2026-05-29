@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host { display: block; }
 
 .trajectory {
@@ -8,6 +10,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .trajectory {
@@ -40,6 +43,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .trajectory__chart {
@@ -48,6 +52,7 @@
   border-radius: 12px;
   background: var(--p-surface-50);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .trajectory__chart { background: var(--p-surface-200); }
@@ -60,6 +65,7 @@
     repeating-linear-gradient(0deg, var(--p-surface-100) 0 1px, transparent 1px 28px),
     repeating-linear-gradient(90deg, var(--p-surface-100) 0 1px, transparent 1px 40px);
   opacity: 0.7;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .trajectory__chart-pattern {
@@ -87,6 +93,7 @@
   text-transform: uppercase;
   padding: 4px 10px;
   border-radius: 999px;
+  @include theme.surface;
 }
 
 .trajectory__pin-dot {
@@ -96,6 +103,7 @@
   background: #34c79b;
   border: 2px solid #ffffff;
   margin-top: 2px;
+  @include theme.surface;
 }
 
 .trajectory__stats {
@@ -157,6 +165,7 @@
   border-radius: 999px;
   background: var(--p-surface-100);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .trajectory__bar { background: var(--p-surface-200); }
@@ -178,6 +187,7 @@
   height: 6px;
   border-radius: 3px;
   background: var(--p-surface-200);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .trajectory__risk-bar { background: var(--p-surface-300); }

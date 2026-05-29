@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -7,6 +9,7 @@
   border: 1px solid var(--p-surface-200);
   border-radius: 12px;
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .fleet {
@@ -20,6 +23,7 @@
   justify-content: space-between;
   padding: 16px 20px;
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .fleet__header {
@@ -45,10 +49,22 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .fleet__filter-btn:hover {
   background: var(--p-surface-100);
+  color: var(--p-text-color);
+}
+
+:host-context(.app-dark) .fleet__filter-btn {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+  color: var(--p-text-muted-color);
+}
+
+:host-context(.app-dark) .fleet__filter-btn:hover {
+  background: var(--p-surface-200);
   color: var(--p-text-color);
 }
 
@@ -79,6 +95,7 @@
   color: var(--p-text-muted-color);
   background: var(--p-surface-50);
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .fleet__table thead th {
@@ -88,6 +105,7 @@
 
 .fleet__table tbody tr {
   border-bottom: 1px solid var(--p-surface-100);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .fleet__table tbody tr {
@@ -137,6 +155,7 @@
   border-radius: 999px;
   background: var(--p-surface-200);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .fleet-battery__bar {
@@ -190,6 +209,7 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  @include theme.surface;
 }
 
 .fleet__status--online {
@@ -218,6 +238,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .fleet__row-action:hover {

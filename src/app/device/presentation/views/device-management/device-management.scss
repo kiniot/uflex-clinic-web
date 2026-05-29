@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -92,6 +94,7 @@
   border-radius: 999px;
   background: var(--p-surface-200);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .device__network-bar {

@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -11,6 +13,7 @@
   background: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .hw-integrity {

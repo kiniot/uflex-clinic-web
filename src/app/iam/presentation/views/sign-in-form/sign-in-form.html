@@ -1,12 +1,11 @@
 <app-auth-shell>
   <div class="sign-in__card">
-    <div class="sign-in__brand">
-      <div class="sign-in__brand-icon" aria-hidden="true">
-        <i class="pi pi-heart-fill"></i>
-      </div>
-      <h1 class="sign-in__brand-title">uFlex</h1>
-      <p class="sign-in__brand-subtitle">{{ 'signIn.subtitle' | translate }}</p>
-    </div>
+    <img
+      class="sign-in__brand-mark"
+      src="/images/branding/uflex-brand-mark-original.webp"
+      alt="uFlex"
+    />
+    <p class="sign-in__brand-subtitle">{{ 'signIn.subtitle' | translate }}</p>
 
     <form class="sign-in__form" [formGroup]="form" (ngSubmit)="performSignIn()">
       <div class="sign-in__field">
@@ -70,17 +69,12 @@
           severity="secondary"
           [outlined]="true"
           [disabled]="isSubmitting()"
-          routerLink="/iam/sign-up"
+          routerLink="/sign-up"
           class="sign-in__btn-secondary"
         >
           <span>{{ 'signIn.createAccount' | translate }}</span>
         </button>
       </div>
     </form>
-
-    <footer class="sign-in__trust">
-      <i class="pi pi-shield sign-in__trust-icon"></i>
-      <span>{{ 'signIn.trustMessage' | translate }}</span>
-    </footer>
   </div>
 </app-auth-shell>

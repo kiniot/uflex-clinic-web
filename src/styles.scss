@@ -1,9 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
 
 @use 'primeicons/primeicons.css' as pi;
+@use './styles/theme-transition' as theme;
+
+:root {
+  --app-theme-transition-duration: 0.3s;
+  --app-surface-canvas: var(--p-surface-100);
+  /* App-level surfaces for custom UI built on top of the PrimeNG preset. */
+  --app-surface-card: var(--p-surface-0);
+  --app-surface-card-alt: var(--p-surface-100);
+  --app-surface-card-border: var(--p-surface-200);
+  --app-surface-chip: var(--p-surface-0);
+  --app-surface-chip-border: var(--p-surface-200);
+  --app-surface-control: var(--p-surface-0);
+  --app-surface-control-border: var(--p-surface-300);
+  /* Muted copy placed on tinted cards often needs stronger contrast than the default token. */
+  --app-text-muted-on-card: var(--p-surface-800);
+  /* Soft-muted copy for dark or tinted surfaces, sourced from the sand palette. */
+  --app-text-muted-soft: var(--p-sand-400);
+}
+
+html.app-dark {
+  --app-surface-canvas: var(--p-surface-50);
+  --app-surface-card: var(--p-surface-100);
+  --app-surface-card-alt: var(--p-surface-200);
+  --app-surface-card-border: var(--p-surface-300);
+  --app-surface-chip: var(--p-surface-100);
+  --app-surface-chip-border: var(--p-surface-300);
+  --app-surface-control: var(--p-surface-100);
+  --app-surface-control-border: var(--p-surface-300);
+  --app-text-muted-on-card: var(--p-surface-0);
+  --app-text-muted-soft: var(--p-sand-400);
+}
 
 html, body {
   height: 100%;
+}
+
+html {
+  color-scheme: light;
+  background-color: var(--p-surface-50);
+  @include theme.surface;
+}
+
+html.app-dark {
+  color-scheme: dark;
 }
 
 body {
@@ -13,7 +54,7 @@ body {
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  @include theme.surface;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -21,13 +62,13 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--p-primary-500); /* Petroleum for headings */
   font-weight: 600;
   margin-top: 0;
-  transition: color 0.3s ease;
+  @include theme.text;
 }
 
 a {
   color: var(--p-turquoise-400); /* Turquoise for links */
   text-decoration: none;
-  transition: color 0.2s ease;
+  @include theme.text;
   &:hover {
     color: var(--p-turquoise-500);
   }
@@ -35,4 +76,48 @@ a {
 
 .container-with-spacing {
   padding: 1.5rem; /* 24px spacing around the container */
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(auth-shell-panel),
+  ::view-transition-new(auth-shell-panel),
+  ::view-transition-old(auth-shell-card),
+  ::view-transition-new(auth-shell-card) {
+    animation-duration: var(--app-theme-transition-duration);
+    animation-timing-function: ease;
+  }
+
+  ::view-transition-old(auth-shell-panel),
+  ::view-transition-old(auth-shell-card) {
+    animation-name: app-auth-fade-out;
+  }
+
+  ::view-transition-new(auth-shell-panel),
+  ::view-transition-new(auth-shell-card) {
+    animation-name: app-auth-fade-in;
+  }
+}
+
+@keyframes app-auth-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes app-auth-fade-out {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }

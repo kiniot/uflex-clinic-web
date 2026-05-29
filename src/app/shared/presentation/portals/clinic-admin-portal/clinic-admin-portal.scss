@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -8,23 +10,20 @@
   gap: 12px;
 }
 
-.portal__clinic-selector {
+.portal__role-pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border: 0;
-  background: transparent;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--p-text-color);
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.portal__clinic-selector:hover {
-  background: var(--p-surface-100);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  @include theme.surface;
 }
 
 .portal__icon-btn {
@@ -39,6 +38,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .portal__icon-btn:hover {
@@ -46,20 +46,10 @@
   color: var(--p-text-color);
 }
 
-.portal__icon-dot {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--p-red-500);
-  border: 2px solid var(--p-surface-0);
-}
-
 :host ::ng-deep .portal__avatar {
   background: var(--p-surface-200);
   color: var(--p-text-color);
+  @include theme.surface;
 }
 
 .portal__user-info {

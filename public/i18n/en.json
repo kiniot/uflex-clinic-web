@@ -17,6 +17,7 @@
     "go-home": "Go Home"
   },
   "footer": {
+    "copyright": "Copyright © 2026 KinIoT.",
     "rights": "All rights reserved.",
     "powered-by": "Powered by",
     "and": "and"
@@ -28,8 +29,7 @@
   "clinicAdmin": {
     "brand": {
       "name": "uFlex",
-      "subtitle": "Clinician Portal",
-      "badge": "ADMIN"
+      "subtitle": "Clinical Portal"
     },
     "nav": {
       "therapy": "Therapy",
@@ -42,6 +42,7 @@
     },
     "topbar": {
       "searchPlaceholder": "Search patients or devices...",
+      "rolePill": "Admin",
       "clinicSelector": "Clinic Selector"
     },
     "therapy": {
@@ -414,59 +415,90 @@
   },
   "subscription": {
     "title": "Subscription",
-    "subtitle": "Manage your clinical licensing, payment methods, and billing history.",
+    "subtitle": "Review your clinic's active commercial subscription and plan capacity.",
     "actions": {
       "downloadAudit": "Download Audit Report",
       "upgradePlan": "Upgrade Plan"
     },
     "active": {
       "badge": "Active Plan",
-      "billedMonthly": "billed monthly",
-      "changeCycle": "Change billing cycle",
-      "cancel": "Cancel subscription",
-      "activeLicenses": "Active Licenses",
-      "storageUsage": "Storage Usage",
-      "apiStatus": "API Status",
-      "api": {
-        "healthy": "Healthy",
-        "degraded": "Degraded",
-        "down": "Down"
-      }
+      "startedAt": "Started",
+      "renewsAt": "Renews",
+      "endsAt": "Ends",
+      "currency": "Currency"
     },
-    "payment": {
-      "title": "Payment Method",
-      "cardHolder": "Card Holder",
-      "expires": "Expires",
-      "update": "Update Payment Method"
+    "loading": {
+      "eyebrow": "Syncing subscription",
+      "title": "Loading current plan",
+      "body": "We are retrieving the active subscription registered for this clinic."
     },
-    "billing": {
-      "title": "Billing History",
-      "viewAll": "View All Invoices",
-      "columns": {
-        "amount": "Mount",
-        "plan": "Plan",
-        "status": "Status"
+    "empty": {
+      "eyebrow": "No active record",
+      "title": "No active subscription was found",
+      "body": "The platform did not return an active commercial subscription for this clinic yet."
+    },
+    "capacity": {
+      "eyebrow": "Plan coverage",
+      "title": "Current operating capacity",
+      "description": "These limits come directly from the subscription tier currently assigned to your clinic.",
+      "maxPhysiotherapists": "Physiotherapists",
+      "maxPatients": "Patients",
+      "maxKits": "IoT kits",
+      "baseKits": "Base kits included",
+      "additionalKits": {
+        "label": "Additional kits",
+        "none": "Not available for this plan",
+        "unlimited": "Available without an upper limit",
+        "limited": "Up to {{count}} additional kits"
+      },
+      "unavailable": "Tier capacity details are not available for the active subscription."
+    },
+    "tiers": {
+      "trial": "Trial",
+      "pilot": "Pilot",
+      "professional": "Professional",
+      "enterprise": "Enterprise"
+    },
+    "values": {
+      "unlimited": "Unlimited",
+      "notApplicable": "Not applicable",
+      "billing": {
+        "monthly": "monthly",
+        "yearly": "yearly"
       },
       "status": {
-        "paid": "Paid",
+        "active": "Active",
         "pending": "Pending",
-        "failed": "Failed"
+        "cancelled": "Cancelled",
+        "expired": "Expired"
       }
     },
-    "upsell": {
-      "title": "Advance Your Practice",
-      "description": "Unlock exclusive clinical features by upgrading to Clinical Research tier.",
-      "feature1": "Advanced Gait Analytics",
-      "feature2": "Global Research DB Access",
-      "feature3": "White-label Patient Portal",
-      "cta": "Learn More about Clinical Research"
-    },
-    "plans": {
-      "title": "Available Clinical Plans",
-      "perMonth": "/mo",
-      "selected": "Selected",
-      "currentPlan": "Current Plan",
-      "alreadyActive": "Already Active"
+    "checkout": {
+      "confirmingEyebrow": "Confirming payment",
+      "confirmingTitle": "We are validating your subscription",
+      "confirmingBody": "Stripe has returned control to the app. We are waiting for your subscription to finish activating inside uFlex.",
+      "successEyebrow": "Payment confirmed",
+      "successTitle": "Your subscription is active",
+      "successBody": "Your clinic is configured and you can continue operating inside uFlex right away.",
+      "pendingEyebrow": "Activation in progress",
+      "pendingTitle": "Your payment was received",
+      "pendingBody": "We are finishing your subscription activation. You can continue to the portal while we complete the final sync.",
+      "cancelEyebrow": "Payment cancelled",
+      "cancelTitle": "Your checkout is still pending",
+      "cancelBody": "The subscription payment was not completed. You can retry checkout or go back and adjust your commercial selection.",
+      "continueToPortal": "Go to clinic portal",
+      "retry": "Retry payment",
+      "changePlan": "Change plan",
+      "retryErrorSummary": "Checkout could not be resumed",
+      "retryErrorDetail": "We could not create a new payment session. Please try again in a few minutes.",
+      "summary": {
+        "plan": "Plan",
+        "billing": "Billing",
+        "amount": "Amount",
+        "status": "Status",
+        "renewsAt": "Renews",
+        "kits": "Kits"
+      }
     }
   },
   "registerPhysiotherapist": {
@@ -540,7 +572,7 @@
     }
   },
   "signIn": {
-    "subtitle": "Clinical Telerehabilitation Platform",
+    "subtitle": "Access your account",
     "email": {
       "label": "Email address",
       "placeholder": "Enter your email"
@@ -553,7 +585,6 @@
     "rememberMe": "Remember me for 30 days",
     "submit": "Sign In",
     "createAccount": "Create Account",
-    "trustMessage": "Secure clinical access for authorized medical personnel only.",
     "notifications": {
       "errorSummary": "Sign-in failed",
       "invalidCredentials": "The email or password is incorrect.",
@@ -561,12 +592,73 @@
     }
   },
   "signUp": {
-    "title": "Create your account",
-    "subtitle": "Join the connected rehabilitation network.",
-    "roleLabel": "Select your role",
-    "roles": {
-      "physiotherapist": "Physiotherapist",
-      "clinicAdmin": "Clinic Admin"
+    "planStep": {
+      "title": "Choose your ideal plan",
+      "subtitle": "Launch your clinic in minutes.",
+      "helper": "We keep your selection through the whole registration flow.",
+      "billing": {
+        "label": "Billing",
+        "options": {
+          "monthly": "Monthly",
+          "yearly": "Yearly"
+        }
+      },
+      "currency": {
+        "label": "Currency",
+        "options": {
+          "pen": "Peruvian Sol",
+          "usd": "US Dollar"
+        }
+      },
+      "loading": "Loading subscription catalog...",
+      "chooseKits": "Choose kits",
+      "continuePlan": "Continue with this plan",
+      "contactSales": "Contact sales",
+      "kitsLabel": "Total IoT kits",
+      "kitsHint": "You can choose from {{min}} up to {{max}} kits for this plan.",
+      "kitFee": "Plus a one-time payment of {{amount}} for each IoT kit.",
+      "unlimited": "Unlimited",
+      "stats": {
+        "physios": "{{count}} physiotherapists",
+        "patients": "{{count}} patients",
+        "kits": "{{base}} to {{max}} kits"
+      },
+      "tiers": {
+        "pilot": {
+          "badge": "Starter",
+          "name": "Pilot",
+          "description": "Ideal for starting with an agile, professional, and easy-to-deploy operation.",
+          "featureAnalytics": "Web dashboard with per-patient analytics",
+          "featureRom": "Range-of-motion tracking per session",
+          "featureSupport": "Email support"
+        },
+        "professional": {
+          "badge": "Most chosen",
+          "name": "Professional",
+          "description": "Designed for growing clinics that serve a steady therapeutic workflow.",
+          "featureAnalytics": "Advanced analytics with trend views",
+          "featureAlerts": "Automated patient alerts",
+          "featureReports": "Automated PDF reports",
+          "featureSupport": "Priority WhatsApp support"
+        },
+        "enterprise": {
+          "badge": "Maximum",
+          "name": "Enterprise",
+          "description": "Built for high-demand operations that require a tailored proposal and broad deployment.",
+          "customPrice": "Custom",
+          "contactNote": "Monthly or yearly terms are defined directly with our commercial team.",
+          "featureUnlimited": "Unlimited physiotherapists and patients",
+          "featureHce": "Private EHR integration",
+          "featureWhiteLabel": "Institutional white-label branding",
+          "featureSupport24x7": "24/7 support with a dedicated account lead"
+        }
+      }
+    },
+    "accountStep": {
+      "title": "Create your account",
+      "subtitle": "We will use this account to manage your clinic and continue with checkout.",
+      "back": "Back to plan",
+      "submit": "Create account"
     },
     "fullName": {
       "label": "Full Name",
@@ -589,17 +681,9 @@
       "placeholder": "Re-enter your password",
       "mismatch": "Passwords do not match."
     },
-    "invitationCode": {
-      "label": "Clinic Invitation Code",
-      "optional": "(Optional)",
-      "placeholder": "e.g. CLINIC-1234"
-    },
-    "submit": "Create Account",
-    "haveAccount": "Already have an account?",
-    "signInLink": "Sign In",
     "clinicStep": {
-      "title": "Create your clinic",
-      "subtitle": "Complete your onboarding by registering the clinic that will operate in uFlex.",
+      "title": "Register your clinic",
+      "subtitle": "Complete the clinic information to activate the subscription checkout.",
       "legalName": {
         "label": "Legal Name",
         "placeholder": "Enter the clinic's legal name"
@@ -628,18 +712,29 @@
         "error": "Enter a valid phone number."
       },
       "back": "Back",
-      "submit": "Create Clinic",
-      "footer": "Step 2 of 2: register your clinic to finish the onboarding flow."
+      "submit": "Create clinic and continue to payment",
+      "footer": "The next step will open Stripe so you can complete your subscription payment."
+    },
+    "summary": {
+      "label": "Onboarding summary",
+      "edit": "Change plan",
+      "currency": "Currency",
+      "billing": "Billing",
+      "kits": "Requested kits",
+      "kitUnitPrice": "Kit unit price",
+      "kitCharge": "Total kit charge",
+      "total": "Estimated total",
+      "kitBreakdown": "Includes {{count}} total kits and {{extra}} add-on kits above the plan baseline."
     },
     "notifications": {
       "accountCreatedSummary": "Account created",
       "accountCreatedDetail": "Your account is ready. Now register your clinic to finish onboarding.",
-      "successSummary": "Clinic created",
-      "successDetail": "Your account and clinic were registered successfully. You can now sign in.",
       "errorSummary": "Registration failed",
       "genericError": "We could not create the account. Please try again.",
       "clinicErrorSummary": "Clinic registration failed",
-      "clinicGenericError": "We could not create the clinic. Please try again."
+      "clinicGenericError": "We could not create the clinic. Please try again.",
+      "checkoutSummary": "Clinic created",
+      "checkoutDetail": "Your clinic is already registered. We will take you to the subscription screen so you can retry checkout."
     }
   },
   "changePassword": {
@@ -669,7 +764,7 @@
   "physiotherapist": {
     "brand": {
       "name": "uFlex",
-      "subtitle": "CLINICIAN PORTAL"
+      "subtitle": "Clinical Portal"
     },
     "nav": {
       "dashboard": "Dashboard",

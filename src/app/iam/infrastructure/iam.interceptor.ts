@@ -8,12 +8,11 @@ import { IamStore } from '../application/iam.store';
  */
 export const iamInterceptor: HttpInterceptorFn = (request, next) => {
   const store = inject(IamStore);
-  const token =
-    store.currentToken() ??
-    localStorage.getItem('token') ??
-    sessionStorage.getItem('token') ??
-    localStorage.getItem('jwt_token') ??
-    sessionStorage.getItem('jwt_token');
+  if (request.url.includes('/authentication/')) {
+    return next(request);
+  }
+
+  const token = store.currentToken();
   const handledRequest = token
     ? request.clone({ headers: request.headers.set('Authorization', `Bearer ${token}`) })
     : request;

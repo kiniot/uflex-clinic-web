@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -77,6 +79,7 @@
   flex-direction: column;
   gap: 10px;
   position: relative;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .kpi {
@@ -146,6 +149,7 @@
 .kpi__icon--inverse {
   background: rgba(255, 255, 255, 0.12);
   color: var(--p-primary-contrast-color);
+  @include theme.surface;
 }
 
 .kpi__bar {
@@ -153,6 +157,7 @@
   border-radius: 999px;
   background: var(--p-surface-100);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .kpi__bar { background: var(--p-surface-200); }
@@ -195,6 +200,7 @@
   border-radius: 10px;
   background: var(--p-surface-100);
   justify-content: center;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .kpi__visual-card {
@@ -218,6 +224,7 @@
   padding: 2px 6px;
   background: var(--p-surface-0);
   border-radius: 4px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .kpi__visual-tag {
@@ -226,6 +233,12 @@
 
 /* Reviews card (filled dark teal) */
 .kpi--reviews {
+  background: var(--p-primary-color);
+  border-color: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+:host-context(.app-dark) .kpi.kpi--reviews {
   background: var(--p-primary-color);
   border-color: var(--p-primary-color);
   color: var(--p-primary-contrast-color);
@@ -247,6 +260,7 @@
   padding: 4px 8px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.16);
+  @include theme.surface;
 }
 
 /* Roster card */
@@ -256,6 +270,7 @@
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roster-page__roster-card {
@@ -296,7 +311,7 @@
   cursor: pointer;
   padding: 6px 4px;
   border-bottom: 2px solid transparent;
-  transition: color 120ms ease, border-color 120ms ease;
+  @include theme.border;
 }
 
 .roster-page__tab--active {
@@ -321,6 +336,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .roster-page__icon-btn:hover {
@@ -338,6 +354,7 @@
   justify-content: space-between;
   padding: 14px 20px;
   border-top: 1px solid var(--p-surface-100);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .roster-page__footer {
@@ -366,6 +383,7 @@
   font-weight: 600;
   color: var(--p-text-color);
   cursor: pointer;
+  @include theme.surface;
 }
 
 .roster-page__pager button:hover {
@@ -413,6 +431,7 @@
   padding: 22px 24px;
   overflow: hidden;
   min-height: 180px;
+  @include theme.surface;
 }
 
 .roster-page__promo-pattern {
@@ -480,7 +499,7 @@
   border: 2px dashed var(--p-surface-300);
   background: var(--p-surface-50);
   cursor: pointer;
-  transition: border-color 120ms ease, background-color 120ms ease;
+  @include theme.surface;
   text-align: center;
   min-height: 180px;
 }
@@ -505,6 +524,7 @@
   align-items: center;
   justify-content: center;
   font-size: 16px;
+  @include theme.surface;
 }
 
 .roster-page__template-title {

@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -86,6 +88,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .inv__connectivity,
@@ -172,6 +175,7 @@
   border-radius: 999px;
   background: var(--p-surface-100);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .inv__metric-bar { background: var(--p-surface-200); }
@@ -259,6 +263,7 @@
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .inv__table-card {
@@ -302,6 +307,7 @@
   font-weight: 600;
   color: var(--p-text-color);
   cursor: pointer;
+  @include theme.surface;
 }
 
 .inv__icon-btn:hover { background: var(--p-surface-50); }
@@ -339,12 +345,14 @@
   white-space: normal;
   max-width: 80px;
   line-height: 1.25;
+  @include theme.border;
 }
 
 :host-context(.app-dark) .inv__table thead th { border-color: var(--p-surface-300); }
 
 .inv__row {
   border-bottom: 1px solid var(--p-surface-100);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .inv__row { border-bottom-color: var(--p-surface-200); }
@@ -416,6 +424,7 @@
   border-radius: 999px;
   background: var(--p-surface-200);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .inv__battery-bar { background: var(--p-surface-300); }
@@ -455,6 +464,7 @@
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 8px;
+  @include theme.surface;
 }
 
 .inv__row-action:hover {
@@ -471,6 +481,7 @@
   justify-content: space-between;
   padding: 14px 20px;
   border-top: 1px solid var(--p-surface-100);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .inv__table-footer { border-top-color: var(--p-surface-200); }
@@ -493,6 +504,7 @@
   border: 1px solid var(--p-surface-200);
   background: var(--p-surface-0);
   cursor: pointer;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .inv__pager button {
@@ -520,6 +532,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .inv__maintenance,
@@ -610,6 +623,7 @@
   padding: 8px 12px;
   background: var(--p-surface-50);
   border-radius: 10px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .inv__quick-portal { background: var(--p-surface-200); }
