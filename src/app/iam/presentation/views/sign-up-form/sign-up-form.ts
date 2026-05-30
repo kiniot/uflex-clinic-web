@@ -32,6 +32,7 @@ import {
 import { SubscriptionTier } from '../../../../subscription/domain/model/subscription-tier.entity';
 
 type SignUpStep = 'plan' | 'account' | 'clinic';
+type EntryStepParam = 'account' | null;
 
 @Component({
   selector: 'app-sign-up-form',
@@ -76,7 +77,8 @@ export class SignUpForm extends BaseForm implements OnInit {
   readonly selectedGrandTotal = this.subscriptionStore.selectedGrandTotal;
   readonly normalizedRequestedTotalKits = this.subscriptionStore.normalizedRequestedTotalKits;
   readonly additionalKitCount = this.subscriptionStore.additionalKitCount;
-  readonly canContinueWithSelfServeSelection = this.subscriptionStore.canContinueWithSelfServeSelection;
+  readonly canContinueWithSelfServeSelection =
+    this.subscriptionStore.canContinueWithSelfServeSelection;
 
   accountForm = new FormGroup(
     {
@@ -131,6 +133,15 @@ export class SignUpForm extends BaseForm implements OnInit {
       currency: this.route.snapshot.queryParamMap.get('currency'),
       kits: this.route.snapshot.queryParamMap.get('kits'),
     });
+
+    if (
+      this.parseEntryStep(this.route.snapshot.queryParamMap.get('step')) === 'account' &&
+      this.canContinueWithSelfServeSelection()
+    ) {
+      this.currentStep.set('account');
+    }
+
+    this.syncQueryParams();
   }
 
   protected onTierSelected(slug: PublicSubscriptionTierSlug) {
@@ -159,6 +170,7 @@ export class SignUpForm extends BaseForm implements OnInit {
   protected continueToAccountStep() {
     if (!this.canContinueWithSelfServeSelection()) return;
     this.currentStep.set('account');
+    this.syncQueryParams();
   }
 
   protected onPlanCta(tier: SubscriptionTier) {
@@ -184,19 +196,26 @@ export class SignUpForm extends BaseForm implements OnInit {
 
   protected editPlanSelection() {
     this.currentStep.set('plan');
+    this.syncQueryParams();
   }
 
   protected goBackFromAccountStep() {
     this.currentStep.set('plan');
+    this.syncQueryParams();
   }
 
   protected goBackToAccountStep() {
     this.currentStep.set('account');
+    this.syncQueryParams();
   }
 
   protected async performSignUp() {
     this.accountForm.markAllAsTouched();
-    if (this.accountForm.invalid || this.isSubmitting() || !this.canContinueWithSelfServeSelection()) {
+    if (
+      this.accountForm.invalid ||
+      this.isSubmitting() ||
+      !this.canContinueWithSelfServeSelection()
+    ) {
       return;
     }
 
@@ -213,6 +232,7 @@ export class SignUpForm extends BaseForm implements OnInit {
       await this.iamStore.signIn(this.currentCredentialsCommand(), this.router, null);
       this.clinicForm.patchValue({ email: this.accountForm.value.email! });
       this.currentStep.set('clinic');
+      this.syncQueryParams();
       this.messageService.add({
         severity: 'info',
         summary: this.translate.instant('signUp.notifications.accountCreatedSummary'),
@@ -233,7 +253,11 @@ export class SignUpForm extends BaseForm implements OnInit {
 
   protected async performCreateClinic() {
     this.clinicForm.markAllAsTouched();
-    if (this.clinicForm.invalid || this.isSubmitting() || !this.canContinueWithSelfServeSelection()) {
+    if (
+      this.clinicForm.invalid ||
+      this.isSubmitting() ||
+      !this.canContinueWithSelfServeSelection()
+    ) {
       return;
     }
 
@@ -372,9 +396,23 @@ export class SignUpForm extends BaseForm implements OnInit {
   private syncQueryParams() {
     const urlTree = this.router.createUrlTree([], {
       relativeTo: this.route,
-      queryParams: this.subscriptionStore.buildQueryParams(),
+      queryParams: this.buildOnboardingQueryParams(),
     });
     this.location.replaceState(this.router.serializeUrl(urlTree));
+  }
+
+  private buildOnboardingQueryParams(): Record<string, string> {
+    const queryParams = this.subscriptionStore.buildQueryParams();
+
+    if (this.currentStep() === 'account' && this.canContinueWithSelfServeSelection()) {
+      queryParams['step'] = 'account';
+    }
+
+    return queryParams;
+  }
+
+  private parseEntryStep(rawValue: string | null): EntryStepParam {
+    return rawValue === 'account' ? 'account' : null;
   }
 
   private passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {
