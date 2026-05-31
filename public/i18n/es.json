@@ -771,7 +771,7 @@
       "therapy": "Terapia",
       "planning": "Planificación",
       "device": "Dispositivos",
-      "organization": "Organización",
+      "organization": "Pacientes",
       "support": "Soporte",
       "logout": "Cerrar sesión"
     },
@@ -974,8 +974,8 @@
     }
   },
   "organizationView": {
-    "title": "Vista organizacional",
-    "subtitle": "Supervisa el desempeño clínico, gestiona cargas de trabajo y optimiza la asignación de pacientes.",
+    "title": "Pacientes",
+    "subtitle": "Revisa pacientes entrantes, equilibra la carga clínica y coordina asignaciones.",
     "summary": {
       "totalStaff": "Personal total",
       "avgProductivity": "Productividad prom."

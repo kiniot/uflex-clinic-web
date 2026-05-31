@@ -771,7 +771,7 @@
       "therapy": "Therapy",
       "planning": "Planning",
       "device": "Device",
-      "organization": "Organization",
+      "organization": "Patients",
       "support": "Support",
       "logout": "Logout"
     },
@@ -974,8 +974,8 @@
     }
   },
   "organizationView": {
-    "title": "Organization View",
-    "subtitle": "Oversee clinical performance, manage caseloads, and optimize patient allocation.",
+    "title": "Patients",
+    "subtitle": "Review incoming patients, balance clinician caseloads, and coordinate assignments.",
     "summary": {
       "totalStaff": "Total Staff",
       "avgProductivity": "Avg. Productivity"
