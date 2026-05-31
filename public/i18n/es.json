@@ -26,6 +26,15 @@
     "physiotherapist": "Fisioterapeuta",
     "clinicAdmin": "Administrador de Clínica"
   },
+  "countries": {
+    "peru": "Perú",
+    "chile": "Chile",
+    "colombia": "Colombia",
+    "ecuador": "Ecuador",
+    "mexico": "México",
+    "argentina": "Argentina",
+    "unitedStates": "Estados Unidos"
+  },
   "clinicAdmin": {
     "brand": {
       "name": "uFlex",
@@ -683,33 +692,72 @@
     },
     "clinicStep": {
       "title": "Registra tu clínica",
-      "subtitle": "Completa la información de la clínica para activar el checkout de tu suscripción.",
+      "subtitle": "Completa la información de la clínica y su dirección de envío para activar el checkout de tu suscripción.",
+      "identity": {
+        "title": "Datos de la clínica",
+        "subtitle": "Usaremos estos datos para identificar tu organización."
+      },
+      "contact": {
+        "title": "Contacto principal",
+        "subtitle": "Este será el canal de contacto para la clínica."
+      },
       "legalName": {
         "label": "Razón social",
-        "placeholder": "Ingresa la razón social de la clínica"
+        "placeholder": "Razón social de la clínica"
       },
       "commercialName": {
         "label": "Nombre comercial",
-        "placeholder": "Ingresa el nombre comercial de la clínica"
+        "placeholder": "Nombre comercial"
       },
       "ruc": {
         "label": "RUC",
-        "placeholder": "Identificador tributario de 11 dígitos",
+        "placeholder": "RUC de 11 dígitos",
         "error": "Ingresa un RUC válido de 11 dígitos."
       },
       "email": {
         "label": "Correo de la clínica",
-        "placeholder": "Ingresa el correo de la clínica"
+        "placeholder": "Correo principal"
       },
       "countryCode": {
-        "label": "Código de país",
-        "placeholder": "ej. +51",
-        "error": "Ingresa un código internacional válido."
+        "label": "País / código",
+        "placeholder": "Selecciona un país",
+        "error": "Selecciona un código internacional válido."
       },
       "phoneNumber": {
         "label": "Número de teléfono",
-        "placeholder": "Ingresa el teléfono de la clínica",
+        "placeholder": "Número de teléfono",
         "error": "Ingresa un número de teléfono válido."
+      },
+      "address": {
+        "title": "Dirección de envío",
+        "subtitle": "Usaremos esta dirección para la entrega de los kits IoT de la clínica.",
+        "countryCode": {
+          "label": "País",
+          "placeholder": "Selecciona un país",
+          "error": "Selecciona un país válido."
+        },
+        "region": {
+          "label": "Región / Estado",
+          "placeholder": "Región o estado"
+        },
+        "city": {
+          "label": "Ciudad",
+          "placeholder": "Ciudad"
+        },
+        "addressLine1": {
+          "label": "Dirección principal",
+          "placeholder": "Calle, número o avenida"
+        },
+        "addressLine2": {
+          "label": "Dirección complementaria",
+          "labelOptional": "Dirección complementaria (opcional)",
+          "placeholder": "Piso, oficina o referencia"
+        },
+        "postalCode": {
+          "label": "Código postal",
+          "labelOptional": "Código postal (opcional)",
+          "placeholder": "Código postal"
+        }
       },
       "back": "Volver",
       "submit": "Crear clínica y continuar al pago",
