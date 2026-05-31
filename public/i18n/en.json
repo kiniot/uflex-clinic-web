@@ -26,6 +26,15 @@
     "physiotherapist": "Physiotherapist",
     "clinicAdmin": "Clinic Admin"
   },
+  "countries": {
+    "peru": "Peru",
+    "chile": "Chile",
+    "colombia": "Colombia",
+    "ecuador": "Ecuador",
+    "mexico": "Mexico",
+    "argentina": "Argentina",
+    "unitedStates": "United States"
+  },
   "clinicAdmin": {
     "brand": {
       "name": "uFlex",
@@ -683,33 +692,72 @@
     },
     "clinicStep": {
       "title": "Register your clinic",
-      "subtitle": "Complete the clinic information to activate the subscription checkout.",
+      "subtitle": "Complete the clinic information and shipping address to activate the subscription checkout.",
+      "identity": {
+        "title": "Clinic details",
+        "subtitle": "We will use these details to identify your organization."
+      },
+      "contact": {
+        "title": "Primary contact",
+        "subtitle": "This will be the clinic's main contact channel."
+      },
       "legalName": {
         "label": "Legal Name",
-        "placeholder": "Enter the clinic's legal name"
+        "placeholder": "Clinic legal name"
       },
       "commercialName": {
         "label": "Commercial Name",
-        "placeholder": "Enter the clinic's commercial name"
+        "placeholder": "Commercial name"
       },
       "ruc": {
         "label": "RUC",
-        "placeholder": "11-digit tax id",
+        "placeholder": "11-digit tax ID",
         "error": "Enter a valid 11-digit RUC."
       },
       "email": {
         "label": "Clinic Email",
-        "placeholder": "Enter the clinic email"
+        "placeholder": "Primary email"
       },
       "countryCode": {
-        "label": "Country Code",
-        "placeholder": "e.g. +51",
-        "error": "Enter a valid international code."
+        "label": "Country / code",
+        "placeholder": "Select a country",
+        "error": "Select a valid international code."
       },
       "phoneNumber": {
         "label": "Phone Number",
-        "placeholder": "Enter the clinic phone number",
+        "placeholder": "Phone number",
         "error": "Enter a valid phone number."
+      },
+      "address": {
+        "title": "Shipping address",
+        "subtitle": "We will use this address to deliver the clinic's IoT kits.",
+        "countryCode": {
+          "label": "Country",
+          "placeholder": "Select a country",
+          "error": "Select a valid country."
+        },
+        "region": {
+          "label": "Region / State",
+          "placeholder": "Region or state"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "City"
+        },
+        "addressLine1": {
+          "label": "Primary address line",
+          "placeholder": "Street, avenue, or number"
+        },
+        "addressLine2": {
+          "label": "Secondary address line",
+          "labelOptional": "Secondary address line (optional)",
+          "placeholder": "Floor, office, or landmark"
+        },
+        "postalCode": {
+          "label": "Postal Code",
+          "labelOptional": "Postal Code (optional)",
+          "placeholder": "Postal code"
+        }
       },
       "back": "Back",
       "submit": "Create clinic and continue to payment",
