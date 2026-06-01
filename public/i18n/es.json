@@ -1239,6 +1239,8 @@
       "fields": {
         "name": "Nombre de la rutina",
         "order": "Orden",
+        "orderPositiveError": "Usa un orden mayor o igual a 1.",
+        "orderUniqueError": "Ese orden ya esta en uso.",
         "day": "Día de la semana",
         "time": "Hora programada"
       },
@@ -1254,10 +1256,21 @@
       "itemLabel": "Serie",
       "fields": {
         "rom": "Rango de movimiento (deg)",
+        "romShort": "Rango de mov. (grados)",
         "repetitions": "Repeticiones",
         "duration": "Duración (seg)",
         "rest": "Descanso (seg)"
       }
+    },
+    "confirm": {
+      "activateTitle": "Activar plan",
+      "activateBody": "El plan {{plan}} pasara a estado activo y quedara listo para su ejecucion clinica.",
+      "completeTitle": "Completar plan",
+      "completeBody": "El plan {{plan}} se marcara como completado para {{patient}}.",
+      "cancelTitle": "Cancelar plan",
+      "cancelBody": "El plan {{plan}} dejara de estar disponible para {{patient}}. Esta accion puede afectar su programacion.",
+      "deleteTitle": "Eliminar plan",
+      "deleteBody": "Se eliminara el plan {{plan}} del espacio clinico de {{patient}}. Esta accion no se puede deshacer."
     },
     "catalog": {
       "title": "Catálogo de ejercicios",
@@ -1287,10 +1300,20 @@
       "completeSuccessDetail": "El plan seleccionado fue marcado como completado.",
       "cancelSuccessSummary": "Plan de tratamiento cancelado",
       "cancelSuccessDetail": "El plan seleccionado fue cancelado.",
+      "routineOrderErrorSummary": "Corrige el orden de las rutinas",
+      "routineOrderErrorDetail": "Cada rutina debe tener un orden unico y valido antes de guardar el plan.",
       "saveErrorSummary": "No se pudo actualizar el plan",
       "saveErrorDetail": "No pudimos guardar el plan de tratamiento en este momento. Inténtalo nuevamente.",
       "actionErrorSummary": "No se pudo completar la acción",
       "actionErrorDetail": "No pudimos completar esa acción del plan de tratamiento en este momento. Inténtalo nuevamente."
+    }
+  },
+  "shared": {
+    "confirmAction": {
+      "title": "Confirmar accion",
+      "body": "Confirma si deseas continuar con esta accion.",
+      "confirm": "Confirmar",
+      "cancel": "Volver"
     }
   },
   "organizationView": {

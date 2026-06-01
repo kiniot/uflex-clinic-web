@@ -92,9 +92,9 @@ export class PhysiotherapistPortal {
       route: '/physiotherapist/dashboard',
     },
     {
-      label: this.translations()['physiotherapist.nav.therapy'] ?? '',
-      icon: 'pi-stopwatch',
-      route: '/physiotherapist/therapy',
+      label: this.translations()['physiotherapist.nav.organization'] ?? '',
+      icon: 'pi-users',
+      route: '/physiotherapist/patients',
     },
     {
       label: this.translations()['physiotherapist.nav.planning'] ?? '',
@@ -107,9 +107,9 @@ export class PhysiotherapistPortal {
       route: '/physiotherapist/device',
     },
     {
-      label: this.translations()['physiotherapist.nav.organization'] ?? '',
-      icon: 'pi-users',
-      route: '/physiotherapist/patients',
+      label: this.translations()['physiotherapist.nav.therapy'] ?? '',
+      icon: 'pi-stopwatch',
+      route: '/physiotherapist/therapy',
     },
   ]);
 

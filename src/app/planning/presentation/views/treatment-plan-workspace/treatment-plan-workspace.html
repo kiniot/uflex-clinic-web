@@ -23,48 +23,42 @@
   </div>
 
   <div class="workspace__header-actions">
-    @if (!isCreateMode()) {
-      @if (activeStatus() === 'SCHEDULED') {
-        <button
-          type="button"
-          class="workspace__ghost-btn"
-          [disabled]="isRunningTransition()"
-          (click)="onActivatePlan()"
-        >
-          {{ 'treatmentPlanWorkspace.actions.activate' | translate }}
-        </button>
-        <button
-          type="button"
-          class="workspace__ghost-btn workspace__ghost-btn--danger"
-          [disabled]="isRunningTransition()"
-          (click)="onCancelPlan()"
-        >
-          {{ 'treatmentPlanWorkspace.actions.cancel' | translate }}
-        </button>
-      } @else if (activeStatus() === 'ACTIVE') {
-        <button
-          type="button"
-          class="workspace__ghost-btn"
-          [disabled]="isRunningTransition()"
-          (click)="onCompletePlan()"
-        >
-          {{ 'treatmentPlanWorkspace.actions.complete' | translate }}
-        </button>
-        <button
-          type="button"
-          class="workspace__ghost-btn workspace__ghost-btn--danger"
-          [disabled]="isRunningTransition()"
-          (click)="onCancelPlan()"
-        >
-          {{ 'treatmentPlanWorkspace.actions.cancel' | translate }}
-        </button>
-      }
-
+    @if (canShowActivateAction()) {
+      <button
+        type="button"
+        class="workspace__ghost-btn"
+        [disabled]="isRunningTransition()"
+        (click)="onRequestPlanAction('activate')"
+      >
+        {{ 'treatmentPlanWorkspace.actions.activate' | translate }}
+      </button>
+    }
+    @if (canShowCompleteAction()) {
+      <button
+        type="button"
+        class="workspace__ghost-btn"
+        [disabled]="isRunningTransition()"
+        (click)="onRequestPlanAction('complete')"
+      >
+        {{ 'treatmentPlanWorkspace.actions.complete' | translate }}
+      </button>
+    }
+    @if (canShowCancelAction()) {
       <button
         type="button"
         class="workspace__ghost-btn workspace__ghost-btn--danger"
         [disabled]="isRunningTransition()"
-        (click)="onDeletePlan()"
+        (click)="onRequestPlanAction('cancel')"
+      >
+        {{ 'treatmentPlanWorkspace.actions.cancel' | translate }}
+      </button>
+    }
+    @if (canShowDeleteAction()) {
+      <button
+        type="button"
+        class="workspace__ghost-btn workspace__ghost-btn--danger"
+        [disabled]="isRunningTransition()"
+        (click)="onRequestPlanAction('delete')"
       >
         {{ 'treatmentPlanWorkspace.actions.delete' | translate }}
       </button>
@@ -160,6 +154,8 @@
           <article
             class="routine-card"
             [class.routine-card--active]="selectedRoutineLocalKey() === routine.localKey"
+            [class.routine-card--entering]="routine.isEntering"
+            [class.routine-card--leaving]="routine.isLeaving"
             [attr.aria-pressed]="selectedRoutineLocalKey() === routine.localKey"
             tabindex="0"
             (click)="onSelectRoutine(routine.localKey)"
@@ -192,11 +188,12 @@
                 <input
                   pInputText
                   type="text"
-                  [(ngModel)]="routine.name"
+                  [ngModel]="routine.name"
                   [ngModelOptions]="{ standalone: true }"
                   [disabled]="!canEditStructure()"
                   [placeholder]="'treatmentPlanWorkspace.routine.placeholders.name' | translate"
                   (click)="onSelectRoutine(routine.localKey)"
+                  (ngModelChange)="onRoutineFieldChange(routine.localKey, 'name', $event)"
                 />
               </div>
 
@@ -206,23 +203,32 @@
                   pInputText
                   type="number"
                   min="1"
-                  [(ngModel)]="routine.order"
+                  [ngModel]="routine.order"
                   [ngModelOptions]="{ standalone: true }"
                   [disabled]="!canEditStructure()"
                   (click)="onSelectRoutine(routine.localKey)"
+                  (ngModelChange)="onRoutineFieldChange(routine.localKey, 'order', $event)"
                 />
+                @if (routineOrderErrorKey(routine.order, routine.localKey)) {
+                  <small class="workspace__field-error">
+                    {{ routineOrderErrorKey(routine.order, routine.localKey) | translate }}
+                  </small>
+                }
               </div>
 
               <div class="workspace__field">
                 <label>{{ 'treatmentPlanWorkspace.routine.fields.day' | translate }}</label>
                 <p-select
-                  [(ngModel)]="routine.scheduleDayOfWeek"
+                  [ngModel]="routine.scheduleDayOfWeek"
                   [ngModelOptions]="{ standalone: true }"
                   [options]="dayOptions()"
                   optionLabel="label"
                   optionValue="value"
                   [disabled]="!canEditStructure()"
                   (onFocus)="onSelectRoutine(routine.localKey)"
+                  (ngModelChange)="
+                    onRoutineFieldChange(routine.localKey, 'scheduleDayOfWeek', $event)
+                  "
                 />
               </div>
 
@@ -231,10 +237,11 @@
                 <input
                   pInputText
                   type="time"
-                  [(ngModel)]="routine.scheduleTime"
+                  [ngModel]="routine.scheduleTime"
                   [ngModelOptions]="{ standalone: true }"
                   [disabled]="!canEditStructure()"
                   (click)="onSelectRoutine(routine.localKey)"
+                  (ngModelChange)="onRoutineFieldChange(routine.localKey, 'scheduleTime', $event)"
                 />
               </div>
             </div>
@@ -260,7 +267,11 @@
               } @else {
                 <div class="routine-card__series-list">
                   @for (series of routine.exerciseSeries; track trackSeries($index, series)) {
-                    <article class="series-card">
+                    <article
+                      class="series-card"
+                      [class.series-card--entering]="series.isEntering"
+                      [class.series-card--leaving]="series.isLeaving"
+                    >
                       <header class="series-card__header">
                         <div class="series-card__title-block">
                           <span class="series-card__eyebrow">
@@ -287,15 +298,23 @@
                       <div class="series-card__params">
                         <div class="workspace__field">
                           <label>{{
-                            'treatmentPlanWorkspace.series.fields.rom' | translate
+                            'treatmentPlanWorkspace.series.fields.romShort' | translate
                           }}</label>
                           <input
                             pInputText
                             type="number"
                             min="0"
-                            [(ngModel)]="series.rangeOfMotionDegrees"
+                            [ngModel]="series.rangeOfMotionDegrees"
                             [ngModelOptions]="{ standalone: true }"
                             [disabled]="!canEditStructure()"
+                            (ngModelChange)="
+                              onSeriesFieldChange(
+                                routine.localKey,
+                                series.localKey,
+                                'rangeOfMotionDegrees',
+                                $event
+                              )
+                            "
                           />
                         </div>
                         <div class="workspace__field">
@@ -306,9 +325,17 @@
                             pInputText
                             type="number"
                             min="1"
-                            [(ngModel)]="series.repetitions"
+                            [ngModel]="series.repetitions"
                             [ngModelOptions]="{ standalone: true }"
                             [disabled]="!canEditStructure()"
+                            (ngModelChange)="
+                              onSeriesFieldChange(
+                                routine.localKey,
+                                series.localKey,
+                                'repetitions',
+                                $event
+                              )
+                            "
                           />
                         </div>
                         <div class="workspace__field">
@@ -319,9 +346,17 @@
                             pInputText
                             type="number"
                             min="0"
-                            [(ngModel)]="series.durationSeconds"
+                            [ngModel]="series.durationSeconds"
                             [ngModelOptions]="{ standalone: true }"
                             [disabled]="!canEditStructure()"
+                            (ngModelChange)="
+                              onSeriesFieldChange(
+                                routine.localKey,
+                                series.localKey,
+                                'durationSeconds',
+                                $event
+                              )
+                            "
                           />
                         </div>
                         <div class="workspace__field">
@@ -332,9 +367,17 @@
                             pInputText
                             type="number"
                             min="0"
-                            [(ngModel)]="series.restDurationSeconds"
+                            [ngModel]="series.restDurationSeconds"
                             [ngModelOptions]="{ standalone: true }"
                             [disabled]="!canEditStructure()"
+                            (ngModelChange)="
+                              onSeriesFieldChange(
+                                routine.localKey,
+                                series.localKey,
+                                'restDurationSeconds',
+                                $event
+                              )
+                            "
                           />
                         </div>
                       </div>
@@ -443,3 +486,16 @@
     }
   </aside>
 </section>
+
+<app-confirm-action-dialog
+  [(visible)]="confirmActionVisible"
+  [titleKey]="confirmDialogTitleKey()"
+  [messageKey]="confirmDialogMessageKey()"
+  [messageParams]="{ patient: patient()?.fullName ?? '', plan: form.controls.name.value || '' }"
+  [confirmLabelKey]="confirmDialogActionLabelKey()"
+  [tone]="confirmDialogTone()"
+  [iconClass]="confirmDialogIconClass()"
+  [pending]="isRunningTransition()"
+  (confirmed)="onConfirmPlanAction()"
+  (closed)="onCloseConfirmAction()"
+/>
