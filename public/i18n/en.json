@@ -1110,6 +1110,66 @@
       "ACTIVE": "Active",
       "COMPLETED": "Completed",
       "CANCELED": "Canceled"
+    },
+    "notifications": {
+      "dischargeSuccessSummary": "Patient updated",
+      "dischargeSuccessDetail": "{{name}} was marked as discharged.",
+      "dischargeErrorSummary": "Patient update failed",
+      "dischargeErrorDetail": "We could not discharge this patient right now. Please try again."
+    }
+  },
+  "registerPatientView": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "newPatient": "Register patient"
+    },
+    "eyebrow": "New Patient Intake",
+    "title": "Register patient",
+    "subtitle": "Create the patient profile inside your clinic so you can immediately continue with treatment planning.",
+    "actions": {
+      "cancel": "Cancel",
+      "register": "Register patient"
+    },
+    "genderOptions": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "OTHER": "Other"
+    },
+    "identity": {
+      "title": "Patient identity",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "dni": "DNI",
+      "birthDate": "Birth date",
+      "gender": "Gender",
+      "firstNamePlaceholder": "Ignacio",
+      "lastNamePlaceholder": "Mestanza",
+      "dniPlaceholder": "72326004"
+    },
+    "contact": {
+      "title": "Contact details",
+      "email": "Email",
+      "countryCode": "Country code",
+      "phoneNumber": "Phone number",
+      "emailPlaceholder": "patient@example.com",
+      "countryCodePlaceholder": "+51",
+      "phoneNumberPlaceholder": "958273817"
+    },
+    "clinical": {
+      "title": "Clinical context",
+      "medicalCondition": "Medical condition",
+      "medicalConditionPlaceholder": "Forearm fracture recovery"
+    },
+    "insight": {
+      "title": "Assignment flow",
+      "body": "Patients registered from this workspace are created in your clinic and assigned to your caseload automatically.",
+      "assignedToYou": "Assigned to you after registration"
+    },
+    "notifications": {
+      "successSummary": "Patient registered",
+      "successDetail": "{{name}} is now available in your caseload.",
+      "errorSummary": "Registration failed",
+      "errorDetail": "We could not register the patient right now. Please review the information and try again."
     }
   },
   "treatmentPlanWorkspace": {
@@ -1135,6 +1195,33 @@
       "status": "Status",
       "startsAt": "Starts at",
       "endsAt": "Ends at"
+    },
+    "statusOptions": {
+      "SCHEDULED": "Scheduled",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELED": "Canceled"
+    },
+    "dayOptions": {
+      "MONDAY": "Monday",
+      "TUESDAY": "Tuesday",
+      "WEDNESDAY": "Wednesday",
+      "THURSDAY": "Thursday",
+      "FRIDAY": "Friday",
+      "SATURDAY": "Saturday",
+      "SUNDAY": "Sunday"
+    },
+    "movementLabels": {
+      "PRONATION": "Pronation",
+      "SUPINATION": "Supination",
+      "FLEXION": "Flexion",
+      "EXTENSION": "Extension",
+      "ELBOW": "Elbow",
+      "WRIST": "Wrist"
+    },
+    "bodyPartLabels": {
+      "ELBOW": "Elbow",
+      "WRIST": "Wrist"
     },
     "placeholders": {
       "name": "Forearm mobility plan"
@@ -1178,6 +1265,24 @@
       "noRoutineSelected": "Select a routine first",
       "videoRef": "Video reference",
       "add": "Add to routine"
+    },
+    "notifications": {
+      "createSuccessSummary": "Treatment plan created",
+      "createSuccessDetail": "The treatment plan is now available for {{patient}}.",
+      "saveSuccessSummary": "Treatment plan updated",
+      "saveSuccessDetail": "Your treatment plan changes were saved successfully.",
+      "deleteSuccessSummary": "Treatment plan deleted",
+      "deleteSuccessDetail": "The treatment plan was removed from the patient workspace.",
+      "activateSuccessSummary": "Treatment plan activated",
+      "activateSuccessDetail": "The selected plan is now active.",
+      "completeSuccessSummary": "Treatment plan completed",
+      "completeSuccessDetail": "The selected plan was marked as completed.",
+      "cancelSuccessSummary": "Treatment plan canceled",
+      "cancelSuccessDetail": "The selected plan was canceled.",
+      "saveErrorSummary": "Treatment plan update failed",
+      "saveErrorDetail": "We could not save the treatment plan right now. Please try again.",
+      "actionErrorSummary": "Treatment plan action failed",
+      "actionErrorDetail": "We could not complete that treatment plan action right now. Please try again."
     }
   },
   "organizationView": {

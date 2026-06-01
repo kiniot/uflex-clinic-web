@@ -1,5 +1,7 @@
 <nav class="patient-detail__breadcrumb" aria-label="Breadcrumb">
-  <a routerLink="/physiotherapist/patients">{{ 'patientDetail.breadcrumb.patients' | translate }}</a>
+  <a routerLink="/physiotherapist/patients">{{
+    'patientDetail.breadcrumb.patients' | translate
+  }}</a>
   <i class="pi pi-angle-right" aria-hidden="true"></i>
   <span>{{ patient()?.fullName ?? ('patientDetail.breadcrumb.loading' | translate) }}</span>
 </nav>
@@ -19,8 +21,12 @@
     <div class="patient-detail__header-text">
       <h1 class="patient-detail__title">{{ patient()!.fullName }}</h1>
       <p class="patient-detail__subtitle">{{ patient()!.medicalCondition }}</p>
-      <span class="patient-detail__status patient-detail__status--{{ patient()!.status.toLowerCase().replace('_', '-') }}">
-        {{ ('patientDetail.status.' + patient()!.status) | translate }}
+      <span
+        class="patient-detail__status patient-detail__status--{{
+          patient()!.status.toLowerCase().replace('_', '-')
+        }}"
+      >
+        {{ 'patientDetail.status.' + patient()!.status | translate }}
       </span>
     </div>
 
@@ -30,6 +36,7 @@
       severity="secondary"
       [outlined]="true"
       class="patient-detail__cta"
+      [loading]="isDischargingPatient()"
       [disabled]="patient()!.status === 'DISCHARGED' || isDischargingPatient()"
       (click)="onDischargePatient()"
     >
@@ -57,11 +64,15 @@
         </div>
         <div>
           <span class="detail-card__label">{{ 'patientDetail.fields.gender' | translate }}</span>
-          <strong class="detail-card__value">{{ ('patientDetail.gender.' + patient()!.gender) | translate }}</strong>
+          <strong class="detail-card__value">{{
+            'patientDetail.gender.' + patient()!.gender | translate
+          }}</strong>
         </div>
         <div>
           <span class="detail-card__label">{{ 'patientDetail.fields.birthDate' | translate }}</span>
-          <strong class="detail-card__value">{{ patient()!.birthDate | date: 'mediumDate' }}</strong>
+          <strong class="detail-card__value">{{
+            patient()!.birthDate | date: 'mediumDate'
+          }}</strong>
         </div>
       </div>
     </article>
@@ -80,7 +91,9 @@
         </div>
         <div>
           <span class="detail-card__label">{{ 'patientDetail.fields.phone' | translate }}</span>
-          <strong class="detail-card__value">{{ patient()!.countryCode }} {{ patient()!.phoneNumber }}</strong>
+          <strong class="detail-card__value"
+            >{{ patient()!.countryCode }} {{ patient()!.phoneNumber }}</strong
+          >
         </div>
       </div>
     </article>
@@ -94,7 +107,9 @@
       </header>
       <div class="detail-card__grid">
         <div>
-          <span class="detail-card__label">{{ 'patientDetail.fields.physiotherapist' | translate }}</span>
+          <span class="detail-card__label">{{
+            'patientDetail.fields.physiotherapist' | translate
+          }}</span>
           <strong class="detail-card__value">{{ assignedPhysiotherapistLabel() }}</strong>
         </div>
         <div>
@@ -109,13 +124,12 @@
     <header class="patient-detail__plans-header">
       <div>
         <h2 class="patient-detail__plans-title">{{ 'patientDetail.plans.title' | translate }}</h2>
-        <p class="patient-detail__plans-subtitle">{{ 'patientDetail.plans.subtitle' | translate }}</p>
+        <p class="patient-detail__plans-subtitle">
+          {{ 'patientDetail.plans.subtitle' | translate }}
+        </p>
       </div>
 
-      <a
-        routerLink="treatment-plans/new"
-        class="patient-detail__plans-cta"
-      >
+      <a routerLink="treatment-plans/new" class="patient-detail__plans-cta">
         <i class="pi pi-plus" aria-hidden="true"></i>
         <span>{{ 'patientDetail.plans.create' | translate }}</span>
       </a>
@@ -132,8 +146,12 @@
         <span class="patient-detail__plans-empty-icon" aria-hidden="true">
           <i class="pi pi-calendar-plus"></i>
         </span>
-        <h3 class="patient-detail__plans-empty-title">{{ 'patientDetail.plans.emptyTitle' | translate }}</h3>
-        <p class="patient-detail__plans-empty-body">{{ 'patientDetail.plans.emptyBody' | translate }}</p>
+        <h3 class="patient-detail__plans-empty-title">
+          {{ 'patientDetail.plans.emptyTitle' | translate }}
+        </h3>
+        <p class="patient-detail__plans-empty-body">
+          {{ 'patientDetail.plans.emptyBody' | translate }}
+        </p>
       </div>
     } @else {
       <div class="patient-detail__plans-scroll">
@@ -144,7 +162,9 @@
               <th>{{ 'patientDetail.plans.columns.status' | translate }}</th>
               <th>{{ 'patientDetail.plans.columns.period' | translate }}</th>
               <th>{{ 'patientDetail.plans.columns.routines' | translate }}</th>
-              <th class="patient-detail__plans-action-col">{{ 'patientDetail.plans.columns.action' | translate }}</th>
+              <th class="patient-detail__plans-action-col">
+                {{ 'patientDetail.plans.columns.action' | translate }}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -152,16 +172,24 @@
               <tr class="patient-detail__plans-row">
                 <td class="patient-detail__plans-name">{{ plan.name }}</td>
                 <td>
-                  <span class="patient-detail__plan-status patient-detail__plan-status--{{ plan.status.toLowerCase() }}">
-                    {{ ('patientDetail.planStatus.' + plan.status) | translate }}
+                  <span
+                    class="patient-detail__plan-status patient-detail__plan-status--{{
+                      plan.status.toLowerCase()
+                    }}"
+                  >
+                    {{ 'patientDetail.planStatus.' + plan.status | translate }}
                   </span>
                 </td>
                 <td class="patient-detail__plans-period">
-                  {{ plan.period.startsAt | date: 'mediumDate' }} - {{ plan.period.endsAt | date: 'mediumDate' }}
+                  {{ plan.period.startsAt | date: 'mediumDate' }} -
+                  {{ plan.period.endsAt | date: 'mediumDate' }}
                 </td>
                 <td class="patient-detail__plans-routines">{{ plan.routines.length }}</td>
                 <td class="patient-detail__plans-action-col">
-                  <a [routerLink]="['treatment-plans', plan.id]" class="patient-detail__plans-action">
+                  <a
+                    [routerLink]="['treatment-plans', plan.id]"
+                    class="patient-detail__plans-action"
+                  >
                     {{ 'patientDetail.plans.open' | translate }}
                   </a>
                 </td>
@@ -173,7 +201,10 @@
 
       <footer class="patient-detail__plans-footer">
         <span class="patient-detail__plans-counter">
-          {{ 'patientDetail.plans.showingCount' | translate: {visible: treatmentPlans().length, total: treatmentPlans().length} }}
+          {{
+            'patientDetail.plans.showingCount'
+              | translate: { visible: treatmentPlans().length, total: treatmentPlans().length }
+          }}
         </span>
       </footer>
     }

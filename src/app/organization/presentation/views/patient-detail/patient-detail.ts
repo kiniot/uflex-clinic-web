@@ -2,7 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { OrganizationStore } from '../../../application/organization.store';
 import { PlanningStore } from '../../../../planning/application/planning.store';
@@ -17,6 +18,8 @@ export class PatientDetail {
   private readonly route = inject(ActivatedRoute);
   private readonly organizationStore = inject(OrganizationStore);
   private readonly planningStore = inject(PlanningStore);
+  private readonly messageService = inject(MessageService);
+  private readonly translate = inject(TranslateService);
 
   private readonly patientId = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
@@ -64,6 +67,27 @@ export class PatientDetail {
   protected onDischargePatient() {
     const patientId = this.patient()?.id;
     if (!patientId || this.patient()?.status === 'DISCHARGED') return;
-    void this.organizationStore.dischargePatient(patientId);
+    void this.dischargePatient(patientId);
+  }
+
+  private async dischargePatient(patientId: string): Promise<void> {
+    try {
+      await this.organizationStore.dischargePatient(patientId);
+      this.messageService.add({
+        severity: 'success',
+        summary: this.translate.instant('patientDetail.notifications.dischargeSuccessSummary'),
+        detail: this.translate.instant('patientDetail.notifications.dischargeSuccessDetail', {
+          name: this.patient()?.fullName ?? '',
+        }),
+        life: 4000,
+      });
+    } catch (error) {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('patientDetail.notifications.dischargeErrorSummary'),
+        detail: this.translate.instant('patientDetail.notifications.dischargeErrorDetail'),
+        life: 4500,
+      });
+    }
   }
 }

@@ -1110,6 +1110,66 @@
       "ACTIVE": "Activo",
       "COMPLETED": "Completado",
       "CANCELED": "Cancelado"
+    },
+    "notifications": {
+      "dischargeSuccessSummary": "Paciente actualizado",
+      "dischargeSuccessDetail": "{{name}} fue marcado como dado de alta.",
+      "dischargeErrorSummary": "No se pudo actualizar el paciente",
+      "dischargeErrorDetail": "No pudimos dar de alta a este paciente en este momento. Inténtalo nuevamente."
+    }
+  },
+  "registerPatientView": {
+    "breadcrumb": {
+      "patients": "Pacientes",
+      "newPatient": "Registrar paciente"
+    },
+    "eyebrow": "Ingreso de nuevo paciente",
+    "title": "Registrar paciente",
+    "subtitle": "Crea el perfil del paciente dentro de tu clínica para continuar de inmediato con la planificación del tratamiento.",
+    "actions": {
+      "cancel": "Cancelar",
+      "register": "Registrar paciente"
+    },
+    "genderOptions": {
+      "MALE": "Masculino",
+      "FEMALE": "Femenino",
+      "OTHER": "Otro"
+    },
+    "identity": {
+      "title": "Identidad del paciente",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "dni": "DNI",
+      "birthDate": "Fecha de nacimiento",
+      "gender": "Género",
+      "firstNamePlaceholder": "Ignacio",
+      "lastNamePlaceholder": "Mestanza",
+      "dniPlaceholder": "72326004"
+    },
+    "contact": {
+      "title": "Datos de contacto",
+      "email": "Correo",
+      "countryCode": "Código de país",
+      "phoneNumber": "Número de teléfono",
+      "emailPlaceholder": "paciente@example.com",
+      "countryCodePlaceholder": "+51",
+      "phoneNumberPlaceholder": "958273817"
+    },
+    "clinical": {
+      "title": "Contexto clínico",
+      "medicalCondition": "Condición médica",
+      "medicalConditionPlaceholder": "Recuperación por fractura de antebrazo"
+    },
+    "insight": {
+      "title": "Flujo de asignación",
+      "body": "Los pacientes registrados desde este espacio se crean en tu clínica y quedan asignados automáticamente a tu carga.",
+      "assignedToYou": "Asignado a ti tras el registro"
+    },
+    "notifications": {
+      "successSummary": "Paciente registrado",
+      "successDetail": "{{name}} ya está disponible en tu cartera.",
+      "errorSummary": "No se pudo registrar",
+      "errorDetail": "No pudimos registrar al paciente en este momento. Revisa la información e inténtalo nuevamente."
     }
   },
   "treatmentPlanWorkspace": {
@@ -1135,6 +1195,33 @@
       "status": "Estado",
       "startsAt": "Inicio",
       "endsAt": "Fin"
+    },
+    "statusOptions": {
+      "SCHEDULED": "Programado",
+      "ACTIVE": "Activo",
+      "COMPLETED": "Completado",
+      "CANCELED": "Cancelado"
+    },
+    "dayOptions": {
+      "MONDAY": "Lunes",
+      "TUESDAY": "Martes",
+      "WEDNESDAY": "Miércoles",
+      "THURSDAY": "Jueves",
+      "FRIDAY": "Viernes",
+      "SATURDAY": "Sábado",
+      "SUNDAY": "Domingo"
+    },
+    "movementLabels": {
+      "PRONATION": "Pronación",
+      "SUPINATION": "Supinación",
+      "FLEXION": "Flexión",
+      "EXTENSION": "Extensión",
+      "ELBOW": "Codo",
+      "WRIST": "Muñeca"
+    },
+    "bodyPartLabels": {
+      "ELBOW": "Codo",
+      "WRIST": "Muñeca"
     },
     "placeholders": {
       "name": "Plan de movilidad de antebrazo"
@@ -1178,6 +1265,24 @@
       "noRoutineSelected": "Selecciona primero una rutina",
       "videoRef": "Referencia de video",
       "add": "Agregar a la rutina"
+    },
+    "notifications": {
+      "createSuccessSummary": "Plan de tratamiento creado",
+      "createSuccessDetail": "El plan de tratamiento ya está disponible para {{patient}}.",
+      "saveSuccessSummary": "Plan de tratamiento actualizado",
+      "saveSuccessDetail": "Los cambios del plan de tratamiento se guardaron correctamente.",
+      "deleteSuccessSummary": "Plan de tratamiento eliminado",
+      "deleteSuccessDetail": "El plan de tratamiento fue retirado del espacio del paciente.",
+      "activateSuccessSummary": "Plan de tratamiento activado",
+      "activateSuccessDetail": "El plan seleccionado ahora está activo.",
+      "completeSuccessSummary": "Plan de tratamiento completado",
+      "completeSuccessDetail": "El plan seleccionado fue marcado como completado.",
+      "cancelSuccessSummary": "Plan de tratamiento cancelado",
+      "cancelSuccessDetail": "El plan seleccionado fue cancelado.",
+      "saveErrorSummary": "No se pudo actualizar el plan",
+      "saveErrorDetail": "No pudimos guardar el plan de tratamiento en este momento. Inténtalo nuevamente.",
+      "actionErrorSummary": "No se pudo completar la acción",
+      "actionErrorDetail": "No pudimos completar esa acción del plan de tratamiento en este momento. Inténtalo nuevamente."
     }
   },
   "organizationView": {

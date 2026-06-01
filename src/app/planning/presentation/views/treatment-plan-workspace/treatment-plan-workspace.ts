@@ -3,7 +3,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -70,6 +71,8 @@ export class TreatmentPlanWorkspace {
   private readonly router = inject(Router);
   private readonly organizationStore = inject(OrganizationStore);
   private readonly planningStore = inject(PlanningStore);
+  private readonly messageService = inject(MessageService);
+  private readonly translate = inject(TranslateService);
 
   private routineLocalKey = 1;
   private seriesLocalKey = 1;
@@ -77,6 +80,30 @@ export class TreatmentPlanWorkspace {
   private readonly routeParams = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
   });
+  private readonly translations = toSignal(
+    this.translate.stream([
+      'treatmentPlanWorkspace.statusOptions.SCHEDULED',
+      'treatmentPlanWorkspace.statusOptions.ACTIVE',
+      'treatmentPlanWorkspace.statusOptions.COMPLETED',
+      'treatmentPlanWorkspace.statusOptions.CANCELED',
+      'treatmentPlanWorkspace.dayOptions.MONDAY',
+      'treatmentPlanWorkspace.dayOptions.TUESDAY',
+      'treatmentPlanWorkspace.dayOptions.WEDNESDAY',
+      'treatmentPlanWorkspace.dayOptions.THURSDAY',
+      'treatmentPlanWorkspace.dayOptions.FRIDAY',
+      'treatmentPlanWorkspace.dayOptions.SATURDAY',
+      'treatmentPlanWorkspace.dayOptions.SUNDAY',
+      'treatmentPlanWorkspace.movementLabels.PRONATION',
+      'treatmentPlanWorkspace.movementLabels.SUPINATION',
+      'treatmentPlanWorkspace.movementLabels.FLEXION',
+      'treatmentPlanWorkspace.movementLabels.EXTENSION',
+      'treatmentPlanWorkspace.movementLabels.ELBOW',
+      'treatmentPlanWorkspace.movementLabels.WRIST',
+      'treatmentPlanWorkspace.bodyPartLabels.ELBOW',
+      'treatmentPlanWorkspace.bodyPartLabels.WRIST',
+    ]),
+    { initialValue: {} as Record<string, string> },
+  );
 
   private readonly originalPlanSignal = signal<TreatmentPlan | null>(null);
   private readonly selectedRoutineLocalKeySignal = signal<number | null>(null);
@@ -95,36 +122,55 @@ export class TreatmentPlanWorkspace {
   protected readonly isRunningTransition = this.runningTransitionSignal.asReadonly();
   protected readonly loadingRows = [0, 1, 2];
 
-  protected readonly statusOptions: SelectOption<TreatmentPlanStatus>[] = [
-    { label: 'Scheduled', value: 'SCHEDULED' },
-    { label: 'Active', value: 'ACTIVE' },
-    { label: 'Completed', value: 'COMPLETED' },
-    { label: 'Canceled', value: 'CANCELED' },
-  ];
+  protected readonly statusOptions = computed<SelectOption<TreatmentPlanStatus>[]>(() => [
+    {
+      label: this.translations()['treatmentPlanWorkspace.statusOptions.SCHEDULED'] ?? 'Scheduled',
+      value: 'SCHEDULED',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.statusOptions.ACTIVE'] ?? 'Active',
+      value: 'ACTIVE',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.statusOptions.COMPLETED'] ?? 'Completed',
+      value: 'COMPLETED',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.statusOptions.CANCELED'] ?? 'Canceled',
+      value: 'CANCELED',
+    },
+  ]);
 
-  protected readonly dayOptions: SelectOption<TreatmentPlanDayOfWeek>[] = [
-    { label: 'Monday', value: 'MONDAY' },
-    { label: 'Tuesday', value: 'TUESDAY' },
-    { label: 'Wednesday', value: 'WEDNESDAY' },
-    { label: 'Thursday', value: 'THURSDAY' },
-    { label: 'Friday', value: 'FRIDAY' },
-    { label: 'Saturday', value: 'SATURDAY' },
-    { label: 'Sunday', value: 'SUNDAY' },
-  ];
-
-  protected readonly movementLabels: Record<string, string> = {
-    PRONATION: 'Pronation',
-    SUPINATION: 'Supination',
-    FLEXION: 'Flexion',
-    EXTENSION: 'Extension',
-    ELBOW: 'Elbow',
-    WRIST: 'Wrist',
-  };
-
-  protected readonly bodyPartLabels: Record<string, string> = {
-    ELBOW: 'Elbow',
-    WRIST: 'Wrist',
-  };
+  protected readonly dayOptions = computed<SelectOption<TreatmentPlanDayOfWeek>[]>(() => [
+    {
+      label: this.translations()['treatmentPlanWorkspace.dayOptions.MONDAY'] ?? 'Monday',
+      value: 'MONDAY',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.dayOptions.TUESDAY'] ?? 'Tuesday',
+      value: 'TUESDAY',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.dayOptions.WEDNESDAY'] ?? 'Wednesday',
+      value: 'WEDNESDAY',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.dayOptions.THURSDAY'] ?? 'Thursday',
+      value: 'THURSDAY',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.dayOptions.FRIDAY'] ?? 'Friday',
+      value: 'FRIDAY',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.dayOptions.SATURDAY'] ?? 'Saturday',
+      value: 'SATURDAY',
+    },
+    {
+      label: this.translations()['treatmentPlanWorkspace.dayOptions.SUNDAY'] ?? 'Sunday',
+      value: 'SUNDAY',
+    },
+  ]);
 
   protected readonly form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -263,6 +309,10 @@ export class TreatmentPlanWorkspace {
     void this.runTransition(async () => {
       await this.planningStore.deleteTreatmentPlan(planId);
       await this.planningStore.loadTreatmentPlansByPatient(patientId);
+      this.notifySuccess(
+        'treatmentPlanWorkspace.notifications.deleteSuccessSummary',
+        'treatmentPlanWorkspace.notifications.deleteSuccessDetail',
+      );
       await this.router.navigate(['/physiotherapist/patients', patientId]);
     });
   }
@@ -275,6 +325,10 @@ export class TreatmentPlanWorkspace {
     void this.runTransition(async () => {
       const updated = await this.planningStore.activateTreatmentPlan(planId);
       await this.afterPlanMutation(patientId, updated.id);
+      this.notifySuccess(
+        'treatmentPlanWorkspace.notifications.activateSuccessSummary',
+        'treatmentPlanWorkspace.notifications.activateSuccessDetail',
+      );
     });
   }
 
@@ -286,6 +340,10 @@ export class TreatmentPlanWorkspace {
     void this.runTransition(async () => {
       const updated = await this.planningStore.completeTreatmentPlan(planId);
       await this.afterPlanMutation(patientId, updated.id);
+      this.notifySuccess(
+        'treatmentPlanWorkspace.notifications.completeSuccessSummary',
+        'treatmentPlanWorkspace.notifications.completeSuccessDetail',
+      );
     });
   }
 
@@ -297,15 +355,21 @@ export class TreatmentPlanWorkspace {
     void this.runTransition(async () => {
       const updated = await this.planningStore.cancelTreatmentPlan(planId);
       await this.afterPlanMutation(patientId, updated.id);
+      this.notifySuccess(
+        'treatmentPlanWorkspace.notifications.cancelSuccessSummary',
+        'treatmentPlanWorkspace.notifications.cancelSuccessDetail',
+      );
     });
   }
 
   protected movementLabel(movementType: string): string {
-    return this.movementLabels[movementType] ?? movementType;
+    return (
+      this.translations()[`treatmentPlanWorkspace.movementLabels.${movementType}`] ?? movementType
+    );
   }
 
   protected bodyPartLabel(bodyPart: string): string {
-    return this.bodyPartLabels[bodyPart] ?? bodyPart;
+    return this.translations()[`treatmentPlanWorkspace.bodyPartLabels.${bodyPart}`] ?? bodyPart;
   }
 
   protected trackRoutine(index: number, routine: RoutineDraft): number {
@@ -456,6 +520,10 @@ export class TreatmentPlanWorkspace {
           'treatment-plans',
           created.id,
         ]);
+        this.notifySuccess(
+          'treatmentPlanWorkspace.notifications.createSuccessSummary',
+          'treatmentPlanWorkspace.notifications.createSuccessDetail',
+        );
         return;
       }
 
@@ -465,6 +533,15 @@ export class TreatmentPlanWorkspace {
       await this.planningStore.updateTreatmentPlan(originalPlan.id, this.buildUpdateCommand());
       await this.syncRoutineChanges(originalPlan);
       await this.afterPlanMutation(patientId, originalPlan.id);
+      this.notifySuccess(
+        'treatmentPlanWorkspace.notifications.saveSuccessSummary',
+        'treatmentPlanWorkspace.notifications.saveSuccessDetail',
+      );
+    } catch (error) {
+      this.notifyError(
+        'treatmentPlanWorkspace.notifications.saveErrorSummary',
+        'treatmentPlanWorkspace.notifications.saveErrorDetail',
+      );
     } finally {
       this.savingSignal.set(false);
     }
@@ -608,6 +685,11 @@ export class TreatmentPlanWorkspace {
     this.runningTransitionSignal.set(true);
     try {
       await action();
+    } catch (error) {
+      this.notifyError(
+        'treatmentPlanWorkspace.notifications.actionErrorSummary',
+        'treatmentPlanWorkspace.notifications.actionErrorDetail',
+      );
     } finally {
       this.runningTransitionSignal.set(false);
     }
@@ -618,5 +700,25 @@ export class TreatmentPlanWorkspace {
     const refreshed = await this.planningStore.loadTreatmentPlan(patientId, planId);
     this.originalPlanSignal.set(refreshed);
     this.patchDraftFromPlan(refreshed);
+  }
+
+  private notifySuccess(summaryKey: string, detailKey: string) {
+    this.messageService.add({
+      severity: 'success',
+      summary: this.translate.instant(summaryKey),
+      detail: this.translate.instant(detailKey, {
+        patient: this.patient()?.fullName ?? '',
+      }),
+      life: 4000,
+    });
+  }
+
+  private notifyError(summaryKey: string, detailKey: string) {
+    this.messageService.add({
+      severity: 'error',
+      summary: this.translate.instant(summaryKey),
+      detail: this.translate.instant(detailKey),
+      life: 4500,
+    });
   }
 }

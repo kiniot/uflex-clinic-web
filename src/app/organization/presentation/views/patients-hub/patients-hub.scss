@@ -190,6 +190,11 @@
   background: var(--p-surface-50);
 }
 
+.patients-page__icon-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 :host-context(.app-dark) .patients-page__icon-btn {
   background: var(--p-surface-100);
   border-color: var(--p-surface-300);

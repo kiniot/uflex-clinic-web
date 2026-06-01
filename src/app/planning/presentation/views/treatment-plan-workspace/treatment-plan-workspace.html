@@ -75,6 +75,7 @@
       type="button"
       severity="primary"
       class="workspace__primary-btn"
+      [loading]="isSaving()"
       [disabled]="isSaving()"
       (click)="onSavePlan()"
     >
@@ -105,7 +106,7 @@
       <p-select
         inputId="planStatus"
         formControlName="status"
-        [options]="statusOptions"
+        [options]="statusOptions()"
         optionLabel="label"
         optionValue="value"
         [disabled]="!isCreateMode()"
@@ -225,7 +226,7 @@
                 <p-select
                   [(ngModel)]="routine.scheduleDayOfWeek"
                   [ngModelOptions]="{ standalone: true }"
-                  [options]="dayOptions"
+                  [options]="dayOptions()"
                   optionLabel="label"
                   optionValue="value"
                   [disabled]="!canEditStructure()"

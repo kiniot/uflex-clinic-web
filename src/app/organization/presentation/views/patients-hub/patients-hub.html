@@ -25,10 +25,16 @@
       <i class="pi pi-users"></i>
     </span>
     <div class="summary-card__body">
-      <span class="summary-card__label">{{ 'patientsList.summary.totalPatients' | translate }}</span>
+      <span class="summary-card__label">{{
+        'patientsList.summary.totalPatients' | translate
+      }}</span>
       <strong class="summary-card__value">{{ patients().length }}</strong>
       <span class="summary-card__sub">
-        {{ clinic()?.commercialName ?? clinic()?.legalName ?? ('patientsList.summary.currentClinic' | translate) }}
+        {{
+          clinic()?.commercialName ??
+            clinic()?.legalName ??
+            ('patientsList.summary.currentClinic' | translate)
+        }}
       </span>
     </div>
   </article>
@@ -52,11 +58,11 @@
     <h2 class="patients-page__table-title">{{ 'patientsList.table.title' | translate }}</h2>
 
     <div class="patients-page__table-actions">
-      <button type="button" class="patients-page__icon-btn" (click)="onFilter()">
+      <button type="button" class="patients-page__icon-btn" disabled>
         <i class="pi pi-filter" aria-hidden="true"></i>
         <span>{{ 'patientsList.table.filter' | translate }}</span>
       </button>
-      <button type="button" class="patients-page__icon-btn" (click)="onExport()">
+      <button type="button" class="patients-page__icon-btn" disabled>
         <i class="pi pi-download" aria-hidden="true"></i>
         <span>{{ 'patientsList.table.export' | translate }}</span>
       </button>
@@ -83,7 +89,13 @@
       </span>
       <h3 class="patients-page__empty-title">{{ 'patientsList.empty.title' | translate }}</h3>
       <p class="patients-page__empty-body">{{ 'patientsList.empty.body' | translate }}</p>
-      <button pButton type="button" severity="primary" class="patients-page__empty-cta" (click)="onRegisterPatient()">
+      <button
+        pButton
+        type="button"
+        severity="primary"
+        class="patients-page__empty-cta"
+        (click)="onRegisterPatient()"
+      >
         <span>{{ 'patientsList.registerPatient' | translate }}</span>
       </button>
     </div>
@@ -97,7 +109,9 @@
             <th>{{ 'patientsList.columns.status' | translate }}</th>
             <th>{{ 'patientsList.columns.phone' | translate }}</th>
             <th>{{ 'patientsList.columns.email' | translate }}</th>
-            <th class="patients-page__action-col">{{ 'patientsList.columns.action' | translate }}</th>
+            <th class="patients-page__action-col">
+              {{ 'patientsList.columns.action' | translate }}
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -118,14 +132,24 @@
               </td>
               <td class="patients-page__condition">{{ patient.medicalCondition }}</td>
               <td>
-                <span class="patients-page__status patients-page__status--{{ patient.status.toLowerCase().replace('_', '-') }}">
-                  {{ ('patientsList.status.' + patient.status) | translate }}
+                <span
+                  class="patients-page__status patients-page__status--{{
+                    patient.status.toLowerCase().replace('_', '-')
+                  }}"
+                >
+                  {{ 'patientsList.status.' + patient.status | translate }}
                 </span>
               </td>
-              <td class="patients-page__contact">{{ patient.countryCode }} {{ patient.phoneNumber }}</td>
+              <td class="patients-page__contact">
+                {{ patient.countryCode }} {{ patient.phoneNumber }}
+              </td>
               <td class="patients-page__contact">{{ patient.email }}</td>
               <td class="patients-page__action-col">
-                <button type="button" class="patients-page__row-action" (click)="onOpenPatient(patient); $event.stopPropagation()">
+                <button
+                  type="button"
+                  class="patients-page__row-action"
+                  (click)="onOpenPatient(patient); $event.stopPropagation()"
+                >
                   {{ 'patientsList.viewPatient' | translate }}
                 </button>
               </td>
@@ -137,7 +161,10 @@
 
     <footer class="patients-page__footer">
       <span class="patients-page__counter">
-        {{ 'patientsList.showingCount' | translate: {visible: patients().length, total: patients().length} }}
+        {{
+          'patientsList.showingCount'
+            | translate: { visible: patients().length, total: patients().length }
+        }}
       </span>
       <div class="patients-page__pager">
         <button type="button" aria-label="prev">

@@ -30,15 +30,7 @@ export class PatientsHub implements OnInit {
   }
 
   protected onRegisterPatient() {
-    console.log('Register patient flow will be connected in the next phase');
-  }
-
-  protected onFilter() {
-    console.log('Patients filter coming soon');
-  }
-
-  protected onExport() {
-    console.log('Patients export coming soon');
+    void this.router.navigate(['/physiotherapist/patients/new']);
   }
 
   protected onOpenPatient(patient: Patient) {
