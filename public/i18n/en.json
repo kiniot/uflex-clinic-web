@@ -819,7 +819,7 @@
       "therapy": "Therapy",
       "planning": "Planning",
       "device": "Device",
-      "organization": "Organization",
+      "organization": "Patients",
       "support": "Support",
       "logout": "Logout"
     },
@@ -1021,9 +1021,281 @@
       }
     }
   },
+  "patientsList": {
+    "eyebrow": "Assigned Caseload",
+    "title": "Patients",
+    "subtitle": "Review your active caseload, monitor treatment status, and open each patient workspace for plan management.",
+    "registerPatient": "Register patient",
+    "summary": {
+      "totalPatients": "My patients",
+      "inTreatment": "In treatment",
+      "currentClinic": "Current clinic",
+      "myCaseload": "Assigned to you"
+    },
+    "table": {
+      "title": "Patient roster",
+      "filter": "Filter",
+      "export": "Export"
+    },
+    "columns": {
+      "patient": "Patient",
+      "condition": "Medical condition",
+      "status": "Status",
+      "phone": "Phone",
+      "email": "Email",
+      "action": "Action"
+    },
+    "status": {
+      "REGISTERED": "Registered",
+      "IN_TREATMENT": "In treatment",
+      "DISCHARGED": "Discharged"
+    },
+    "patientDni": "DNI:",
+    "viewPatient": "View patient",
+    "showingCount": "Showing {{visible}} of {{total}} patients",
+    "empty": {
+      "title": "No patients yet",
+      "body": "Your assigned caseload is still empty. Once patients are registered and assigned, they will appear here."
+    }
+  },
+  "patientDetail": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "loading": "Loading patient"
+    },
+    "dischargePatient": "Discharge patient",
+    "status": {
+      "REGISTERED": "Registered",
+      "IN_TREATMENT": "In treatment",
+      "DISCHARGED": "Discharged"
+    },
+    "gender": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "OTHER": "Other"
+    },
+    "cards": {
+      "identity": "Patient identity",
+      "contact": "Contact",
+      "assignment": "Assignment"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "dni": "DNI",
+      "gender": "Gender",
+      "birthDate": "Birth date",
+      "email": "Email",
+      "phone": "Phone",
+      "physiotherapist": "Assigned physiotherapist",
+      "clinic": "Clinic"
+    },
+    "plans": {
+      "title": "Treatment plans",
+      "subtitle": "Open an existing plan or create the next treatment track for this patient.",
+      "create": "Create treatment plan",
+      "open": "Open plan",
+      "showingCount": "Showing {{visible}} of {{total}} plans",
+      "emptyTitle": "No treatment plans yet",
+      "emptyBody": "Create the first treatment plan to start scheduling routines and exercise series for this patient.",
+      "columns": {
+        "name": "Plan name",
+        "status": "Status",
+        "period": "Period",
+        "routines": "Routines",
+        "action": "Action"
+      }
+    },
+    "planStatus": {
+      "SCHEDULED": "Scheduled",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELED": "Canceled"
+    },
+    "notifications": {
+      "dischargeSuccessSummary": "Patient updated",
+      "dischargeSuccessDetail": "{{name}} was marked as discharged.",
+      "dischargeErrorSummary": "Patient update failed",
+      "dischargeErrorDetail": "We could not discharge this patient right now. Please try again."
+    }
+  },
+  "registerPatientView": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "newPatient": "Register patient"
+    },
+    "eyebrow": "New Patient Intake",
+    "title": "Register patient",
+    "subtitle": "Create the patient profile inside your clinic so you can immediately continue with treatment planning.",
+    "actions": {
+      "cancel": "Cancel",
+      "register": "Register patient"
+    },
+    "genderOptions": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "OTHER": "Other"
+    },
+    "identity": {
+      "title": "Patient identity",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "dni": "DNI",
+      "birthDate": "Birth date",
+      "gender": "Gender",
+      "firstNamePlaceholder": "Ignacio",
+      "lastNamePlaceholder": "Mestanza",
+      "dniPlaceholder": "72326004"
+    },
+    "contact": {
+      "title": "Contact details",
+      "email": "Email",
+      "countryCode": "Country code",
+      "phoneNumber": "Phone number",
+      "emailPlaceholder": "patient@example.com",
+      "countryCodePlaceholder": "+51",
+      "phoneNumberPlaceholder": "958273817"
+    },
+    "clinical": {
+      "title": "Clinical context",
+      "medicalCondition": "Medical condition",
+      "medicalConditionPlaceholder": "Forearm fracture recovery"
+    },
+    "insight": {
+      "title": "Assignment flow",
+      "body": "Patients registered from this workspace are created in your clinic and assigned to your caseload automatically.",
+      "assignedToYou": "Assigned to you after registration"
+    },
+    "notifications": {
+      "successSummary": "Patient registered",
+      "successDetail": "{{name}} is now available in your caseload.",
+      "errorSummary": "Registration failed",
+      "errorDetail": "We could not register the patient right now. Please review the information and try again."
+    }
+  },
+  "treatmentPlanWorkspace": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "patient": "Patient",
+      "create": "Create treatment plan",
+      "edit": "Edit treatment plan"
+    },
+    "createTitle": "Create treatment plan",
+    "editTitle": "Treatment plan workspace",
+    "subtitle": "Build a treatment track for {{patient}} by organizing routines, schedules, and exercise series from the clinic catalog.",
+    "actions": {
+      "create": "Create treatment plan",
+      "createAndSave": "Save treatment plan",
+      "save": "Save changes",
+      "activate": "Activate",
+      "complete": "Complete",
+      "cancel": "Cancel",
+      "delete": "Delete plan"
+    },
+    "fields": {
+      "name": "Plan name",
+      "status": "Status",
+      "startsAt": "Starts at",
+      "endsAt": "Ends at"
+    },
+    "statusOptions": {
+      "SCHEDULED": "Scheduled",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELED": "Canceled"
+    },
+    "dayOptions": {
+      "MONDAY": "Monday",
+      "TUESDAY": "Tuesday",
+      "WEDNESDAY": "Wednesday",
+      "THURSDAY": "Thursday",
+      "FRIDAY": "Friday",
+      "SATURDAY": "Saturday",
+      "SUNDAY": "Sunday"
+    },
+    "movementLabels": {
+      "PRONATION": "Pronation",
+      "SUPINATION": "Supination",
+      "FLEXION": "Flexion",
+      "EXTENSION": "Extension",
+      "ELBOW": "Elbow",
+      "WRIST": "Wrist"
+    },
+    "bodyPartLabels": {
+      "ELBOW": "Elbow",
+      "WRIST": "Wrist"
+    },
+    "placeholders": {
+      "name": "Forearm mobility plan"
+    },
+    "builder": {
+      "title": "Routine builder",
+      "subtitle": "Configure the weekly structure of the treatment plan and tune each prescribed exercise series.",
+      "addRoutine": "Add routine",
+      "routine": "Routine",
+      "emptyTitle": "No routines yet",
+      "emptyBody": "Add the first routine, then select it to start attaching exercises from the catalog."
+    },
+    "routine": {
+      "fields": {
+        "name": "Routine name",
+        "order": "Order",
+        "day": "Day of week",
+        "time": "Scheduled time"
+      },
+      "placeholders": {
+        "name": "Morning mobility"
+      }
+    },
+    "series": {
+      "title": "Exercise series",
+      "selectionReady": "Selected for catalog insertions",
+      "selectHint": "Select this routine to add exercises from the catalog",
+      "empty": "No exercises added yet.",
+      "itemLabel": "Series",
+      "fields": {
+        "rom": "Range of motion (deg)",
+        "repetitions": "Repetitions",
+        "duration": "Duration (sec)",
+        "rest": "Rest (sec)"
+      }
+    },
+    "catalog": {
+      "title": "Exercise catalog",
+      "subtitle": "Choose exercises created by the clinic and add them to the selected routine. Video references are shown only as metadata for now.",
+      "selectedRoutine": "Routine {{order}} selected",
+      "noRoutineSelected": "Select a routine first",
+      "emptyTitle": "No exercises available",
+      "emptyBody": "There are no published exercises in the clinic catalog yet. Physiotherapists only select existing exercises here; they do not create them from this view.",
+      "errorTitle": "We could not load the catalog",
+      "errorBody": "The routine builder is still available, but we need the clinic exercise list before exercise series can be added.",
+      "retry": "Retry load",
+      "videoRef": "Video reference",
+      "add": "Add to routine"
+    },
+    "notifications": {
+      "catalogLoadErrorSummary": "Exercise catalog unavailable",
+      "catalogLoadErrorDetail": "We could not fetch the clinic exercise list. You can retry from the catalog panel.",
+      "createSuccessSummary": "Treatment plan created",
+      "createSuccessDetail": "The treatment plan is now available for {{patient}}.",
+      "saveSuccessSummary": "Treatment plan updated",
+      "saveSuccessDetail": "Your treatment plan changes were saved successfully.",
+      "deleteSuccessSummary": "Treatment plan deleted",
+      "deleteSuccessDetail": "The treatment plan was removed from the patient workspace.",
+      "activateSuccessSummary": "Treatment plan activated",
+      "activateSuccessDetail": "The selected plan is now active.",
+      "completeSuccessSummary": "Treatment plan completed",
+      "completeSuccessDetail": "The selected plan was marked as completed.",
+      "cancelSuccessSummary": "Treatment plan canceled",
+      "cancelSuccessDetail": "The selected plan was canceled.",
+      "saveErrorSummary": "Treatment plan update failed",
+      "saveErrorDetail": "We could not save the treatment plan right now. Please try again.",
+      "actionErrorSummary": "Treatment plan action failed",
+      "actionErrorDetail": "We could not complete that treatment plan action right now. Please try again."
+    }
+  },
   "organizationView": {
-    "title": "Organization View",
-    "subtitle": "Oversee clinical performance, manage caseloads, and optimize patient allocation.",
+    "title": "Patients",
+    "subtitle": "Review incoming patients, balance clinician caseloads, and coordinate assignments.",
     "summary": {
       "totalStaff": "Total Staff",
       "avgProductivity": "Avg. Productivity"

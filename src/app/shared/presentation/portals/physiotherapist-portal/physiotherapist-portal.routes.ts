@@ -21,7 +21,7 @@ export const physiotherapistPortalRoutes: Routes = [
       {path: 'therapy', loadChildren: therapyRoutes},
       {path: 'planning', loadChildren: planningRoutes},
       {path: 'device', loadChildren: deviceRoutes},
-      {path: 'organization', loadChildren: organizationRoutes}
+      {path: 'patients', loadChildren: organizationRoutes}
     ]
   }
 ];

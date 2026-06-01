@@ -24,7 +24,7 @@ const ROLE_LABELS: Record<string, string> = {
 /**
  * Top-level shell for the Physiotherapist portal. Wires the shared
  * AdminShell with the clinician sidebar (Dashboard, Therapy, Planning,
- * Device, Organization), the role pill in the topbar, and the avatar
+ * Device, Patients), the role pill in the topbar, and the avatar
  * profile block, then renders routed child views via <router-outlet/>.
  */
 @Component({
@@ -108,8 +108,8 @@ export class PhysiotherapistPortal {
     },
     {
       label: this.translations()['physiotherapist.nav.organization'] ?? '',
-      icon: 'pi-building',
-      route: '/physiotherapist/organization',
+      icon: 'pi-users',
+      route: '/physiotherapist/patients',
     },
   ]);
 

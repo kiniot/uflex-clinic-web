@@ -819,7 +819,7 @@
       "therapy": "Terapia",
       "planning": "Planificación",
       "device": "Dispositivos",
-      "organization": "Organización",
+      "organization": "Pacientes",
       "support": "Soporte",
       "logout": "Cerrar sesión"
     },
@@ -1021,9 +1021,281 @@
       }
     }
   },
+  "patientsList": {
+    "eyebrow": "Carga asignada",
+    "title": "Pacientes",
+    "subtitle": "Revisa tu cartera activa, monitorea el estado del tratamiento y abre el espacio de cada paciente para gestionar sus planes.",
+    "registerPatient": "Registrar paciente",
+    "summary": {
+      "totalPatients": "Mis pacientes",
+      "inTreatment": "En tratamiento",
+      "currentClinic": "Clínica actual",
+      "myCaseload": "Asignados a ti"
+    },
+    "table": {
+      "title": "Lista de pacientes",
+      "filter": "Filtrar",
+      "export": "Exportar"
+    },
+    "columns": {
+      "patient": "Paciente",
+      "condition": "Condición médica",
+      "status": "Estado",
+      "phone": "Teléfono",
+      "email": "Correo",
+      "action": "Acción"
+    },
+    "status": {
+      "REGISTERED": "Registrado",
+      "IN_TREATMENT": "En tratamiento",
+      "DISCHARGED": "Dado de alta"
+    },
+    "patientDni": "DNI:",
+    "viewPatient": "Ver paciente",
+    "showingCount": "Mostrando {{visible}} de {{total}} pacientes",
+    "empty": {
+      "title": "Aún no tienes pacientes",
+      "body": "Tu carga asignada todavía está vacía. Cuando se registren y asignen pacientes, aparecerán aquí."
+    }
+  },
+  "patientDetail": {
+    "breadcrumb": {
+      "patients": "Pacientes",
+      "loading": "Cargando paciente"
+    },
+    "dischargePatient": "Dar de alta",
+    "status": {
+      "REGISTERED": "Registrado",
+      "IN_TREATMENT": "En tratamiento",
+      "DISCHARGED": "Dado de alta"
+    },
+    "gender": {
+      "MALE": "Masculino",
+      "FEMALE": "Femenino",
+      "OTHER": "Otro"
+    },
+    "cards": {
+      "identity": "Identidad del paciente",
+      "contact": "Contacto",
+      "assignment": "Asignación"
+    },
+    "fields": {
+      "fullName": "Nombre completo",
+      "dni": "DNI",
+      "gender": "Género",
+      "birthDate": "Fecha de nacimiento",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "physiotherapist": "Fisioterapeuta asignado",
+      "clinic": "Clínica"
+    },
+    "plans": {
+      "title": "Planes de tratamiento",
+      "subtitle": "Abre un plan existente o crea el siguiente plan terapéutico para este paciente.",
+      "create": "Crear plan de tratamiento",
+      "open": "Abrir plan",
+      "showingCount": "Mostrando {{visible}} de {{total}} planes",
+      "emptyTitle": "Aún no hay planes de tratamiento",
+      "emptyBody": "Crea el primer plan de tratamiento para empezar a programar rutinas y series de ejercicios para este paciente.",
+      "columns": {
+        "name": "Nombre del plan",
+        "status": "Estado",
+        "period": "Periodo",
+        "routines": "Rutinas",
+        "action": "Acción"
+      }
+    },
+    "planStatus": {
+      "SCHEDULED": "Programado",
+      "ACTIVE": "Activo",
+      "COMPLETED": "Completado",
+      "CANCELED": "Cancelado"
+    },
+    "notifications": {
+      "dischargeSuccessSummary": "Paciente actualizado",
+      "dischargeSuccessDetail": "{{name}} fue marcado como dado de alta.",
+      "dischargeErrorSummary": "No se pudo actualizar el paciente",
+      "dischargeErrorDetail": "No pudimos dar de alta a este paciente en este momento. Inténtalo nuevamente."
+    }
+  },
+  "registerPatientView": {
+    "breadcrumb": {
+      "patients": "Pacientes",
+      "newPatient": "Registrar paciente"
+    },
+    "eyebrow": "Ingreso de nuevo paciente",
+    "title": "Registrar paciente",
+    "subtitle": "Crea el perfil del paciente dentro de tu clínica para continuar de inmediato con la planificación del tratamiento.",
+    "actions": {
+      "cancel": "Cancelar",
+      "register": "Registrar paciente"
+    },
+    "genderOptions": {
+      "MALE": "Masculino",
+      "FEMALE": "Femenino",
+      "OTHER": "Otro"
+    },
+    "identity": {
+      "title": "Identidad del paciente",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "dni": "DNI",
+      "birthDate": "Fecha de nacimiento",
+      "gender": "Género",
+      "firstNamePlaceholder": "Ignacio",
+      "lastNamePlaceholder": "Mestanza",
+      "dniPlaceholder": "72326004"
+    },
+    "contact": {
+      "title": "Datos de contacto",
+      "email": "Correo",
+      "countryCode": "Código de país",
+      "phoneNumber": "Número de teléfono",
+      "emailPlaceholder": "paciente@example.com",
+      "countryCodePlaceholder": "+51",
+      "phoneNumberPlaceholder": "958273817"
+    },
+    "clinical": {
+      "title": "Contexto clínico",
+      "medicalCondition": "Condición médica",
+      "medicalConditionPlaceholder": "Recuperación por fractura de antebrazo"
+    },
+    "insight": {
+      "title": "Flujo de asignación",
+      "body": "Los pacientes registrados desde este espacio se crean en tu clínica y quedan asignados automáticamente a tu carga.",
+      "assignedToYou": "Asignado a ti tras el registro"
+    },
+    "notifications": {
+      "successSummary": "Paciente registrado",
+      "successDetail": "{{name}} ya está disponible en tu cartera.",
+      "errorSummary": "No se pudo registrar",
+      "errorDetail": "No pudimos registrar al paciente en este momento. Revisa la información e inténtalo nuevamente."
+    }
+  },
+  "treatmentPlanWorkspace": {
+    "breadcrumb": {
+      "patients": "Pacientes",
+      "patient": "Paciente",
+      "create": "Crear plan de tratamiento",
+      "edit": "Editar plan de tratamiento"
+    },
+    "createTitle": "Crear plan de tratamiento",
+    "editTitle": "Espacio del plan de tratamiento",
+    "subtitle": "Construye un plan terapéutico para {{patient}} organizando rutinas, horarios y series de ejercicios desde el catálogo de la clínica.",
+    "actions": {
+      "create": "Crear plan de tratamiento",
+      "createAndSave": "Guardar plan de tratamiento",
+      "save": "Guardar cambios",
+      "activate": "Activar",
+      "complete": "Completar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar plan"
+    },
+    "fields": {
+      "name": "Nombre del plan",
+      "status": "Estado",
+      "startsAt": "Inicio",
+      "endsAt": "Fin"
+    },
+    "statusOptions": {
+      "SCHEDULED": "Programado",
+      "ACTIVE": "Activo",
+      "COMPLETED": "Completado",
+      "CANCELED": "Cancelado"
+    },
+    "dayOptions": {
+      "MONDAY": "Lunes",
+      "TUESDAY": "Martes",
+      "WEDNESDAY": "Miércoles",
+      "THURSDAY": "Jueves",
+      "FRIDAY": "Viernes",
+      "SATURDAY": "Sábado",
+      "SUNDAY": "Domingo"
+    },
+    "movementLabels": {
+      "PRONATION": "Pronación",
+      "SUPINATION": "Supinación",
+      "FLEXION": "Flexión",
+      "EXTENSION": "Extensión",
+      "ELBOW": "Codo",
+      "WRIST": "Muñeca"
+    },
+    "bodyPartLabels": {
+      "ELBOW": "Codo",
+      "WRIST": "Muñeca"
+    },
+    "placeholders": {
+      "name": "Plan de movilidad de antebrazo"
+    },
+    "builder": {
+      "title": "Constructor de rutinas",
+      "subtitle": "Configura la estructura semanal del plan y ajusta cada serie de ejercicios prescrita.",
+      "addRoutine": "Agregar rutina",
+      "routine": "Rutina",
+      "emptyTitle": "Aún no hay rutinas",
+      "emptyBody": "Agrega la primera rutina y luego selecciónala para empezar a adjuntar ejercicios desde el catálogo."
+    },
+    "routine": {
+      "fields": {
+        "name": "Nombre de la rutina",
+        "order": "Orden",
+        "day": "Día de la semana",
+        "time": "Hora programada"
+      },
+      "placeholders": {
+        "name": "Movilidad matutina"
+      }
+    },
+    "series": {
+      "title": "Series de ejercicios",
+      "selectionReady": "Lista para inserciones desde el catálogo",
+      "selectHint": "Selecciona esta rutina para agregar ejercicios desde el catálogo",
+      "empty": "Aún no se agregaron ejercicios.",
+      "itemLabel": "Serie",
+      "fields": {
+        "rom": "Rango de movimiento (deg)",
+        "repetitions": "Repeticiones",
+        "duration": "Duración (seg)",
+        "rest": "Descanso (seg)"
+      }
+    },
+    "catalog": {
+      "title": "Catálogo de ejercicios",
+      "subtitle": "Elige ejercicios creados por la clínica y agrégalos a la rutina seleccionada. Las referencias de video se muestran solo como metadato por ahora.",
+      "selectedRoutine": "Rutina {{order}} seleccionada",
+      "noRoutineSelected": "Selecciona primero una rutina",
+      "emptyTitle": "No hay ejercicios disponibles",
+      "emptyBody": "Todavía no hay ejercicios publicados en el catálogo de la clínica. El fisioterapeuta solo puede seleccionar ejercicios existentes; no los crea desde esta vista.",
+      "errorTitle": "No pudimos cargar el catálogo",
+      "errorBody": "La rutina sigue disponible, pero necesitamos recuperar la lista de ejercicios de la clínica para poder crear series.",
+      "retry": "Reintentar carga",
+      "videoRef": "Referencia de video",
+      "add": "Agregar a la rutina"
+    },
+    "notifications": {
+      "catalogLoadErrorSummary": "No se pudo cargar el catálogo",
+      "catalogLoadErrorDetail": "No pudimos obtener la lista de ejercicios de la clínica. Puedes reintentar desde el panel del catálogo.",
+      "createSuccessSummary": "Plan de tratamiento creado",
+      "createSuccessDetail": "El plan de tratamiento ya está disponible para {{patient}}.",
+      "saveSuccessSummary": "Plan de tratamiento actualizado",
+      "saveSuccessDetail": "Los cambios del plan de tratamiento se guardaron correctamente.",
+      "deleteSuccessSummary": "Plan de tratamiento eliminado",
+      "deleteSuccessDetail": "El plan de tratamiento fue retirado del espacio del paciente.",
+      "activateSuccessSummary": "Plan de tratamiento activado",
+      "activateSuccessDetail": "El plan seleccionado ahora está activo.",
+      "completeSuccessSummary": "Plan de tratamiento completado",
+      "completeSuccessDetail": "El plan seleccionado fue marcado como completado.",
+      "cancelSuccessSummary": "Plan de tratamiento cancelado",
+      "cancelSuccessDetail": "El plan seleccionado fue cancelado.",
+      "saveErrorSummary": "No se pudo actualizar el plan",
+      "saveErrorDetail": "No pudimos guardar el plan de tratamiento en este momento. Inténtalo nuevamente.",
+      "actionErrorSummary": "No se pudo completar la acción",
+      "actionErrorDetail": "No pudimos completar esa acción del plan de tratamiento en este momento. Inténtalo nuevamente."
+    }
+  },
   "organizationView": {
-    "title": "Vista organizacional",
-    "subtitle": "Supervisa el desempeño clínico, gestiona cargas de trabajo y optimiza la asignación de pacientes.",
+    "title": "Pacientes",
+    "subtitle": "Revisa pacientes entrantes, equilibra la carga clínica y coordina asignaciones.",
     "summary": {
       "totalStaff": "Personal total",
       "avgProductivity": "Productividad prom."

@@ -1,0 +1,56 @@
+import { Patient } from '../domain/model/patient.entity';
+import { RegisterPatientCommand } from '../domain/model/register-patient.command';
+import { PatientResource, PatientResponse } from './patient.response';
+import { RegisterPatientRequest } from './register-patient.request';
+
+export class PatientAssembler {
+  toResourceFromResponse(response: PatientResponse): PatientResource {
+    return {
+      id: response.id,
+      firstName: response.firstName,
+      lastName: response.lastName,
+      dni: response.dni,
+      birthDate: response.birthDate,
+      gender: response.gender,
+      email: response.email,
+      countryCode: response.countryCode,
+      phoneNumber: response.phoneNumber,
+      medicalCondition: response.medicalCondition,
+      assignedPhysiotherapistId: response.assignedPhysiotherapistId ?? null,
+      status: response.status,
+      clinicId: response.clinicId,
+    } as PatientResource;
+  }
+
+  toEntityFromResource(resource: PatientResource): Patient {
+    return new Patient({
+      id: resource.id,
+      firstName: resource.firstName,
+      lastName: resource.lastName,
+      dni: resource.dni,
+      birthDate: resource.birthDate,
+      gender: resource.gender,
+      email: resource.email,
+      countryCode: resource.countryCode,
+      phoneNumber: resource.phoneNumber,
+      medicalCondition: resource.medicalCondition,
+      assignedPhysiotherapistId: resource.assignedPhysiotherapistId,
+      status: resource.status,
+      clinicId: resource.clinicId,
+    });
+  }
+
+  toRequestFromCommand(command: RegisterPatientCommand): RegisterPatientRequest {
+    return {
+      firstName: command.firstName,
+      lastName: command.lastName,
+      dni: command.dni,
+      birthDate: command.birthDate,
+      gender: command.gender,
+      email: command.email,
+      countryCode: command.countryCode,
+      phoneNumber: command.phoneNumber,
+      medicalCondition: command.medicalCondition,
+    } as RegisterPatientRequest;
+  }
+}
