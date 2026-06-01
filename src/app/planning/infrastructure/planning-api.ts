@@ -11,6 +11,10 @@ import { AddRoutineApiEndpoint } from './add-routine-endpoint';
 import { CancelTreatmentPlanApiEndpoint } from './cancel-treatment-plan-endpoint';
 import { CompleteTreatmentPlanApiEndpoint } from './complete-treatment-plan-endpoint';
 import { CreateTreatmentPlanApiEndpoint } from './create-treatment-plan-endpoint';
+import { ExerciseCatalogItemAssembler } from './exercise-catalog-item-assembler';
+import { ExerciseCatalogItemResource } from './exercise-catalog-item.response';
+import { ExerciseByIdApiEndpoint } from './exercise-by-id-endpoint';
+import { ExercisesApiEndpoint } from './exercises-endpoint';
 import { DeleteRoutineApiEndpoint } from './delete-routine-endpoint';
 import { DeleteTreatmentPlanApiEndpoint } from './delete-treatment-plan-endpoint';
 import { TreatmentPlanAssembler } from './treatment-plan-assembler';
@@ -35,10 +39,13 @@ export class PlanningApi extends BaseApi {
   private readonly addRoutineEndpoint: AddRoutineApiEndpoint;
   private readonly updateRoutineEndpoint: UpdateRoutineApiEndpoint;
   private readonly deleteRoutineEndpoint: DeleteRoutineApiEndpoint;
+  private readonly exercisesEndpoint: ExercisesApiEndpoint;
+  private readonly exerciseByIdEndpoint: ExerciseByIdApiEndpoint;
 
   constructor(http: HttpClient) {
     super();
     const assembler = new TreatmentPlanAssembler();
+    const exerciseAssembler = new ExerciseCatalogItemAssembler();
     this.treatmentPlansByPatientEndpoint = new TreatmentPlansByPatientApiEndpoint(http, assembler);
     this.treatmentPlanByPatientAndIdEndpoint = new TreatmentPlanByPatientAndIdApiEndpoint(
       http,
@@ -54,6 +61,8 @@ export class PlanningApi extends BaseApi {
     this.addRoutineEndpoint = new AddRoutineApiEndpoint(http, assembler);
     this.updateRoutineEndpoint = new UpdateRoutineApiEndpoint(http, assembler);
     this.deleteRoutineEndpoint = new DeleteRoutineApiEndpoint(http, assembler);
+    this.exercisesEndpoint = new ExercisesApiEndpoint(http, exerciseAssembler);
+    this.exerciseByIdEndpoint = new ExerciseByIdApiEndpoint(http, exerciseAssembler);
   }
 
   getTreatmentPlansByPatient(patientId: string): Observable<TreatmentPlanResource[]> {
@@ -75,7 +84,10 @@ export class PlanningApi extends BaseApi {
     return this.createTreatmentPlanEndpoint.createTreatmentPlan(patientId, command);
   }
 
-  updateTreatmentPlan(id: string, command: UpdateTreatmentPlanCommand): Observable<TreatmentPlanResource> {
+  updateTreatmentPlan(
+    id: string,
+    command: UpdateTreatmentPlanCommand,
+  ): Observable<TreatmentPlanResource> {
     return this.updateTreatmentPlanEndpoint.updateTreatmentPlan(id, command);
   }
 
@@ -95,7 +107,10 @@ export class PlanningApi extends BaseApi {
     return this.deleteTreatmentPlanEndpoint.deleteTreatmentPlan(id);
   }
 
-  addRoutine(treatmentPlanId: string, command: AddRoutineCommand): Observable<TreatmentPlanResource> {
+  addRoutine(
+    treatmentPlanId: string,
+    command: AddRoutineCommand,
+  ): Observable<TreatmentPlanResource> {
     return this.addRoutineEndpoint.addRoutine(treatmentPlanId, command);
   }
 
@@ -109,5 +124,13 @@ export class PlanningApi extends BaseApi {
 
   deleteRoutine(treatmentPlanId: string, routineOrder: number): Observable<TreatmentPlanResource> {
     return this.deleteRoutineEndpoint.deleteRoutine(treatmentPlanId, routineOrder);
+  }
+
+  getExercises(): Observable<ExerciseCatalogItemResource[]> {
+    return this.exercisesEndpoint.getExercises();
+  }
+
+  getExerciseById(id: string): Observable<ExerciseCatalogItemResource> {
+    return this.exerciseByIdEndpoint.getExerciseById(id);
   }
 }

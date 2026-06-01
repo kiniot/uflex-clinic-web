@@ -1112,6 +1112,74 @@
       "CANCELED": "Canceled"
     }
   },
+  "treatmentPlanWorkspace": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "patient": "Patient",
+      "create": "Create treatment plan",
+      "edit": "Edit treatment plan"
+    },
+    "createTitle": "Create treatment plan",
+    "editTitle": "Treatment plan workspace",
+    "subtitle": "Build a treatment track for {{patient}} by organizing routines, schedules, and exercise series from the clinic catalog.",
+    "actions": {
+      "create": "Create treatment plan",
+      "save": "Save changes",
+      "activate": "Activate",
+      "complete": "Complete",
+      "cancel": "Cancel",
+      "delete": "Delete plan"
+    },
+    "fields": {
+      "name": "Plan name",
+      "status": "Status",
+      "startsAt": "Starts at",
+      "endsAt": "Ends at"
+    },
+    "placeholders": {
+      "name": "Forearm mobility plan"
+    },
+    "builder": {
+      "title": "Routine builder",
+      "subtitle": "Configure the weekly structure of the treatment plan and tune each prescribed exercise series.",
+      "addRoutine": "Add routine",
+      "routine": "Routine",
+      "emptyTitle": "No routines yet",
+      "emptyBody": "Add the first routine, then select it to start attaching exercises from the catalog."
+    },
+    "routine": {
+      "fields": {
+        "name": "Routine name",
+        "order": "Order",
+        "day": "Day of week",
+        "time": "Scheduled time"
+      },
+      "placeholders": {
+        "name": "Morning mobility"
+      }
+    },
+    "series": {
+      "title": "Exercise series",
+      "selectionReady": "Selected for catalog insertions",
+      "selectHint": "Select this routine to add exercises from the catalog",
+      "empty": "No exercises added yet.",
+      "itemLabel": "Series",
+      "fields": {
+        "rom": "Range of motion (deg)",
+        "repetitions": "Repetitions",
+        "duration": "Duration (sec)",
+        "rest": "Rest (sec)"
+      }
+    },
+    "catalog": {
+      "title": "Exercise catalog",
+      "subtitle": "Choose exercises created by the clinic and add them to the selected routine. Video references are shown only as metadata for now.",
+      "selectedRoutine": "Routine {{order}} selected",
+      "noRoutineSelected": "Select a routine first",
+      "videoRef": "Video reference",
+      "add": "Add to routine"
+    }
+  },
   "organizationView": {
     "title": "Patients",
     "subtitle": "Review incoming patients, balance clinician caseloads, and coordinate assignments.",

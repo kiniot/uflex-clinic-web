@@ -1,25 +1,27 @@
-import {Injectable, computed, signal} from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import {ClinicalAlert} from '../domain/model/clinical-alert.entity';
-import {ClinicalMetrics} from '../domain/model/clinical-metrics';
-import {ClinicalTrajectory} from '../domain/model/clinical-trajectory';
+import { ClinicalAlert } from '../domain/model/clinical-alert.entity';
+import { ClinicalMetrics } from '../domain/model/clinical-metrics';
+import { ClinicalTrajectory } from '../domain/model/clinical-trajectory';
 import { AddRoutineCommand } from '../domain/model/add-routine.command';
 import { CreateTreatmentPlanCommand } from '../domain/model/create-treatment-plan.command';
-import {Patient} from '../domain/model/patient.entity';
-import {RehabProgram} from '../domain/model/rehab-program.entity';
-import {RoutineExercise} from '../domain/model/routine-exercise.entity';
-import {Session} from '../domain/model/session.entity';
+import { ExerciseCatalogItem } from '../domain/model/exercise-catalog-item.entity';
+import { Patient } from '../domain/model/patient.entity';
+import { RehabProgram } from '../domain/model/rehab-program.entity';
+import { RoutineExercise } from '../domain/model/routine-exercise.entity';
+import { Session } from '../domain/model/session.entity';
 import { TreatmentPlanRoutine } from '../domain/model/treatment-plan-routine.entity';
 import { TreatmentPlan } from '../domain/model/treatment-plan.entity';
 import { UpdateRoutineCommand } from '../domain/model/update-routine.command';
 import { UpdateTreatmentPlanCommand } from '../domain/model/update-treatment-plan.command';
-import {MOCK_CLINICAL_ALERTS} from '../infrastructure/clinical-alert.mock';
-import {MOCK_CLINICAL_METRICS} from '../infrastructure/clinical-metrics.mock';
-import {MOCK_CLINICAL_TRAJECTORY} from '../infrastructure/clinical-trajectory.mock';
-import {MOCK_PATIENTS} from '../infrastructure/patient.mock';
+import { MOCK_CLINICAL_ALERTS } from '../infrastructure/clinical-alert.mock';
+import { MOCK_CLINICAL_METRICS } from '../infrastructure/clinical-metrics.mock';
+import { MOCK_CLINICAL_TRAJECTORY } from '../infrastructure/clinical-trajectory.mock';
+import { MOCK_PATIENTS } from '../infrastructure/patient.mock';
 import { PlanningApi } from '../infrastructure/planning-api';
-import {MOCK_REHAB_PROGRAM} from '../infrastructure/rehab-program.mock';
-import {MOCK_DAILY_SESSIONS} from '../infrastructure/session.mock';
+import { MOCK_REHAB_PROGRAM } from '../infrastructure/rehab-program.mock';
+import { MOCK_DAILY_SESSIONS } from '../infrastructure/session.mock';
+import { ExerciseCatalogItemResource } from '../infrastructure/exercise-catalog-item.response';
 import { TreatmentPlanResource } from '../infrastructure/treatment-plan.response';
 
 /**
@@ -29,7 +31,7 @@ import { TreatmentPlanResource } from '../infrastructure/treatment-plan.response
  * physiotherapist dashboard. Hydrated from mocks until the backend
  * lands.
  */
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class PlanningStore {
   private readonly patientsSignal = signal<Patient[]>(MOCK_PATIENTS);
   private readonly dailySessionsSignal = signal<Session[]>(MOCK_DAILY_SESSIONS);
@@ -41,6 +43,9 @@ export class PlanningStore {
   private readonly selectedTreatmentPlanSignal = signal<TreatmentPlan | null>(null);
   private readonly loadingTreatmentPlansSignal = signal(false);
   private readonly loadingSelectedTreatmentPlanSignal = signal(false);
+  private readonly exerciseCatalogSignal = signal<ExerciseCatalogItem[]>([]);
+  private readonly selectedExerciseCatalogItemSignal = signal<ExerciseCatalogItem | null>(null);
+  private readonly loadingExerciseCatalogSignal = signal(false);
 
   readonly patients = this.patientsSignal.asReadonly();
   readonly dailySessions = this.dailySessionsSignal.asReadonly();
@@ -52,6 +57,9 @@ export class PlanningStore {
   readonly selectedTreatmentPlan = this.selectedTreatmentPlanSignal.asReadonly();
   readonly isLoadingTreatmentPlans = this.loadingTreatmentPlansSignal.asReadonly();
   readonly isLoadingSelectedTreatmentPlan = this.loadingSelectedTreatmentPlanSignal.asReadonly();
+  readonly exerciseCatalog = this.exerciseCatalogSignal.asReadonly();
+  readonly selectedExerciseCatalogItem = this.selectedExerciseCatalogItemSignal.asReadonly();
+  readonly isLoadingExerciseCatalog = this.loadingExerciseCatalogSignal.asReadonly();
 
   constructor(private planningApi: PlanningApi) {}
 
@@ -67,19 +75,19 @@ export class PlanningStore {
    * are read-only and ignored.
    */
   adjustRoutineParam(exerciseId: number, paramKey: string, delta: number) {
-    this.rehabProgramSignal.update(program => {
-      const nextRoutine = program.routineExercises.map(ex => {
+    this.rehabProgramSignal.update((program) => {
+      const nextRoutine = program.routineExercises.map((ex) => {
         if (ex.id !== exerciseId) return ex;
-        const nextParams = ex.parameters.map(p =>
+        const nextParams = ex.parameters.map((p) =>
           p.key === paramKey && p.type === 'counter'
-            ? {...p, value: Math.max(0, p.value + delta)}
-            : p
+            ? { ...p, value: Math.max(0, p.value + delta) }
+            : p,
         );
         return new RoutineExercise({
           id: ex.id,
           name: ex.name,
           description: ex.description,
-          parameters: nextParams
+          parameters: nextParams,
         });
       });
       return this.cloneProgramWithRoutine(program, nextRoutine);
@@ -88,8 +96,8 @@ export class PlanningStore {
 
   /** Removes a routine exercise from the active program. */
   removeRoutineExercise(exerciseId: number) {
-    this.rehabProgramSignal.update(program => {
-      const nextRoutine = program.routineExercises.filter(ex => ex.id !== exerciseId);
+    this.rehabProgramSignal.update((program) => {
+      const nextRoutine = program.routineExercises.filter((ex) => ex.id !== exerciseId);
       return this.cloneProgramWithRoutine(program, nextRoutine);
     });
   }
@@ -106,14 +114,16 @@ export class PlanningStore {
       dayNumber: program.dayNumber,
       totalDays: program.totalDays,
       scheduleLabel: program.scheduleLabel,
-      routineExercises: routine
+      routineExercises: routine,
     });
   }
 
   async loadTreatmentPlansByPatient(patientId: string): Promise<TreatmentPlan[]> {
     this.loadingTreatmentPlansSignal.set(true);
     try {
-      const resources = await firstValueFrom(this.planningApi.getTreatmentPlansByPatient(patientId));
+      const resources = await firstValueFrom(
+        this.planningApi.getTreatmentPlansByPatient(patientId),
+      );
       const plans = resources.map((resource) => this.mapTreatmentPlan(resource));
       this.patientTreatmentPlansSignal.set(plans);
       return plans;
@@ -150,7 +160,10 @@ export class PlanningStore {
     return plan;
   }
 
-  async updateTreatmentPlan(id: string, command: UpdateTreatmentPlanCommand): Promise<TreatmentPlan> {
+  async updateTreatmentPlan(
+    id: string,
+    command: UpdateTreatmentPlanCommand,
+  ): Promise<TreatmentPlan> {
     const resource = await firstValueFrom(this.planningApi.updateTreatmentPlan(id, command));
     return this.syncTreatmentPlan(resource);
   }
@@ -195,8 +208,38 @@ export class PlanningStore {
   }
 
   async deleteRoutine(treatmentPlanId: string, routineOrder: number): Promise<TreatmentPlan> {
-    const resource = await firstValueFrom(this.planningApi.deleteRoutine(treatmentPlanId, routineOrder));
+    const resource = await firstValueFrom(
+      this.planningApi.deleteRoutine(treatmentPlanId, routineOrder),
+    );
     return this.syncTreatmentPlan(resource);
+  }
+
+  async loadExerciseCatalog(): Promise<ExerciseCatalogItem[]> {
+    this.loadingExerciseCatalogSignal.set(true);
+    try {
+      const resources = await firstValueFrom(this.planningApi.getExercises());
+      const exercises = resources.map((resource) => this.mapExerciseCatalogItem(resource));
+      this.exerciseCatalogSignal.set(exercises);
+      return exercises;
+    } finally {
+      this.loadingExerciseCatalogSignal.set(false);
+    }
+  }
+
+  async loadExerciseById(id: string): Promise<ExerciseCatalogItem | null> {
+    const existing = this.exerciseCatalog().find((item) => item.id === id);
+    if (existing) {
+      this.selectedExerciseCatalogItemSignal.set(existing);
+      return existing;
+    }
+
+    const resource = await firstValueFrom(this.planningApi.getExerciseById(id));
+    const exercise = this.mapExerciseCatalogItem(resource);
+    this.selectedExerciseCatalogItemSignal.set(exercise);
+    this.exerciseCatalogSignal.update((items) =>
+      items.some((item) => item.id === exercise.id) ? items : [...items, exercise],
+    );
+    return exercise;
   }
 
   private syncTreatmentPlan(resource: TreatmentPlanResource): TreatmentPlan {
@@ -226,6 +269,17 @@ export class PlanningStore {
             exerciseSeries: routine.exerciseSeries,
           }),
       ),
+    });
+  }
+
+  private mapExerciseCatalogItem(resource: ExerciseCatalogItemResource): ExerciseCatalogItem {
+    return new ExerciseCatalogItem({
+      id: resource.id,
+      name: resource.name,
+      description: resource.description,
+      bodyPart: resource.bodyPart,
+      movementType: resource.movementType,
+      videoUrl: resource.videoUrl,
     });
   }
 }

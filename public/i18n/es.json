@@ -1112,6 +1112,74 @@
       "CANCELED": "Cancelado"
     }
   },
+  "treatmentPlanWorkspace": {
+    "breadcrumb": {
+      "patients": "Pacientes",
+      "patient": "Paciente",
+      "create": "Crear plan de tratamiento",
+      "edit": "Editar plan de tratamiento"
+    },
+    "createTitle": "Crear plan de tratamiento",
+    "editTitle": "Espacio del plan de tratamiento",
+    "subtitle": "Construye un plan terapéutico para {{patient}} organizando rutinas, horarios y series de ejercicios desde el catálogo de la clínica.",
+    "actions": {
+      "create": "Crear plan de tratamiento",
+      "save": "Guardar cambios",
+      "activate": "Activar",
+      "complete": "Completar",
+      "cancel": "Cancelar",
+      "delete": "Eliminar plan"
+    },
+    "fields": {
+      "name": "Nombre del plan",
+      "status": "Estado",
+      "startsAt": "Inicio",
+      "endsAt": "Fin"
+    },
+    "placeholders": {
+      "name": "Plan de movilidad de antebrazo"
+    },
+    "builder": {
+      "title": "Constructor de rutinas",
+      "subtitle": "Configura la estructura semanal del plan y ajusta cada serie de ejercicios prescrita.",
+      "addRoutine": "Agregar rutina",
+      "routine": "Rutina",
+      "emptyTitle": "Aún no hay rutinas",
+      "emptyBody": "Agrega la primera rutina y luego selecciónala para empezar a adjuntar ejercicios desde el catálogo."
+    },
+    "routine": {
+      "fields": {
+        "name": "Nombre de la rutina",
+        "order": "Orden",
+        "day": "Día de la semana",
+        "time": "Hora programada"
+      },
+      "placeholders": {
+        "name": "Movilidad matutina"
+      }
+    },
+    "series": {
+      "title": "Series de ejercicios",
+      "selectionReady": "Lista para inserciones desde el catálogo",
+      "selectHint": "Selecciona esta rutina para agregar ejercicios desde el catálogo",
+      "empty": "Aún no se agregaron ejercicios.",
+      "itemLabel": "Serie",
+      "fields": {
+        "rom": "Rango de movimiento (deg)",
+        "repetitions": "Repeticiones",
+        "duration": "Duración (seg)",
+        "rest": "Descanso (seg)"
+      }
+    },
+    "catalog": {
+      "title": "Catálogo de ejercicios",
+      "subtitle": "Elige ejercicios creados por la clínica y agrégalos a la rutina seleccionada. Las referencias de video se muestran solo como metadato por ahora.",
+      "selectedRoutine": "Rutina {{order}} seleccionada",
+      "noRoutineSelected": "Selecciona primero una rutina",
+      "videoRef": "Referencia de video",
+      "add": "Agregar a la rutina"
+    }
+  },
   "organizationView": {
     "title": "Pacientes",
     "subtitle": "Revisa pacientes entrantes, equilibra la carga clínica y coordina asignaciones.",

@@ -97,6 +97,10 @@ function environmentFile({ production }) {
       'NG_APP_PLATFORM_PROVIDER_TREATMENT_PLANS_ENDPOINT_PATH',
       '/treatment-plans',
     ),
+    platformProviderExercisesEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_EXERCISES_ENDPOINT_PATH',
+      '/exercises',
+    ),
     platformProviderSubscriptionTiersEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_SUBSCRIPTION_TIERS_ENDPOINT_PATH',
       '/subscriptions/tiers',
