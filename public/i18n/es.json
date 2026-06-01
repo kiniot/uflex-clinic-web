@@ -1021,6 +1021,97 @@
       }
     }
   },
+  "patientsList": {
+    "eyebrow": "Carga asignada",
+    "title": "Pacientes",
+    "subtitle": "Revisa tu cartera activa, monitorea el estado del tratamiento y abre el espacio de cada paciente para gestionar sus planes.",
+    "registerPatient": "Registrar paciente",
+    "summary": {
+      "totalPatients": "Mis pacientes",
+      "inTreatment": "En tratamiento",
+      "currentClinic": "Clínica actual",
+      "myCaseload": "Asignados a ti"
+    },
+    "table": {
+      "title": "Lista de pacientes",
+      "filter": "Filtrar",
+      "export": "Exportar"
+    },
+    "columns": {
+      "patient": "Paciente",
+      "condition": "Condición médica",
+      "status": "Estado",
+      "phone": "Teléfono",
+      "email": "Correo",
+      "action": "Acción"
+    },
+    "status": {
+      "REGISTERED": "Registrado",
+      "IN_TREATMENT": "En tratamiento",
+      "DISCHARGED": "Dado de alta"
+    },
+    "patientDni": "DNI:",
+    "viewPatient": "Ver paciente",
+    "showingCount": "Mostrando {{visible}} de {{total}} pacientes",
+    "empty": {
+      "title": "Aún no tienes pacientes",
+      "body": "Tu carga asignada todavía está vacía. Cuando se registren y asignen pacientes, aparecerán aquí."
+    }
+  },
+  "patientDetail": {
+    "breadcrumb": {
+      "patients": "Pacientes",
+      "loading": "Cargando paciente"
+    },
+    "dischargePatient": "Dar de alta",
+    "status": {
+      "REGISTERED": "Registrado",
+      "IN_TREATMENT": "En tratamiento",
+      "DISCHARGED": "Dado de alta"
+    },
+    "gender": {
+      "MALE": "Masculino",
+      "FEMALE": "Femenino",
+      "OTHER": "Otro"
+    },
+    "cards": {
+      "identity": "Identidad del paciente",
+      "contact": "Contacto",
+      "assignment": "Asignación"
+    },
+    "fields": {
+      "fullName": "Nombre completo",
+      "dni": "DNI",
+      "gender": "Género",
+      "birthDate": "Fecha de nacimiento",
+      "email": "Correo",
+      "phone": "Teléfono",
+      "physiotherapist": "Fisioterapeuta asignado",
+      "clinic": "Clínica"
+    },
+    "plans": {
+      "title": "Planes de tratamiento",
+      "subtitle": "Abre un plan existente o crea el siguiente plan terapéutico para este paciente.",
+      "create": "Crear plan de tratamiento",
+      "open": "Abrir plan",
+      "showingCount": "Mostrando {{visible}} de {{total}} planes",
+      "emptyTitle": "Aún no hay planes de tratamiento",
+      "emptyBody": "Crea el primer plan de tratamiento para empezar a programar rutinas y series de ejercicios para este paciente.",
+      "columns": {
+        "name": "Nombre del plan",
+        "status": "Estado",
+        "period": "Periodo",
+        "routines": "Rutinas",
+        "action": "Acción"
+      }
+    },
+    "planStatus": {
+      "SCHEDULED": "Programado",
+      "ACTIVE": "Activo",
+      "COMPLETED": "Completado",
+      "CANCELED": "Cancelado"
+    }
+  },
   "organizationView": {
     "title": "Pacientes",
     "subtitle": "Revisa pacientes entrantes, equilibra la carga clínica y coordina asignaciones.",

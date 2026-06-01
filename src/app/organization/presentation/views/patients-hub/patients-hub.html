@@ -1,5 +1,152 @@
-<section class="patients-hub">
-  <h1>Patients</h1>
-  <p>Base route ready for the physiotherapist patient experience.</p>
-  <a routerLink="./example-patient">Open placeholder patient detail</a>
+<header class="patients-page__header">
+  <div class="patients-page__header-text">
+    <span class="patients-page__eyebrow">{{ 'patientsList.eyebrow' | translate }}</span>
+    <h1 class="patients-page__title">{{ 'patientsList.title' | translate }}</h1>
+    <p class="patients-page__subtitle">
+      {{ 'patientsList.subtitle' | translate }}
+    </p>
+  </div>
+
+  <button
+    pButton
+    type="button"
+    severity="primary"
+    class="patients-page__cta"
+    (click)="onRegisterPatient()"
+  >
+    <i class="pi pi-user-plus" aria-hidden="true"></i>
+    <span>{{ 'patientsList.registerPatient' | translate }}</span>
+  </button>
+</header>
+
+<section class="patients-page__summary">
+  <article class="summary-card">
+    <span class="summary-card__icon" aria-hidden="true">
+      <i class="pi pi-users"></i>
+    </span>
+    <div class="summary-card__body">
+      <span class="summary-card__label">{{ 'patientsList.summary.totalPatients' | translate }}</span>
+      <strong class="summary-card__value">{{ patients().length }}</strong>
+      <span class="summary-card__sub">
+        {{ clinic()?.commercialName ?? clinic()?.legalName ?? ('patientsList.summary.currentClinic' | translate) }}
+      </span>
+    </div>
+  </article>
+
+  <article class="summary-card">
+    <span class="summary-card__icon summary-card__icon--accent" aria-hidden="true">
+      <i class="pi pi-heart"></i>
+    </span>
+    <div class="summary-card__body">
+      <span class="summary-card__label">{{ 'patientsList.summary.inTreatment' | translate }}</span>
+      <strong class="summary-card__value">{{ inTreatmentPatientsCount() }}</strong>
+      <span class="summary-card__sub">
+        {{ physiotherapist()?.fullName ?? ('patientsList.summary.myCaseload' | translate) }}
+      </span>
+    </div>
+  </article>
+</section>
+
+<section class="patients-page__table-card">
+  <header class="patients-page__table-header">
+    <h2 class="patients-page__table-title">{{ 'patientsList.table.title' | translate }}</h2>
+
+    <div class="patients-page__table-actions">
+      <button type="button" class="patients-page__icon-btn" (click)="onFilter()">
+        <i class="pi pi-filter" aria-hidden="true"></i>
+        <span>{{ 'patientsList.table.filter' | translate }}</span>
+      </button>
+      <button type="button" class="patients-page__icon-btn" (click)="onExport()">
+        <i class="pi pi-download" aria-hidden="true"></i>
+        <span>{{ 'patientsList.table.export' | translate }}</span>
+      </button>
+    </div>
+  </header>
+
+  @if (isLoadingPatients()) {
+    <div class="patients-page__loading">
+      @for (row of loadingRows; track row) {
+        <div class="patients-page__loading-row">
+          <span class="patients-page__loading-block patients-page__loading-block--lg"></span>
+          <span class="patients-page__loading-block"></span>
+          <span class="patients-page__loading-block patients-page__loading-block--sm"></span>
+          <span class="patients-page__loading-block"></span>
+          <span class="patients-page__loading-block"></span>
+          <span class="patients-page__loading-block patients-page__loading-block--sm"></span>
+        </div>
+      }
+    </div>
+  } @else if (patients().length === 0) {
+    <div class="patients-page__empty">
+      <span class="patients-page__empty-icon" aria-hidden="true">
+        <i class="pi pi-users"></i>
+      </span>
+      <h3 class="patients-page__empty-title">{{ 'patientsList.empty.title' | translate }}</h3>
+      <p class="patients-page__empty-body">{{ 'patientsList.empty.body' | translate }}</p>
+      <button pButton type="button" severity="primary" class="patients-page__empty-cta" (click)="onRegisterPatient()">
+        <span>{{ 'patientsList.registerPatient' | translate }}</span>
+      </button>
+    </div>
+  } @else {
+    <div class="patients-page__table-scroll">
+      <table class="patients-page__table">
+        <thead>
+          <tr>
+            <th>{{ 'patientsList.columns.patient' | translate }}</th>
+            <th>{{ 'patientsList.columns.condition' | translate }}</th>
+            <th>{{ 'patientsList.columns.status' | translate }}</th>
+            <th>{{ 'patientsList.columns.phone' | translate }}</th>
+            <th>{{ 'patientsList.columns.email' | translate }}</th>
+            <th class="patients-page__action-col">{{ 'patientsList.columns.action' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (patient of patients(); track patient.id) {
+            <tr class="patients-page__row" (click)="onOpenPatient(patient)">
+              <td>
+                <div class="patients-page__patient">
+                  <span class="patients-page__patient-avatar" aria-hidden="true">
+                    {{ patient.firstName.charAt(0) }}{{ patient.lastName.charAt(0) }}
+                  </span>
+                  <div class="patients-page__patient-text">
+                    <strong class="patients-page__patient-name">{{ patient.fullName }}</strong>
+                    <span class="patients-page__patient-meta">
+                      {{ 'patientsList.patientDni' | translate }} {{ patient.dni }}
+                    </span>
+                  </div>
+                </div>
+              </td>
+              <td class="patients-page__condition">{{ patient.medicalCondition }}</td>
+              <td>
+                <span class="patients-page__status patients-page__status--{{ patient.status.toLowerCase().replace('_', '-') }}">
+                  {{ ('patientsList.status.' + patient.status) | translate }}
+                </span>
+              </td>
+              <td class="patients-page__contact">{{ patient.countryCode }} {{ patient.phoneNumber }}</td>
+              <td class="patients-page__contact">{{ patient.email }}</td>
+              <td class="patients-page__action-col">
+                <button type="button" class="patients-page__row-action" (click)="onOpenPatient(patient); $event.stopPropagation()">
+                  {{ 'patientsList.viewPatient' | translate }}
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="patients-page__footer">
+      <span class="patients-page__counter">
+        {{ 'patientsList.showingCount' | translate: {visible: patients().length, total: patients().length} }}
+      </span>
+      <div class="patients-page__pager">
+        <button type="button" aria-label="prev">
+          <i class="pi pi-chevron-left" aria-hidden="true"></i>
+        </button>
+        <button type="button" aria-label="next">
+          <i class="pi pi-chevron-right" aria-hidden="true"></i>
+        </button>
+      </div>
+    </footer>
+  }
 </section>

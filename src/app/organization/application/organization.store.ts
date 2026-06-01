@@ -1,4 +1,4 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { Clinic } from '../domain/model/clinic.entity';
 import { ClinicAddressValue } from '../domain/model/clinic-address.value';
@@ -74,6 +74,15 @@ export class OrganizationStore {
   readonly isLoadingSelectedPatient = this.loadingSelectedPatientSignal.asReadonly();
   readonly isRegisteringPatient = this.registeringPatientSignal.asReadonly();
   readonly isDischargingPatient = this.dischargingPatientSignal.asReadonly();
+  readonly inTreatmentPatientsCount = computed(
+    () => this.patients().filter((patient) => patient.status === 'IN_TREATMENT').length,
+  );
+  readonly dischargedPatientsCount = computed(
+    () => this.patients().filter((patient) => patient.status === 'DISCHARGED').length,
+  );
+  readonly registeredPatientsCount = computed(
+    () => this.patients().filter((patient) => patient.status === 'REGISTERED').length,
+  );
 
   constructor(private organizationApi: OrganizationApi) {}
 

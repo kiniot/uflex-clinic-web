@@ -1021,6 +1021,97 @@
       }
     }
   },
+  "patientsList": {
+    "eyebrow": "Assigned Caseload",
+    "title": "Patients",
+    "subtitle": "Review your active caseload, monitor treatment status, and open each patient workspace for plan management.",
+    "registerPatient": "Register patient",
+    "summary": {
+      "totalPatients": "My patients",
+      "inTreatment": "In treatment",
+      "currentClinic": "Current clinic",
+      "myCaseload": "Assigned to you"
+    },
+    "table": {
+      "title": "Patient roster",
+      "filter": "Filter",
+      "export": "Export"
+    },
+    "columns": {
+      "patient": "Patient",
+      "condition": "Medical condition",
+      "status": "Status",
+      "phone": "Phone",
+      "email": "Email",
+      "action": "Action"
+    },
+    "status": {
+      "REGISTERED": "Registered",
+      "IN_TREATMENT": "In treatment",
+      "DISCHARGED": "Discharged"
+    },
+    "patientDni": "DNI:",
+    "viewPatient": "View patient",
+    "showingCount": "Showing {{visible}} of {{total}} patients",
+    "empty": {
+      "title": "No patients yet",
+      "body": "Your assigned caseload is still empty. Once patients are registered and assigned, they will appear here."
+    }
+  },
+  "patientDetail": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "loading": "Loading patient"
+    },
+    "dischargePatient": "Discharge patient",
+    "status": {
+      "REGISTERED": "Registered",
+      "IN_TREATMENT": "In treatment",
+      "DISCHARGED": "Discharged"
+    },
+    "gender": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "OTHER": "Other"
+    },
+    "cards": {
+      "identity": "Patient identity",
+      "contact": "Contact",
+      "assignment": "Assignment"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "dni": "DNI",
+      "gender": "Gender",
+      "birthDate": "Birth date",
+      "email": "Email",
+      "phone": "Phone",
+      "physiotherapist": "Assigned physiotherapist",
+      "clinic": "Clinic"
+    },
+    "plans": {
+      "title": "Treatment plans",
+      "subtitle": "Open an existing plan or create the next treatment track for this patient.",
+      "create": "Create treatment plan",
+      "open": "Open plan",
+      "showingCount": "Showing {{visible}} of {{total}} plans",
+      "emptyTitle": "No treatment plans yet",
+      "emptyBody": "Create the first treatment plan to start scheduling routines and exercise series for this patient.",
+      "columns": {
+        "name": "Plan name",
+        "status": "Status",
+        "period": "Period",
+        "routines": "Routines",
+        "action": "Action"
+      }
+    },
+    "planStatus": {
+      "SCHEDULED": "Scheduled",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELED": "Canceled"
+    }
+  },
   "organizationView": {
     "title": "Patients",
     "subtitle": "Review incoming patients, balance clinician caseloads, and coordinate assignments.",

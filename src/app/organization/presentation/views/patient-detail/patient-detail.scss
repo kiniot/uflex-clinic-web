@@ -1,9 +1,475 @@
-:host {
-  display: block;
-}
+@use '../../../../../styles/theme-transition' as theme;
 
-.patient-detail {
+:host {
   display: flex;
   flex-direction: column;
+  gap: 18px;
+}
+
+.patient-detail__breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+.patient-detail__breadcrumb a {
+  color: var(--p-text-muted-color);
+  text-decoration: none;
+}
+
+.patient-detail__breadcrumb a:hover {
+  color: var(--p-text-color);
+}
+
+.patient-detail__breadcrumb i {
+  font-size: 10px;
+}
+
+.patient-detail__breadcrumb span {
+  color: var(--p-primary-color);
+  font-weight: 600;
+}
+
+.patient-detail__loading {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.patient-detail__loading-block {
+  display: block;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-surface-200) 85%, transparent);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .patient-detail__loading-block {
+  background: color-mix(in srgb, var(--p-surface-300) 72%, transparent);
+}
+
+.patient-detail__loading-block--title {
+  width: 280px;
+  height: 24px;
+}
+
+.patient-detail__loading-block--sub {
+  width: 420px;
+  max-width: 100%;
+  height: 18px;
+}
+
+.patient-detail__loading-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+}
+
+.patient-detail__loading-card {
+  display: block;
+  min-height: 164px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--p-surface-200) 85%, transparent);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .patient-detail__loading-card {
+  background: color-mix(in srgb, var(--p-surface-300) 70%, transparent);
+}
+
+@media (max-width: 1100px) {
+  .patient-detail__loading-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.patient-detail__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.patient-detail__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.patient-detail__title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--p-text-color);
+  margin: 0;
+}
+
+.patient-detail__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--p-text-muted-color);
+  margin: 0;
+}
+
+.patient-detail__status {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.patient-detail__status--in-treatment {
+  background: color-mix(in srgb, var(--p-turquoise-400) 14%, transparent);
+  color: var(--p-turquoise-400);
+}
+
+.patient-detail__status--discharged {
+  background: var(--p-surface-100);
+  color: var(--p-text-muted-color);
+}
+
+.patient-detail__status--registered {
+  background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
+  color: var(--p-amber-500);
+}
+
+:host-context(.app-dark) .patient-detail__status--discharged {
+  background: var(--p-surface-200);
+}
+
+:host ::ng-deep .patient-detail__cta,
+:host ::ng-deep .patient-detail__cta .p-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.patient-detail__summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .patient-detail__summary {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-card {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .detail-card {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.detail-card__header {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-card__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
+  color: var(--p-primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  @include theme.surface;
+}
+
+.detail-card__title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--p-text-color);
+  margin: 0;
+}
+
+.detail-card__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 18px;
+}
+
+@media (max-width: 720px) {
+  .detail-card__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.detail-card__label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  margin-bottom: 4px;
+}
+
+.detail-card__value {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.patient-detail__plans-card {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  overflow: hidden;
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .patient-detail__plans-card {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.patient-detail__plans-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px;
+  flex-wrap: wrap;
+}
+
+.patient-detail__plans-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-text-color);
+  margin: 0;
+}
+
+.patient-detail__plans-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+  margin: 4px 0 0;
+}
+
+.patient-detail__plans-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  @include theme.surface;
+}
+
+.patient-detail__plans-cta:hover {
+  background: var(--p-primary-hover-color);
+}
+
+.patient-detail__plans-loading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+
+.patient-detail__plans-loading-row {
+  display: block;
+  height: 48px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--p-surface-200) 85%, transparent);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .patient-detail__plans-loading-row {
+  background: color-mix(in srgb, var(--p-surface-300) 70%, transparent);
+}
+
+.patient-detail__plans-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 34px 24px 38px;
+}
+
+.patient-detail__plans-empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.patient-detail__plans-empty-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-text-color);
+  margin: 0;
+}
+
+.patient-detail__plans-empty-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+  margin: 0;
+  max-width: 420px;
+}
+
+.patient-detail__plans-scroll {
+  overflow-x: auto;
+}
+
+.patient-detail__plans-table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.patient-detail__plans-table th {
+  text-align: left;
+  padding: 14px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .patient-detail__plans-table th {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.patient-detail__plans-row td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--p-surface-200);
+  vertical-align: middle;
+}
+
+:host-context(.app-dark) .patient-detail__plans-row td {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.patient-detail__plans-row:hover td {
+  background: color-mix(in srgb, var(--p-surface-50) 70%, transparent);
+}
+
+:host-context(.app-dark) .patient-detail__plans-row:hover td {
+  background: color-mix(in srgb, var(--p-surface-200) 65%, transparent);
+}
+
+.patient-detail__plans-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.patient-detail__plans-period,
+.patient-detail__plans-routines {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+.patient-detail__plan-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.patient-detail__plan-status--active {
+  background: color-mix(in srgb, var(--p-turquoise-400) 14%, transparent);
+  color: var(--p-turquoise-400);
+}
+
+.patient-detail__plan-status--scheduled {
+  background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
+  color: var(--p-amber-500);
+}
+
+.patient-detail__plan-status--completed {
+  background: var(--p-surface-100);
+  color: var(--p-text-color);
+}
+
+.patient-detail__plan-status--canceled {
+  background: color-mix(in srgb, var(--p-red-500) 12%, transparent);
+  color: var(--p-red-500);
+}
+
+:host-context(.app-dark) .patient-detail__plan-status--completed {
+  background: var(--p-surface-200);
+}
+
+.patient-detail__plans-action-col {
+  white-space: nowrap;
+}
+
+.patient-detail__plans-action {
+  color: var(--p-primary-color);
+  text-decoration: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.patient-detail__plans-action:hover {
+  text-decoration: underline;
+}
+
+.patient-detail__plans-footer {
+  padding: 14px 20px 16px;
+}
+
+.patient-detail__plans-counter {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
 }
