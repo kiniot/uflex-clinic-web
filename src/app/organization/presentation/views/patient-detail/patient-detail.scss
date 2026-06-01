@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+.patient-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}

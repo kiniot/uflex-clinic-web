@@ -1,14 +1,24 @@
 import {Routes} from '@angular/router';
 
-const organizationView = () =>
-  import('./views/organization-view/organization-view').then(m => m.OrganizationView);
+const patientsHub = () =>
+  import('./views/patients-hub/patients-hub').then(m => m.PatientsHub);
+const patientDetail = () =>
+  import('./views/patient-detail/patient-detail').then(m => m.PatientDetail);
+const patientTreatmentPlanRoutes = () =>
+  import('../../planning/presentation/patient-treatment-plan.routes').then(
+    (m) => m.patientTreatmentPlanRoutes,
+  );
 
 /**
- * Organization routes for the physiotherapist role. Default is the
- * Organization View (unassigned-patient queue + staff directory).
- * The clinic admin's clinic-management view is exposed by
- * {@link organizationRoutes} instead.
+ * Organization routes for the physiotherapist role. The public
+ * patients URLs live here, while treatment-plan internals lazy-load
+ * from the Planning bounded context.
  */
 export const physiotherapistOrganizationRoutes: Routes = [
-  {path: '', loadComponent: organizationView}
+  { path: '', loadComponent: patientsHub },
+  {
+    path: ':patientId',
+    loadComponent: patientDetail,
+    children: [{ path: 'treatment-plans', loadChildren: patientTreatmentPlanRoutes }],
+  },
 ];
