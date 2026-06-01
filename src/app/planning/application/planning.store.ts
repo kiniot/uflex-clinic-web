@@ -46,6 +46,7 @@ export class PlanningStore {
   private readonly exerciseCatalogSignal = signal<ExerciseCatalogItem[]>([]);
   private readonly selectedExerciseCatalogItemSignal = signal<ExerciseCatalogItem | null>(null);
   private readonly loadingExerciseCatalogSignal = signal(false);
+  private readonly exerciseCatalogErrorSignal = signal<string | null>(null);
 
   readonly patients = this.patientsSignal.asReadonly();
   readonly dailySessions = this.dailySessionsSignal.asReadonly();
@@ -60,6 +61,7 @@ export class PlanningStore {
   readonly exerciseCatalog = this.exerciseCatalogSignal.asReadonly();
   readonly selectedExerciseCatalogItem = this.selectedExerciseCatalogItemSignal.asReadonly();
   readonly isLoadingExerciseCatalog = this.loadingExerciseCatalogSignal.asReadonly();
+  readonly exerciseCatalogError = this.exerciseCatalogErrorSignal.asReadonly();
 
   constructor(private planningApi: PlanningApi) {}
 
@@ -216,11 +218,16 @@ export class PlanningStore {
 
   async loadExerciseCatalog(): Promise<ExerciseCatalogItem[]> {
     this.loadingExerciseCatalogSignal.set(true);
+    this.exerciseCatalogErrorSignal.set(null);
     try {
       const resources = await firstValueFrom(this.planningApi.getExercises());
       const exercises = resources.map((resource) => this.mapExerciseCatalogItem(resource));
       this.exerciseCatalogSignal.set(exercises);
       return exercises;
+    } catch (error) {
+      this.exerciseCatalogSignal.set([]);
+      this.exerciseCatalogErrorSignal.set(this.describeError(error));
+      return [];
     } finally {
       this.loadingExerciseCatalogSignal.set(false);
     }
@@ -281,5 +288,12 @@ export class PlanningStore {
       movementType: resource.movementType,
       videoUrl: resource.videoUrl,
     });
+  }
+
+  private describeError(error: unknown): string {
+    if (error instanceof Error && error.message) {
+      return error.message;
+    }
+    return 'Failed to load exercises';
   }
 }

@@ -57,7 +57,6 @@ export class TreatmentPlanAssembler {
   toRequestFromCreateCommand(command: CreateTreatmentPlanCommand): CreateTreatmentPlanRequest {
     return {
       name: command.name,
-      status: command.status,
       period: command.period,
       routines: command.routines.map((routine) => ({
         name: routine.name,

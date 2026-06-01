@@ -1184,6 +1184,7 @@
     "subtitle": "Construye un plan terapéutico para {{patient}} organizando rutinas, horarios y series de ejercicios desde el catálogo de la clínica.",
     "actions": {
       "create": "Crear plan de tratamiento",
+      "createAndSave": "Guardar plan de tratamiento",
       "save": "Guardar cambios",
       "activate": "Activar",
       "complete": "Completar",
@@ -1263,10 +1264,17 @@
       "subtitle": "Elige ejercicios creados por la clínica y agrégalos a la rutina seleccionada. Las referencias de video se muestran solo como metadato por ahora.",
       "selectedRoutine": "Rutina {{order}} seleccionada",
       "noRoutineSelected": "Selecciona primero una rutina",
+      "emptyTitle": "No hay ejercicios disponibles",
+      "emptyBody": "Todavía no hay ejercicios publicados en el catálogo de la clínica. El fisioterapeuta solo puede seleccionar ejercicios existentes; no los crea desde esta vista.",
+      "errorTitle": "No pudimos cargar el catálogo",
+      "errorBody": "La rutina sigue disponible, pero necesitamos recuperar la lista de ejercicios de la clínica para poder crear series.",
+      "retry": "Reintentar carga",
       "videoRef": "Referencia de video",
       "add": "Agregar a la rutina"
     },
     "notifications": {
+      "catalogLoadErrorSummary": "No se pudo cargar el catálogo",
+      "catalogLoadErrorDetail": "No pudimos obtener la lista de ejercicios de la clínica. Puedes reintentar desde el panel del catálogo.",
       "createSuccessSummary": "Plan de tratamiento creado",
       "createSuccessDetail": "El plan de tratamiento ya está disponible para {{patient}}.",
       "saveSuccessSummary": "Plan de tratamiento actualizado",

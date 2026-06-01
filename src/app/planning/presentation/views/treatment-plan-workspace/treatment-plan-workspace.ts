@@ -82,10 +82,6 @@ export class TreatmentPlanWorkspace {
   });
   private readonly translations = toSignal(
     this.translate.stream([
-      'treatmentPlanWorkspace.statusOptions.SCHEDULED',
-      'treatmentPlanWorkspace.statusOptions.ACTIVE',
-      'treatmentPlanWorkspace.statusOptions.COMPLETED',
-      'treatmentPlanWorkspace.statusOptions.CANCELED',
       'treatmentPlanWorkspace.dayOptions.MONDAY',
       'treatmentPlanWorkspace.dayOptions.TUESDAY',
       'treatmentPlanWorkspace.dayOptions.WEDNESDAY',
@@ -110,36 +106,19 @@ export class TreatmentPlanWorkspace {
   private readonly routineDraftsSignal = signal<RoutineDraft[]>([]);
   private readonly savingSignal = signal(false);
   private readonly runningTransitionSignal = signal(false);
+  private lastCatalogErrorMessage: string | null = null;
 
   protected readonly patient = this.organizationStore.selectedPatient;
   protected readonly treatmentPlan = this.planningStore.selectedTreatmentPlan;
   protected readonly exerciseCatalog = this.planningStore.exerciseCatalog;
   protected readonly isLoadingExerciseCatalog = this.planningStore.isLoadingExerciseCatalog;
+  protected readonly exerciseCatalogError = this.planningStore.exerciseCatalogError;
   protected readonly isLoadingPlan = this.planningStore.isLoadingSelectedTreatmentPlan;
   protected readonly routines = this.routineDraftsSignal.asReadonly();
   protected readonly selectedRoutineLocalKey = this.selectedRoutineLocalKeySignal.asReadonly();
   protected readonly isSaving = this.savingSignal.asReadonly();
   protected readonly isRunningTransition = this.runningTransitionSignal.asReadonly();
   protected readonly loadingRows = [0, 1, 2];
-
-  protected readonly statusOptions = computed<SelectOption<TreatmentPlanStatus>[]>(() => [
-    {
-      label: this.translations()['treatmentPlanWorkspace.statusOptions.SCHEDULED'] ?? 'Scheduled',
-      value: 'SCHEDULED',
-    },
-    {
-      label: this.translations()['treatmentPlanWorkspace.statusOptions.ACTIVE'] ?? 'Active',
-      value: 'ACTIVE',
-    },
-    {
-      label: this.translations()['treatmentPlanWorkspace.statusOptions.COMPLETED'] ?? 'Completed',
-      value: 'COMPLETED',
-    },
-    {
-      label: this.translations()['treatmentPlanWorkspace.statusOptions.CANCELED'] ?? 'Canceled',
-      value: 'CANCELED',
-    },
-  ]);
 
   protected readonly dayOptions = computed<SelectOption<TreatmentPlanDayOfWeek>[]>(() => [
     {
@@ -174,10 +153,6 @@ export class TreatmentPlanWorkspace {
 
   protected readonly form = new FormGroup({
     name: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    status: new FormControl<TreatmentPlanStatus>('SCHEDULED', {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
     startsAt: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     endsAt: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
@@ -189,9 +164,7 @@ export class TreatmentPlanWorkspace {
     this.isCreateMode() ? 'treatmentPlanWorkspace.createTitle' : 'treatmentPlanWorkspace.editTitle',
   );
   protected readonly activeStatus = computed(() =>
-    this.isCreateMode()
-      ? this.form.controls.status.value
-      : (this.originalPlanSignal()?.status ?? 'SCHEDULED'),
+    this.isCreateMode() ? 'SCHEDULED' : (this.originalPlanSignal()?.status ?? 'SCHEDULED'),
   );
   protected readonly canEditStructure = computed(() => {
     const status = this.activeStatus();
@@ -209,6 +182,23 @@ export class TreatmentPlanWorkspace {
       const planId = this.planId();
       if (!patientId || !planId) return;
       void this.loadWorkspace(patientId, planId);
+    });
+
+    effect(() => {
+      const errorMessage = this.exerciseCatalogError();
+      if (!errorMessage || errorMessage === this.lastCatalogErrorMessage) return;
+
+      this.lastCatalogErrorMessage = errorMessage;
+      this.messageService.add({
+        severity: 'warn',
+        summary: this.translate.instant(
+          'treatmentPlanWorkspace.notifications.catalogLoadErrorSummary',
+        ),
+        detail: this.translate.instant(
+          'treatmentPlanWorkspace.notifications.catalogLoadErrorDetail',
+        ),
+        life: 4500,
+      });
     });
   }
 
@@ -241,6 +231,25 @@ export class TreatmentPlanWorkspace {
     if (this.selectedRoutineLocalKey() === localKey) {
       this.selectedRoutineLocalKeySignal.set(this.routineDraftsSignal()[0]?.localKey ?? null);
     }
+  }
+
+  protected onRoutineActionClick(event: Event) {
+    event.stopPropagation();
+  }
+
+  protected onRoutineKeySelect(event: Event, localKey: number) {
+    event.preventDefault();
+    this.onSelectRoutine(localKey);
+  }
+
+  protected onRemoveRoutineClick(event: Event, localKey: number) {
+    this.onRoutineActionClick(event);
+    this.onRemoveRoutine(localKey);
+  }
+
+  protected onRemoveSeriesClick(event: Event, routineLocalKey: number, seriesLocalKey: number) {
+    this.onRoutineActionClick(event);
+    this.onRemoveSeries(routineLocalKey, seriesLocalKey);
   }
 
   protected onAddExerciseToRoutine(exercise: ExerciseCatalogItem) {
@@ -289,6 +298,11 @@ export class TreatmentPlanWorkspace {
         };
       }),
     );
+  }
+
+  protected onRetryExerciseCatalog() {
+    this.lastCatalogErrorMessage = null;
+    void this.planningStore.loadExerciseCatalog();
   }
 
   protected onSavePlan() {
@@ -393,7 +407,6 @@ export class TreatmentPlanWorkspace {
       this.form.reset(
         {
           name: '',
-          status: 'SCHEDULED',
           startsAt: '',
           endsAt: '',
         },
@@ -415,7 +428,6 @@ export class TreatmentPlanWorkspace {
     this.form.reset(
       {
         name: plan.name,
-        status: plan.status as TreatmentPlanStatus,
         startsAt: plan.period.startsAt,
         endsAt: plan.period.endsAt,
       },
@@ -467,7 +479,6 @@ export class TreatmentPlanWorkspace {
     const routines = this.normalizedRoutinesForPersistence();
     return new CreateTreatmentPlanCommand({
       name: value.name,
-      status: value.status,
       period: {
         startsAt: value.startsAt,
         endsAt: value.endsAt,

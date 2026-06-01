@@ -1184,6 +1184,7 @@
     "subtitle": "Build a treatment track for {{patient}} by organizing routines, schedules, and exercise series from the clinic catalog.",
     "actions": {
       "create": "Create treatment plan",
+      "createAndSave": "Save treatment plan",
       "save": "Save changes",
       "activate": "Activate",
       "complete": "Complete",
@@ -1263,10 +1264,17 @@
       "subtitle": "Choose exercises created by the clinic and add them to the selected routine. Video references are shown only as metadata for now.",
       "selectedRoutine": "Routine {{order}} selected",
       "noRoutineSelected": "Select a routine first",
+      "emptyTitle": "No exercises available",
+      "emptyBody": "There are no published exercises in the clinic catalog yet. Physiotherapists only select existing exercises here; they do not create them from this view.",
+      "errorTitle": "We could not load the catalog",
+      "errorBody": "The routine builder is still available, but we need the clinic exercise list before exercise series can be added.",
+      "retry": "Retry load",
       "videoRef": "Video reference",
       "add": "Add to routine"
     },
     "notifications": {
+      "catalogLoadErrorSummary": "Exercise catalog unavailable",
+      "catalogLoadErrorDetail": "We could not fetch the clinic exercise list. You can retry from the catalog panel.",
       "createSuccessSummary": "Treatment plan created",
       "createSuccessDetail": "The treatment plan is now available for {{patient}}.",
       "saveSuccessSummary": "Treatment plan updated",

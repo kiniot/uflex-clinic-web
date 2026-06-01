@@ -19,8 +19,11 @@ export const physiotherapistOrganizationRoutes: Routes = [
   { path: '', loadComponent: patientsHub },
   { path: 'new', loadComponent: registerPatient },
   {
+    path: ':patientId/treatment-plans',
+    loadChildren: patientTreatmentPlanRoutes,
+  },
+  {
     path: ':patientId',
     loadComponent: patientDetail,
-    children: [{ path: 'treatment-plans', loadChildren: patientTreatmentPlanRoutes }],
   },
 ];

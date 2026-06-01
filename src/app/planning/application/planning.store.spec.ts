@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { PlanningStore } from './planning.store';
 import { PlanningApi } from '../infrastructure/planning-api';
 
@@ -66,5 +66,16 @@ describe('PlanningStore', () => {
     expect(exercise?.id).toBe('exercise-2');
     expect(store.selectedExerciseCatalogItem()?.id).toBe('exercise-2');
     expect(store.exerciseCatalog().some((item) => item.id === 'exercise-2')).toBe(true);
+  });
+
+  it('exposes a recoverable error state when the exercise catalog request fails', async () => {
+    const api = TestBed.inject(PlanningApi);
+    api.getExercises = () => throwError(() => new Error('Failed to load exercises'));
+
+    const exercises = await store.loadExerciseCatalog();
+
+    expect(exercises).toEqual([]);
+    expect(store.exerciseCatalog()).toEqual([]);
+    expect(store.exerciseCatalogError()).toBe('Failed to load exercises');
   });
 });

@@ -74,6 +74,7 @@
       pButton
       type="button"
       severity="primary"
+      [icon]="isCreateMode() ? 'pi pi-check-circle' : 'pi pi-save'"
       class="workspace__primary-btn"
       [loading]="isSaving()"
       [disabled]="isSaving()"
@@ -81,7 +82,7 @@
     >
       <span>{{
         isCreateMode()
-          ? ('treatmentPlanWorkspace.actions.create' | translate)
+          ? ('treatmentPlanWorkspace.actions.createAndSave' | translate)
           : ('treatmentPlanWorkspace.actions.save' | translate)
       }}</span>
     </button>
@@ -98,18 +99,6 @@
         type="text"
         formControlName="name"
         [placeholder]="'treatmentPlanWorkspace.placeholders.name' | translate"
-      />
-    </div>
-
-    <div class="workspace__field">
-      <label for="planStatus">{{ 'treatmentPlanWorkspace.fields.status' | translate }}</label>
-      <p-select
-        inputId="planStatus"
-        formControlName="status"
-        [options]="statusOptions()"
-        optionLabel="label"
-        optionValue="value"
-        [disabled]="!isCreateMode()"
       />
     </div>
 
@@ -171,14 +160,15 @@
           <article
             class="routine-card"
             [class.routine-card--active]="selectedRoutineLocalKey() === routine.localKey"
+            [attr.aria-pressed]="selectedRoutineLocalKey() === routine.localKey"
+            tabindex="0"
+            (click)="onSelectRoutine(routine.localKey)"
+            (keydown.enter)="onRoutineKeySelect($event, routine.localKey)"
+            (keydown.space)="onRoutineKeySelect($event, routine.localKey)"
           >
             <header class="routine-card__header">
               <div class="routine-card__title-block">
-                <button
-                  type="button"
-                  class="routine-card__anchor"
-                  (click)="onSelectRoutine(routine.localKey)"
-                >
+                <button type="button" class="routine-card__anchor">
                   <span class="routine-card__anchor-dot" aria-hidden="true"></span>
                   <span
                     >{{ 'treatmentPlanWorkspace.builder.routine' | translate }}
@@ -189,7 +179,7 @@
                   type="button"
                   class="routine-card__remove"
                   [disabled]="!canEditStructure()"
-                  (click)="onRemoveRoutine(routine.localKey)"
+                  (click)="onRemoveRoutineClick($event, routine.localKey)"
                 >
                   <i class="pi pi-trash" aria-hidden="true"></i>
                 </button>
@@ -206,6 +196,7 @@
                   [ngModelOptions]="{ standalone: true }"
                   [disabled]="!canEditStructure()"
                   [placeholder]="'treatmentPlanWorkspace.routine.placeholders.name' | translate"
+                  (click)="onSelectRoutine(routine.localKey)"
                 />
               </div>
 
@@ -218,6 +209,7 @@
                   [(ngModel)]="routine.order"
                   [ngModelOptions]="{ standalone: true }"
                   [disabled]="!canEditStructure()"
+                  (click)="onSelectRoutine(routine.localKey)"
                 />
               </div>
 
@@ -230,6 +222,7 @@
                   optionLabel="label"
                   optionValue="value"
                   [disabled]="!canEditStructure()"
+                  (onFocus)="onSelectRoutine(routine.localKey)"
                 />
               </div>
 
@@ -241,6 +234,7 @@
                   [(ngModel)]="routine.scheduleTime"
                   [ngModelOptions]="{ standalone: true }"
                   [disabled]="!canEditStructure()"
+                  (click)="onSelectRoutine(routine.localKey)"
                 />
               </div>
             </div>
@@ -284,7 +278,7 @@
                           type="button"
                           class="series-card__remove"
                           [disabled]="!canEditStructure()"
-                          (click)="onRemoveSeries(routine.localKey, series.localKey)"
+                          (click)="onRemoveSeriesClick($event, routine.localKey, series.localKey)"
                         >
                           <i class="pi pi-times" aria-hidden="true"></i>
                         </button>
@@ -382,6 +376,34 @@
         @for (row of loadingRows; track row) {
           <span class="workspace__catalog-loading-card"></span>
         }
+      </div>
+    } @else if (exerciseCatalogError()) {
+      <div class="workspace__catalog-state">
+        <span class="workspace__catalog-state-icon" aria-hidden="true">
+          <i class="pi pi-exclamation-triangle"></i>
+        </span>
+        <h3 class="workspace__catalog-state-title">
+          {{ 'treatmentPlanWorkspace.catalog.errorTitle' | translate }}
+        </h3>
+        <p class="workspace__catalog-state-body">
+          {{ 'treatmentPlanWorkspace.catalog.errorBody' | translate }}
+        </p>
+        <button type="button" class="workspace__section-btn" (click)="onRetryExerciseCatalog()">
+          <i class="pi pi-refresh" aria-hidden="true"></i>
+          <span>{{ 'treatmentPlanWorkspace.catalog.retry' | translate }}</span>
+        </button>
+      </div>
+    } @else if (exerciseCatalog().length === 0) {
+      <div class="workspace__catalog-state">
+        <span class="workspace__catalog-state-icon" aria-hidden="true">
+          <i class="pi pi-folder-open"></i>
+        </span>
+        <h3 class="workspace__catalog-state-title">
+          {{ 'treatmentPlanWorkspace.catalog.emptyTitle' | translate }}
+        </h3>
+        <p class="workspace__catalog-state-body">
+          {{ 'treatmentPlanWorkspace.catalog.emptyBody' | translate }}
+        </p>
       </div>
     } @else {
       <div class="workspace__catalog-list">

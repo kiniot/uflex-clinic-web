@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,7 +10,7 @@ import { PlanningStore } from '../../../../planning/application/planning.store';
 
 @Component({
   selector: 'app-patient-detail',
-  imports: [DatePipe, RouterLink, RouterOutlet, TranslatePipe, ButtonModule],
+  imports: [DatePipe, RouterLink, TranslatePipe, ButtonModule],
   templateUrl: './patient-detail.html',
   styleUrl: './patient-detail.scss',
 })
