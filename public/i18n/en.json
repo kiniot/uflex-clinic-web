@@ -1239,6 +1239,8 @@
       "fields": {
         "name": "Routine name",
         "order": "Order",
+        "orderPositiveError": "Use an order of 1 or higher.",
+        "orderUniqueError": "That order is already in use.",
         "day": "Day of week",
         "time": "Scheduled time"
       },
@@ -1254,10 +1256,21 @@
       "itemLabel": "Series",
       "fields": {
         "rom": "Range of motion (deg)",
+        "romShort": "Range of motion (degrees)",
         "repetitions": "Repetitions",
         "duration": "Duration (sec)",
         "rest": "Rest (sec)"
       }
+    },
+    "confirm": {
+      "activateTitle": "Activate plan",
+      "activateBody": "The plan {{plan}} will move to active status and be ready for clinical execution.",
+      "completeTitle": "Complete plan",
+      "completeBody": "The plan {{plan}} will be marked as completed for {{patient}}.",
+      "cancelTitle": "Cancel plan",
+      "cancelBody": "The plan {{plan}} will stop being available for {{patient}}. This action may affect the treatment schedule.",
+      "deleteTitle": "Delete plan",
+      "deleteBody": "The plan {{plan}} will be removed from {{patient}}'s clinical workspace. This action cannot be undone."
     },
     "catalog": {
       "title": "Exercise catalog",
@@ -1287,10 +1300,20 @@
       "completeSuccessDetail": "The selected plan was marked as completed.",
       "cancelSuccessSummary": "Treatment plan canceled",
       "cancelSuccessDetail": "The selected plan was canceled.",
+      "routineOrderErrorSummary": "Fix the routine order",
+      "routineOrderErrorDetail": "Each routine must have a unique, valid order before the plan can be saved.",
       "saveErrorSummary": "Treatment plan update failed",
       "saveErrorDetail": "We could not save the treatment plan right now. Please try again.",
       "actionErrorSummary": "Treatment plan action failed",
       "actionErrorDetail": "We could not complete that treatment plan action right now. Please try again."
+    }
+  },
+  "shared": {
+    "confirmAction": {
+      "title": "Confirm action",
+      "body": "Please confirm if you want to continue with this action.",
+      "confirm": "Confirm",
+      "cancel": "Go back"
     }
   },
   "organizationView": {

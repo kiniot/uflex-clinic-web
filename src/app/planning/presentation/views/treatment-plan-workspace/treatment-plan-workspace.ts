@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { OrganizationStore } from '../../../../organization/application/organization.store';
+import { ConfirmActionDialog } from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
 import { AddRoutineCommand } from '../../../domain/model/add-routine.command';
 import { CreateTreatmentPlanCommand } from '../../../domain/model/create-treatment-plan.command';
 import { ExerciseCatalogItem } from '../../../domain/model/exercise-catalog-item.entity';
@@ -39,6 +40,8 @@ interface ExerciseSeriesDraft {
   repetitions: number;
   durationSeconds: number;
   restDurationSeconds: number;
+  isEntering?: boolean;
+  isLeaving?: boolean;
 }
 
 interface RoutineDraft {
@@ -50,7 +53,22 @@ interface RoutineDraft {
   scheduleDayOfWeek: string;
   scheduleTime: string;
   exerciseSeries: ExerciseSeriesDraft[];
+  isEntering?: boolean;
+  isLeaving?: boolean;
 }
+
+type PendingPlanAction = 'activate' | 'complete' | 'cancel' | 'delete';
+type RoutineEditableField = 'name' | 'order' | 'scheduleDayOfWeek' | 'scheduleTime';
+type SeriesEditableField =
+  | 'rangeOfMotionDegrees'
+  | 'repetitions'
+  | 'durationSeconds'
+  | 'restDurationSeconds';
+
+const ROUTINE_ENTER_DURATION_MS = 260;
+const ROUTINE_LEAVE_DURATION_MS = 220;
+const SERIES_ENTER_DURATION_MS = 220;
+const SERIES_LEAVE_DURATION_MS = 180;
 
 @Component({
   selector: 'app-treatment-plan-workspace',
@@ -62,6 +80,7 @@ interface RoutineDraft {
     ButtonModule,
     InputTextModule,
     SelectModule,
+    ConfirmActionDialog,
   ],
   templateUrl: './treatment-plan-workspace.html',
   styleUrl: './treatment-plan-workspace.scss',
@@ -106,6 +125,8 @@ export class TreatmentPlanWorkspace {
   private readonly routineDraftsSignal = signal<RoutineDraft[]>([]);
   private readonly savingSignal = signal(false);
   private readonly runningTransitionSignal = signal(false);
+  private readonly pendingPlanActionSignal = signal<PendingPlanAction | null>(null);
+  private readonly confirmActionVisibleSignal = signal(false);
   private lastCatalogErrorMessage: string | null = null;
 
   protected readonly patient = this.organizationStore.selectedPatient;
@@ -118,6 +139,7 @@ export class TreatmentPlanWorkspace {
   protected readonly selectedRoutineLocalKey = this.selectedRoutineLocalKeySignal.asReadonly();
   protected readonly isSaving = this.savingSignal.asReadonly();
   protected readonly isRunningTransition = this.runningTransitionSignal.asReadonly();
+  protected readonly confirmActionVisible = this.confirmActionVisibleSignal;
   protected readonly loadingRows = [0, 1, 2];
 
   protected readonly dayOptions = computed<SelectOption<TreatmentPlanDayOfWeek>[]>(() => [
@@ -170,11 +192,111 @@ export class TreatmentPlanWorkspace {
     const status = this.activeStatus();
     return status !== 'COMPLETED' && status !== 'CANCELED';
   });
+  protected readonly duplicateRoutineOrderLocalKeys = computed(() => {
+    const occurrences = new Map<number, number[]>();
+
+    for (const routine of this.routines().filter((item) => !item.isLeaving)) {
+      const normalizedOrder = this.normalizeRoutineOrder(routine.order);
+      if (normalizedOrder == null) continue;
+      occurrences.set(normalizedOrder, [
+        ...(occurrences.get(normalizedOrder) ?? []),
+        routine.localKey,
+      ]);
+    }
+
+    return new Set([...occurrences.values()].filter((localKeys) => localKeys.length > 1).flat());
+  });
+  protected readonly hasInvalidRoutineOrders = computed(
+    () =>
+      this.routines()
+        .filter((routine) => !routine.isLeaving)
+        .some((routine) => this.normalizeRoutineOrder(routine.order) == null) ||
+      this.duplicateRoutineOrderLocalKeys().size > 0,
+  );
   protected readonly selectedRoutine = computed(
     () =>
-      this.routines().find((routine) => routine.localKey === this.selectedRoutineLocalKey()) ??
-      null,
+      this.routines().find(
+        (routine) => routine.localKey === this.selectedRoutineLocalKey() && !routine.isLeaving,
+      ) ?? null,
   );
+  protected readonly pendingPlanAction = this.pendingPlanActionSignal.asReadonly();
+  protected readonly canShowActivateAction = computed(
+    () => !this.isCreateMode() && this.activeStatus() === 'SCHEDULED',
+  );
+  protected readonly canShowCompleteAction = computed(
+    () => !this.isCreateMode() && this.activeStatus() === 'ACTIVE',
+  );
+  protected readonly canShowCancelAction = computed(
+    () =>
+      !this.isCreateMode() &&
+      (this.activeStatus() === 'SCHEDULED' || this.activeStatus() === 'ACTIVE'),
+  );
+  protected readonly canShowDeleteAction = computed(
+    () =>
+      !this.isCreateMode() &&
+      (this.activeStatus() === 'COMPLETED' || this.activeStatus() === 'CANCELED'),
+  );
+  protected readonly confirmDialogTitleKey = computed(() => {
+    switch (this.pendingPlanAction()) {
+      case 'activate':
+        return 'treatmentPlanWorkspace.confirm.activateTitle';
+      case 'complete':
+        return 'treatmentPlanWorkspace.confirm.completeTitle';
+      case 'cancel':
+        return 'treatmentPlanWorkspace.confirm.cancelTitle';
+      case 'delete':
+        return 'treatmentPlanWorkspace.confirm.deleteTitle';
+      default:
+        return 'shared.confirmAction.title';
+    }
+  });
+  protected readonly confirmDialogMessageKey = computed(() => {
+    switch (this.pendingPlanAction()) {
+      case 'activate':
+        return 'treatmentPlanWorkspace.confirm.activateBody';
+      case 'complete':
+        return 'treatmentPlanWorkspace.confirm.completeBody';
+      case 'cancel':
+        return 'treatmentPlanWorkspace.confirm.cancelBody';
+      case 'delete':
+        return 'treatmentPlanWorkspace.confirm.deleteBody';
+      default:
+        return 'shared.confirmAction.body';
+    }
+  });
+  protected readonly confirmDialogActionLabelKey = computed(() => {
+    switch (this.pendingPlanAction()) {
+      case 'activate':
+        return 'treatmentPlanWorkspace.actions.activate';
+      case 'complete':
+        return 'treatmentPlanWorkspace.actions.complete';
+      case 'cancel':
+        return 'treatmentPlanWorkspace.actions.cancel';
+      case 'delete':
+        return 'treatmentPlanWorkspace.actions.delete';
+      default:
+        return 'shared.confirmAction.confirm';
+    }
+  });
+  protected readonly confirmDialogTone = computed(() =>
+    this.pendingPlanAction() === 'cancel' || this.pendingPlanAction() === 'delete'
+      ? 'danger'
+      : 'primary',
+  );
+  protected readonly confirmDialogIconClass = computed(() => {
+    switch (this.pendingPlanAction()) {
+      case 'activate':
+        return 'pi pi-play-circle';
+      case 'complete':
+        return 'pi pi-check-circle';
+      case 'cancel':
+        return 'pi pi-ban';
+      case 'delete':
+        return 'pi pi-trash';
+      default:
+        return 'pi pi-question-circle';
+    }
+  });
 
   constructor() {
     effect(() => {
@@ -218,19 +340,36 @@ export class TreatmentPlanWorkspace {
       scheduleDayOfWeek: 'MONDAY',
       scheduleTime: '08:00:00',
       exerciseSeries: [],
+      isEntering: true,
+      isLeaving: false,
     };
     this.routineDraftsSignal.update((routines) => [...routines, draft]);
     this.selectedRoutineLocalKeySignal.set(draft.localKey);
+    this.clearRoutineEnteringState(draft.localKey);
   }
 
   protected onRemoveRoutine(localKey: number) {
     if (!this.canEditStructure()) return;
     this.routineDraftsSignal.update((routines) =>
-      this.resequenceRoutines(routines.filter((routine) => routine.localKey !== localKey)),
+      routines.map((routine) =>
+        routine.localKey === localKey
+          ? { ...routine, isEntering: false, isLeaving: true }
+          : routine,
+      ),
+    );
+
+    const remainingRoutines = this.routineDraftsSignal().filter(
+      (routine) => routine.localKey !== localKey,
     );
     if (this.selectedRoutineLocalKey() === localKey) {
-      this.selectedRoutineLocalKeySignal.set(this.routineDraftsSignal()[0]?.localKey ?? null);
+      this.selectedRoutineLocalKeySignal.set(remainingRoutines[0]?.localKey ?? null);
     }
+
+    window.setTimeout(() => {
+      this.routineDraftsSignal.update((routines) =>
+        this.resequenceRoutines(routines.filter((routine) => routine.localKey !== localKey)),
+      );
+    }, ROUTINE_LEAVE_DURATION_MS);
   }
 
   protected onRoutineActionClick(event: Event) {
@@ -250,6 +389,58 @@ export class TreatmentPlanWorkspace {
   protected onRemoveSeriesClick(event: Event, routineLocalKey: number, seriesLocalKey: number) {
     this.onRoutineActionClick(event);
     this.onRemoveSeries(routineLocalKey, seriesLocalKey);
+  }
+
+  protected onRoutineFieldChange(
+    routineLocalKey: number,
+    field: RoutineEditableField,
+    value: string | number,
+  ) {
+    this.routineDraftsSignal.update((routines) =>
+      routines.map((routine) => {
+        if (routine.localKey !== routineLocalKey) return routine;
+
+        if (field === 'order') {
+          const nextOrder =
+            typeof value === 'number' ? value : value === '' ? 0 : Number.parseInt(value, 10);
+          return {
+            ...routine,
+            order: Number.isNaN(nextOrder) ? 0 : nextOrder,
+          };
+        }
+
+        return {
+          ...routine,
+          [field]: value,
+        };
+      }),
+    );
+  }
+
+  protected onSeriesFieldChange(
+    routineLocalKey: number,
+    seriesLocalKey: number,
+    field: SeriesEditableField,
+    value: string | number,
+  ) {
+    this.routineDraftsSignal.update((routines) =>
+      routines.map((routine) => {
+        if (routine.localKey !== routineLocalKey) return routine;
+
+        return {
+          ...routine,
+          exerciseSeries: routine.exerciseSeries.map((series) => {
+            if (series.localKey !== seriesLocalKey) return series;
+
+            const nextValue = typeof value === 'number' ? value : Number.parseInt(value, 10);
+            return {
+              ...series,
+              [field]: Number.isNaN(nextValue) ? 0 : nextValue,
+            };
+          }),
+        };
+      }),
+    );
   }
 
   protected onAddExerciseToRoutine(exercise: ExerciseCatalogItem) {
@@ -274,6 +465,8 @@ export class TreatmentPlanWorkspace {
           repetitions: 1,
           durationSeconds: 0,
           restDurationSeconds: 0,
+          isEntering: true,
+          isLeaving: false,
         };
 
         return {
@@ -282,6 +475,8 @@ export class TreatmentPlanWorkspace {
         };
       }),
     );
+
+    this.clearSeriesEnteringState(selectedKey, this.seriesLocalKey - 1);
   }
 
   protected onRemoveSeries(routineLocalKey: number, seriesLocalKey: number) {
@@ -292,12 +487,29 @@ export class TreatmentPlanWorkspace {
 
         return {
           ...routine,
-          exerciseSeries: routine.exerciseSeries
-            .filter((series) => series.localKey !== seriesLocalKey)
-            .map((series, index) => ({ ...series, order: index + 1 })),
+          exerciseSeries: routine.exerciseSeries.map((series) =>
+            series.localKey === seriesLocalKey
+              ? { ...series, isEntering: false, isLeaving: true }
+              : series,
+          ),
         };
       }),
     );
+
+    window.setTimeout(() => {
+      this.routineDraftsSignal.update((routines) =>
+        routines.map((routine) => {
+          if (routine.localKey !== routineLocalKey) return routine;
+
+          return {
+            ...routine,
+            exerciseSeries: routine.exerciseSeries
+              .filter((series) => series.localKey !== seriesLocalKey)
+              .map((series, index) => ({ ...series, order: index + 1 })),
+          };
+        }),
+      );
+    }, SERIES_LEAVE_DURATION_MS);
   }
 
   protected onRetryExerciseCatalog() {
@@ -308,6 +520,14 @@ export class TreatmentPlanWorkspace {
   protected onSavePlan() {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
+    if (this.hasInvalidRoutineOrders()) {
+      this.notifyError(
+        'treatmentPlanWorkspace.notifications.routineOrderErrorSummary',
+        'treatmentPlanWorkspace.notifications.routineOrderErrorDetail',
+      );
+      this.selectFirstInvalidRoutineOrder();
+      return;
+    }
 
     const patientId = this.patientId();
     if (!patientId) return;
@@ -315,58 +535,80 @@ export class TreatmentPlanWorkspace {
     void this.persistWorkspace(patientId);
   }
 
-  protected onDeletePlan() {
-    const planId = this.originalPlanSignal()?.id;
-    const patientId = this.patientId();
-    if (!planId || !patientId) return;
-
-    void this.runTransition(async () => {
-      await this.planningStore.deleteTreatmentPlan(planId);
-      await this.planningStore.loadTreatmentPlansByPatient(patientId);
-      this.notifySuccess(
-        'treatmentPlanWorkspace.notifications.deleteSuccessSummary',
-        'treatmentPlanWorkspace.notifications.deleteSuccessDetail',
-      );
-      await this.router.navigate(['/physiotherapist/patients', patientId]);
-    });
+  protected onRequestPlanAction(action: PendingPlanAction) {
+    this.pendingPlanActionSignal.set(action);
+    this.confirmActionVisibleSignal.set(true);
   }
 
-  protected onActivatePlan() {
-    const planId = this.originalPlanSignal()?.id;
-    const patientId = this.patientId();
-    if (!planId || !patientId) return;
+  protected onConfirmPlanAction() {
+    const action = this.pendingPlanAction();
+    if (!action) return;
 
-    void this.runTransition(async () => {
-      const updated = await this.planningStore.activateTreatmentPlan(planId);
-      await this.afterPlanMutation(patientId, updated.id);
-      this.notifySuccess(
-        'treatmentPlanWorkspace.notifications.activateSuccessSummary',
-        'treatmentPlanWorkspace.notifications.activateSuccessDetail',
-      );
-    });
+    this.confirmActionVisibleSignal.set(false);
+    void this.executePlanAction(action);
   }
 
-  protected onCompletePlan() {
-    const planId = this.originalPlanSignal()?.id;
-    const patientId = this.patientId();
-    if (!planId || !patientId) return;
-
-    void this.runTransition(async () => {
-      const updated = await this.planningStore.completeTreatmentPlan(planId);
-      await this.afterPlanMutation(patientId, updated.id);
-      this.notifySuccess(
-        'treatmentPlanWorkspace.notifications.completeSuccessSummary',
-        'treatmentPlanWorkspace.notifications.completeSuccessDetail',
-      );
-    });
+  protected onCloseConfirmAction() {
+    if (!this.isRunningTransition()) {
+      this.pendingPlanActionSignal.set(null);
+    }
   }
 
-  protected onCancelPlan() {
+  protected isDuplicateRoutineOrder(localKey: number): boolean {
+    return this.duplicateRoutineOrderLocalKeys().has(localKey);
+  }
+
+  protected isInvalidRoutineOrderValue(order: number): boolean {
+    return this.normalizeRoutineOrder(order) == null;
+  }
+
+  protected routineOrderErrorKey(order: number, localKey: number): string {
+    if (this.isInvalidRoutineOrderValue(order)) {
+      return 'treatmentPlanWorkspace.routine.fields.orderPositiveError';
+    }
+    if (this.isDuplicateRoutineOrder(localKey)) {
+      return 'treatmentPlanWorkspace.routine.fields.orderUniqueError';
+    }
+    return '';
+  }
+
+  private async executePlanAction(action: PendingPlanAction): Promise<void> {
     const planId = this.originalPlanSignal()?.id;
     const patientId = this.patientId();
     if (!planId || !patientId) return;
 
     void this.runTransition(async () => {
+      if (action === 'delete') {
+        await this.planningStore.deleteTreatmentPlan(planId);
+        await this.planningStore.loadTreatmentPlansByPatient(patientId);
+        this.notifySuccess(
+          'treatmentPlanWorkspace.notifications.deleteSuccessSummary',
+          'treatmentPlanWorkspace.notifications.deleteSuccessDetail',
+        );
+        await this.router.navigate(['/physiotherapist/patients', patientId]);
+        return;
+      }
+
+      if (action === 'activate') {
+        const updated = await this.planningStore.activateTreatmentPlan(planId);
+        await this.afterPlanMutation(patientId, updated.id);
+        this.notifySuccess(
+          'treatmentPlanWorkspace.notifications.activateSuccessSummary',
+          'treatmentPlanWorkspace.notifications.activateSuccessDetail',
+        );
+        return;
+      }
+
+      if (action === 'complete') {
+        const updated = await this.planningStore.completeTreatmentPlan(planId);
+        await this.afterPlanMutation(patientId, updated.id);
+        this.notifySuccess(
+          'treatmentPlanWorkspace.notifications.completeSuccessSummary',
+          'treatmentPlanWorkspace.notifications.completeSuccessDetail',
+        );
+        return;
+      }
+
       const updated = await this.planningStore.cancelTreatmentPlan(planId);
       await this.afterPlanMutation(patientId, updated.id);
       this.notifySuccess(
@@ -469,8 +711,12 @@ export class TreatmentPlanWorkspace {
             repetitions: series.repetitions,
             durationSeconds: series.durationSeconds,
             restDurationSeconds: series.restDurationSeconds,
+            isEntering: false,
+            isLeaving: false,
           };
         }),
+      isEntering: false,
+      isLeaving: false,
     };
   }
 
@@ -674,22 +920,32 @@ export class TreatmentPlanWorkspace {
       }));
   }
 
+  private normalizeRoutineOrder(order: number): number | null {
+    const value = Number(order);
+    if (!Number.isInteger(value) || value < 1) return null;
+    return value;
+  }
+
   private nextRoutineOrder(): number {
-    if (this.routines().length === 0) return 1;
-    return Math.max(...this.routines().map((routine) => routine.order)) + 1;
+    const activeRoutines = this.routines().filter((routine) => !routine.isLeaving);
+    if (activeRoutines.length === 0) return 1;
+    return Math.max(...activeRoutines.map((routine) => routine.order)) + 1;
   }
 
   private normalizedRoutinesForPersistence(): RoutineDraft[] {
-    return this.resequenceRoutines(this.routines()).map((routine) => ({
-      ...routine,
-      exerciseSeries: routine.exerciseSeries
-        .slice()
-        .sort((left, right) => left.order - right.order)
-        .map((series, index) => ({
-          ...series,
-          order: index + 1,
-        })),
-    }));
+    return this.resequenceRoutines(this.routines())
+      .map((routine) => ({
+        ...routine,
+        exerciseSeries: routine.exerciseSeries
+          .filter((series) => !series.isLeaving)
+          .slice()
+          .sort((left, right) => left.order - right.order)
+          .map((series, index) => ({
+            ...series,
+            order: index + 1,
+          })),
+      }))
+      .filter((routine) => !routine.isLeaving);
   }
 
   private async runTransition(action: () => Promise<void>): Promise<void> {
@@ -703,7 +959,48 @@ export class TreatmentPlanWorkspace {
       );
     } finally {
       this.runningTransitionSignal.set(false);
+      this.pendingPlanActionSignal.set(null);
     }
+  }
+
+  private selectFirstInvalidRoutineOrder() {
+    const invalidRoutine =
+      this.routines().find(
+        (routine) => !routine.isLeaving && this.normalizeRoutineOrder(routine.order) == null,
+      ) ??
+      this.routines().find(
+        (routine) => !routine.isLeaving && this.isDuplicateRoutineOrder(routine.localKey),
+      );
+    if (invalidRoutine) {
+      this.selectedRoutineLocalKeySignal.set(invalidRoutine.localKey);
+    }
+  }
+
+  private clearRoutineEnteringState(localKey: number) {
+    window.setTimeout(() => {
+      this.routineDraftsSignal.update((routines) =>
+        routines.map((routine) =>
+          routine.localKey === localKey ? { ...routine, isEntering: false } : routine,
+        ),
+      );
+    }, ROUTINE_ENTER_DURATION_MS);
+  }
+
+  private clearSeriesEnteringState(routineLocalKey: number, seriesLocalKey: number) {
+    window.setTimeout(() => {
+      this.routineDraftsSignal.update((routines) =>
+        routines.map((routine) => {
+          if (routine.localKey !== routineLocalKey) return routine;
+
+          return {
+            ...routine,
+            exerciseSeries: routine.exerciseSeries.map((series) =>
+              series.localKey === seriesLocalKey ? { ...series, isEntering: false } : series,
+            ),
+          };
+        }),
+      );
+    }, SERIES_ENTER_DURATION_MS);
   }
 
   private async afterPlanMutation(patientId: string, planId: string): Promise<void> {

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { OrganizationStore } from '../../../application/organization.store';
@@ -7,7 +7,7 @@ import { Patient } from '../../../domain/model/patient.entity';
 
 @Component({
   selector: 'app-patients-hub',
-  imports: [RouterLink, TranslatePipe, ButtonModule],
+  imports: [TranslatePipe, ButtonModule],
   templateUrl: './patients-hub.html',
   styleUrl: './patients-hub.scss',
 })
