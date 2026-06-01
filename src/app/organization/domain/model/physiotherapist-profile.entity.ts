@@ -1,13 +1,6 @@
 import { BaseEntity } from '../../../shared/domain/model/base-entity';
 
-export type PhysiotherapistSpecialty =
-  | 'NEUROLOGICAL'
-  | 'ORTHOPEDIC'
-  | 'SPORTS'
-  | 'GERIATRIC'
-  | 'PEDIATRIC'
-  | 'CARDIORESPIRATORY'
-  | 'OTHER';
+export type PhysiotherapistSpecialty = 'TRAUMATOLOGICAL' | 'NEUROLOGICAL' | 'SPORTS' | 'GENERAL';
 
 export type PhysiotherapistEmploymentStatus = 'ACTIVE' | 'INACTIVE';
 
@@ -61,45 +54,101 @@ export class PhysiotherapistProfile implements BaseEntity {
     this._status = props.status;
   }
 
-  get id(): string { return this._id; }
-  set id(value: string) { this._id = value; }
+  get id(): string {
+    return this._id;
+  }
+  set id(value: string) {
+    this._id = value;
+  }
 
-  get userId(): string { return this._userId; }
-  set userId(value: string) { this._userId = value; }
+  get userId(): string {
+    return this._userId;
+  }
+  set userId(value: string) {
+    this._userId = value;
+  }
 
-  get clinicId(): string { return this._clinicId; }
-  set clinicId(value: string) { this._clinicId = value; }
+  get clinicId(): string {
+    return this._clinicId;
+  }
+  set clinicId(value: string) {
+    this._clinicId = value;
+  }
 
-  get fullName(): string { return this._fullName; }
-  set fullName(value: string) { this._fullName = value; }
+  get fullName(): string {
+    return this._fullName;
+  }
+  set fullName(value: string) {
+    this._fullName = value;
+  }
 
-  get specialty(): string { return this._specialty; }
-  set specialty(value: string) { this._specialty = value; }
+  get specialty(): string {
+    return this._specialty;
+  }
+  set specialty(value: string) {
+    this._specialty = value;
+  }
 
-  get email(): string { return this._email; }
-  set email(value: string) { this._email = value; }
+  get email(): string {
+    return this._email;
+  }
+  set email(value: string) {
+    this._email = value;
+  }
 
-  get countryCode(): string { return this._countryCode; }
-  set countryCode(value: string) { this._countryCode = value; }
+  get countryCode(): string {
+    return this._countryCode;
+  }
+  set countryCode(value: string) {
+    this._countryCode = value;
+  }
 
-  get phoneNumber(): string { return this._phoneNumber; }
-  set phoneNumber(value: string) { this._phoneNumber = value; }
+  get phoneNumber(): string {
+    return this._phoneNumber;
+  }
+  set phoneNumber(value: string) {
+    this._phoneNumber = value;
+  }
 
-  get licenseNumber(): string { return this._licenseNumber; }
-  set licenseNumber(value: string) { this._licenseNumber = value; }
+  get licenseNumber(): string {
+    return this._licenseNumber;
+  }
+  set licenseNumber(value: string) {
+    this._licenseNumber = value;
+  }
 
-  get professionalSummary(): string | null { return this._professionalSummary; }
-  set professionalSummary(value: string | null) { this._professionalSummary = value; }
+  get professionalSummary(): string | null {
+    return this._professionalSummary;
+  }
+  set professionalSummary(value: string | null) {
+    this._professionalSummary = value;
+  }
 
-  get photoUrl(): string | null { return this._photoUrl; }
-  set photoUrl(value: string | null) { this._photoUrl = value; }
+  get photoUrl(): string | null {
+    return this._photoUrl;
+  }
+  set photoUrl(value: string | null) {
+    this._photoUrl = value;
+  }
 
-  get yearsOfExperience(): number { return this._yearsOfExperience; }
-  set yearsOfExperience(value: number) { this._yearsOfExperience = value; }
+  get yearsOfExperience(): number {
+    return this._yearsOfExperience;
+  }
+  set yearsOfExperience(value: number) {
+    this._yearsOfExperience = value;
+  }
 
-  get hireDate(): string { return this._hireDate; }
-  set hireDate(value: string) { this._hireDate = value; }
+  get hireDate(): string {
+    return this._hireDate;
+  }
+  set hireDate(value: string) {
+    this._hireDate = value;
+  }
 
-  get status(): string { return this._status; }
-  set status(value: string) { this._status = value; }
+  get status(): string {
+    return this._status;
+  }
+  set status(value: string) {
+    this._status = value;
+  }
 }

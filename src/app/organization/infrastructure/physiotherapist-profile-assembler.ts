@@ -1,13 +1,13 @@
+import { RegisterPhysiotherapistCommand } from '../domain/model/register-physiotherapist.command';
 import { PhysiotherapistProfile } from '../domain/model/physiotherapist-profile.entity';
 import {
   PhysiotherapistProfileResource,
   PhysiotherapistProfileResponse,
 } from './physiotherapist-profile-response';
+import { RegisterPhysiotherapistRequest } from './register-physiotherapist.request';
 
 export class PhysiotherapistProfileAssembler {
-  toResourceFromResponse(
-    response: PhysiotherapistProfileResponse,
-  ): PhysiotherapistProfileResource {
+  toResourceFromResponse(response: PhysiotherapistProfileResponse): PhysiotherapistProfileResource {
     return {
       id: response.id,
       userId: response.userId,
@@ -43,5 +43,19 @@ export class PhysiotherapistProfileAssembler {
       hireDate: resource.hireDate,
       status: resource.status,
     });
+  }
+
+  toRequestFromCommand(command: RegisterPhysiotherapistCommand): RegisterPhysiotherapistRequest {
+    return {
+      fullName: command.fullName,
+      specialty: command.specialty,
+      email: command.email,
+      countryCode: command.countryCode,
+      phoneNumber: command.phoneNumber,
+      licenseNumber: command.licenseNumber,
+      professionalSummary: command.professionalSummary,
+      photoUrl: command.photoUrl,
+      yearsOfExperience: command.yearsOfExperience,
+    } as RegisterPhysiotherapistRequest;
   }
 }

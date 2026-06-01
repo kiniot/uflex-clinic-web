@@ -1,4 +1,5 @@
 import { PhysiotherapistProfileAssembler } from './physiotherapist-profile-assembler';
+import { RegisterPhysiotherapistCommand } from '../domain/model/register-physiotherapist.command';
 
 describe('PhysiotherapistProfileAssembler', () => {
   it('maps the authenticated physiotherapist payload into a resource shape', () => {
@@ -24,5 +25,27 @@ describe('PhysiotherapistProfileAssembler', () => {
     expect(resource.id).toBe('physio-id');
     expect(resource.userId).toBe('user-id');
     expect(resource.specialty).toBe('NEUROLOGICAL');
+  });
+
+  it('maps register physiotherapist commands into backend requests', () => {
+    const assembler = new PhysiotherapistProfileAssembler();
+
+    const request = assembler.toRequestFromCommand(
+      new RegisterPhysiotherapistCommand({
+        fullName: 'Salim Ramirez',
+        specialty: 'GENERAL',
+        email: 'salim@gmail.com',
+        countryCode: '+51',
+        phoneNumber: '987654321',
+        licenseNumber: 'CPT12345',
+        professionalSummary: 'Experienced physiotherapist',
+        photoUrl: 'https://example.com/photo.jpg',
+        yearsOfExperience: 10,
+      }),
+    );
+
+    expect(request.countryCode).toBe('+51');
+    expect(request.phoneNumber).toBe('987654321');
+    expect(request.yearsOfExperience).toBe(10);
   });
 });

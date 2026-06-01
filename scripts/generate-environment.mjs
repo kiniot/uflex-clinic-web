@@ -77,9 +77,25 @@ function environmentFile({ production }) {
       'NG_APP_PLATFORM_PROVIDER_CURRENT_CLINIC_ENDPOINT_PATH',
       '/clinics/me',
     ),
+    platformProviderCurrentClinicAdminEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_CURRENT_CLINIC_ADMIN_ENDPOINT_PATH',
+      '/clinic-admins/me',
+    ),
     platformProviderCurrentPhysiotherapistEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_CURRENT_PHYSIOTHERAPIST_ENDPOINT_PATH',
       '/physiotherapists/me',
+    ),
+    platformProviderPhysiotherapistsEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PHYSIOTHERAPISTS_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderRegisterPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_REGISTER_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderPhysiotherapistByIdEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PHYSIOTHERAPIST_BY_ID_ENDPOINT_PATH',
+      '/physiotherapists',
     ),
     platformProviderMyPatientsEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_MY_PATIENTS_ENDPOINT_PATH',
@@ -89,9 +105,25 @@ function environmentFile({ production }) {
       'NG_APP_PLATFORM_PROVIDER_PATIENTS_ENDPOINT_PATH',
       '/patients',
     ),
+    platformProviderRegisterPatientByClinicAdminEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_REGISTER_PATIENT_BY_CLINIC_ADMIN_ENDPOINT_PATH',
+      '/patients/by-clinic-admin',
+    ),
     platformProviderRegisterPatientByPhysiotherapistEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_REGISTER_PATIENT_BY_PHYSIOTHERAPIST_ENDPOINT_PATH',
       '/patients/by-physiotherapist',
+    ),
+    platformProviderPatientsByPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PATIENTS_BY_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/patients/by-physiotherapist',
+    ),
+    platformProviderPatientsByClinicEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PATIENTS_BY_CLINIC_ENDPOINT_PATH',
+      '/patients/by-clinic',
+    ),
+    platformProviderAssignPatientEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_ASSIGN_PATIENT_ENDPOINT_PATH',
+      '/patients',
     ),
     platformProviderTreatmentPlansEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_TREATMENT_PLANS_ENDPOINT_PATH',
