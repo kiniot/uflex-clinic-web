@@ -17,7 +17,7 @@ const patientTreatmentPlanRoutes = () =>
  */
 export const physiotherapistOrganizationRoutes: Routes = [
   { path: '', loadComponent: patientsHub },
-  { path: 'new', loadComponent: registerPatient },
+  { path: 'new', loadComponent: registerPatient, data: { roleContext: 'physiotherapist' } },
   {
     path: ':patientId/treatment-plans',
     loadChildren: patientTreatmentPlanRoutes,
@@ -25,5 +25,6 @@ export const physiotherapistOrganizationRoutes: Routes = [
   {
     path: ':patientId',
     loadComponent: patientDetail,
+    data: { roleContext: 'physiotherapist' },
   },
 ];

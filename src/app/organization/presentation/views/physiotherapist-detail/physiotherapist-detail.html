@@ -1,0 +1,218 @@
+<nav class="physio-detail__breadcrumb" aria-label="Breadcrumb">
+  <a routerLink="/clinic-admin/organization">{{
+    'organization.breadcrumb.organization' | translate
+  }}</a>
+  <i class="pi pi-angle-right" aria-hidden="true"></i>
+  <span>{{ 'organization.tabs.physiotherapists' | translate }}</span>
+  <i class="pi pi-angle-right" aria-hidden="true"></i>
+  <span>{{ physiotherapist()?.fullName ?? ('organization.detail.loading' | translate) }}</span>
+</nav>
+
+@if (isLoadingPhysiotherapist() && !physiotherapist()) {
+  <section class="physio-detail__loading">
+    <span class="physio-detail__loading-block physio-detail__loading-block--title"></span>
+    <span class="physio-detail__loading-block physio-detail__loading-block--sub"></span>
+    <div class="physio-detail__loading-grid">
+      @for (row of loadingRows; track row) {
+        <span class="physio-detail__loading-card"></span>
+      }
+    </div>
+  </section>
+} @else if (physiotherapist()) {
+  <header class="physio-detail__header">
+    <div class="physio-detail__header-text">
+      <h1 class="physio-detail__title">{{ physiotherapist()!.fullName }}</h1>
+      <p class="physio-detail__subtitle">
+        {{
+          'organization.physiotherapists.specialties.' + physiotherapist()!.specialty | translate
+        }}
+      </p>
+      <span
+        class="physio-detail__status physio-detail__status--{{
+          physiotherapist()!.status.toLowerCase()
+        }}"
+      >
+        {{ 'organization.physiotherapists.status.' + physiotherapist()!.status | translate }}
+      </span>
+    </div>
+
+    <a routerLink="/clinic-admin/organization/staff/new" class="physio-detail__cta">
+      <i class="pi pi-user-plus" aria-hidden="true"></i>
+      <span>{{ 'organization.physiotherapists.actions.register' | translate }}</span>
+    </a>
+  </header>
+
+  <section class="physio-detail__summary">
+    <article class="detail-card">
+      <header class="detail-card__header">
+        <span class="detail-card__icon" aria-hidden="true">
+          <i class="pi pi-id-card"></i>
+        </span>
+        <h2 class="detail-card__title">
+          {{ 'organization.physiotherapistDetail.cards.identity' | translate }}
+        </h2>
+      </header>
+      <div class="detail-card__grid">
+        <div>
+          <span class="detail-card__label">{{
+            'organization.physiotherapists.columns.specialty' | translate
+          }}</span>
+          <strong class="detail-card__value">{{
+            'organization.physiotherapists.specialties.' + physiotherapist()!.specialty | translate
+          }}</strong>
+        </div>
+        <div>
+          <span class="detail-card__label">{{
+            'organization.physiotherapists.columns.license' | translate
+          }}</span>
+          <strong class="detail-card__value">{{ physiotherapist()!.licenseNumber }}</strong>
+        </div>
+        <div>
+          <span class="detail-card__label">{{
+            'organization.physiotherapists.columns.experience' | translate
+          }}</span>
+          <strong class="detail-card__value">{{
+            'organization.physiotherapists.experienceValue'
+              | translate: { years: physiotherapist()!.yearsOfExperience }
+          }}</strong>
+        </div>
+        <div>
+          <span class="detail-card__label">{{
+            'organization.physiotherapistDetail.fields.hireDate' | translate
+          }}</span>
+          <strong class="detail-card__value">{{
+            physiotherapist()!.hireDate | date: 'mediumDate'
+          }}</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="detail-card">
+      <header class="detail-card__header">
+        <span class="detail-card__icon" aria-hidden="true">
+          <i class="pi pi-envelope"></i>
+        </span>
+        <h2 class="detail-card__title">
+          {{ 'organization.physiotherapistDetail.cards.contact' | translate }}
+        </h2>
+      </header>
+      <div class="detail-card__grid">
+        <div>
+          <span class="detail-card__label">{{
+            'organization.physiotherapists.columns.contact' | translate
+          }}</span>
+          <strong class="detail-card__value"
+            >{{ physiotherapist()!.countryCode }} {{ physiotherapist()!.phoneNumber }}</strong
+          >
+        </div>
+        <div>
+          <span class="detail-card__label">{{
+            'organization.physiotherapistDetail.fields.email' | translate
+          }}</span>
+          <strong class="detail-card__value">{{ physiotherapist()!.email }}</strong>
+        </div>
+        <div>
+          <span class="detail-card__label">{{
+            'organization.physiotherapistDetail.fields.clinic' | translate
+          }}</span>
+          <strong class="detail-card__value">{{
+            clinic()?.commercialName ?? clinic()?.legalName ?? physiotherapist()!.clinicId
+          }}</strong>
+        </div>
+      </div>
+    </article>
+
+    <article class="detail-card detail-card--wide">
+      <header class="detail-card__header">
+        <span class="detail-card__icon" aria-hidden="true">
+          <i class="pi pi-file-edit"></i>
+        </span>
+        <h2 class="detail-card__title">
+          {{ 'organization.physiotherapistDetail.cards.summary' | translate }}
+        </h2>
+      </header>
+      <p class="detail-card__body">
+        {{
+          physiotherapist()!.professionalSummary ||
+            ('organization.physiotherapistDetail.emptySummary' | translate)
+        }}
+      </p>
+    </article>
+  </section>
+
+  <section class="physio-detail__patients-card">
+    <header class="physio-detail__patients-header">
+      <div>
+        <h2 class="physio-detail__patients-title">
+          {{ 'organization.physiotherapistDetail.patients.title' | translate }}
+        </h2>
+        <p class="physio-detail__patients-subtitle">
+          {{
+            'organization.physiotherapistDetail.patients.subtitle'
+              | translate: { count: activePatientsCount() }
+          }}
+        </p>
+      </div>
+    </header>
+
+    @if (isLoadingPatients()) {
+      <div class="physio-detail__patients-loading">
+        @for (row of loadingRows; track row) {
+          <span class="physio-detail__patients-loading-row"></span>
+        }
+      </div>
+    } @else if (assignedPatients().length === 0) {
+      <div class="physio-detail__patients-empty">
+        <span class="physio-detail__patients-empty-icon" aria-hidden="true">
+          <i class="pi pi-users"></i>
+        </span>
+        <h3 class="physio-detail__patients-empty-title">
+          {{ 'organization.physiotherapistDetail.patients.emptyTitle' | translate }}
+        </h3>
+        <p class="physio-detail__patients-empty-body">
+          {{ 'organization.physiotherapistDetail.patients.emptyBody' | translate }}
+        </p>
+      </div>
+    } @else {
+      <div class="physio-detail__patients-scroll">
+        <table class="physio-detail__patients-table">
+          <thead>
+            <tr>
+              <th>{{ 'organization.patients.columns.name' | translate }}</th>
+              <th>{{ 'organization.patients.columns.condition' | translate }}</th>
+              <th>{{ 'organization.patients.columns.status' | translate }}</th>
+              <th>{{ 'organization.patients.columns.actions' | translate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (patient of assignedPatients(); track patient.id) {
+              <tr class="physio-detail__patients-row">
+                <td>
+                  <div class="physio-detail__patient-name">
+                    <strong>{{ patient.fullName }}</strong>
+                    <span>{{ patient.dni }}</span>
+                  </div>
+                </td>
+                <td>{{ patient.medicalCondition }}</td>
+                <td>
+                  <span
+                    class="physio-detail__patient-status physio-detail__patient-status--{{
+                      patient.status.toLowerCase().replace('_', '-')
+                    }}"
+                  >
+                    {{ 'organization.patients.status.' + patient.status | translate }}
+                  </span>
+                </td>
+                <td>
+                  <a [routerLink]="['/clinic-admin/organization/patients', patient.id]">
+                    {{ 'organization.patients.actions.viewDetails' | translate }}
+                  </a>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </section>
+}

@@ -1,7 +1,5 @@
 <nav class="patient-detail__breadcrumb" aria-label="Breadcrumb">
-  <a routerLink="/physiotherapist/patients">{{
-    'patientDetail.breadcrumb.patients' | translate
-  }}</a>
+  <a [routerLink]="breadcrumbBaseRoute">{{ breadcrumbBaseLabelKey | translate }}</a>
   <i class="pi pi-angle-right" aria-hidden="true"></i>
   <span>{{ patient()?.fullName ?? ('patientDetail.breadcrumb.loading' | translate) }}</span>
 </nav>
@@ -30,19 +28,21 @@
       </span>
     </div>
 
-    <button
-      pButton
-      type="button"
-      severity="secondary"
-      [outlined]="true"
-      class="patient-detail__cta"
-      [loading]="isDischargingPatient()"
-      [disabled]="patient()!.status === 'DISCHARGED' || isDischargingPatient()"
-      (click)="onDischargePatient()"
-    >
-      <i class="pi pi-check-circle" aria-hidden="true"></i>
-      <span>{{ 'patientDetail.dischargePatient' | translate }}</span>
-    </button>
+    @if (!isAdminContext) {
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        class="patient-detail__cta"
+        [loading]="isDischargingPatient()"
+        [disabled]="patient()!.status === 'DISCHARGED' || isDischargingPatient()"
+        (click)="onDischargePatient()"
+      >
+        <i class="pi pi-check-circle" aria-hidden="true"></i>
+        <span>{{ 'patientDetail.dischargePatient' | translate }}</span>
+      </button>
+    }
   </header>
 
   <section class="patient-detail__summary">

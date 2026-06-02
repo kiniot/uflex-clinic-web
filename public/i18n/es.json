@@ -376,50 +376,137 @@
     "unselectedKit": "Ningún kit seleccionado"
   },
   "organization": {
-    "actions": {
-      "editClinic": "Editar Perfil de la Clínica",
-      "addPhysiotherapist": "Añadir Fisioterapeuta"
+    "breadcrumb": {
+      "organization": "Organización"
     },
-    "stats": {
+    "hero": {
+      "eyebrow": "Operación clínica",
+      "fallback": "Organización clínica",
+      "ruc": "RUC",
+      "managedBy": "Administrado por"
+    },
+    "metrics": {
+      "totalPhysiotherapists": "Fisioterapeutas totales",
+      "physiotherapistsNote": "Roster activo de esta clínica",
       "totalPatients": "Pacientes totales",
-      "activePhysiotherapists": "Fisioterapeutas activos",
-      "availableIotKits": "Kits IoT disponibles",
-      "onLeave": "De baja"
+      "patientsNote": "Pacientes registrados actualmente",
+      "assignedPatients": "Pacientes asignados",
+      "assignedNote": "Vinculados a un fisioterapeuta",
+      "unassignedPatients": "Pacientes sin asignar",
+      "unassignedNote": "Pendientes de asignación",
+      "patientStatuses": "Estados de pacientes"
     },
     "tabs": {
       "physiotherapists": "Fisioterapeutas",
       "patients": "Pacientes"
     },
-    "patientsTabEmpty": "El roster de pacientes vive en el contexto Planning. Próximamente en esta vista.",
-    "showingCount": "Mostrando {{visible}} de {{total}} miembros del staff",
-    "columns": {
-      "staffMember": "Miembro del staff",
-      "specializedRole": "Rol especializado",
-      "activePatients": "Pacientes activos",
-      "status": "Estado",
-      "actions": "Acciones"
+    "workspace": {
+      "results": "Mostrando {{visible}} de {{total}} registros"
     },
-    "role": {
-      "neuro-rehab": "Neuro-Rehab",
-      "post-op-recovery": "Post-Op Recovery",
-      "geriatric-mobility": "Movilidad geriátrica",
-      "iot-mobility": "Movilidad IoT",
-      "sports-rehab": "Rehab deportiva"
+    "filters": {
+      "allStatuses": "Todos los estados",
+      "allSpecialties": "Todas las especialidades",
+      "allAssignments": "Todas las asignaciones",
+      "assignedOnly": "Solo asignados",
+      "unassignedOnly": "Solo sin asignar"
     },
-    "status": {
-      "active": "Activo",
-      "on-leave": "De baja",
-      "inactive": "Inactivo"
+    "loading": {
+      "physiotherapists": "Cargando fisioterapeutas...",
+      "patients": "Cargando pacientes..."
     },
-    "performance": {
-      "title": "Resumen de desempeño",
-      "description": "La tasa de éxito en recuperación de la organización subió 7.4% en el último trimestre. La retención de pacientes en sesiones remotas está en 92%.",
-      "cta": "Ver analíticas detalladas"
+    "detail": {
+      "loading": "Cargando..."
     },
-    "recentUpdates": {
-      "title": "Actualizaciones recientes",
-      "firmware": "Nuevo firmware IoT (v2.4.1) desplegado en 86 kits.",
-      "subscription": "Suscripción renovada para el próximo ciclo de facturación."
+    "physiotherapists": {
+      "title": "Equipo clínico",
+      "subtitle": "Fisioterapeutas que actualmente operan dentro de esta clínica.",
+      "searchPlaceholder": "Buscar por nombre o correo",
+      "empty": "No hay fisioterapeutas que coincidan con los filtros actuales.",
+      "experienceValue": "{{years}} años",
+      "actions": {
+        "register": "Registrar fisioterapeuta",
+        "viewDetails": "Ver detalle"
+      },
+      "columns": {
+        "name": "Nombre",
+        "specialty": "Especialidad",
+        "contact": "Contacto",
+        "license": "Licencia",
+        "experience": "Experiencia",
+        "status": "Estado",
+        "actions": "Acciones"
+      },
+      "status": {
+        "ACTIVE": "Activo",
+        "INACTIVE": "Inactivo"
+      },
+      "specialties": {
+        "TRAUMATOLOGICAL": "Traumatológica",
+        "NEUROLOGICAL": "Neurológica",
+        "SPORTS": "Deportiva",
+        "GENERAL": "General"
+      }
+    },
+    "patients": {
+      "title": "Registro de pacientes",
+      "subtitle": "Pacientes gestionados por este administrador de clínica.",
+      "searchPlaceholder": "Buscar por nombre o DNI",
+      "empty": "No hay pacientes que coincidan con los filtros actuales.",
+      "unassigned": "Sin asignar",
+      "actions": {
+        "register": "Registrar paciente",
+        "viewDetails": "Ver detalle",
+        "assign": "Asignar",
+        "reassign": "Reasignar"
+      },
+      "columns": {
+        "name": "Paciente",
+        "dni": "DNI",
+        "condition": "Condición médica",
+        "physiotherapist": "Fisioterapeuta",
+        "status": "Estado",
+        "contact": "Contacto",
+        "actions": "Acciones"
+      },
+      "status": {
+        "REGISTERED": "Registrado",
+        "IN_TREATMENT": "En tratamiento",
+        "DISCHARGED": "Dado de alta"
+      }
+    },
+    "assignment": {
+      "title": "Asignar fisioterapeuta",
+      "body": "Selecciona el fisioterapeuta que tomará la atención de {{patient}}.",
+      "cardTitle": "Asignación",
+      "assignLabel": "Elige el responsable inicial",
+      "reassignLabel": "Actualiza el responsable actual",
+      "selectLabel": "Fisioterapeuta",
+      "keepUnassigned": "Mantener sin asignar",
+      "cancel": "Cancelar",
+      "confirm": "Guardar asignación",
+      "successSummary": "Asignación actualizada",
+      "successDetail": "La asignación del paciente se actualizó correctamente.",
+      "errorSummary": "No se pudo asignar",
+      "errorDetail": "No pudimos actualizar la asignación del paciente. Intenta nuevamente."
+    },
+    "physiotherapistDetail": {
+      "cards": {
+        "identity": "Perfil profesional",
+        "contact": "Información de contacto",
+        "summary": "Resumen profesional"
+      },
+      "fields": {
+        "hireDate": "Fecha de ingreso",
+        "email": "Correo",
+        "clinic": "Clínica"
+      },
+      "emptySummary": "Este fisioterapeuta todavía no tiene un resumen profesional registrado.",
+      "patients": {
+        "title": "Pacientes asignados",
+        "subtitle": "{{count}} pacientes activos actualmente asignados",
+        "emptyTitle": "Todavía no tiene pacientes asignados",
+        "emptyBody": "Este fisioterapeuta no tiene pacientes asignados por el momento."
+      }
     }
   },
   "subscription": {
@@ -530,6 +617,8 @@
       "specialtyPlaceholder": "Fisioterapia ortopédica",
       "email": "Correo electrónico",
       "emailPlaceholder": "sarah.j@clinic.com",
+      "countryCode": "Código de país",
+      "countryCodePlaceholder": "+51",
       "phone": "Teléfono",
       "phonePlaceholder": "+1 (555) 000-0000"
     },
@@ -537,13 +626,16 @@
       "title": "Credenciales clínicas",
       "licenseNumber": "Número de licencia",
       "licenseNumberPlaceholder": "PT-98234-X",
+      "yearsOfExperience": "Años de experiencia",
       "summary": "Resumen profesional",
       "summaryPlaceholder": "Breve descripción de la experiencia clínica y años de práctica..."
     },
     "photo": {
       "title": "Foto de perfil",
-      "upload": "Haz clic para subir",
-      "formats": "Sube una foto profesional en alta resolución. JPEG, PNG o GIF. Máx. 5MB."
+      "upload": "URL de la imagen de perfil",
+      "urlLabel": "URL de la foto",
+      "urlPlaceholder": "https://example.com/photos/pepe.jpg",
+      "formats": "Usa una URL de imagen estable que pueda mostrarse en el directorio clínico."
     },
     "quickTip": {
       "title": "Consejo rápido",
@@ -555,6 +647,12 @@
       "dbConnected": "Base de datos conectada",
       "sslSecured": "Ruta segura SSL",
       "activeClinicians": "12 clínicos activos"
+    },
+    "notifications": {
+      "successSummary": "Fisioterapeuta registrado",
+      "successDetail": "{{name}} ahora forma parte del equipo clínico.",
+      "errorSummary": "No se pudo registrar",
+      "errorDetail": "No pudimos registrar al fisioterapeuta. Intenta nuevamente."
     }
   },
   "deviceDiagnostics": {

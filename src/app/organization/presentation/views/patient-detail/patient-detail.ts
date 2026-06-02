@@ -8,6 +8,8 @@ import { ButtonModule } from 'primeng/button';
 import { OrganizationStore } from '../../../application/organization.store';
 import { PlanningStore } from '../../../../planning/application/planning.store';
 
+type RoleContext = 'admin' | 'physiotherapist';
+
 @Component({
   selector: 'app-patient-detail',
   imports: [DatePipe, RouterLink, TranslatePipe, ButtonModule],
@@ -20,6 +22,8 @@ export class PatientDetail {
   private readonly planningStore = inject(PlanningStore);
   private readonly messageService = inject(MessageService);
   private readonly translate = inject(TranslateService);
+  private readonly roleContext =
+    (this.route.snapshot.data['roleContext'] as RoleContext | undefined) ?? 'physiotherapist';
 
   private readonly patientId = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
@@ -28,19 +32,33 @@ export class PatientDetail {
   protected readonly patient = this.organizationStore.selectedPatient;
   protected readonly clinic = this.organizationStore.currentClinic;
   protected readonly physiotherapist = this.organizationStore.currentPhysiotherapist;
+  protected readonly physiotherapists = this.organizationStore.physiotherapists;
   protected readonly treatmentPlans = this.planningStore.patientTreatmentPlans;
   protected readonly isLoadingPatient = this.organizationStore.isLoadingSelectedPatient;
   protected readonly isLoadingTreatmentPlans = this.planningStore.isLoadingTreatmentPlans;
   protected readonly isDischargingPatient = this.organizationStore.isDischargingPatient;
   protected readonly loadingRows = [0, 1, 2];
+  protected readonly isAdminContext = this.roleContext === 'admin';
+  protected readonly breadcrumbBaseRoute = this.isAdminContext
+    ? '/clinic-admin/organization'
+    : '/physiotherapist/patients';
+  protected readonly breadcrumbBaseLabelKey = this.isAdminContext
+    ? 'organization.tabs.patients'
+    : 'patientDetail.breadcrumb.patients';
 
   protected readonly assignedPhysiotherapistLabel = computed(() => {
     const patient = this.patient();
     const physiotherapist = this.physiotherapist();
+    const clinicPhysiotherapist = this.physiotherapists().find(
+      (currentPhysiotherapist) => currentPhysiotherapist.id === patient?.assignedPhysiotherapistId,
+    );
 
     if (!patient?.assignedPhysiotherapistId) return '—';
     if (physiotherapist && physiotherapist.id === patient.assignedPhysiotherapistId) {
       return physiotherapist.fullName;
+    }
+    if (clinicPhysiotherapist) {
+      return clinicPhysiotherapist.fullName;
     }
 
     return patient.assignedPhysiotherapistId;
@@ -58,7 +76,11 @@ export class PatientDetail {
       if (!patientId) return;
 
       void this.organizationStore.loadCurrentClinicOnce();
-      void this.organizationStore.loadCurrentPhysiotherapistOnce();
+      if (this.isAdminContext) {
+        void this.organizationStore.loadClinicPhysiotherapists();
+      } else {
+        void this.organizationStore.loadCurrentPhysiotherapistOnce();
+      }
       void this.organizationStore.loadPatientById(patientId);
       void this.planningStore.loadTreatmentPlansByPatient(patientId);
     });

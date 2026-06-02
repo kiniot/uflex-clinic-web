@@ -24,7 +24,9 @@ describe('RegisterPatient', () => {
           provide: OrganizationStore,
           useValue: {
             isRegisteringPatient: signal(false).asReadonly(),
+            physiotherapists: signal([]).asReadonly(),
             registerPatient: registerPatientSpy,
+            loadClinicPhysiotherapists: vi.fn(),
           },
         },
       ],
@@ -47,6 +49,7 @@ describe('RegisterPatient', () => {
       countryCode: '+51',
       phoneNumber: '958273817',
       medicalCondition: 'Forearm fracture',
+      assignedPhysiotherapistId: null,
     });
 
     component['onSubmit']();

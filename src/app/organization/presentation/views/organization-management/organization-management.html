@@ -1,149 +1,351 @@
-<header class="org-header">
-  <div class="org-header__identity">
-    <span class="org-header__icon" aria-hidden="true">
-      <i class="pi pi-building"></i>
-    </span>
-    <div class="org-header__text">
-      <h1 class="org-header__name">{{ clinic().name }}</h1>
-      <div class="org-header__contact">
-        <span class="org-header__contact-item">
-          <i class="pi pi-map-marker" aria-hidden="true"></i>
-          {{ clinic().addressLine }}
-        </span>
-        <span class="org-header__contact-item">
-          <i class="pi pi-phone" aria-hidden="true"></i>
-          {{ clinic().phone }}
-        </span>
-      </div>
+@if (isLoadingCurrentClinic() && !clinic()) {
+  <section class="org-loading">
+    <span class="org-loading__line org-loading__line--title"></span>
+    <span class="org-loading__line org-loading__line--sub"></span>
+    <div class="org-loading__grid">
+      @for (row of loadingRows; track row) {
+        <span class="org-loading__card"></span>
+      }
     </div>
-  </div>
-  <div class="org-header__actions">
-    <button pButton type="button" severity="secondary" [outlined]="true"
-            class="org-header__btn"
-            (click)="onEditClinic()">
-      <i class="pi pi-pencil" aria-hidden="true"></i>
-      <span>{{ 'organization.actions.editClinic' | translate }}</span>
-    </button>
-    <button pButton type="button" severity="primary"
-            class="org-header__btn org-header__btn--primary"
-            routerLink="staff/new">
-      <i class="pi pi-plus" aria-hidden="true"></i>
-      <span>{{ 'organization.actions.addPhysiotherapist' | translate }}</span>
-    </button>
-  </div>
-</header>
-
-<section class="org-stats">
-  <app-stat-card [title]="'organization.stats.totalPatients' | translate">
-    <div class="org-stat">
-      <i class="pi pi-users org-stat__icon" aria-hidden="true"></i>
-      <div class="org-stat__body">
-        <span class="org-stat__value">{{ clinic().totalPatients | number }}</span>
-        <span class="org-stat__delta org-stat__delta--positive">
-          <i class="pi pi-arrow-up" aria-hidden="true"></i>
-          {{ clinic().patientsTrendPct }}%
-        </span>
-      </div>
-    </div>
-  </app-stat-card>
-
-  <app-stat-card [title]="'organization.stats.activePhysiotherapists' | translate">
-    <div class="org-stat">
-      <i class="pi pi-id-card org-stat__icon" aria-hidden="true"></i>
-      <div class="org-stat__body">
-        <span class="org-stat__value">{{ clinic().activePhysiotherapists }}</span>
-        <span class="org-stat__sub">{{ clinic().physiotherapistsOnLeave }} {{ 'organization.stats.onLeave' | translate }}</span>
-      </div>
-    </div>
-  </app-stat-card>
-
-  <app-stat-card [title]="'organization.stats.availableIotKits' | translate">
-    <div class="org-stat">
-      <i class="pi pi-mobile org-stat__icon" aria-hidden="true"></i>
-      <div class="org-stat__body org-stat__body--column">
-        <div class="org-stat__bar">
-          <div class="org-stat__bar-fill" [style.width.%]="availableKitsPct()"></div>
+  </section>
+} @else {
+  <header class="org-hero">
+    <div class="org-hero__identity">
+      <span class="org-hero__icon" aria-hidden="true">
+        <i class="pi pi-building"></i>
+      </span>
+      <div class="org-hero__copy">
+        <span class="org-hero__eyebrow">{{ 'organization.hero.eyebrow' | translate }}</span>
+        <h1 class="org-hero__title">
+          {{
+            clinic()?.commercialName ??
+              clinic()?.legalName ??
+              ('organization.hero.fallback' | translate)
+          }}
+        </h1>
+        <p class="org-hero__subtitle">
+          {{ clinic()?.legalName ?? '—' }}
+        </p>
+        <div class="org-hero__meta">
+          <span class="org-hero__meta-item">
+            <i class="pi pi-hashtag" aria-hidden="true"></i>
+            {{ 'organization.hero.ruc' | translate }}: {{ clinic()?.ruc ?? '—' }}
+          </span>
+          <span class="org-hero__meta-item">
+            <i class="pi pi-envelope" aria-hidden="true"></i>
+            {{ clinic()?.email ?? '—' }}
+          </span>
+          <span class="org-hero__meta-item">
+            <i class="pi pi-phone" aria-hidden="true"></i>
+            {{ clinic()?.countryCode }} {{ clinic()?.phoneNumber }}
+          </span>
+          <span class="org-hero__meta-item">
+            <i class="pi pi-map-marker" aria-hidden="true"></i>
+            {{ formattedAddress() }}
+          </span>
         </div>
-        <span class="org-stat__value org-stat__value--small">
-          {{ clinic().availableIotKits }} <span class="org-stat__divider">/</span> {{ clinic().totalIotKits }}
-        </span>
       </div>
     </div>
-  </app-stat-card>
-</section>
 
-<section class="org-table-card">
-  <header class="org-tabs">
-    <div class="org-tabs__list" role="tablist">
-      <button type="button" class="org-tabs__tab"
-              [class.org-tabs__tab--active]="activeTab() === 'physiotherapists'"
-              (click)="onTab('physiotherapists')">
-        {{ 'organization.tabs.physiotherapists' | translate }}
-      </button>
-      <button type="button" class="org-tabs__tab"
-              [class.org-tabs__tab--active]="activeTab() === 'patients'"
-              (click)="onTab('patients')">
-        {{ 'organization.tabs.patients' | translate }}
-      </button>
-    </div>
-    <div class="org-tabs__filters">
-      <p-select class="org-tabs__select"
-                [options]="statusOptions"
-                [ngModel]="statusFilter()"
-                (ngModelChange)="statusFilter.set($event)"
-                optionLabel="label"
-                optionValue="value"/>
-      <button type="button" class="org-tabs__more" aria-label="more">
-        <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
-      </button>
+    <div class="org-hero__side">
+      <article class="org-hero__admin-card">
+        <span class="org-hero__admin-label">{{ 'organization.hero.managedBy' | translate }}</span>
+        <strong class="org-hero__admin-name">{{
+          clinicAdmin()?.fullName ?? ('organization.detail.loading' | translate)
+        }}</strong>
+        <span class="org-hero__admin-contact">{{ clinicAdmin()?.email ?? '—' }}</span>
+      </article>
+
+      <div class="org-hero__actions">
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="true"
+          class="org-hero__action"
+          (click)="onRegisterPatient()"
+        >
+          <i class="pi pi-user-plus" aria-hidden="true"></i>
+          <span>{{ 'organization.patients.actions.register' | translate }}</span>
+        </button>
+        <button
+          pButton
+          type="button"
+          severity="primary"
+          class="org-hero__action"
+          (click)="onRegisterPhysiotherapist()"
+        >
+          <i class="pi pi-id-card" aria-hidden="true"></i>
+          <span>{{ 'organization.physiotherapists.actions.register' | translate }}</span>
+        </button>
+      </div>
     </div>
   </header>
 
-  @if (activeTab() === 'physiotherapists') {
-    <app-team-members-table [members]="visibleMembers()"
-                            (rowOpen)="onMemberOpen($event)"/>
-  } @else {
-    <p class="org-table-card__empty">{{ 'organization.patientsTabEmpty' | translate }}</p>
-  }
+  <section class="org-metrics">
+    <app-stat-card [title]="'organization.metrics.totalPhysiotherapists' | translate">
+      <div class="org-metric">
+        <span class="org-metric__value">{{ totalPhysiotherapists() }}</span>
+        <span class="org-metric__note">{{
+          'organization.metrics.physiotherapistsNote' | translate
+        }}</span>
+      </div>
+    </app-stat-card>
 
-  <footer class="org-table-card__footer">
-    <span class="org-table-card__counter">
-      {{ 'organization.showingCount' | translate: {visible: visibleMembers().length, total: clinic().activePhysiotherapists} }}
-    </span>
-    <div class="org-table-card__pager">
-      <button type="button" aria-label="prev" disabled><i class="pi pi-chevron-left"></i></button>
-      <button type="button" aria-label="next"><i class="pi pi-chevron-right"></i></button>
-    </div>
-  </footer>
-</section>
+    <app-stat-card [title]="'organization.metrics.totalPatients' | translate">
+      <div class="org-metric">
+        <span class="org-metric__value">{{ totalPatients() }}</span>
+        <span class="org-metric__note">{{ 'organization.metrics.patientsNote' | translate }}</span>
+      </div>
+    </app-stat-card>
 
-<section class="org-bottom">
-  <article class="org-card">
-    <header class="org-card__header">
-      <i class="pi pi-chart-line org-card__icon" aria-hidden="true"></i>
-      <h2 class="org-card__title">{{ 'organization.performance.title' | translate }}</h2>
+    <app-stat-card [title]="'organization.metrics.assignedPatients' | translate">
+      <div class="org-metric">
+        <span class="org-metric__value">{{ assignedPatientsCount() }}</span>
+        <span class="org-metric__note">{{ 'organization.metrics.assignedNote' | translate }}</span>
+      </div>
+    </app-stat-card>
+
+    <app-stat-card [title]="'organization.metrics.unassignedPatients' | translate">
+      <div class="org-metric">
+        <span class="org-metric__value">{{ unassignedPatientsCount() }}</span>
+        <span class="org-metric__note">{{
+          'organization.metrics.unassignedNote' | translate
+        }}</span>
+      </div>
+    </app-stat-card>
+
+    <app-stat-card [title]="'organization.metrics.patientStatuses' | translate">
+      <div class="org-status-metric">
+        <div class="org-status-metric__row">
+          <span>{{ 'organization.patients.status.REGISTERED' | translate }}</span>
+          <strong>{{ registeredPatientsCount() }}</strong>
+        </div>
+        <div class="org-status-metric__row">
+          <span>{{ 'organization.patients.status.IN_TREATMENT' | translate }}</span>
+          <strong>{{ inTreatmentPatientsCount() }}</strong>
+        </div>
+        <div class="org-status-metric__row">
+          <span>{{ 'organization.patients.status.DISCHARGED' | translate }}</span>
+          <strong>{{ dischargedPatientsCount() }}</strong>
+        </div>
+      </div>
+    </app-stat-card>
+  </section>
+
+  <section class="org-workspace">
+    <header class="org-workspace__header">
+      <div class="org-workspace__tabs" role="tablist">
+        <button
+          type="button"
+          class="org-workspace__tab"
+          [class.org-workspace__tab--active]="activeTab() === 'physiotherapists'"
+          (click)="setActiveTab('physiotherapists')"
+        >
+          {{ 'organization.tabs.physiotherapists' | translate }}
+        </button>
+        <button
+          type="button"
+          class="org-workspace__tab"
+          [class.org-workspace__tab--active]="activeTab() === 'patients'"
+          (click)="setActiveTab('patients')"
+        >
+          {{ 'organization.tabs.patients' | translate }}
+        </button>
+      </div>
+      <span class="org-workspace__counter">
+        @if (activeTab() === 'physiotherapists') {
+          {{
+            'organization.workspace.results'
+              | translate
+                : { visible: visiblePhysiotherapists().length, total: physiotherapists().length }
+          }}
+        } @else {
+          {{
+            'organization.workspace.results'
+              | translate: { visible: visiblePatients().length, total: patients().length }
+          }}
+        }
+      </span>
     </header>
-    <p class="org-card__body">{{ 'organization.performance.description' | translate }}</p>
-    <a class="org-card__link" href="#">
-      {{ 'organization.performance.cta' | translate }}
-      <i class="pi pi-arrow-right" aria-hidden="true"></i>
-    </a>
-  </article>
 
-  <article class="org-card">
-    <header class="org-card__header">
-      <i class="pi pi-clock org-card__icon" aria-hidden="true"></i>
-      <h2 class="org-card__title">{{ 'organization.recentUpdates.title' | translate }}</h2>
-    </header>
-    <ul class="org-card__list">
-      <li>
-        <i class="pi pi-circle-fill org-card__bullet" aria-hidden="true"></i>
-        <span>{{ 'organization.recentUpdates.firmware' | translate }}</span>
-      </li>
-      <li>
-        <i class="pi pi-circle-fill org-card__bullet" aria-hidden="true"></i>
-        <span>{{ 'organization.recentUpdates.subscription' | translate }}</span>
-      </li>
-    </ul>
-  </article>
-</section>
+    @if (activeTab() === 'physiotherapists') {
+      <section class="org-panel">
+        <header class="org-panel__header">
+          <div class="org-panel__copy">
+            <h2 class="org-panel__title">
+              {{ 'organization.physiotherapists.title' | translate }}
+            </h2>
+            <p class="org-panel__subtitle">
+              {{ 'organization.physiotherapists.subtitle' | translate }}
+            </p>
+          </div>
+          <button pButton type="button" severity="primary" (click)="onRegisterPhysiotherapist()">
+            <i class="pi pi-plus" aria-hidden="true"></i>
+            <span>{{ 'organization.physiotherapists.actions.register' | translate }}</span>
+          </button>
+        </header>
+
+        <div class="org-panel__filters">
+          <input
+            pInputText
+            type="text"
+            class="org-panel__search"
+            [ngModel]="physiotherapistQuery()"
+            (ngModelChange)="physiotherapistQuery.set($event)"
+            [placeholder]="'organization.physiotherapists.searchPlaceholder' | translate"
+          />
+          <p-select
+            class="org-panel__select"
+            [options]="physiotherapistStatusOptions()"
+            [ngModel]="physiotherapistStatus()"
+            (ngModelChange)="physiotherapistStatus.set($event)"
+            optionLabel="label"
+            optionValue="value"
+          />
+          <p-select
+            class="org-panel__select"
+            [options]="physiotherapistSpecialtyOptions()"
+            [ngModel]="physiotherapistSpecialty()"
+            (ngModelChange)="physiotherapistSpecialty.set($event)"
+            optionLabel="label"
+            optionValue="value"
+          />
+        </div>
+
+        @if (isLoadingPhysiotherapists() && physiotherapists().length === 0) {
+          <div class="org-panel__empty">
+            {{ 'organization.loading.physiotherapists' | translate }}
+          </div>
+        } @else if (visiblePhysiotherapists().length === 0) {
+          <div class="org-panel__empty">
+            {{ 'organization.physiotherapists.empty' | translate }}
+          </div>
+        } @else {
+          <app-physiotherapists-table
+            [physiotherapists]="visiblePhysiotherapists()"
+            (rowOpen)="onOpenPhysiotherapist($event)"
+          />
+        }
+      </section>
+    } @else {
+      <section class="org-panel">
+        <header class="org-panel__header">
+          <div class="org-panel__copy">
+            <h2 class="org-panel__title">{{ 'organization.patients.title' | translate }}</h2>
+            <p class="org-panel__subtitle">{{ 'organization.patients.subtitle' | translate }}</p>
+          </div>
+          <button pButton type="button" severity="primary" (click)="onRegisterPatient()">
+            <i class="pi pi-plus" aria-hidden="true"></i>
+            <span>{{ 'organization.patients.actions.register' | translate }}</span>
+          </button>
+        </header>
+
+        <div class="org-panel__filters">
+          <input
+            pInputText
+            type="text"
+            class="org-panel__search"
+            [ngModel]="patientQuery()"
+            (ngModelChange)="patientQuery.set($event)"
+            [placeholder]="'organization.patients.searchPlaceholder' | translate"
+          />
+          <p-select
+            class="org-panel__select"
+            [options]="patientStatusOptions()"
+            [ngModel]="patientStatus()"
+            (ngModelChange)="patientStatus.set($event)"
+            optionLabel="label"
+            optionValue="value"
+          />
+          <p-select
+            class="org-panel__select"
+            [options]="patientAssignmentOptions()"
+            [ngModel]="patientAssignment()"
+            (ngModelChange)="patientAssignment.set($event)"
+            optionLabel="label"
+            optionValue="value"
+          />
+        </div>
+
+        @if (isLoadingPatients() && patients().length === 0) {
+          <div class="org-panel__empty">{{ 'organization.loading.patients' | translate }}</div>
+        } @else if (visiblePatients().length === 0) {
+          <div class="org-panel__empty">{{ 'organization.patients.empty' | translate }}</div>
+        } @else {
+          <app-patients-table
+            [patients]="visiblePatients()"
+            [physiotherapistNames]="physiotherapistNameMap()"
+            (rowOpen)="onOpenPatient($event)"
+            (assign)="onAssignPatient($event)"
+          />
+        }
+      </section>
+    }
+  </section>
+
+  <p-dialog
+    [visible]="!!selectedPatientForAssignment()"
+    [modal]="true"
+    [closable]="true"
+    [dismissableMask]="true"
+    [style]="{ width: '32rem', maxWidth: '92vw' }"
+    [header]="'organization.assignment.title' | translate"
+    (visibleChange)="!$event ? closeAssignmentDialog() : null"
+  >
+    @if (selectedPatientForAssignment(); as patient) {
+      <div class="org-assignment">
+        <p class="org-assignment__body">
+          {{ 'organization.assignment.body' | translate: { patient: patient.fullName } }}
+        </p>
+        <div class="org-assignment__meta">
+          <span>{{ patient.medicalCondition }}</span>
+          <strong>
+            {{
+              patient.assignedPhysiotherapistId
+                ? ('organization.assignment.reassignLabel' | translate)
+                : ('organization.assignment.assignLabel' | translate)
+            }}
+          </strong>
+        </div>
+
+        <label class="org-assignment__label" for="assignmentSelect">
+          {{ 'organization.assignment.selectLabel' | translate }}
+        </label>
+        <p-select
+          inputId="assignmentSelect"
+          class="org-assignment__select"
+          [options]="assignmentOptions()"
+          [ngModel]="selectedAssignmentPhysiotherapistId()"
+          (ngModelChange)="selectedAssignmentPhysiotherapistId.set($event)"
+          optionLabel="label"
+          optionValue="value"
+        />
+      </div>
+    }
+
+    <ng-template #footer>
+      <div class="org-assignment__footer">
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="true"
+          (click)="closeAssignmentDialog()"
+        >
+          {{ 'organization.assignment.cancel' | translate }}
+        </button>
+        <button
+          pButton
+          type="button"
+          severity="primary"
+          [loading]="isAssigningPatient()"
+          [disabled]="isAssigningPatient()"
+          (click)="saveAssignment()"
+        >
+          {{ 'organization.assignment.confirm' | translate }}
+        </button>
+      </div>
+    </ng-template>
+  </p-dialog>
+}
