@@ -10,13 +10,11 @@ loadDotEnv('.env.local');
 const envDir = resolve(rootDir, 'src/environments');
 const prodPath = resolve(envDir, 'environment.ts');
 const devPath = resolve(envDir, 'environment.development.ts');
-const prodAliasPath = resolve(envDir, 'environment.prod.ts');
 
 mkdirSync(envDir, { recursive: true });
 
-writeFileSync(prodPath, environmentFile({ production: true }));
-writeFileSync(prodAliasPath, environmentFile({ production: true }));
-writeFileSync(devPath, environmentFile({ production: false }));
+writeFileSync(prodPath, environmentFile());
+writeFileSync(devPath, environmentFile());
 
 console.log('Generated Angular environment files.');
 
@@ -53,14 +51,9 @@ function loadDotEnv(fileName) {
   }
 }
 
-function environmentFile({ production }) {
+function environmentFile() {
   const config = {
-    production,
     apiBaseUrl: value('NG_APP_API_BASE_URL', 'http://localhost:8080/api/v1'),
-    platformProviderApiBaseUrl: value(
-      'NG_APP_PLATFORM_PROVIDER_API_BASE_URL',
-      value('NG_APP_API_BASE_URL', 'http://localhost:8080/api/v1'),
-    ),
     platformProviderSignInEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_SIGN_IN_ENDPOINT_PATH',
       '/authentication/sign-in',
@@ -145,21 +138,6 @@ function environmentFile({ production }) {
       'NG_APP_PLATFORM_PROVIDER_CURRENT_SUBSCRIPTION_ENDPOINT_PATH',
       '/subscriptions/current',
     ),
-    subscription: {
-      useMockApi: booleanValue('NG_APP_SUBSCRIPTION_USE_MOCK_API', true),
-      clinicId: value('NG_APP_SUBSCRIPTION_CLINIC_ID', '11111111-1111-1111-1111-111111111111'),
-      plansEndpoint: value('NG_APP_SUBSCRIPTION_PLANS_ENDPOINT', '/plans'),
-      subscriptionsEndpoint: value('NG_APP_SUBSCRIPTION_SUBSCRIPTIONS_ENDPOINT', '/subscriptions'),
-      invoicesEndpoint: value('NG_APP_SUBSCRIPTION_INVOICES_ENDPOINT', '/invoices'),
-      checkoutSessionEndpoint: value(
-        'NG_APP_SUBSCRIPTION_CHECKOUT_SESSION_ENDPOINT',
-        '/subscriptions/checkout-session',
-      ),
-    },
-    stripe: {
-      enabled: booleanValue('NG_APP_STRIPE_ENABLED', false),
-      publishableKey: value('NG_APP_STRIPE_PUBLISHABLE_KEY', 'your_api_stripe_public'),
-    },
   };
 
   return `export const environment = ${JSON.stringify(config, null, 2)};\n`;
@@ -167,16 +145,6 @@ function environmentFile({ production }) {
 
 function value(key, fallback) {
   return process.env[key] ?? fallback;
-}
-
-function booleanValue(key, fallback) {
-  const rawValue = process.env[key];
-
-  if (rawValue === undefined) {
-    return fallback;
-  }
-
-  return ['1', 'true', 'yes', 'on'].includes(rawValue.toLowerCase());
 }
 
 function unquote(value) {
