@@ -1,0 +1,159 @@
+@use '../../../../../styles/theme-transition' as theme;
+
+:host {
+  display: block;
+}
+
+.patients-table__scroll {
+  overflow-x: auto;
+}
+
+.patients-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+.patients-table th,
+.patients-table td {
+  padding: 14px 20px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.patients-table thead th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-50);
+  border-bottom: 1px solid var(--p-surface-200);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .patients-table thead th {
+  background: var(--p-surface-200);
+  border-bottom-color: var(--p-surface-300);
+}
+
+.patients-table__row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--p-surface-100);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .patients-table__row {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.patients-table__row:last-child {
+  border-bottom: 0;
+}
+
+.patients-table__row:hover {
+  background: color-mix(in srgb, var(--p-surface-50) 75%, transparent);
+}
+
+:host-context(.app-dark) .patients-table__row:hover {
+  background: color-mix(in srgb, var(--p-surface-200) 75%, transparent);
+}
+
+.patients-table__person {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.patients-table__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.patients-table__email,
+.patients-table__dni,
+.patients-table__condition,
+.patients-table__contact {
+  color: var(--p-text-muted-color);
+}
+
+.patients-table__email {
+  font-size: 12px;
+}
+
+.patients-table__condition {
+  max-width: 260px;
+}
+
+.patients-table__assignment {
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.patients-table__assignment--empty {
+  color: var(--p-text-muted-color);
+}
+
+.patients-table__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.patients-table__status--registered,
+.patients-table__status--unassigned {
+  background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
+  color: var(--p-amber-500);
+}
+
+.patients-table__status--in-treatment {
+  background: color-mix(in srgb, var(--p-turquoise-400) 14%, transparent);
+  color: var(--p-turquoise-400);
+}
+
+.patients-table__status--completed {
+  background: color-mix(in srgb, var(--p-emerald-500) 14%, transparent);
+  color: var(--p-emerald-500);
+}
+
+.patients-table__status--discharged {
+  background: var(--p-surface-100);
+  color: var(--p-text-muted-color);
+}
+
+.patients-table__status--inactive {
+  background: color-mix(in srgb, var(--p-rose-500) 12%, transparent);
+  color: var(--p-rose-500);
+}
+
+:host-context(.app-dark) .patients-table__status--discharged {
+  background: var(--p-surface-200);
+}
+
+.patients-table__actions-col {
+  width: 180px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.patients-table__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+:host ::ng-deep .patients-table__action.p-button {
+  padding-inline: 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+:host ::ng-deep .patients-table__action--primary.p-button {
+  color: var(--p-primary-color);
+}

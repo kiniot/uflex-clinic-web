@@ -1,11 +1,21 @@
 <nav class="register-patient__breadcrumb" aria-label="breadcrumb">
-  <a routerLink="/physiotherapist/patients">{{
-    'registerPatientView.breadcrumb.patients' | translate
-  }}</a>
+  @if (isAdminContext) {
+    <a routerLink="/clinic-admin/organization">{{
+      'organization.breadcrumb.organization' | translate
+    }}</a>
+  } @else {
+    <a routerLink="/physiotherapist/patients">{{
+      'registerPatientView.breadcrumb.patients' | translate
+    }}</a>
+  }
   <i class="pi pi-chevron-right" aria-hidden="true"></i>
-  <span class="register-patient__breadcrumb-current">{{
-    'registerPatientView.breadcrumb.newPatient' | translate
-  }}</span>
+  <span class="register-patient__breadcrumb-current">
+    @if (isAdminContext) {
+      {{ 'organization.patients.actions.register' | translate }}
+    } @else {
+      {{ 'registerPatientView.breadcrumb.newPatient' | translate }}
+    }
+  </span>
 </nav>
 
 <header class="register-patient__header">
@@ -204,18 +214,45 @@
         </div>
       </article>
 
-      <article class="register-patient__insight">
-        <h3 class="register-patient__insight-title">
-          {{ 'registerPatientView.insight.title' | translate }}
-        </h3>
-        <p class="register-patient__insight-body">
-          {{ 'registerPatientView.insight.body' | translate }}
-        </p>
-        <div class="register-patient__insight-pill">
-          <i class="pi pi-link" aria-hidden="true"></i>
-          <span>{{ 'registerPatientView.insight.assignedToYou' | translate }}</span>
-        </div>
-      </article>
+      @if (isAdminContext) {
+        <article class="register-patient__card">
+          <header class="register-patient__card-header">
+            <i class="pi pi-link register-patient__card-icon" aria-hidden="true"></i>
+            <h2 class="register-patient__card-title">
+              {{ 'organization.assignment.cardTitle' | translate }}
+            </h2>
+          </header>
+          <div class="register-patient__field">
+            <label for="patientAssignedPhysiotherapist">{{
+              'organization.assignment.selectLabel' | translate
+            }}</label>
+            <p-select
+              inputId="patientAssignedPhysiotherapist"
+              formControlName="assignedPhysiotherapistId"
+              [options]="physiotherapistOptions()"
+              [filter]="true"
+              filterBy="label"
+              [resetFilterOnHide]="true"
+              [placeholder]="'organization.assignment.searchPlaceholder' | translate"
+              optionLabel="label"
+              optionValue="value"
+            />
+          </div>
+        </article>
+      } @else {
+        <article class="register-patient__insight">
+          <h3 class="register-patient__insight-title">
+            {{ 'registerPatientView.insight.title' | translate }}
+          </h3>
+          <p class="register-patient__insight-body">
+            {{ 'registerPatientView.insight.body' | translate }}
+          </p>
+          <div class="register-patient__insight-pill">
+            <i class="pi pi-link" aria-hidden="true"></i>
+            <span>{{ 'registerPatientView.insight.assignedToYou' | translate }}</span>
+          </div>
+        </article>
+      }
     </aside>
   </div>
 </form>

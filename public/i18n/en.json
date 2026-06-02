@@ -376,50 +376,141 @@
     "unselectedKit": "No kit selected"
   },
   "organization": {
-    "actions": {
-      "editClinic": "Edit Clinic Profile",
-      "addPhysiotherapist": "Add Physiotherapist"
+    "breadcrumb": {
+      "organization": "Organization"
     },
-    "stats": {
+    "hero": {
+      "eyebrow": "Clinic operations",
+      "fallback": "Clinic organization",
+      "ruc": "RUC",
+      "managedBy": "Managed by"
+    },
+    "metrics": {
+      "totalPhysiotherapists": "Total Physiotherapists",
+      "physiotherapistsNote": "Active roster in this clinic",
       "totalPatients": "Total Patients",
-      "activePhysiotherapists": "Active Physiotherapists",
-      "availableIotKits": "Available IoT Kits",
-      "onLeave": "On Leave"
+      "patientsNote": "Patients currently registered",
+      "assignedPatients": "Assigned Patients",
+      "assignedNote": "Linked to a physiotherapist",
+      "unassignedPatients": "Unassigned Patients",
+      "unassignedNote": "Pending assignment",
+      "patientStatuses": "Patient Statuses"
     },
     "tabs": {
       "physiotherapists": "Physiotherapists",
       "patients": "Patients"
     },
-    "patientsTabEmpty": "Patient roster lives in the Planning context. Coming soon to this view.",
-    "showingCount": "Showing {{visible}} of {{total}} staff members",
-    "columns": {
-      "staffMember": "Staff Member",
-      "specializedRole": "Specialized Role",
-      "activePatients": "Active Patients",
-      "status": "Status",
-      "actions": "Actions"
+    "workspace": {
+      "results": "Showing {{visible}} of {{total}} records"
     },
-    "role": {
-      "neuro-rehab": "Neuro-Rehab",
-      "post-op-recovery": "Post-Op Recovery",
-      "geriatric-mobility": "Geriatric Mobility",
-      "iot-mobility": "IoT Mobility",
-      "sports-rehab": "Sports Rehab"
+    "filters": {
+      "allStatuses": "All statuses",
+      "allSpecialties": "All specialties",
+      "allAssignments": "All assignments",
+      "assignedOnly": "Assigned only",
+      "unassignedOnly": "Unassigned only"
     },
-    "status": {
-      "active": "Active",
-      "on-leave": "On Leave",
-      "inactive": "Inactive"
+    "loading": {
+      "physiotherapists": "Loading physiotherapists...",
+      "patients": "Loading patients..."
     },
-    "performance": {
-      "title": "Performance Overview",
-      "description": "Organization recovery success rate has increased by 7.4% over the last quarter. Patient retention for remote sessions is currently at 92%.",
-      "cta": "View Detailed Analytics"
+    "detail": {
+      "loading": "Loading..."
     },
-    "recentUpdates": {
-      "title": "Recent Updates",
-      "firmware": "New IoT firmware (v2.4.1) deployed to 86 kits.",
-      "subscription": "Subscription renewed for next billing cycle."
+    "physiotherapists": {
+      "title": "Clinical staff",
+      "subtitle": "Physiotherapists currently operating inside this clinic.",
+      "searchPlaceholder": "Search by name or email",
+      "empty": "No physiotherapists match the current filters.",
+      "experienceValue": "{{years}} years",
+      "actions": {
+        "register": "Register Physiotherapist",
+        "viewDetails": "View details"
+      },
+      "columns": {
+        "name": "Name",
+        "specialty": "Specialty",
+        "contact": "Contact",
+        "license": "License",
+        "experience": "Experience",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive"
+      },
+      "specialties": {
+        "TRAUMATOLOGICAL": "Traumatological",
+        "NEUROLOGICAL": "Neurological",
+        "SPORTS": "Sports",
+        "GENERAL": "General"
+      }
+    },
+    "patients": {
+      "title": "Patient registry",
+      "subtitle": "Patients managed by this clinic administrator.",
+      "searchPlaceholder": "Search by patient name or DNI",
+      "empty": "No patients match the current filters.",
+      "unassigned": "Unassigned",
+      "actions": {
+        "register": "Register Patient",
+        "viewDetails": "View details",
+        "assign": "Assign",
+        "reassign": "Reassign"
+      },
+      "columns": {
+        "name": "Patient",
+        "dni": "DNI",
+        "condition": "Medical condition",
+        "physiotherapist": "Physiotherapist",
+        "status": "Status",
+        "contact": "Contact",
+        "actions": "Actions"
+      },
+      "status": {
+        "REGISTERED": "Unassigned",
+        "IN_TREATMENT": "In treatment",
+        "COMPLETED": "Completed",
+        "DISCHARGED": "Discharged",
+        "UNASSIGNED": "Unassigned",
+        "INACTIVE": "Inactive"
+      }
+    },
+    "assignment": {
+      "title": "Assign physiotherapist",
+      "body": "Select the physiotherapist who will take ownership of {{patient}}.",
+      "cardTitle": "Assignment",
+      "assignLabel": "Choose the initial owner",
+      "reassignLabel": "Update the current owner",
+      "selectLabel": "Physiotherapist",
+      "searchPlaceholder": "Type to filter physiotherapists",
+      "keepUnassigned": "Keep unassigned",
+      "cancel": "Cancel",
+      "confirm": "Save assignment",
+      "successSummary": "Assignment updated",
+      "successDetail": "The patient assignment has been updated successfully.",
+      "errorSummary": "Assignment failed",
+      "errorDetail": "We could not update the patient assignment. Please try again."
+    },
+    "physiotherapistDetail": {
+      "cards": {
+        "identity": "Professional profile",
+        "contact": "Contact information",
+        "summary": "Professional summary"
+      },
+      "fields": {
+        "hireDate": "Hire date",
+        "email": "Email",
+        "clinic": "Clinic"
+      },
+      "emptySummary": "No professional summary was provided for this physiotherapist yet.",
+      "patients": {
+        "title": "Assigned patients",
+        "subtitle": "{{count}} active patients currently assigned",
+        "emptyTitle": "No assigned patients yet",
+        "emptyBody": "This physiotherapist does not have assigned patients at the moment."
+      }
     }
   },
   "subscription": {
@@ -530,6 +621,8 @@
       "specialtyPlaceholder": "Orthopedic PT",
       "email": "Email Address",
       "emailPlaceholder": "sarah.j@clinic.com",
+      "countryCode": "Country Code",
+      "countryCodePlaceholder": "+51",
       "phone": "Phone Number",
       "phonePlaceholder": "+1 (555) 000-0000"
     },
@@ -537,13 +630,16 @@
       "title": "Clinical Credentials",
       "licenseNumber": "License Number",
       "licenseNumberPlaceholder": "PT-98234-X",
+      "yearsOfExperience": "Years of Experience",
       "summary": "Professional Summary",
       "summaryPlaceholder": "Brief overview of clinical expertise and years of experience..."
     },
     "photo": {
       "title": "Profile Photo",
-      "upload": "Click to upload",
-      "formats": "Upload a high-resolution professional headshot. JPEG, PNG, or GIF. Max size 5MB."
+      "upload": "Profile image URL",
+      "urlLabel": "Photo URL",
+      "urlPlaceholder": "https://example.com/photos/pepe.jpg",
+      "formats": "Use a stable image URL that can be displayed in the clinician directory."
     },
     "quickTip": {
       "title": "Quick Tip",
@@ -555,6 +651,12 @@
       "dbConnected": "Database Connected",
       "sslSecured": "SSL Secured Journey",
       "activeClinicians": "12 Active Clinicians"
+    },
+    "notifications": {
+      "successSummary": "Physiotherapist registered",
+      "successDetail": "{{name}} is now part of the clinic staff.",
+      "errorSummary": "Registration failed",
+      "errorDetail": "We could not register the physiotherapist. Please try again."
     }
   },
   "deviceDiagnostics": {
@@ -1045,11 +1147,14 @@
       "email": "Email",
       "action": "Action"
     },
-    "status": {
-      "REGISTERED": "Registered",
-      "IN_TREATMENT": "In treatment",
-      "DISCHARGED": "Discharged"
-    },
+      "status": {
+        "REGISTERED": "Unassigned",
+        "UNASSIGNED": "Unassigned",
+        "IN_TREATMENT": "In treatment",
+        "COMPLETED": "Completed",
+        "DISCHARGED": "Discharged",
+        "INACTIVE": "Inactive"
+      },
     "patientDni": "DNI:",
     "viewPatient": "View patient",
     "showingCount": "Showing {{visible}} of {{total}} patients",
@@ -1065,9 +1170,12 @@
     },
     "dischargePatient": "Discharge patient",
     "status": {
-      "REGISTERED": "Registered",
+      "REGISTERED": "Unassigned",
+      "UNASSIGNED": "Unassigned",
       "IN_TREATMENT": "In treatment",
-      "DISCHARGED": "Discharged"
+      "COMPLETED": "Completed",
+      "DISCHARGED": "Discharged",
+      "INACTIVE": "Inactive"
     },
     "gender": {
       "MALE": "Male",

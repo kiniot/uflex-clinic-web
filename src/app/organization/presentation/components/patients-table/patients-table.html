@@ -1,0 +1,80 @@
+<div class="patients-table__scroll">
+  <table class="patients-table">
+    <thead>
+      <tr>
+        <th>{{ 'organization.patients.columns.name' | translate }}</th>
+        <th>{{ 'organization.patients.columns.dni' | translate }}</th>
+        <th>{{ 'organization.patients.columns.condition' | translate }}</th>
+        <th>{{ 'organization.patients.columns.physiotherapist' | translate }}</th>
+        <th>{{ 'organization.patients.columns.status' | translate }}</th>
+        <th>{{ 'organization.patients.columns.contact' | translate }}</th>
+        <th class="patients-table__actions-col">
+          {{ 'organization.patients.columns.actions' | translate }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (patient of patients(); track patient.id) {
+        <tr class="patients-table__row" (click)="onRowOpen(patient)">
+          <td>
+            <div class="patients-table__person">
+              <span class="patients-table__name">{{ patient.fullName }}</span>
+              <span class="patients-table__email">{{ patient.email }}</span>
+            </div>
+          </td>
+          <td class="patients-table__dni">{{ patient.dni }}</td>
+          <td class="patients-table__condition">{{ patient.medicalCondition }}</td>
+          <td>
+            @if (assignedLabel(patient); as assignedLabelText) {
+              <span class="patients-table__assignment">{{ assignedLabelText }}</span>
+            } @else {
+              <span class="patients-table__assignment patients-table__assignment--empty">{{
+                'organization.patients.unassigned' | translate
+              }}</span>
+            }
+          </td>
+          <td>
+            <span
+              class="patients-table__status patients-table__status--{{
+                patient.status.toLowerCase().replace('_', '-')
+              }}"
+            >
+              {{ 'organization.patients.status.' + patient.status | translate }}
+            </span>
+          </td>
+          <td class="patients-table__contact">
+            {{ patient.countryCode }} {{ patient.phoneNumber }}
+          </td>
+          <td class="patients-table__actions-col">
+            <div class="patients-table__actions">
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                text
+                class="patients-table__action"
+                (click)="onRowOpen(patient); $event.stopPropagation()"
+              >
+                {{ 'organization.patients.actions.viewDetails' | translate }}
+              </button>
+              <button
+                pButton
+                type="button"
+                severity="primary"
+                text
+                class="patients-table__action patients-table__action--primary"
+                (click)="onAssign(patient); $event.stopPropagation()"
+              >
+                {{
+                  patient.assignedPhysiotherapistId
+                    ? ('organization.patients.actions.reassign' | translate)
+                    : ('organization.patients.actions.assign' | translate)
+                }}
+              </button>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

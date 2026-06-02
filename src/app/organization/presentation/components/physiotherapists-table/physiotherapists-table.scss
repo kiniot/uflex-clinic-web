@@ -1,0 +1,153 @@
+@use '../../../../../styles/theme-transition' as theme;
+
+:host {
+  display: block;
+}
+
+.physios-table__scroll {
+  overflow-x: auto;
+}
+
+.physios-table {
+  width: 100%;
+  min-width: 860px;
+  border-collapse: collapse;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+}
+
+.physios-table th,
+.physios-table td {
+  padding: 14px 20px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.physios-table thead th {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-50);
+  border-bottom: 1px solid var(--p-surface-200);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .physios-table thead th {
+  background: var(--p-surface-200);
+  border-bottom-color: var(--p-surface-300);
+}
+
+.physios-table__row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--p-surface-100);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .physios-table__row {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.physios-table__row:last-child {
+  border-bottom: 0;
+}
+
+.physios-table__row:hover {
+  background: color-mix(in srgb, var(--p-surface-50) 75%, transparent);
+}
+
+:host-context(.app-dark) .physios-table__row:hover {
+  background: color-mix(in srgb, var(--p-surface-200) 75%, transparent);
+}
+
+.physios-table__person {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+:host ::ng-deep .physios-table__avatar {
+  background: color-mix(in srgb, var(--p-primary-color) 16%, var(--p-surface-100));
+  color: var(--p-primary-color);
+  font-weight: 700;
+  @include theme.surface;
+}
+
+.physios-table__person-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.physios-table__name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.physios-table__email,
+.physios-table__contact,
+.physios-table__license,
+.physios-table__experience {
+  color: var(--p-text-muted-color);
+}
+
+.physios-table__email {
+  font-size: 12px;
+}
+
+.physios-table__specialty {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-primary-color) 10%, transparent);
+  color: var(--p-primary-color);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.physios-table__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.physios-table__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.physios-table__status--active {
+  color: var(--p-emerald-500);
+}
+
+.physios-table__status--active .physios-table__dot {
+  background: var(--p-emerald-500);
+}
+
+.physios-table__status--inactive {
+  color: var(--p-text-muted-color);
+}
+
+.physios-table__status--inactive .physios-table__dot {
+  background: var(--p-text-muted-color);
+}
+
+.physios-table__actions-col {
+  width: 120px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+:host ::ng-deep .physios-table__action.p-button {
+  padding-inline: 0;
+  color: var(--p-primary-color);
+  font-size: 12px;
+  font-weight: 700;
+}

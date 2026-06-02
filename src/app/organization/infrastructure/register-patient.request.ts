@@ -8,4 +8,5 @@ export interface RegisterPatientRequest {
   countryCode: string;
   phoneNumber: string;
   medicalCondition: string;
+  assignedPhysiotherapistId: string | null;
 }

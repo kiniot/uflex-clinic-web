@@ -127,9 +127,20 @@
   letter-spacing: 0.02em;
 }
 
+.patient-detail__status--registered,
+.patient-detail__status--unassigned {
+  background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
+  color: var(--p-amber-500);
+}
+
 .patient-detail__status--in-treatment {
   background: color-mix(in srgb, var(--p-turquoise-400) 14%, transparent);
   color: var(--p-turquoise-400);
+}
+
+.patient-detail__status--completed {
+  background: color-mix(in srgb, var(--p-emerald-500) 14%, transparent);
+  color: var(--p-emerald-500);
 }
 
 .patient-detail__status--discharged {
@@ -137,9 +148,9 @@
   color: var(--p-text-muted-color);
 }
 
-.patient-detail__status--registered {
-  background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
-  color: var(--p-amber-500);
+.patient-detail__status--inactive {
+  background: color-mix(in srgb, var(--p-rose-500) 12%, transparent);
+  color: var(--p-rose-500);
 }
 
 :host-context(.app-dark) .patient-detail__status--discharged {
@@ -241,6 +252,10 @@
   font-size: 14px;
   font-weight: 600;
   color: var(--p-text-color);
+}
+
+.detail-card__value--muted {
+  color: var(--p-text-muted-color);
 }
 
 .patient-detail__plans-card {

@@ -1,5 +1,7 @@
+import { AssignPatientCommand } from '../domain/model/assign-patient.command';
 import { Patient } from '../domain/model/patient.entity';
 import { RegisterPatientCommand } from '../domain/model/register-patient.command';
+import { AssignPatientRequest } from './assign-patient.request';
 import { PatientResource, PatientResponse } from './patient.response';
 import { RegisterPatientRequest } from './register-patient.request';
 
@@ -51,6 +53,13 @@ export class PatientAssembler {
       countryCode: command.countryCode,
       phoneNumber: command.phoneNumber,
       medicalCondition: command.medicalCondition,
+      assignedPhysiotherapistId: command.assignedPhysiotherapistId,
     } as RegisterPatientRequest;
+  }
+
+  toAssignRequestFromCommand(command: AssignPatientCommand): AssignPatientRequest {
+    return {
+      physiotherapistId: command.physiotherapistId,
+    } as AssignPatientRequest;
   }
 }

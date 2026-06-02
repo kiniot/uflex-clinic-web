@@ -393,9 +393,20 @@
   letter-spacing: 0.02em;
 }
 
+.patients-page__status--registered,
+.patients-page__status--unassigned {
+  background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
+  color: var(--p-amber-500);
+}
+
 .patients-page__status--in-treatment {
   background: color-mix(in srgb, var(--p-turquoise-400) 14%, transparent);
   color: var(--p-turquoise-400);
+}
+
+.patients-page__status--completed {
+  background: color-mix(in srgb, var(--p-emerald-500) 14%, transparent);
+  color: var(--p-emerald-500);
 }
 
 .patients-page__status--discharged {
@@ -403,9 +414,9 @@
   color: var(--p-text-muted-color);
 }
 
-.patients-page__status--registered {
-  background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
-  color: var(--p-amber-500);
+.patients-page__status--inactive {
+  background: color-mix(in srgb, var(--p-rose-500) 12%, transparent);
+  color: var(--p-rose-500);
 }
 
 :host-context(.app-dark) .patients-page__status--discharged {
