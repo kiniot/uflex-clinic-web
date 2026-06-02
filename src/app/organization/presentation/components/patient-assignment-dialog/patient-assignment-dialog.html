@@ -1,0 +1,68 @@
+<p-dialog
+  [visible]="visible()"
+  [modal]="true"
+  [closable]="true"
+  [dismissableMask]="true"
+  [style]="{ width: '32rem', maxWidth: '92vw' }"
+  [header]="'organization.assignment.title' | translate"
+  (visibleChange)="onVisibleChange($event)"
+>
+  @if (patient(); as currentPatient) {
+    <div class="assignment-dialog">
+      <p class="assignment-dialog__body">
+        {{ 'organization.assignment.body' | translate: { patient: currentPatient.fullName } }}
+      </p>
+      <div class="assignment-dialog__meta">
+        <span>{{ currentPatient.medicalCondition }}</span>
+        <strong>
+          {{
+            currentPatient.assignedPhysiotherapistId
+              ? ('organization.assignment.reassignLabel' | translate)
+              : ('organization.assignment.assignLabel' | translate)
+          }}
+        </strong>
+      </div>
+
+      <label class="assignment-dialog__label" for="assignmentSelect">
+        {{ 'organization.assignment.selectLabel' | translate }}
+      </label>
+      <p-select
+        inputId="assignmentSelect"
+        class="assignment-dialog__select"
+        [options]="assignmentOptions()"
+        [filter]="true"
+        filterBy="label"
+        [resetFilterOnHide]="true"
+        [placeholder]="'organization.assignment.searchPlaceholder' | translate"
+        [ngModel]="selectedPhysiotherapistId()"
+        (ngModelChange)="onSelectionChange($event)"
+        optionLabel="label"
+        optionValue="value"
+      />
+    </div>
+  }
+
+  <ng-template #footer>
+    <div class="assignment-dialog__footer">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        (click)="onVisibleChange(false)"
+      >
+        {{ 'organization.assignment.cancel' | translate }}
+      </button>
+      <button
+        pButton
+        type="button"
+        severity="primary"
+        [loading]="isSaving()"
+        [disabled]="isSaving()"
+        (click)="onSave()"
+      >
+        {{ 'organization.assignment.confirm' | translate }}
+      </button>
+    </div>
+  </ng-template>
+</p-dialog>

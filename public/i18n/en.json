@@ -469,9 +469,12 @@
         "actions": "Actions"
       },
       "status": {
-        "REGISTERED": "Registered",
+        "REGISTERED": "Unassigned",
         "IN_TREATMENT": "In treatment",
-        "DISCHARGED": "Discharged"
+        "COMPLETED": "Completed",
+        "DISCHARGED": "Discharged",
+        "UNASSIGNED": "Unassigned",
+        "INACTIVE": "Inactive"
       }
     },
     "assignment": {
@@ -481,6 +484,7 @@
       "assignLabel": "Choose the initial owner",
       "reassignLabel": "Update the current owner",
       "selectLabel": "Physiotherapist",
+      "searchPlaceholder": "Type to filter physiotherapists",
       "keepUnassigned": "Keep unassigned",
       "cancel": "Cancel",
       "confirm": "Save assignment",
@@ -1143,11 +1147,14 @@
       "email": "Email",
       "action": "Action"
     },
-    "status": {
-      "REGISTERED": "Registered",
-      "IN_TREATMENT": "In treatment",
-      "DISCHARGED": "Discharged"
-    },
+      "status": {
+        "REGISTERED": "Unassigned",
+        "UNASSIGNED": "Unassigned",
+        "IN_TREATMENT": "In treatment",
+        "COMPLETED": "Completed",
+        "DISCHARGED": "Discharged",
+        "INACTIVE": "Inactive"
+      },
     "patientDni": "DNI:",
     "viewPatient": "View patient",
     "showingCount": "Showing {{visible}} of {{total}} patients",
@@ -1163,9 +1170,12 @@
     },
     "dischargePatient": "Discharge patient",
     "status": {
-      "REGISTERED": "Registered",
+      "REGISTERED": "Unassigned",
+      "UNASSIGNED": "Unassigned",
       "IN_TREATMENT": "In treatment",
-      "DISCHARGED": "Discharged"
+      "COMPLETED": "Completed",
+      "DISCHARGED": "Discharged",
+      "INACTIVE": "Inactive"
     },
     "gender": {
       "MALE": "Male",

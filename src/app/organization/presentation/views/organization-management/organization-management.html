@@ -118,16 +118,24 @@
     <app-stat-card [title]="'organization.metrics.patientStatuses' | translate">
       <div class="org-status-metric">
         <div class="org-status-metric__row">
-          <span>{{ 'organization.patients.status.REGISTERED' | translate }}</span>
-          <strong>{{ registeredPatientsCount() }}</strong>
+          <span>{{ 'organization.patients.status.UNASSIGNED' | translate }}</span>
+          <strong>{{ unassignedStatusPatientsCount() }}</strong>
         </div>
         <div class="org-status-metric__row">
           <span>{{ 'organization.patients.status.IN_TREATMENT' | translate }}</span>
           <strong>{{ inTreatmentPatientsCount() }}</strong>
         </div>
         <div class="org-status-metric__row">
+          <span>{{ 'organization.patients.status.COMPLETED' | translate }}</span>
+          <strong>{{ completedPatientsCount() }}</strong>
+        </div>
+        <div class="org-status-metric__row">
           <span>{{ 'organization.patients.status.DISCHARGED' | translate }}</span>
           <strong>{{ dischargedPatientsCount() }}</strong>
+        </div>
+        <div class="org-status-metric__row">
+          <span>{{ 'organization.patients.status.INACTIVE' | translate }}</span>
+          <strong>{{ inactivePatientsCount() }}</strong>
         </div>
       </div>
     </app-stat-card>
@@ -284,68 +292,14 @@
     }
   </section>
 
-  <p-dialog
+  <app-patient-assignment-dialog
     [visible]="!!selectedPatientForAssignment()"
-    [modal]="true"
-    [closable]="true"
-    [dismissableMask]="true"
-    [style]="{ width: '32rem', maxWidth: '92vw' }"
-    [header]="'organization.assignment.title' | translate"
+    [patient]="selectedPatientForAssignment()"
+    [physiotherapists]="physiotherapists()"
+    [selectedPhysiotherapistId]="selectedAssignmentPhysiotherapistId()"
+    [isSaving]="isAssigningPatient()"
     (visibleChange)="!$event ? closeAssignmentDialog() : null"
-  >
-    @if (selectedPatientForAssignment(); as patient) {
-      <div class="org-assignment">
-        <p class="org-assignment__body">
-          {{ 'organization.assignment.body' | translate: { patient: patient.fullName } }}
-        </p>
-        <div class="org-assignment__meta">
-          <span>{{ patient.medicalCondition }}</span>
-          <strong>
-            {{
-              patient.assignedPhysiotherapistId
-                ? ('organization.assignment.reassignLabel' | translate)
-                : ('organization.assignment.assignLabel' | translate)
-            }}
-          </strong>
-        </div>
-
-        <label class="org-assignment__label" for="assignmentSelect">
-          {{ 'organization.assignment.selectLabel' | translate }}
-        </label>
-        <p-select
-          inputId="assignmentSelect"
-          class="org-assignment__select"
-          [options]="assignmentOptions()"
-          [ngModel]="selectedAssignmentPhysiotherapistId()"
-          (ngModelChange)="selectedAssignmentPhysiotherapistId.set($event)"
-          optionLabel="label"
-          optionValue="value"
-        />
-      </div>
-    }
-
-    <ng-template #footer>
-      <div class="org-assignment__footer">
-        <button
-          pButton
-          type="button"
-          severity="secondary"
-          [outlined]="true"
-          (click)="closeAssignmentDialog()"
-        >
-          {{ 'organization.assignment.cancel' | translate }}
-        </button>
-        <button
-          pButton
-          type="button"
-          severity="primary"
-          [loading]="isAssigningPatient()"
-          [disabled]="isAssigningPatient()"
-          (click)="saveAssignment()"
-        >
-          {{ 'organization.assignment.confirm' | translate }}
-        </button>
-      </div>
-    </ng-template>
-  </p-dialog>
+    (selectedPhysiotherapistIdChange)="selectedAssignmentPhysiotherapistId.set($event)"
+    (save)="saveAssignment()"
+  />
 }

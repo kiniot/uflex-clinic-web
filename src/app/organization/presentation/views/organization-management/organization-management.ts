@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { AssignPatientCommand } from '../../../domain/model/assign-patient.command';
 import { OrganizationStore } from '../../../application/organization.store';
 import { Patient } from '../../../domain/model/patient.entity';
 import { PhysiotherapistProfile } from '../../../domain/model/physiotherapist-profile.entity';
+import { PatientAssignmentDialog } from '../../components/patient-assignment-dialog/patient-assignment-dialog';
 import { StatCard } from '../../../../shared/presentation/components/stat-card/stat-card';
 import { PatientsTable } from '../../components/patients-table/patients-table';
 import { PhysiotherapistsTable } from '../../components/physiotherapists-table/physiotherapists-table';
@@ -29,9 +29,9 @@ interface SelectOption<T> {
     FormsModule,
     TranslatePipe,
     ButtonModule,
-    DialogModule,
     InputTextModule,
     SelectModule,
+    PatientAssignmentDialog,
     StatCard,
     PhysiotherapistsTable,
     PatientsTable,
@@ -74,16 +74,31 @@ export class OrganizationManagement {
     () => this.patients().filter((patient) => !!patient.assignedPhysiotherapistId).length,
   );
   protected readonly unassignedPatientsCount = computed(
-    () => this.patients().filter((patient) => !patient.assignedPhysiotherapistId).length,
+    () =>
+      this.patients().filter(
+        (patient) =>
+          !patient.assignedPhysiotherapistId ||
+          patient.status === 'UNASSIGNED' ||
+          patient.status === 'REGISTERED',
+      ).length,
   );
-  protected readonly registeredPatientsCount = computed(
-    () => this.patients().filter((patient) => patient.status === 'REGISTERED').length,
+  protected readonly unassignedStatusPatientsCount = computed(
+    () =>
+      this.patients().filter(
+        (patient) => patient.status === 'UNASSIGNED' || patient.status === 'REGISTERED',
+      ).length,
   );
   protected readonly inTreatmentPatientsCount = computed(
     () => this.patients().filter((patient) => patient.status === 'IN_TREATMENT').length,
   );
+  protected readonly completedPatientsCount = computed(
+    () => this.patients().filter((patient) => patient.status === 'COMPLETED').length,
+  );
   protected readonly dischargedPatientsCount = computed(
     () => this.patients().filter((patient) => patient.status === 'DISCHARGED').length,
+  );
+  protected readonly inactivePatientsCount = computed(
+    () => this.patients().filter((patient) => patient.status === 'INACTIVE').length,
   );
 
   protected readonly physiotherapistNameMap = computed<Record<string, string>>(() =>
@@ -131,16 +146,24 @@ export class OrganizationManagement {
       value: 'all',
     },
     {
-      label: this.translate.instant('organization.patients.status.REGISTERED'),
-      value: 'REGISTERED',
+      label: this.translate.instant('organization.patients.status.UNASSIGNED'),
+      value: 'UNASSIGNED',
     },
     {
       label: this.translate.instant('organization.patients.status.IN_TREATMENT'),
       value: 'IN_TREATMENT',
     },
     {
+      label: this.translate.instant('organization.patients.status.COMPLETED'),
+      value: 'COMPLETED',
+    },
+    {
       label: this.translate.instant('organization.patients.status.DISCHARGED'),
       value: 'DISCHARGED',
+    },
+    {
+      label: this.translate.instant('organization.patients.status.INACTIVE'),
+      value: 'INACTIVE',
     },
   ]);
 
@@ -160,17 +183,6 @@ export class OrganizationManagement {
       },
     ],
   );
-
-  protected readonly assignmentOptions = computed<SelectOption<string | null>[]>(() => [
-    {
-      label: this.translate.instant('organization.assignment.keepUnassigned'),
-      value: null,
-    },
-    ...this.physiotherapists().map((physiotherapist) => ({
-      label: physiotherapist.fullName,
-      value: physiotherapist.id,
-    })),
-  ]);
 
   protected readonly visiblePhysiotherapists = computed(() => {
     const query = this.physiotherapistQuery().trim().toLowerCase();
@@ -198,7 +210,10 @@ export class OrganizationManagement {
         query.length === 0 ||
         patient.fullName.toLowerCase().includes(query) ||
         patient.dni.toLowerCase().includes(query);
-      const matchesStatus = status === 'all' || patient.status === status;
+      const matchesStatus =
+        status === 'all' ||
+        patient.status === status ||
+        (status === 'UNASSIGNED' && patient.status === 'REGISTERED');
       const matchesAssignment =
         assignment === 'all' ||
         (assignment === 'assigned' && !!patient.assignedPhysiotherapistId) ||
@@ -237,7 +252,7 @@ export class OrganizationManagement {
   }
 
   protected onOpenPhysiotherapist(physiotherapist: PhysiotherapistProfile) {
-    void this.router.navigate(['/clinic-admin/organization/staff', physiotherapist.id]);
+    void this.router.navigate(['/clinic-admin/organization/physiotherapists', physiotherapist.id]);
   }
 
   protected onOpenPatient(patient: Patient) {
@@ -245,7 +260,7 @@ export class OrganizationManagement {
   }
 
   protected onRegisterPhysiotherapist() {
-    void this.router.navigate(['/clinic-admin/organization/staff/new']);
+    void this.router.navigate(['/clinic-admin/organization/physiotherapists/new']);
   }
 
   protected onRegisterPatient() {

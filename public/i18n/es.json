@@ -469,9 +469,12 @@
         "actions": "Acciones"
       },
       "status": {
-        "REGISTERED": "Registrado",
+        "REGISTERED": "Sin asignar",
         "IN_TREATMENT": "En tratamiento",
-        "DISCHARGED": "Dado de alta"
+        "COMPLETED": "Completado",
+        "DISCHARGED": "Dado de alta",
+        "UNASSIGNED": "Sin asignar",
+        "INACTIVE": "Inactivo"
       }
     },
     "assignment": {
@@ -481,6 +484,7 @@
       "assignLabel": "Elige el responsable inicial",
       "reassignLabel": "Actualiza el responsable actual",
       "selectLabel": "Fisioterapeuta",
+      "searchPlaceholder": "Escribe para filtrar fisioterapeutas",
       "keepUnassigned": "Mantener sin asignar",
       "cancel": "Cancelar",
       "confirm": "Guardar asignación",
@@ -1143,11 +1147,14 @@
       "email": "Correo",
       "action": "Acción"
     },
-    "status": {
-      "REGISTERED": "Registrado",
-      "IN_TREATMENT": "En tratamiento",
-      "DISCHARGED": "Dado de alta"
-    },
+      "status": {
+        "REGISTERED": "Sin asignar",
+        "UNASSIGNED": "Sin asignar",
+        "IN_TREATMENT": "En tratamiento",
+        "COMPLETED": "Completado",
+        "DISCHARGED": "Dado de alta",
+        "INACTIVE": "Inactivo"
+      },
     "patientDni": "DNI:",
     "viewPatient": "Ver paciente",
     "showingCount": "Mostrando {{visible}} de {{total}} pacientes",
@@ -1163,9 +1170,12 @@
     },
     "dischargePatient": "Dar de alta",
     "status": {
-      "REGISTERED": "Registrado",
+      "REGISTERED": "Sin asignar",
+      "UNASSIGNED": "Sin asignar",
       "IN_TREATMENT": "En tratamiento",
-      "DISCHARGED": "Dado de alta"
+      "COMPLETED": "Completado",
+      "DISCHARGED": "Dado de alta",
+      "INACTIVE": "Inactivo"
     },
     "gender": {
       "MALE": "Masculino",

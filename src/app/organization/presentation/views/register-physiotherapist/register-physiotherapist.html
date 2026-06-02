@@ -3,7 +3,7 @@
     'registerPhysiotherapist.breadcrumb.organization' | translate
   }}</a>
   <i class="pi pi-chevron-right" aria-hidden="true"></i>
-  <span>{{ 'registerPhysiotherapist.breadcrumb.staff' | translate }}</span>
+  <span>{{ 'organization.tabs.physiotherapists' | translate }}</span>
   <i class="pi pi-chevron-right" aria-hidden="true"></i>
   <span class="register-pt__breadcrumb-current">{{
     'registerPhysiotherapist.breadcrumb.addNew' | translate
@@ -71,14 +71,12 @@
             <label for="ptSpecialty">{{
               'registerPhysiotherapist.personal.specialty' | translate
             }}</label>
-            <input
-              pInputText
-              id="ptSpecialty"
-              type="text"
+            <p-select
+              inputId="ptSpecialty"
               formControlName="specialty"
-              [placeholder]="'registerPhysiotherapist.personal.specialtyPlaceholder' | translate"
-              [class.ng-invalid]="isInvalidControl(form, 'specialty')"
-              [class.ng-dirty]="isInvalidControl(form, 'specialty')"
+              [options]="specialtyOptions()"
+              optionLabel="label"
+              optionValue="value"
             />
           </div>
           <div class="register-pt__field">

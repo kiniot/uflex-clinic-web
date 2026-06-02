@@ -349,7 +349,8 @@
   font-weight: 700;
 }
 
-.physio-detail__patient-status--registered {
+.physio-detail__patient-status--registered,
+.physio-detail__patient-status--unassigned {
   background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
   color: var(--p-amber-500);
 }
@@ -359,9 +360,19 @@
   color: var(--p-turquoise-400);
 }
 
+.physio-detail__patient-status--completed {
+  background: color-mix(in srgb, var(--p-emerald-500) 14%, transparent);
+  color: var(--p-emerald-500);
+}
+
 .physio-detail__patient-status--discharged {
   background: var(--p-surface-100);
   color: var(--p-text-muted-color);
+}
+
+.physio-detail__patient-status--inactive {
+  background: color-mix(in srgb, var(--p-rose-500) 12%, transparent);
+  color: var(--p-rose-500);
 }
 
 :host-context(.app-dark) .physio-detail__patient-status--discharged {

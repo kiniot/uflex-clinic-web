@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -6,10 +6,17 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { BaseForm } from '../../../../shared/presentation/components/base-form/base-form';
 import { OrganizationStore } from '../../../application/organization.store';
 import { RegisterPhysiotherapistCommand } from '../../../domain/model/register-physiotherapist.command';
+import { PhysiotherapistSpecialty } from '../../../domain/model/physiotherapist-profile.entity';
+
+interface SelectOption<T> {
+  label: string;
+  value: T;
+}
 
 @Component({
   selector: 'app-register-physiotherapist',
@@ -20,6 +27,7 @@ import { RegisterPhysiotherapistCommand } from '../../../domain/model/register-p
     ButtonModule,
     InputNumberModule,
     InputTextModule,
+    SelectModule,
     TextareaModule,
   ],
   templateUrl: './register-physiotherapist.html',
@@ -33,10 +41,31 @@ export class RegisterPhysiotherapist extends BaseForm {
 
   protected readonly isRegisteringPhysiotherapist =
     this.organizationStore.isRegisteringPhysiotherapist;
+  protected readonly specialtyOptions = computed<SelectOption<PhysiotherapistSpecialty>[]>(() => [
+    {
+      label: this.translate.instant('organization.physiotherapists.specialties.TRAUMATOLOGICAL'),
+      value: 'TRAUMATOLOGICAL',
+    },
+    {
+      label: this.translate.instant('organization.physiotherapists.specialties.NEUROLOGICAL'),
+      value: 'NEUROLOGICAL',
+    },
+    {
+      label: this.translate.instant('organization.physiotherapists.specialties.SPORTS'),
+      value: 'SPORTS',
+    },
+    {
+      label: this.translate.instant('organization.physiotherapists.specialties.GENERAL'),
+      value: 'GENERAL',
+    },
+  ]);
 
   protected readonly form = new FormGroup({
     fullName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    specialty: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
+    specialty: new FormControl<PhysiotherapistSpecialty>('GENERAL', {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
     email: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.email],
@@ -67,7 +96,7 @@ export class RegisterPhysiotherapist extends BaseForm {
       const physiotherapist = await this.organizationStore.registerPhysiotherapistAsClinicAdmin(
         new RegisterPhysiotherapistCommand({
           fullName: value.fullName.trim(),
-          specialty: value.specialty.trim(),
+          specialty: value.specialty,
           email: value.email.trim(),
           countryCode: value.countryCode.trim(),
           phoneNumber: value.phoneNumber.trim(),
@@ -87,7 +116,10 @@ export class RegisterPhysiotherapist extends BaseForm {
         life: 4000,
       });
 
-      await this.router.navigate(['/clinic-admin/organization/staff', physiotherapist.id]);
+      await this.router.navigate([
+        '/clinic-admin/organization/physiotherapists',
+        physiotherapist.id,
+      ]);
     } catch {
       this.messageService.add({
         severity: 'error',

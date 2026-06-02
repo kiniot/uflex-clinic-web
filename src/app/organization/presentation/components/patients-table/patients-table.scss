@@ -106,7 +106,8 @@
   font-weight: 700;
 }
 
-.patients-table__status--registered {
+.patients-table__status--registered,
+.patients-table__status--unassigned {
   background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
   color: var(--p-amber-500);
 }
@@ -116,9 +117,19 @@
   color: var(--p-turquoise-400);
 }
 
+.patients-table__status--completed {
+  background: color-mix(in srgb, var(--p-emerald-500) 14%, transparent);
+  color: var(--p-emerald-500);
+}
+
 .patients-table__status--discharged {
   background: var(--p-surface-100);
   color: var(--p-text-muted-color);
+}
+
+.patients-table__status--inactive {
+  background: color-mix(in srgb, var(--p-rose-500) 12%, transparent);
+  color: var(--p-rose-500);
 }
 
 :host-context(.app-dark) .patients-table__status--discharged {

@@ -16,21 +16,16 @@ const registerPatient = () =>
   import('./views/register-patient/register-patient').then((m) => m.RegisterPatient);
 const patientDetail = () =>
   import('./views/patient-detail/patient-detail').then((m) => m.PatientDetail);
-const patientTreatmentPlanRoutes = () =>
-  import('../../planning/presentation/patient-treatment-plan.routes').then(
-    (m) => m.patientTreatmentPlanRoutes,
-  );
 
 /**
  * Routes for the Organization bounded context. The default path is the
- * Organization page; staff/new mounts the physiotherapist registration
+ * Organization page; physiotherapists/new mounts the physiotherapist registration
  * view alongside it.
  */
 export const organizationRoutes: Routes = [
   { path: '', loadComponent: organizationManagement },
-  { path: 'staff/new', loadComponent: registerPhysiotherapist },
-  { path: 'staff/:physiotherapistId', loadComponent: physiotherapistDetail },
+  { path: 'physiotherapists/new', loadComponent: registerPhysiotherapist },
+  { path: 'physiotherapists/:physiotherapistId', loadComponent: physiotherapistDetail },
   { path: 'patients/new', loadComponent: registerPatient, data: { roleContext: 'admin' } },
-  { path: 'patients/:patientId/treatment-plans', loadChildren: patientTreatmentPlanRoutes },
   { path: 'patients/:patientId', loadComponent: patientDetail, data: { roleContext: 'admin' } },
 ];

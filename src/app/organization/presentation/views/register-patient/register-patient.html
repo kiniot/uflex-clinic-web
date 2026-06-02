@@ -230,6 +230,10 @@
               inputId="patientAssignedPhysiotherapist"
               formControlName="assignedPhysiotherapistId"
               [options]="physiotherapistOptions()"
+              [filter]="true"
+              filterBy="label"
+              [resetFilterOnHide]="true"
+              [placeholder]="'organization.assignment.searchPlaceholder' | translate"
               optionLabel="label"
               optionValue="value"
             />

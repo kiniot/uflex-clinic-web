@@ -83,7 +83,10 @@ export class OrganizationStore {
     () => this.patients().filter((patient) => patient.status === 'DISCHARGED').length,
   );
   readonly registeredPatientsCount = computed(
-    () => this.patients().filter((patient) => patient.status === 'REGISTERED').length,
+    () =>
+      this.patients().filter(
+        (patient) => patient.status === 'REGISTERED' || patient.status === 'UNASSIGNED',
+      ).length,
   );
 
   /**
