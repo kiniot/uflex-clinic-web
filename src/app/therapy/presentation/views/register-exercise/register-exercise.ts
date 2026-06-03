@@ -98,7 +98,7 @@ export class RegisterExercise extends BaseForm {
   }
 
   protected onCancel() {
-    this.router.navigate(['/clinic-admin/therapy']);
+    this.router.navigate(['/clinic-admin/exercises']);
   }
 
   protected onSubmit() {
@@ -120,6 +120,6 @@ export class RegisterExercise extends BaseForm {
     });
 
     this.store.register(command);
-    this.router.navigate(['/clinic-admin/therapy']);
+    this.router.navigate(['/clinic-admin/exercises']);
   }
 }
