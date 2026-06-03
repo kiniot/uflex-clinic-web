@@ -152,7 +152,7 @@ export class SubscriptionManagement implements OnInit {
   }
 
   protected async onContinueToPortal() {
-    await this.router.navigate(['/clinic-admin/therapy']);
+    await this.router.navigate(['/clinic-admin/organization']);
   }
 
   private selectionToQueryParams(selection: PersistedSubscriptionSelection | null) {
