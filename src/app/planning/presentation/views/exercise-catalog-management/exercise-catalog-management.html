@@ -1,0 +1,200 @@
+<app-page-header
+  [title]="'exerciseCatalogAdmin.title' | translate"
+  [subtitle]="'exerciseCatalogAdmin.subtitle' | translate"
+>
+  <button pButton type="button" severity="primary" (click)="openCreateExercise()">
+    <i class="pi pi-plus" aria-hidden="true"></i>
+    <span>{{ 'exerciseCatalogAdmin.actions.create' | translate }}</span>
+  </button>
+</app-page-header>
+
+<section class="exercise-admin__filters">
+  <app-search-input
+    class="exercise-admin__search"
+    [placeholder]="'exerciseCatalogAdmin.filters.searchPlaceholder' | translate"
+    [value]="search()"
+    (valueChange)="search.set($event)"
+  />
+
+  <p-select
+    class="exercise-admin__select"
+    [ngModel]="bodyPartFilter()"
+    [ngModelOptions]="{ standalone: true }"
+    [options]="bodyPartOptions()"
+    optionLabel="label"
+    optionValue="value"
+    (ngModelChange)="bodyPartFilter.set($event)"
+  />
+
+  <p-select
+    class="exercise-admin__select"
+    [ngModel]="movementTypeFilter()"
+    [ngModelOptions]="{ standalone: true }"
+    [options]="movementTypeOptions()"
+    optionLabel="label"
+    optionValue="value"
+    (ngModelChange)="movementTypeFilter.set($event)"
+  />
+</section>
+
+<section class="exercise-admin__table-card">
+  <header class="exercise-admin__table-header">
+    <div>
+      <h2 class="exercise-admin__table-title">
+        {{ 'exerciseCatalogAdmin.table.title' | translate }}
+      </h2>
+      <p class="exercise-admin__table-subtitle">
+        {{ 'exerciseCatalogAdmin.table.subtitle' | translate }}
+      </p>
+    </div>
+  </header>
+
+  @if (isLoadingExerciseCatalog()) {
+    <div class="exercise-admin__loading">
+      @for (row of loadingRows; track row) {
+        <div class="exercise-admin__loading-row">
+          <span class="exercise-admin__loading-block exercise-admin__loading-block--lg"></span>
+          <span class="exercise-admin__loading-block"></span>
+          <span class="exercise-admin__loading-block"></span>
+          <span class="exercise-admin__loading-block"></span>
+          <span class="exercise-admin__loading-block exercise-admin__loading-block--sm"></span>
+        </div>
+      }
+    </div>
+  } @else if (exerciseCatalogError()) {
+    <div class="exercise-admin__empty">
+      <span class="exercise-admin__empty-icon" aria-hidden="true">
+        <i class="pi pi-exclamation-circle"></i>
+      </span>
+      <h3 class="exercise-admin__empty-title">
+        {{ 'exerciseCatalogAdmin.error.title' | translate }}
+      </h3>
+      <p class="exercise-admin__empty-body">
+        {{ 'exerciseCatalogAdmin.error.body' | translate }}
+      </p>
+      <button pButton type="button" severity="secondary" [outlined]="true" (click)="onRetry()">
+        <span>{{ 'exerciseCatalogAdmin.actions.retry' | translate }}</span>
+      </button>
+    </div>
+  } @else if (exerciseCatalog().length === 0) {
+    <div class="exercise-admin__empty">
+      <span class="exercise-admin__empty-icon" aria-hidden="true">
+        <i class="pi pi-book"></i>
+      </span>
+      <h3 class="exercise-admin__empty-title">
+        {{ 'exerciseCatalogAdmin.empty.title' | translate }}
+      </h3>
+      <p class="exercise-admin__empty-body">
+        {{ 'exerciseCatalogAdmin.empty.body' | translate }}
+      </p>
+      <button pButton type="button" severity="primary" (click)="openCreateExercise()">
+        <span>{{ 'exerciseCatalogAdmin.actions.create' | translate }}</span>
+      </button>
+    </div>
+  } @else if (filteredExercises().length === 0) {
+    <div class="exercise-admin__empty">
+      <span class="exercise-admin__empty-icon" aria-hidden="true">
+        <i class="pi pi-filter-slash"></i>
+      </span>
+      <h3 class="exercise-admin__empty-title">
+        {{ 'exerciseCatalogAdmin.empty.filteredTitle' | translate }}
+      </h3>
+      <p class="exercise-admin__empty-body">
+        {{ 'exerciseCatalogAdmin.empty.filteredBody' | translate }}
+      </p>
+    </div>
+  } @else {
+    <div class="exercise-admin__table-scroll">
+      <table class="exercise-admin__table">
+        <thead>
+          <tr>
+            <th>{{ 'exerciseCatalogAdmin.columns.name' | translate }}</th>
+            <th>{{ 'exerciseCatalogAdmin.columns.bodyPart' | translate }}</th>
+            <th>{{ 'exerciseCatalogAdmin.columns.movementType' | translate }}</th>
+            <th>{{ 'exerciseCatalogAdmin.columns.video' | translate }}</th>
+            <th class="exercise-admin__action-col">
+              {{ 'exerciseCatalogAdmin.columns.actions' | translate }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (exercise of filteredExercises(); track exercise.id) {
+            <tr class="exercise-admin__row" (click)="openEditExercise(exercise)">
+              <td>
+                <div class="exercise-admin__exercise">
+                  <strong class="exercise-admin__exercise-name">{{ exercise.name }}</strong>
+                  <span class="exercise-admin__exercise-desc">{{ exercise.description }}</span>
+                </div>
+              </td>
+              <td class="exercise-admin__meta-cell">
+                {{ 'exerciseCatalogAdmin.bodyPart.' + exercise.bodyPart | translate }}
+              </td>
+              <td class="exercise-admin__meta-cell">
+                {{ 'exerciseCatalogAdmin.movementType.' + exercise.movementType | translate }}
+              </td>
+              <td>
+                <span
+                  class="exercise-admin__video-pill"
+                  [class.exercise-admin__video-pill--ready]="exercise.videoUrl"
+                >
+                  {{ videoStatusLabel(exercise) }}
+                </span>
+              </td>
+              <td class="exercise-admin__action-col">
+                <div class="exercise-admin__actions">
+                  <button
+                    pButton
+                    type="button"
+                    severity="primary"
+                    [outlined]="true"
+                    class="exercise-admin__action-btn"
+                    [icon]="'pi pi-pen-to-square'"
+                    [pTooltip]="'exerciseCatalogAdmin.actions.edit' | translate"
+                    tooltipPosition="top"
+                    [attr.aria-label]="'exerciseCatalogAdmin.actions.edit' | translate"
+                    (click)="openEditExercise(exercise); $event.stopPropagation()"
+                  ></button>
+                  <button
+                    pButton
+                    type="button"
+                    severity="danger"
+                    [outlined]="true"
+                    class="exercise-admin__action-btn"
+                    [icon]="'pi pi-trash'"
+                    [pTooltip]="'exerciseCatalogAdmin.actions.delete' | translate"
+                    tooltipPosition="top"
+                    [attr.aria-label]="'exerciseCatalogAdmin.actions.delete' | translate"
+                    (click)="onRequestDeleteExercise(exercise); $event.stopPropagation()"
+                  ></button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="exercise-admin__footer">
+      <span class="exercise-admin__counter">
+        {{
+          'exerciseCatalogAdmin.table.showingCount'
+            | translate: { visible: filteredExercises().length, total: exerciseCatalog().length }
+        }}
+      </span>
+    </footer>
+  }
+</section>
+
+<app-confirm-action-dialog
+  [visible]="confirmDeleteVisible()"
+  [titleKey]="'exerciseCatalogAdmin.deleteConfirm.title'"
+  [messageKey]="'exerciseCatalogAdmin.deleteConfirm.body'"
+  [messageParams]="{ name: selectedExerciseForDelete()?.name ?? '' }"
+  [confirmLabelKey]="'exerciseCatalogAdmin.actions.delete'"
+  [iconClass]="'pi pi-trash'"
+  [tone]="'danger'"
+  [pending]="isDeletingExercise()"
+  (visibleChange)="!$event ? closeDeleteDialog() : null"
+  (closed)="closeDeleteDialog()"
+  (confirmed)="confirmDeleteExercise()"
+/>

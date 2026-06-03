@@ -9,7 +9,7 @@ import { SignInResource } from '../infrastructure/sign-in-response';
 import { SignUpResource } from '../infrastructure/sign-up-response';
 
 const ROLE_TO_HOME_ROUTE: Record<string, string> = {
-  ROLE_CLINIC_ADMIN: '/clinic-admin/therapy',
+  ROLE_CLINIC_ADMIN: '/clinic-admin/organization',
   ROLE_PHYSIOTHERAPIST: '/physiotherapist',
   ROLE_PATIENT: '/home',
   ROLE_USER: '/home',

@@ -1,0 +1,127 @@
+<app-page-header
+  [title]="
+    (isEditMode() ? 'exerciseCatalogAdmin.form.editTitle' : 'exerciseCatalogAdmin.form.createTitle')
+      | translate
+  "
+  [subtitle]="'exerciseCatalogAdmin.form.subtitle' | translate"
+/>
+
+<section class="exercise-form__card">
+  <form class="exercise-form__layout" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="exercise-form__main">
+      <div class="exercise-form__field">
+        <label for="exerciseName">{{ 'exerciseCatalogAdmin.form.name' | translate }}</label>
+        <input
+          pInputText
+          id="exerciseName"
+          type="text"
+          formControlName="name"
+          [placeholder]="'exerciseCatalogAdmin.form.namePlaceholder' | translate"
+          [class.ng-invalid]="isInvalidControl(form, 'name')"
+          [class.ng-dirty]="isInvalidControl(form, 'name')"
+        />
+      </div>
+
+      <div class="exercise-form__row">
+        <div class="exercise-form__field">
+          <label for="exerciseBodyPart">{{
+            'exerciseCatalogAdmin.form.bodyPart' | translate
+          }}</label>
+          <p-select
+            inputId="exerciseBodyPart"
+            formControlName="bodyPart"
+            [options]="bodyPartOptions()"
+            optionLabel="label"
+            optionValue="value"
+            [placeholder]="'exerciseCatalogAdmin.form.bodyPartPlaceholder' | translate"
+            [class.ng-invalid]="isInvalidControl(form, 'bodyPart')"
+            [class.ng-dirty]="isInvalidControl(form, 'bodyPart')"
+          />
+        </div>
+
+        <div class="exercise-form__field">
+          <label for="exerciseMovementType">
+            {{ 'exerciseCatalogAdmin.form.movementType' | translate }}
+          </label>
+          <p-select
+            inputId="exerciseMovementType"
+            formControlName="movementType"
+            [options]="movementTypeOptions()"
+            optionLabel="label"
+            optionValue="value"
+            [placeholder]="'exerciseCatalogAdmin.form.movementTypePlaceholder' | translate"
+            [class.ng-invalid]="isInvalidControl(form, 'movementType')"
+            [class.ng-dirty]="isInvalidControl(form, 'movementType')"
+          />
+        </div>
+      </div>
+
+      <div class="exercise-form__field">
+        <label for="exerciseDescription">
+          {{ 'exerciseCatalogAdmin.form.description' | translate }}
+        </label>
+        <textarea
+          pTextarea
+          id="exerciseDescription"
+          rows="6"
+          formControlName="description"
+          [placeholder]="'exerciseCatalogAdmin.form.descriptionPlaceholder' | translate"
+          [class.ng-invalid]="isInvalidControl(form, 'description')"
+          [class.ng-dirty]="isInvalidControl(form, 'description')"
+        ></textarea>
+      </div>
+
+      <div class="exercise-form__field">
+        <label for="exerciseVideoUrl">{{ 'exerciseCatalogAdmin.form.videoUrl' | translate }}</label>
+        <input
+          pInputText
+          id="exerciseVideoUrl"
+          type="url"
+          formControlName="videoUrl"
+          [placeholder]="'exerciseCatalogAdmin.form.videoUrlPlaceholder' | translate"
+        />
+        <small class="exercise-form__hint">
+          {{ 'exerciseCatalogAdmin.form.videoUrlHint' | translate }}
+        </small>
+      </div>
+    </div>
+
+    <aside class="exercise-form__media-card">
+      <h2 class="exercise-form__media-title">
+        {{ 'exerciseCatalogAdmin.form.videoSectionTitle' | translate }}
+      </h2>
+      <p class="exercise-form__media-body">
+        {{ 'exerciseCatalogAdmin.form.videoSectionBody' | translate }}
+      </p>
+
+      <label class="exercise-form__upload">
+        <input type="file" accept=".mp4,.mov,.webm" hidden (change)="onVideoPicked($event)" />
+        <i class="pi pi-cloud-upload exercise-form__upload-icon" aria-hidden="true"></i>
+        <span class="exercise-form__upload-hint">
+          @if (selectedVideoFileName()) {
+            {{ selectedVideoFileName() }}
+          } @else {
+            {{ 'exerciseCatalogAdmin.form.uploadHint' | translate }}
+          }
+        </span>
+        <span class="exercise-form__upload-meta">
+          {{ 'exerciseCatalogAdmin.form.uploadMeta' | translate }}
+        </span>
+      </label>
+    </aside>
+
+    <footer class="exercise-form__actions">
+      <button type="button" pButton severity="secondary" [outlined]="true" (click)="onCancel()">
+        {{ 'exerciseCatalogAdmin.actions.cancel' | translate }}
+      </button>
+      <button type="submit" pButton severity="primary" [loading]="isSavingExercise()">
+        {{
+          (isEditMode()
+            ? 'exerciseCatalogAdmin.actions.save'
+            : 'exerciseCatalogAdmin.actions.create'
+          ) | translate
+        }}
+      </button>
+    </footer>
+  </form>
+</section>
