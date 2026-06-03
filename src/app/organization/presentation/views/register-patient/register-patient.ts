@@ -12,6 +12,10 @@ import { OrganizationStore } from '../../../application/organization.store';
 import { RegisterPatientCommand } from '../../../domain/model/register-patient.command';
 import { PatientGender } from '../../../domain/model/patient.types';
 import { BaseForm } from '../../../../shared/presentation/components/base-form/base-form';
+import {
+  buildCountryPhoneOptions,
+  CountryPhoneOption,
+} from '../../../../shared/presentation/utils/country-phone-options';
 
 interface SelectOption<T> {
   label: string;
@@ -47,7 +51,6 @@ export class RegisterPatient extends BaseForm {
     this.translate.stream([
       'registerPatientView.genderOptions.MALE',
       'registerPatientView.genderOptions.FEMALE',
-      'registerPatientView.genderOptions.OTHER',
       'organization.assignment.keepUnassigned',
     ]),
     { initialValue: {} as Record<string, string> },
@@ -65,10 +68,6 @@ export class RegisterPatient extends BaseForm {
       label: this.translations()['registerPatientView.genderOptions.FEMALE'] ?? 'Female',
       value: 'FEMALE',
     },
-    {
-      label: this.translations()['registerPatientView.genderOptions.OTHER'] ?? 'Other',
-      value: 'OTHER',
-    },
   ]);
   protected readonly physiotherapistOptions = computed<SelectOption<string | null>[]>(() => [
     {
@@ -80,6 +79,9 @@ export class RegisterPatient extends BaseForm {
       value: physiotherapist.id,
     })),
   ]);
+  protected readonly countryPhoneOptions = computed<CountryPhoneOption[]>(() =>
+    buildCountryPhoneOptions(this.translate),
+  );
 
   protected readonly form = new FormGroup({
     firstName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -119,6 +121,7 @@ export class RegisterPatient extends BaseForm {
   protected onCancel() {
     void this.router.navigate(
       this.isAdminContext ? ['/clinic-admin/organization'] : ['/physiotherapist/patients'],
+      this.isAdminContext ? { queryParams: { tab: 'patients' } } : undefined,
     );
   }
 
@@ -126,6 +129,10 @@ export class RegisterPatient extends BaseForm {
     this.form.markAllAsTouched();
     if (this.form.invalid || this.isRegisteringPatient()) return;
     void this.registerPatient();
+  }
+
+  protected countryPhoneOption(phoneCode: string | null | undefined): CountryPhoneOption | null {
+    return this.countryPhoneOptions().find((option) => option.phoneCode === phoneCode) ?? null;
   }
 
   private async registerPatient(): Promise<void> {

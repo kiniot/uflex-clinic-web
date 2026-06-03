@@ -161,4 +161,20 @@ export const appPreset: Preset = definePreset(Aura, {
       offset: '2px',
     },
   },
+  components: {
+    button: {
+      colorScheme: {
+        light: {
+          outlined: {
+            secondary: {
+              hoverBackground: '{surface.200}',
+              activeBackground: '{surface.300}',
+              borderColor: '{surface.400}',
+              color: '{surface.700}',
+            },
+          },
+        },
+      },
+    },
+  },
 });

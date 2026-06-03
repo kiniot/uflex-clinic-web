@@ -163,6 +163,7 @@
 }
 
 :host ::ng-deep .register-pt__field .p-inputtext,
+:host ::ng-deep .register-pt__field .p-select,
 :host ::ng-deep .register-pt__field textarea {
   width: 100%;
   border-radius: 8px;
@@ -170,13 +171,48 @@
   font-size: 14px;
 }
 
-:host ::ng-deep .register-pt__field .p-inputtext { height: 40px; }
+:host ::ng-deep .register-pt__field .p-inputtext,
+:host ::ng-deep .register-pt__field .p-select {
+  height: 40px;
+}
 
 :host ::ng-deep .register-pt__field textarea.p-inputtext {
   height: auto;
   min-height: 96px;
   padding: 10px 12px;
   resize: vertical;
+}
+
+.register-pt__country-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+}
+
+.register-pt__country-flag {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.register-pt__country-meta {
+  color: var(--p-text-muted-color);
+  margin-left: auto;
+}
+
+:host ::ng-deep .register-pt__select .p-select-label {
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep .register-pt__select.p-select {
+  height: 40px;
+}
+
+:host ::ng-deep .register-pt__select .p-select-label {
+  padding-top: calc(0.5rem - 1px);
+  padding-bottom: calc(0.5rem - 1px);
 }
 
 /* Photo upload */

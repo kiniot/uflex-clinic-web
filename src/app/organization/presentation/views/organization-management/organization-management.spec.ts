@@ -12,6 +12,12 @@ describe('OrganizationManagement', () => {
   const loadClinicPhysiotherapists = vi.fn().mockResolvedValue([]);
   const loadClinicPatients = vi.fn().mockResolvedValue([]);
   const assignPatient = vi.fn().mockResolvedValue(void 0);
+  const updatePatientAsClinicAdmin = vi.fn().mockResolvedValue(null);
+  const deletePatient = vi.fn().mockResolvedValue(void 0);
+  const updatePhysiotherapist = vi.fn();
+  const suspendPhysiotherapist = vi.fn();
+  const reactivatePhysiotherapist = vi.fn();
+  const deletePhysiotherapist = vi.fn();
 
   beforeEach(async () => {
     loadCurrentClinicOnce.mockClear();
@@ -19,6 +25,12 @@ describe('OrganizationManagement', () => {
     loadClinicPhysiotherapists.mockClear();
     loadClinicPatients.mockClear();
     assignPatient.mockClear();
+    updatePatientAsClinicAdmin.mockClear();
+    deletePatient.mockClear();
+    updatePhysiotherapist.mockClear();
+    suspendPhysiotherapist.mockClear();
+    reactivatePhysiotherapist.mockClear();
+    deletePhysiotherapist.mockClear();
 
     await TestBed.configureTestingModule({
       imports: [OrganizationManagement, TranslateModule.forRoot()],
@@ -50,7 +62,10 @@ describe('OrganizationManagement', () => {
               firstName: 'Lucia',
               lastName: 'Ramos',
               fullName: 'Lucia Ramos',
+              dni: '74839210',
               email: 'lucia@uflex.com',
+              countryCode: '+51',
+              phoneNumber: '999888777',
             }).asReadonly(),
             physiotherapists: signal([
               {
@@ -94,11 +109,23 @@ describe('OrganizationManagement', () => {
             isLoadingPhysiotherapists: signal(false).asReadonly(),
             isLoadingPatients: signal(false).asReadonly(),
             isAssigningPatient: signal(false).asReadonly(),
+            isUpdatingPatient: signal(false).asReadonly(),
+            isDeletingPatient: signal(false).asReadonly(),
+            isUpdatingPhysiotherapist: signal(false).asReadonly(),
+            isSuspendingPhysiotherapist: signal(false).asReadonly(),
+            isReactivatingPhysiotherapist: signal(false).asReadonly(),
+            isDeletingPhysiotherapist: signal(false).asReadonly(),
             loadCurrentClinicOnce,
             loadCurrentClinicAdminOnce,
             loadClinicPhysiotherapists,
             loadClinicPatients,
             assignPatient,
+            updatePatientAsClinicAdmin,
+            deletePatient,
+            updatePhysiotherapist,
+            suspendPhysiotherapist,
+            reactivatePhysiotherapist,
+            deletePhysiotherapist,
           },
         },
       ],
@@ -114,6 +141,9 @@ describe('OrganizationManagement', () => {
     expect(text).toContain('uFlex SAC');
     expect(text).toContain('20123456789');
     expect(text).toContain('Lucia Ramos');
+    expect(text).toContain('lucia@uflex.com');
+    expect(text).toContain('+51 999888777');
+    expect(text).toContain('74839210');
   });
 
   it('opens the assignment dialog from the patients table action', () => {

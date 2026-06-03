@@ -33,6 +33,8 @@
         [filter]="true"
         filterBy="label"
         [resetFilterOnHide]="true"
+        appendTo="body"
+        scrollHeight="18rem"
         [placeholder]="'organization.assignment.searchPlaceholder' | translate"
         [ngModel]="selectedPhysiotherapistId()"
         (ngModelChange)="onSelectionChange($event)"

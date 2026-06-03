@@ -3,7 +3,9 @@
     'organization.breadcrumb.organization' | translate
   }}</a>
   <i class="pi pi-angle-right" aria-hidden="true"></i>
-  <span>{{ 'organization.tabs.physiotherapists' | translate }}</span>
+  <a routerLink="/clinic-admin/organization" [queryParams]="{ tab: 'physiotherapists' }">{{
+    'organization.tabs.physiotherapists' | translate
+  }}</a>
   <i class="pi pi-angle-right" aria-hidden="true"></i>
   <span>{{ physiotherapist()?.fullName ?? ('organization.detail.loading' | translate) }}</span>
 </nav>
@@ -36,10 +38,70 @@
       </span>
     </div>
 
-    <a routerLink="/clinic-admin/organization/physiotherapists/new" class="physio-detail__cta">
-      <i class="pi pi-user-plus" aria-hidden="true"></i>
-      <span>{{ 'organization.physiotherapists.actions.register' | translate }}</span>
-    </a>
+    <div class="physio-detail__actions">
+      <a
+        pButton
+        routerLink="/clinic-admin/organization"
+        [queryParams]="{ tab: 'physiotherapists' }"
+        severity="secondary"
+        [outlined]="true"
+        class="physio-detail__cta"
+      >
+        <i class="pi pi-arrow-left" aria-hidden="true"></i>
+        <span>{{ 'organization.physiotherapistDetail.actions.back' | translate }}</span>
+      </a>
+      <button
+        pButton
+        type="button"
+        severity="primary"
+        [outlined]="true"
+        class="physio-detail__cta"
+        [disabled]="isUpdatingPhysiotherapist()"
+        (click)="openEditDialog()"
+      >
+        <i class="pi pi-pen-to-square" aria-hidden="true"></i>
+        <span>{{ 'organization.physiotherapists.actions.edit' | translate }}</span>
+      </button>
+      @if (physiotherapist()!.status !== 'SUSPENDED') {
+        <button
+          pButton
+          type="button"
+          severity="warn"
+          [outlined]="true"
+          class="physio-detail__cta"
+          [disabled]="isSuspendingPhysiotherapist()"
+          (click)="requestToggleStatus()"
+        >
+          <i class="pi pi-pause" aria-hidden="true"></i>
+          <span>{{ 'organization.physiotherapists.actions.suspend' | translate }}</span>
+        </button>
+      } @else if (physiotherapist()!.status === 'SUSPENDED') {
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="true"
+          class="physio-detail__cta"
+          [disabled]="isReactivatingPhysiotherapist()"
+          (click)="requestToggleStatus()"
+        >
+          <i class="pi pi-play" aria-hidden="true"></i>
+          <span>{{ 'organization.physiotherapists.actions.reactivate' | translate }}</span>
+        </button>
+      }
+      <button
+        pButton
+        type="button"
+        severity="danger"
+        [outlined]="true"
+        class="physio-detail__cta"
+        [disabled]="isDeletingPhysiotherapist()"
+        (click)="requestDelete()"
+      >
+        <i class="pi pi-trash" aria-hidden="true"></i>
+        <span>{{ 'organization.physiotherapists.actions.delete' | translate }}</span>
+      </button>
+    </div>
   </header>
 
   <section class="physio-detail__summary">
@@ -178,35 +240,95 @@
         <table class="physio-detail__patients-table">
           <thead>
             <tr>
-              <th>{{ 'organization.patients.columns.name' | translate }}</th>
-              <th>{{ 'organization.patients.columns.condition' | translate }}</th>
-              <th>{{ 'organization.patients.columns.status' | translate }}</th>
-              <th>{{ 'organization.patients.columns.actions' | translate }}</th>
+              <th>{{ 'patientsList.columns.patient' | translate }}</th>
+              <th>{{ 'patientsList.columns.condition' | translate }}</th>
+              <th>{{ 'patientsList.columns.status' | translate }}</th>
+              <th>{{ 'patientsList.columns.phone' | translate }}</th>
+              <th>{{ 'patientsList.columns.email' | translate }}</th>
+              <th class="physio-detail__patients-action-col">
+                {{ 'organization.patients.columns.actions' | translate }}
+              </th>
             </tr>
           </thead>
           <tbody>
             @for (patient of assignedPatients(); track patient.id) {
-              <tr class="physio-detail__patients-row">
+              <tr class="physio-detail__patients-row" (click)="openPatient(patient)">
                 <td>
-                  <div class="physio-detail__patient-name">
-                    <strong>{{ patient.fullName }}</strong>
-                    <span>{{ patient.dni }}</span>
+                  <div class="physio-detail__patient">
+                    <span class="physio-detail__patient-avatar" aria-hidden="true">
+                      {{ initialsFor(patient.fullName) }}
+                    </span>
+                    <div class="physio-detail__patient-name">
+                      <strong>{{ patient.fullName }}</strong>
+                      <span>{{ 'patientsList.patientDni' | translate }} {{ patient.dni }}</span>
+                    </div>
                   </div>
                 </td>
-                <td>{{ patient.medicalCondition }}</td>
+                <td class="physio-detail__patient-condition">{{ patient.medicalCondition }}</td>
                 <td>
                   <span
                     class="physio-detail__patient-status physio-detail__patient-status--{{
                       patient.status.toLowerCase().replace('_', '-')
                     }}"
                   >
-                    {{ 'organization.patients.status.' + patient.status | translate }}
+                    {{ 'patientsList.status.' + patient.status | translate }}
                   </span>
                 </td>
-                <td>
-                  <a [routerLink]="['/clinic-admin/organization/patients', patient.id]">
-                    {{ 'organization.patients.actions.viewDetails' | translate }}
-                  </a>
+                <td class="physio-detail__patient-contact">
+                  {{ patient.countryCode }} {{ patient.phoneNumber }}
+                </td>
+                <td class="physio-detail__patient-contact">{{ patient.email }}</td>
+                <td class="physio-detail__patients-action-col">
+                  <div class="physio-detail__patients-actions">
+                    <button
+                      pButton
+                      type="button"
+                      severity="secondary"
+                      [outlined]="true"
+                      class="physio-detail__patients-action-btn"
+                      [icon]="'pi pi-eye'"
+                      [pTooltip]="'patientsList.actions.view' | translate"
+                      tooltipPosition="top"
+                      [attr.aria-label]="'patientsList.actions.view' | translate"
+                      (click)="openPatient(patient); $event.stopPropagation()"
+                    ></button>
+                    <button
+                      pButton
+                      type="button"
+                      severity="primary"
+                      [outlined]="true"
+                      class="physio-detail__patients-action-btn"
+                      [icon]="'pi pi-pen-to-square'"
+                      [pTooltip]="'organization.patients.actions.edit' | translate"
+                      tooltipPosition="top"
+                      [attr.aria-label]="'organization.patients.actions.edit' | translate"
+                      (click)="onEditPatient(patient); $event.stopPropagation()"
+                    ></button>
+                    <button
+                      pButton
+                      type="button"
+                      severity="primary"
+                      [outlined]="true"
+                      class="physio-detail__patients-action-btn"
+                      [icon]="'pi pi-link'"
+                      [pTooltip]="assignmentActionLabel(patient)"
+                      tooltipPosition="top"
+                      [attr.aria-label]="assignmentActionLabel(patient)"
+                      (click)="onAssignPatient(patient); $event.stopPropagation()"
+                    ></button>
+                    <button
+                      pButton
+                      type="button"
+                      severity="danger"
+                      [outlined]="true"
+                      class="physio-detail__patients-action-btn"
+                      [icon]="'pi pi-trash'"
+                      [pTooltip]="'organization.patients.actions.delete' | translate"
+                      tooltipPosition="top"
+                      [attr.aria-label]="'organization.patients.actions.delete' | translate"
+                      (click)="onRequestDeletePatient(patient); $event.stopPropagation()"
+                    ></button>
+                  </div>
                 </td>
               </tr>
             }
@@ -215,4 +337,61 @@
       </div>
     }
   </section>
+
+  <app-physiotherapist-edit-dialog
+    [visible]="isEditDialogVisible()"
+    [physiotherapist]="physiotherapist()"
+    [pending]="isUpdatingPhysiotherapist()"
+    (visibleChange)="!$event ? closeEditDialog() : null"
+    (closed)="closeEditDialog()"
+    (save)="savePhysiotherapistEdit($event)"
+  />
+
+  <app-patient-assignment-dialog
+    [visible]="!!selectedPatientForAssignment()"
+    [patient]="selectedPatientForAssignment()"
+    [physiotherapists]="physiotherapists()"
+    [selectedPhysiotherapistId]="selectedAssignmentPhysiotherapistId()"
+    [isSaving]="isAssigningPatient()"
+    (visibleChange)="!$event ? closeAssignmentDialog() : null"
+    (selectedPhysiotherapistIdChange)="selectedAssignmentPhysiotherapistId.set($event)"
+    (save)="saveAssignment()"
+  />
+
+  <app-patient-admin-edit-dialog
+    [visible]="isPatientEditDialogVisible()"
+    [patient]="selectedPatientForEdit()"
+    [pending]="isUpdatingPatient()"
+    (visibleChange)="!$event ? closeEditPatientDialog() : null"
+    (closed)="closeEditPatientDialog()"
+    (save)="savePatientEdit($event)"
+  />
+
+  <app-confirm-action-dialog
+    [visible]="isDeletePatientDialogVisible()"
+    [titleKey]="'organization.patients.deleteConfirm.title'"
+    [messageKey]="'organization.patients.deleteConfirm.body'"
+    [messageParams]="{ name: selectedPatientForDelete()?.fullName ?? '' }"
+    [confirmLabelKey]="'organization.patients.actions.delete'"
+    [iconClass]="'pi pi-trash'"
+    [tone]="'danger'"
+    [pending]="isDeletingPatient()"
+    (visibleChange)="!$event ? closeDeletePatientDialog() : null"
+    (closed)="closeDeletePatientDialog()"
+    (confirmed)="confirmDeletePatient()"
+  />
+
+  <app-confirm-action-dialog
+    [visible]="confirmDialogVisible()"
+    [titleKey]="confirmDialogTitleKey()"
+    [messageKey]="confirmDialogMessageKey()"
+    [messageParams]="confirmDialogParams()"
+    [confirmLabelKey]="confirmDialogActionLabelKey()"
+    [iconClass]="confirmDialogIconClass()"
+    [tone]="confirmDialogTone()"
+    [pending]="confirmDialogPending()"
+    (visibleChange)="!$event ? closeActionDialog() : null"
+    (closed)="closeActionDialog()"
+    (confirmed)="confirmAction()"
+  />
 }

@@ -1,0 +1,156 @@
+<p-dialog
+  [visible]="visible()"
+  [modal]="true"
+  [closable]="!pending()"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="!pending()"
+  [style]="{ width: '720px', maxWidth: '96vw' }"
+  [header]="'patientAdminEditDialog.title' | translate"
+  (visibleChange)="onVisibleChange($event)"
+>
+  <form class="patient-admin-edit-dialog" [formGroup]="form" (ngSubmit)="onSave()">
+    <div class="patient-admin-edit-dialog__grid">
+      <div class="patient-admin-edit-dialog__field">
+        <label for="patient-admin-edit-first-name">{{
+          'registerPatientView.identity.firstName' | translate
+        }}</label>
+        <input
+          id="patient-admin-edit-first-name"
+          pInputText
+          type="text"
+          formControlName="firstName"
+          [placeholder]="'registerPatientView.identity.firstNamePlaceholder' | translate"
+        />
+      </div>
+
+      <div class="patient-admin-edit-dialog__field">
+        <label for="patient-admin-edit-last-name">{{
+          'registerPatientView.identity.lastName' | translate
+        }}</label>
+        <input
+          id="patient-admin-edit-last-name"
+          pInputText
+          type="text"
+          formControlName="lastName"
+          [placeholder]="'registerPatientView.identity.lastNamePlaceholder' | translate"
+        />
+      </div>
+
+      <div class="patient-admin-edit-dialog__field">
+        <label for="patient-admin-edit-dni">{{
+          'registerPatientView.identity.dni' | translate
+        }}</label>
+        <input
+          id="patient-admin-edit-dni"
+          pInputText
+          type="text"
+          formControlName="dni"
+          [placeholder]="'registerPatientView.identity.dniPlaceholder' | translate"
+        />
+      </div>
+
+      <div class="patient-admin-edit-dialog__field">
+        <label for="patient-admin-edit-birth-date">{{
+          'registerPatientView.identity.birthDate' | translate
+        }}</label>
+        <input id="patient-admin-edit-birth-date" pInputText type="date" formControlName="birthDate" />
+      </div>
+
+      <div class="patient-admin-edit-dialog__field">
+        <label for="patient-admin-edit-gender">{{
+          'registerPatientView.identity.gender' | translate
+        }}</label>
+        <p-select
+          inputId="patient-admin-edit-gender"
+          formControlName="gender"
+          [options]="genderOptions()"
+          optionLabel="label"
+          optionValue="value"
+        />
+      </div>
+
+      <div class="patient-admin-edit-dialog__field">
+        <label for="patient-admin-edit-email">{{
+          'registerPatientView.contact.email' | translate
+        }}</label>
+        <input
+          id="patient-admin-edit-email"
+          pInputText
+          type="email"
+          formControlName="email"
+          [placeholder]="'registerPatientView.contact.emailPlaceholder' | translate"
+        />
+      </div>
+
+      <div class="patient-admin-edit-dialog__field">
+        <label for="patient-admin-edit-country-code">{{
+          'registerPatientView.contact.countryCode' | translate
+        }}</label>
+        <p-select
+          inputId="patient-admin-edit-country-code"
+          formControlName="countryCode"
+          [options]="countryPhoneOptions()"
+          optionLabel="label"
+          optionValue="phoneCode"
+          [filter]="true"
+          filterBy="label,phoneCode"
+          [resetFilterOnHide]="true"
+          appendTo="body"
+          [placeholder]="'registerPatientView.contact.countryCodePlaceholder' | translate"
+        >
+          <ng-template #selectedItem>
+            @if (countryPhoneOption(form.controls.countryCode.value); as option) {
+              <span>{{ option.flag }} {{ option.label }} {{ option.phoneCode }}</span>
+            }
+          </ng-template>
+          <ng-template let-option #item>
+            <span>{{ option.flag }} {{ option.label }} {{ option.phoneCode }}</span>
+          </ng-template>
+        </p-select>
+      </div>
+
+      <div class="patient-admin-edit-dialog__field">
+        <label for="patient-admin-edit-phone-number">{{
+          'registerPatientView.contact.phoneNumber' | translate
+        }}</label>
+        <input
+          id="patient-admin-edit-phone-number"
+          pInputText
+          type="tel"
+          formControlName="phoneNumber"
+          [placeholder]="'registerPatientView.contact.phoneNumberPlaceholder' | translate"
+        />
+      </div>
+    </div>
+
+    <div class="patient-admin-edit-dialog__field">
+      <label for="patient-admin-edit-medical-condition">{{
+        'registerPatientView.clinical.medicalCondition' | translate
+      }}</label>
+      <textarea
+        id="patient-admin-edit-medical-condition"
+        pTextarea
+        rows="4"
+        formControlName="medicalCondition"
+        [placeholder]="'registerPatientView.clinical.medicalConditionPlaceholder' | translate"
+      ></textarea>
+    </div>
+
+    <div class="patient-admin-edit-dialog__actions">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [disabled]="pending()"
+        (click)="onVisibleChange(false)"
+      >
+        {{ 'patientAdminEditDialog.actions.cancel' | translate }}
+      </button>
+      <button pButton type="submit" severity="primary" [loading]="pending()" [disabled]="pending()">
+        {{ 'patientAdminEditDialog.actions.save' | translate }}
+      </button>
+    </div>
+  </form>
+</p-dialog>

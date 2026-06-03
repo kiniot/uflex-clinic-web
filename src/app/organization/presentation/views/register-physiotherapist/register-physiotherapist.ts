@@ -9,6 +9,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { BaseForm } from '../../../../shared/presentation/components/base-form/base-form';
+import {
+  buildCountryPhoneOptions,
+  CountryPhoneOption,
+} from '../../../../shared/presentation/utils/country-phone-options';
 import { OrganizationStore } from '../../../application/organization.store';
 import { RegisterPhysiotherapistCommand } from '../../../domain/model/register-physiotherapist.command';
 import { PhysiotherapistSpecialty } from '../../../domain/model/physiotherapist-profile.entity';
@@ -59,6 +63,9 @@ export class RegisterPhysiotherapist extends BaseForm {
       value: 'GENERAL',
     },
   ]);
+  protected readonly countryPhoneOptions = computed<CountryPhoneOption[]>(() =>
+    buildCountryPhoneOptions(this.translate),
+  );
 
   protected readonly form = new FormGroup({
     fullName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -81,13 +88,19 @@ export class RegisterPhysiotherapist extends BaseForm {
   });
 
   protected onCancel() {
-    void this.router.navigate(['/clinic-admin/organization']);
+    void this.router.navigate(['/clinic-admin/organization'], {
+      queryParams: { tab: 'physiotherapists' },
+    });
   }
 
   protected onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid || this.isRegisteringPhysiotherapist()) return;
     void this.registerPhysiotherapist();
+  }
+
+  protected countryPhoneOption(phoneCode: string | null | undefined): CountryPhoneOption | null {
+    return this.countryPhoneOptions().find((option) => option.phoneCode === phoneCode) ?? null;
   }
 
   private async registerPhysiotherapist(): Promise<void> {

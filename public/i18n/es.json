@@ -383,7 +383,8 @@
       "eyebrow": "Operación clínica",
       "fallback": "Organización clínica",
       "ruc": "RUC",
-      "managedBy": "Administrado por"
+      "managedBy": "Administrado por",
+      "dni": "DNI"
     },
     "metrics": {
       "totalPhysiotherapists": "Fisioterapeutas totales",
@@ -425,7 +426,11 @@
       "experienceValue": "{{years}} años",
       "actions": {
         "register": "Registrar fisioterapeuta",
-        "viewDetails": "Ver detalle"
+        "viewDetails": "Ver detalle",
+        "edit": "Editar",
+        "suspend": "Suspender",
+        "reactivate": "Reactivar",
+        "delete": "Eliminar"
       },
       "columns": {
         "name": "Nombre",
@@ -438,13 +443,40 @@
       },
       "status": {
         "ACTIVE": "Activo",
-        "INACTIVE": "Inactivo"
+        "INACTIVE": "Inactivo",
+        "SUSPENDED": "Suspendido"
       },
       "specialties": {
         "TRAUMATOLOGICAL": "Traumatológica",
         "NEUROLOGICAL": "Neurológica",
         "SPORTS": "Deportiva",
         "GENERAL": "General"
+      },
+      "confirm": {
+        "suspendTitle": "Suspender fisioterapeuta",
+        "suspendBody": "Esto suspenderá a {{name}} y quitará la asignación del fisioterapeuta de sus pacientes. ¿Deseas continuar?",
+        "reactivateTitle": "Reactivar fisioterapeuta",
+        "reactivateBody": "Esto reactivará a {{name}} dentro de la clínica. ¿Deseas continuar?",
+        "deleteTitle": "Eliminar fisioterapeuta",
+        "deleteBody": "Esto eliminará permanentemente a {{name}} si ya no tiene pacientes asignados. ¿Deseas continuar?"
+      },
+      "notifications": {
+        "editSuccessSummary": "Fisioterapeuta actualizado",
+        "editSuccessDetail": "{{name}} se actualizó correctamente.",
+        "editErrorSummary": "No se pudo actualizar",
+        "editErrorDetail": "No pudimos actualizar al fisioterapeuta. Intenta nuevamente.",
+        "suspendSuccessSummary": "Fisioterapeuta suspendido",
+        "suspendSuccessDetail": "{{name}} fue suspendido correctamente.",
+        "suspendErrorSummary": "No se pudo suspender",
+        "suspendErrorDetail": "No pudimos suspender al fisioterapeuta. Intenta nuevamente.",
+        "reactivateSuccessSummary": "Fisioterapeuta reactivado",
+        "reactivateSuccessDetail": "{{name}} fue reactivado correctamente.",
+        "reactivateErrorSummary": "No se pudo reactivar",
+        "reactivateErrorDetail": "No pudimos reactivar al fisioterapeuta. Intenta nuevamente.",
+        "deleteSuccessSummary": "Fisioterapeuta eliminado",
+        "deleteSuccessDetail": "{{name}} fue eliminado correctamente.",
+        "deleteErrorSummary": "No se pudo eliminar",
+        "deleteErrorDetail": "No pudimos eliminar al fisioterapeuta. Intenta nuevamente."
       }
     },
     "patients": {
@@ -456,8 +488,10 @@
       "actions": {
         "register": "Registrar paciente",
         "viewDetails": "Ver detalle",
+        "edit": "Editar",
         "assign": "Asignar",
-        "reassign": "Reasignar"
+        "reassign": "Reasignar",
+        "delete": "Eliminar"
       },
       "columns": {
         "name": "Paciente",
@@ -475,6 +509,20 @@
         "DISCHARGED": "Dado de alta",
         "UNASSIGNED": "Sin asignar",
         "INACTIVE": "Inactivo"
+      },
+      "deleteConfirm": {
+        "title": "Eliminar paciente",
+        "body": "Esto eliminará permanentemente a {{name}} si ya no tiene planes de tratamiento. ¿Deseas continuar?"
+      },
+      "notifications": {
+        "editSuccessSummary": "Paciente actualizado",
+        "editSuccessDetail": "{{name}} se actualizó correctamente.",
+        "editErrorSummary": "No se pudo actualizar",
+        "editErrorDetail": "No pudimos actualizar al paciente. Intenta nuevamente.",
+        "deleteSuccessSummary": "Paciente eliminado",
+        "deleteSuccessDetail": "{{name}} fue eliminado correctamente.",
+        "deleteErrorSummary": "No se pudo eliminar",
+        "deleteErrorDetail": "No pudimos eliminar al paciente. Intenta nuevamente."
       }
     },
     "assignment": {
@@ -494,6 +542,9 @@
       "errorDetail": "No pudimos actualizar la asignación del paciente. Intenta nuevamente."
     },
     "physiotherapistDetail": {
+      "actions": {
+        "back": "Volver"
+      },
       "cards": {
         "identity": "Perfil profesional",
         "contact": "Información de contacto",
@@ -511,6 +562,18 @@
         "emptyTitle": "Todavía no tiene pacientes asignados",
         "emptyBody": "Este fisioterapeuta no tiene pacientes asignados por el momento."
       }
+    },
+    "patientDetail": {
+      "actions": {
+        "back": "Volver"
+      }
+    }
+  },
+  "physiotherapistEditDialog": {
+    "title": "Editar fisioterapeuta",
+    "actions": {
+      "cancel": "Cancelar",
+      "save": "Guardar cambios"
     }
   },
   "subscription": {
@@ -624,7 +687,7 @@
       "countryCode": "Código de país",
       "countryCodePlaceholder": "+51",
       "phone": "Teléfono",
-      "phonePlaceholder": "+1 (555) 000-0000"
+      "phonePlaceholder": "987654321"
     },
     "credentials": {
       "title": "Credenciales clínicas",
@@ -1147,23 +1210,82 @@
       "email": "Correo",
       "action": "Acción"
     },
-      "status": {
-        "REGISTERED": "Sin asignar",
-        "UNASSIGNED": "Sin asignar",
-        "IN_TREATMENT": "En tratamiento",
-        "COMPLETED": "Completado",
-        "DISCHARGED": "Dado de alta",
-        "INACTIVE": "Inactivo"
-      },
+    "status": {
+      "REGISTERED": "Sin asignar",
+      "UNASSIGNED": "Sin asignar",
+      "IN_TREATMENT": "En tratamiento",
+      "COMPLETED": "Completado",
+      "DISCHARGED": "Dado de alta",
+      "INACTIVE": "Inactivo"
+    },
+    "actions": {
+      "view": "Ver paciente",
+      "edit": "Editar",
+      "delete": "Eliminar"
+    },
     "patientDni": "DNI:",
     "viewPatient": "Ver paciente",
     "showingCount": "Mostrando {{visible}} de {{total}} pacientes",
+    "deleteConfirm": {
+      "title": "Eliminar paciente",
+      "body": "Se eliminara el perfil de {{name}}. Esta accion solo estara disponible si el paciente no tiene planes de tratamiento activos o historicos."
+    },
+    "notifications": {
+      "editSuccessSummary": "Paciente actualizado",
+      "editSuccessDetail": "Se actualizaron los datos de contacto de {{name}}.",
+      "editErrorSummary": "No se pudo actualizar el paciente",
+      "editErrorDetail": "No pudimos guardar los nuevos datos de contacto en este momento.",
+      "deleteSuccessSummary": "Paciente eliminado",
+      "deleteSuccessDetail": "El paciente {{name}} fue retirado de tu cartera.",
+      "deleteErrorSummary": "No se pudo eliminar el paciente",
+      "deleteErrorDetail": "No pudimos eliminar a este paciente. Si todavia tiene planes de tratamiento, el backend bloqueara la operacion."
+    },
     "empty": {
       "title": "Aún no tienes pacientes",
       "body": "Tu carga asignada todavía está vacía. Cuando se registren y asignen pacientes, aparecerán aquí."
     }
   },
+  "patientEditDialog": {
+    "title": "Editar contacto del paciente",
+    "fields": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo",
+      "countryCode": "Código de país",
+      "phoneNumber": "Número de teléfono",
+      "medicalCondition": "Condición médica"
+    },
+    "placeholders": {
+      "firstName": "Mateo",
+      "lastName": "Salazar",
+      "email": "paciente@example.com",
+      "countryCode": "+51",
+      "phoneNumber": "998887766",
+      "medicalCondition": "Recuperación de movilidad de hombro - fase de progresión"
+    },
+    "actions": {
+      "cancel": "Cancelar",
+      "save": "Guardar cambios"
+    },
+    "errors": {
+      "firstName": "Ingresa el nombre.",
+      "lastName": "Ingresa el apellido.",
+      "email": "Ingresa un correo válido.",
+      "phoneNumber": "Ingresa un número de teléfono.",
+      "medicalCondition": "Ingresa la condición médica."
+    }
+  },
+  "patientAdminEditDialog": {
+    "title": "Editar paciente",
+    "actions": {
+      "cancel": "Cancelar",
+      "save": "Guardar cambios"
+    }
+  },
   "patientDetail": {
+    "actions": {
+      "back": "Volver"
+    },
     "breadcrumb": {
       "patients": "Pacientes",
       "loading": "Cargando paciente"
@@ -1201,6 +1323,8 @@
       "title": "Planes de tratamiento",
       "subtitle": "Abre un plan existente o crea el siguiente plan terapéutico para este paciente.",
       "create": "Crear plan de tratamiento",
+      "edit": "Editar",
+      "view": "Ver plan",
       "open": "Abrir plan",
       "showingCount": "Mostrando {{visible}} de {{total}} planes",
       "emptyTitle": "Aún no hay planes de tratamiento",
@@ -1210,7 +1334,7 @@
         "status": "Estado",
         "period": "Periodo",
         "routines": "Rutinas",
-        "action": "Acción"
+        "actions": "Acciones"
       }
     },
     "planStatus": {
@@ -1223,7 +1347,15 @@
       "dischargeSuccessSummary": "Paciente actualizado",
       "dischargeSuccessDetail": "{{name}} fue marcado como dado de alta.",
       "dischargeErrorSummary": "No se pudo actualizar el paciente",
-      "dischargeErrorDetail": "No pudimos dar de alta a este paciente en este momento. Inténtalo nuevamente."
+      "dischargeErrorDetail": "No pudimos dar de alta a este paciente en este momento. Inténtalo nuevamente.",
+      "editSuccessSummary": "Paciente actualizado",
+      "editSuccessDetail": "Se actualizaron los datos de contacto de {{name}}.",
+      "editErrorSummary": "No se pudo actualizar el paciente",
+      "editErrorDetail": "No pudimos guardar los nuevos datos de contacto en este momento.",
+      "deleteSuccessSummary": "Paciente eliminado",
+      "deleteSuccessDetail": "{{name}} fue retirado de tu cartera.",
+      "deleteErrorSummary": "No se pudo eliminar el paciente",
+      "deleteErrorDetail": "No pudimos eliminar a este paciente. Si todavía tiene planes de tratamiento, el backend bloqueará la operación."
     }
   },
   "registerPatientView": {
@@ -1291,6 +1423,7 @@
     "editTitle": "Espacio del plan de tratamiento",
     "subtitle": "Construye un plan terapéutico para {{patient}} organizando rutinas, horarios y series de ejercicios desde el catálogo de la clínica.",
     "actions": {
+      "back": "Volver",
       "create": "Crear plan de tratamiento",
       "createAndSave": "Guardar plan de tratamiento",
       "save": "Guardar cambios",

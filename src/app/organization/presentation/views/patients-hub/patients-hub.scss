@@ -425,21 +425,25 @@
 
 .patients-page__action-col {
   white-space: nowrap;
+  width: 1%;
 }
 
-.patients-page__row-action {
-  border: 0;
-  background: transparent;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--p-primary-color);
-  cursor: pointer;
+.patients-page__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+:host ::ng-deep .patients-page__action-btn,
+:host ::ng-deep .patients-page__action-btn .p-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
   padding: 0;
-}
-
-.patients-page__row-action:hover {
-  text-decoration: underline;
+  border-radius: 10px;
 }
 
 .patients-page__footer {

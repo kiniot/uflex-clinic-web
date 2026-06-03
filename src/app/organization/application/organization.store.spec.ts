@@ -5,10 +5,32 @@ import { OrganizationApi } from '../infrastructure/organization-api';
 import { AssignPatientCommand } from '../domain/model/assign-patient.command';
 import { RegisterPatientCommand } from '../domain/model/register-patient.command';
 import { RegisterPhysiotherapistCommand } from '../domain/model/register-physiotherapist.command';
+import { UpdatePatientByClinicAdminCommand } from '../domain/model/update-patient-by-clinic-admin.command';
+import { UpdatePhysiotherapistCommand } from '../domain/model/update-physiotherapist.command';
+import { UpdatePatientContactCommand } from '../domain/model/update-patient-contact.command';
 
 describe('OrganizationStore', () => {
   let store: OrganizationStore;
   const assignPatientSpy = vi.fn().mockReturnValue(of(void 0));
+  const updatePhysiotherapistSpy = vi.fn();
+  const suspendPhysiotherapistSpy = vi.fn();
+  const reactivatePhysiotherapistSpy = vi.fn();
+  const deletePhysiotherapistSpy = vi.fn();
+  const getClinicPhysiotherapistsSpy = vi.fn();
+  const getClinicPhysiotherapistByIdSpy = vi.fn();
+  const getClinicPatientsSpy = vi.fn();
+  const getPatientsByPhysiotherapistIdSpy = vi.fn();
+  const updatePatientByClinicAdminSpy = vi.fn();
+  const updatePatientSpy = vi.fn().mockImplementation((id: string, command: UpdatePatientContactCommand) =>
+    of({
+      ...clinicPatients[0],
+      id,
+      email: command.email,
+      countryCode: command.countryCode,
+      phoneNumber: command.phoneNumber,
+    }),
+  );
+  const deletePatientSpy = vi.fn().mockReturnValue(of(void 0));
   const clinicPatients = [
     {
       id: 'patient-1',
@@ -77,9 +99,144 @@ describe('OrganizationStore', () => {
     hireDate: '2026-06-01',
     status: 'ACTIVE',
   };
+  let clinicPatientsState = [...clinicPatients];
+  let clinicPhysiotherapistsState = [
+    {
+      id: 'physio-1',
+      userId: 'user-1',
+      clinicId: 'clinic-1',
+      fullName: 'Ignacio Mestanza',
+      specialty: 'NEUROLOGICAL',
+      email: 'ignacio@gmail.com',
+      countryCode: '+51',
+      phoneNumber: '958273817',
+      licenseNumber: 'CPT12345',
+      professionalSummary: 'Neuro specialist',
+      photoUrl: '',
+      yearsOfExperience: 7,
+      hireDate: '2025-01-01',
+      status: 'ACTIVE',
+    },
+  ];
 
   beforeEach(() => {
     assignPatientSpy.mockClear();
+    updatePhysiotherapistSpy.mockClear();
+    suspendPhysiotherapistSpy.mockClear();
+    reactivatePhysiotherapistSpy.mockClear();
+    deletePhysiotherapistSpy.mockClear();
+    getClinicPhysiotherapistsSpy.mockClear();
+    getClinicPhysiotherapistByIdSpy.mockClear();
+    getClinicPatientsSpy.mockClear();
+    getPatientsByPhysiotherapistIdSpy.mockClear();
+    updatePatientByClinicAdminSpy.mockClear();
+    updatePatientSpy.mockClear();
+    deletePatientSpy.mockClear();
+    clinicPatientsState = clinicPatients.map((patient) => ({ ...patient }));
+    clinicPhysiotherapistsState = [
+      {
+        id: 'physio-1',
+        userId: 'user-1',
+        clinicId: 'clinic-1',
+        fullName: 'Ignacio Mestanza',
+        specialty: 'NEUROLOGICAL',
+        email: 'ignacio@gmail.com',
+        countryCode: '+51',
+        phoneNumber: '958273817',
+        licenseNumber: 'CPT12345',
+        professionalSummary: 'Neuro specialist',
+        photoUrl: '',
+        yearsOfExperience: 7,
+        hireDate: '2025-01-01',
+        status: 'ACTIVE',
+      },
+    ];
+
+    getClinicPhysiotherapistsSpy.mockImplementation(() =>
+      of(clinicPhysiotherapistsState.map((physiotherapist) => ({ ...physiotherapist }))),
+    );
+    getClinicPhysiotherapistByIdSpy.mockImplementation((id: string) =>
+      of({
+        ...(clinicPhysiotherapistsState.find((physiotherapist) => physiotherapist.id === id) ??
+          registeredPhysiotherapistResource),
+      }),
+    );
+    getClinicPatientsSpy.mockImplementation(() =>
+      of(clinicPatientsState.map((patient) => ({ ...patient }))),
+    );
+    getPatientsByPhysiotherapistIdSpy.mockImplementation((physiotherapistId: string) =>
+      of(
+        clinicPatientsState
+          .filter((patient) => patient.assignedPhysiotherapistId === physiotherapistId)
+          .map((patient) => ({ ...patient })),
+      ),
+    );
+    updatePhysiotherapistSpy.mockImplementation(
+      (id: string, command: UpdatePhysiotherapistCommand) => {
+        const index = clinicPhysiotherapistsState.findIndex(
+          (physiotherapist) => physiotherapist.id === id,
+        );
+        const current = clinicPhysiotherapistsState[index]!;
+        const updated = {
+          ...current,
+          fullName: command.fullName,
+          specialty: command.specialty,
+          email: command.email,
+          countryCode: command.countryCode,
+          phoneNumber: command.phoneNumber,
+          licenseNumber: command.licenseNumber,
+          professionalSummary: command.professionalSummary,
+          photoUrl: command.photoUrl,
+          yearsOfExperience: command.yearsOfExperience,
+        };
+        clinicPhysiotherapistsState[index] = updated;
+        return of({ ...updated });
+      },
+    );
+    suspendPhysiotherapistSpy.mockImplementation((id: string) => {
+      clinicPhysiotherapistsState = clinicPhysiotherapistsState.map((physiotherapist) =>
+        physiotherapist.id === id ? { ...physiotherapist, status: 'SUSPENDED' } : physiotherapist,
+      );
+      clinicPatientsState = clinicPatientsState.map((patient) =>
+        patient.assignedPhysiotherapistId === id
+          ? { ...patient, assignedPhysiotherapistId: null }
+          : patient,
+      );
+      return of(void 0);
+    });
+    reactivatePhysiotherapistSpy.mockImplementation((id: string) => {
+      clinicPhysiotherapistsState = clinicPhysiotherapistsState.map((physiotherapist) =>
+        physiotherapist.id === id ? { ...physiotherapist, status: 'ACTIVE' } : physiotherapist,
+      );
+      return of(void 0);
+    });
+    deletePhysiotherapistSpy.mockImplementation((id: string) => {
+      clinicPhysiotherapistsState = clinicPhysiotherapistsState.filter(
+        (physiotherapist) => physiotherapist.id !== id,
+      );
+      return of(void 0);
+    });
+    updatePatientByClinicAdminSpy.mockImplementation(
+      (id: string, command: UpdatePatientByClinicAdminCommand) => {
+        const index = clinicPatientsState.findIndex((patient) => patient.id === id);
+        const current = clinicPatientsState[index]!;
+        const updated = {
+          ...current,
+          firstName: command.firstName,
+          lastName: command.lastName,
+          dni: command.dni,
+          birthDate: command.birthDate,
+          gender: command.gender,
+          email: command.email,
+          countryCode: command.countryCode,
+          phoneNumber: command.phoneNumber,
+          medicalCondition: command.medicalCondition,
+          assignedPhysiotherapistId: command.assignedPhysiotherapistId,
+        };
+        clinicPatientsState[index] = updated;
+        return of({ ...updated });
+      },
+    );
 
     TestBed.configureTestingModule({
       providers: [
@@ -119,35 +276,16 @@ describe('OrganizationStore', () => {
                 phoneNumber: '999888777',
                 clinicId: 'clinic-1',
               }),
-            getClinicPhysiotherapists: () =>
-              of([
-                {
-                  id: 'physio-1',
-                  userId: 'user-1',
-                  clinicId: 'clinic-1',
-                  fullName: 'Ignacio Mestanza',
-                  specialty: 'NEUROLOGICAL',
-                  email: 'ignacio@gmail.com',
-                  countryCode: '+51',
-                  phoneNumber: '958273817',
-                  licenseNumber: 'CPT12345',
-                  professionalSummary: 'Neuro specialist',
-                  photoUrl: '',
-                  yearsOfExperience: 7,
-                  hireDate: '2025-01-01',
-                  status: 'ACTIVE',
-                },
-              ]),
-            getClinicPhysiotherapistById: () => of(registeredPhysiotherapistResource),
+            getClinicPhysiotherapists: getClinicPhysiotherapistsSpy,
+            getClinicPhysiotherapistById: getClinicPhysiotherapistByIdSpy,
             registerPhysiotherapistAsClinicAdmin: () => of(registeredPhysiotherapistResource),
-            getClinicPatients: () => of(clinicPatients),
+            updatePhysiotherapist: updatePhysiotherapistSpy,
+            suspendPhysiotherapist: suspendPhysiotherapistSpy,
+            reactivatePhysiotherapist: reactivatePhysiotherapistSpy,
+            deletePhysiotherapist: deletePhysiotherapistSpy,
+            getClinicPatients: getClinicPatientsSpy,
             getClinicPatientsByClinicId: () => of(clinicPatients),
-            getPatientsByPhysiotherapistId: () =>
-              of(
-                clinicPatients.filter(
-                  (patient) => patient.assignedPhysiotherapistId === 'physio-1',
-                ),
-              ),
+            getPatientsByPhysiotherapistId: getPatientsByPhysiotherapistIdSpy,
             registerPatientAsClinicAdmin: (command: RegisterPatientCommand) =>
               of(
                 command.assignedPhysiotherapistId
@@ -175,6 +313,9 @@ describe('OrganizationStore', () => {
             getMyPatients: () => of(clinicPatients),
             getPatientById: () => of(clinicPatients[0]),
             registerPatientAsPhysiotherapist: () => of(registeredPatientAssignedResource),
+            updatePatientAsClinicAdmin: updatePatientByClinicAdminSpy,
+            updatePatientAsPhysiotherapist: updatePatientSpy,
+            deletePatient: deletePatientSpy,
             dischargePatient: () => of(void 0),
           },
         },
@@ -232,6 +373,75 @@ describe('OrganizationStore', () => {
 
     expect(physiotherapist.id).toBe('physio-2');
     expect(store.physiotherapists()[0]?.id).toBe('physio-2');
+  });
+
+  it('updates physiotherapists in both the collection and selected detail state', async () => {
+    await store.loadClinicPhysiotherapists();
+    await store.loadClinicPhysiotherapistById('physio-1');
+
+    const updated = await store.updatePhysiotherapist(
+      'physio-1',
+      new UpdatePhysiotherapistCommand({
+        fullName: 'Ignacio Actualizado',
+        specialty: 'SPORTS',
+        email: 'ignacio.actualizado@example.com',
+        countryCode: '+51',
+        phoneNumber: '999888777',
+        licenseNumber: 'CPT99999',
+        professionalSummary: 'Updated summary',
+        photoUrl: 'https://example.com/photo.jpg',
+        yearsOfExperience: 11,
+      }),
+    );
+
+    expect(updatePhysiotherapistSpy).toHaveBeenCalledTimes(1);
+    expect(updated.fullName).toBe('Ignacio Actualizado');
+    expect(store.physiotherapists()[0]?.fullName).toBe('Ignacio Actualizado');
+    expect(store.selectedPhysiotherapist()?.email).toBe('ignacio.actualizado@example.com');
+  });
+
+  it('suspends physiotherapists and refreshes their assigned patients', async () => {
+    await store.loadClinicPhysiotherapists();
+    await store.loadClinicPhysiotherapistById('physio-1');
+    await store.loadClinicPatients();
+    await store.loadPatientsByPhysiotherapistId('physio-1');
+
+    await store.suspendPhysiotherapist('physio-1');
+
+    expect(suspendPhysiotherapistSpy).toHaveBeenCalledTimes(1);
+    expect(store.physiotherapists()[0]?.status).toBe('SUSPENDED');
+    expect(store.selectedPhysiotherapist()?.status).toBe('SUSPENDED');
+    expect(store.patients()[0]?.assignedPhysiotherapistId).toBeNull();
+    expect(store.patientsByPhysiotherapist()).toHaveLength(0);
+  });
+
+  it('reactivates suspended physiotherapists and refreshes detail state', async () => {
+    clinicPhysiotherapistsState = clinicPhysiotherapistsState.map((physiotherapist) => ({
+      ...physiotherapist,
+      status: 'SUSPENDED',
+    }));
+
+    await store.loadClinicPhysiotherapists();
+    await store.loadClinicPhysiotherapistById('physio-1');
+
+    await store.reactivatePhysiotherapist('physio-1');
+
+    expect(reactivatePhysiotherapistSpy).toHaveBeenCalledTimes(1);
+    expect(store.physiotherapists()[0]?.status).toBe('ACTIVE');
+    expect(store.selectedPhysiotherapist()?.status).toBe('ACTIVE');
+  });
+
+  it('deletes physiotherapists and clears the active detail state when needed', async () => {
+    await store.loadClinicPhysiotherapists();
+    await store.loadClinicPhysiotherapistById('physio-1');
+    await store.loadPatientsByPhysiotherapistId('physio-1');
+
+    await store.deletePhysiotherapist('physio-1');
+
+    expect(deletePhysiotherapistSpy).toHaveBeenCalledTimes(1);
+    expect(store.physiotherapists()).toHaveLength(0);
+    expect(store.selectedPhysiotherapist()).toBeNull();
+    expect(store.patientsByPhysiotherapist()).toHaveLength(0);
   });
 
   it('registers clinic patients with nullable physiotherapist assignments', async () => {
@@ -318,5 +528,60 @@ describe('OrganizationStore', () => {
     expect(
       store.patients().find((currentPatient) => currentPatient.id === 'patient-1')?.status,
     ).toBe('DISCHARGED');
+  });
+
+  it('updates patient contact data for the physiotherapist flow', async () => {
+    await store.loadMyPatients();
+
+    const patient = await store.updatePatientAsPhysiotherapist(
+      'patient-1',
+      new UpdatePatientContactCommand({
+        firstName: 'Mateo',
+        lastName: 'Salazar',
+        email: 'lucia.updated@example.com',
+        countryCode: '+51',
+        phoneNumber: '998887766',
+        medicalCondition: 'Shoulder mobility recovery - progression phase',
+      }),
+    );
+
+    expect(patient.email).toBe('lucia.updated@example.com');
+    expect(store.patients()[0]?.phoneNumber).toBe('998887766');
+  });
+
+  it('updates patient data for the clinic-admin flow and preserves assignment state', async () => {
+    await store.loadClinicPatients();
+    await store.loadPatientById('patient-1');
+    await store.loadPatientsByPhysiotherapistId('physio-1');
+
+    const patient = await store.updatePatientAsClinicAdmin(
+      'patient-1',
+      new UpdatePatientByClinicAdminCommand({
+        firstName: 'Lucia',
+        lastName: 'Actualizada',
+        dni: '74839210',
+        birthDate: '1992-08-14',
+        gender: 'FEMALE',
+        email: 'lucia.updated@example.com',
+        countryCode: '+51',
+        phoneNumber: '999888777',
+        medicalCondition: 'Updated condition',
+        assignedPhysiotherapistId: 'physio-1',
+      }),
+    );
+
+    expect(updatePatientByClinicAdminSpy).toHaveBeenCalledTimes(1);
+    expect(patient.lastName).toBe('Actualizada');
+    expect(patient.assignedPhysiotherapistId).toBe('physio-1');
+    expect(store.selectedPatient()?.email).toBe('lucia.updated@example.com');
+    expect(store.patients()[0]?.assignedPhysiotherapistId).toBe('physio-1');
+  });
+
+  it('deletes patients from the physiotherapist collections', async () => {
+    await store.loadMyPatients();
+
+    await store.deletePatient('patient-1');
+
+    expect(store.patients().some((patient) => patient.id === 'patient-1')).toBe(false);
   });
 });

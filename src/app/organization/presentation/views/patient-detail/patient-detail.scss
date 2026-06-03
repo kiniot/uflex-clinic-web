@@ -3,7 +3,19 @@
 :host {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
+}
+
+/*
+ * These dialog components render as direct children of the page host.
+ * Without display: contents they become extra flex items and add invisible
+ * vertical spacing between the summary cards and the treatment plans card.
+ */
+:host > app-patient-assignment-dialog,
+:host > app-patient-admin-edit-dialog,
+:host > app-patient-contact-edit-dialog,
+:host > app-confirm-action-dialog {
+  display: contents;
 }
 
 .patient-detail__breadcrumb {
@@ -99,6 +111,13 @@
   gap: 4px;
 }
 
+.patient-detail__header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .patient-detail__title {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 28px;
@@ -170,10 +189,24 @@
   font-weight: 600;
 }
 
+:host ::ng-deep .patient-detail__action-icon-btn,
+:host ::ng-deep .patient-detail__action-icon-btn .p-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 10px;
+}
+
 .patient-detail__summary {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 14px;
+  align-items: stretch;
+  grid-auto-rows: 1fr;
 }
 
 @media (max-width: 1100px) {
@@ -186,10 +219,11 @@
   background: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
-  padding: 18px 20px;
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
+  height: 100%;
   @include theme.surface;
 }
 
@@ -201,7 +235,7 @@
 .detail-card__header {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .detail-card__icon {
@@ -227,7 +261,7 @@
 .detail-card__grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 14px 18px;
+  gap: 10px 16px;
 }
 
 @media (max-width: 720px) {
@@ -244,7 +278,7 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--p-text-muted-color);
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .detail-card__value {
@@ -293,26 +327,6 @@
   font-size: 12px;
   color: var(--p-text-muted-color);
   margin: 4px 0 0;
-}
-
-.patient-detail__plans-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 38px;
-  padding: 0 16px;
-  border-radius: 10px;
-  background: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
-  text-decoration: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  @include theme.surface;
-}
-
-.patient-detail__plans-cta:hover {
-  background: var(--p-primary-hover-color);
 }
 
 .patient-detail__plans-loading {
@@ -401,10 +415,17 @@
   padding: 16px 20px;
   border-bottom: 1px solid var(--p-surface-200);
   vertical-align: middle;
+  transition:
+    background-color var(--app-theme-transition-duration, 220ms) ease,
+    color var(--app-theme-transition-duration, 220ms) ease;
 }
 
 :host-context(.app-dark) .patient-detail__plans-row td {
   border-bottom-color: var(--p-surface-300);
+}
+
+.patient-detail__plans-row {
+  cursor: pointer;
 }
 
 .patient-detail__plans-row:hover td {
@@ -413,6 +434,15 @@
 
 :host-context(.app-dark) .patient-detail__plans-row:hover td {
   background: color-mix(in srgb, var(--p-surface-200) 65%, transparent);
+}
+
+.patient-detail__plans-row:focus-visible td {
+  background: color-mix(in srgb, var(--p-primary-50) 65%, transparent);
+  outline: none;
+}
+
+:host-context(.app-dark) .patient-detail__plans-row:focus-visible td {
+  background: color-mix(in srgb, var(--p-primary-900) 26%, transparent);
 }
 
 .patient-detail__plans-name {
@@ -465,18 +495,34 @@
 
 .patient-detail__plans-action-col {
   white-space: nowrap;
+  min-width: 212px;
+  text-align: left;
 }
 
-.patient-detail__plans-action {
-  color: var(--p-primary-color);
-  text-decoration: none;
+.patient-detail__plans-actions {
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+  width: 100%;
+}
+
+:host ::ng-deep .patient-detail__plans-action-btn,
+:host ::ng-deep .patient-detail__plans-action-btn .p-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 10px;
   font-family: 'Inter', sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-}
-
-.patient-detail__plans-action:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .patient-detail__plans-footer {

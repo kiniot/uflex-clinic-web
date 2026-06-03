@@ -23,9 +23,23 @@
   </div>
 
   <div class="workspace__header-actions">
+    <a
+      pButton
+      [routerLink]="['/physiotherapist/patients', patientId()]"
+      severity="secondary"
+      [outlined]="true"
+      class="workspace__ghost-btn"
+    >
+      <i class="pi pi-arrow-left" aria-hidden="true"></i>
+      <span>{{ 'treatmentPlanWorkspace.actions.back' | translate }}</span>
+    </a>
     @if (canShowActivateAction()) {
       <button
+        pButton
         type="button"
+        severity="secondary"
+        icon="pi pi-play-circle"
+        [outlined]="true"
         class="workspace__ghost-btn"
         [disabled]="isRunningTransition()"
         (click)="onRequestPlanAction('activate')"
@@ -35,7 +49,11 @@
     }
     @if (canShowCompleteAction()) {
       <button
+        pButton
         type="button"
+        severity="secondary"
+        icon="pi pi-check-circle"
+        [outlined]="true"
         class="workspace__ghost-btn"
         [disabled]="isRunningTransition()"
         (click)="onRequestPlanAction('complete')"
@@ -45,7 +63,11 @@
     }
     @if (canShowCancelAction()) {
       <button
+        pButton
         type="button"
+        severity="danger"
+        icon="pi pi-ban"
+        [outlined]="true"
         class="workspace__ghost-btn workspace__ghost-btn--danger"
         [disabled]="isRunningTransition()"
         (click)="onRequestPlanAction('cancel')"
@@ -55,7 +77,11 @@
     }
     @if (canShowDeleteAction()) {
       <button
+        pButton
         type="button"
+        severity="danger"
+        icon="pi pi-trash"
+        [outlined]="true"
         class="workspace__ghost-btn workspace__ghost-btn--danger"
         [disabled]="isRunningTransition()"
         (click)="onRequestPlanAction('delete')"

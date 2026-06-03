@@ -90,6 +90,22 @@ function environmentFile() {
       'NG_APP_PLATFORM_PROVIDER_PHYSIOTHERAPIST_BY_ID_ENDPOINT_PATH',
       '/physiotherapists',
     ),
+    platformProviderUpdatePhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_UPDATE_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderDeletePhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_DELETE_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderSuspendPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_SUSPEND_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderReactivatePhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_REACTIVATE_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
     platformProviderMyPatientsEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_MY_PATIENTS_ENDPOINT_PATH',
       '/physiotherapists/me/patients',
@@ -113,6 +129,18 @@ function environmentFile() {
     platformProviderPatientsByClinicEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_PATIENTS_BY_CLINIC_ENDPOINT_PATH',
       '/patients/by-clinic',
+    ),
+    platformProviderUpdatePatientByPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_UPDATE_PATIENT_BY_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/patients/by-physiotherapist',
+    ),
+    platformProviderUpdatePatientByClinicAdminEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_UPDATE_PATIENT_BY_CLINIC_ADMIN_ENDPOINT_PATH',
+      '/patients/by-clinic-admin',
+    ),
+    platformProviderDeletePatientEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_DELETE_PATIENT_ENDPOINT_PATH',
+      '/patients',
     ),
     platformProviderAssignPatientEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_ASSIGN_PATIENT_ENDPOINT_PATH',

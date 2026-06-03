@@ -137,7 +137,7 @@
 }
 
 .patients-table__actions-col {
-  width: 180px;
+  width: 220px;
   text-align: right;
   white-space: nowrap;
 }
@@ -145,15 +145,12 @@
 .patients-table__actions {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
-:host ::ng-deep .patients-table__action.p-button {
-  padding-inline: 0;
-  font-size: 12px;
-  font-weight: 700;
-}
-
-:host ::ng-deep .patients-table__action--primary.p-button {
-  color: var(--p-primary-color);
+:host ::ng-deep .patients-table__action-btn,
+:host ::ng-deep .patients-table__action-btn .p-button {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
 }

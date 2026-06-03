@@ -1,11 +1,12 @@
 import { Component, input, output } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 import { Patient } from '../../../domain/model/patient.entity';
 
 @Component({
   selector: 'app-patients-table',
-  imports: [TranslatePipe, ButtonModule],
+  imports: [TranslatePipe, ButtonModule, TooltipModule],
   templateUrl: './patients-table.html',
   styleUrl: './patients-table.scss',
 })
@@ -14,7 +15,9 @@ export class PatientsTable {
   physiotherapistNames = input<Record<string, string>>({});
 
   readonly rowOpen = output<Patient>();
+  readonly edit = output<Patient>();
   readonly assign = output<Patient>();
+  readonly delete = output<Patient>();
 
   protected onRowOpen(patient: Patient) {
     this.rowOpen.emit(patient);
@@ -22,6 +25,14 @@ export class PatientsTable {
 
   protected onAssign(patient: Patient) {
     this.assign.emit(patient);
+  }
+
+  protected onEdit(patient: Patient) {
+    this.edit.emit(patient);
+  }
+
+  protected onDelete(patient: Patient) {
+    this.delete.emit(patient);
   }
 
   protected assignedLabel(patient: Patient): string | null {

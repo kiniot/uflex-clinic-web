@@ -383,7 +383,8 @@
       "eyebrow": "Clinic operations",
       "fallback": "Clinic organization",
       "ruc": "RUC",
-      "managedBy": "Managed by"
+      "managedBy": "Managed by",
+      "dni": "DNI"
     },
     "metrics": {
       "totalPhysiotherapists": "Total Physiotherapists",
@@ -425,7 +426,11 @@
       "experienceValue": "{{years}} years",
       "actions": {
         "register": "Register Physiotherapist",
-        "viewDetails": "View details"
+        "viewDetails": "View detail",
+        "edit": "Edit",
+        "suspend": "Suspend",
+        "reactivate": "Reactivate",
+        "delete": "Delete"
       },
       "columns": {
         "name": "Name",
@@ -438,13 +443,40 @@
       },
       "status": {
         "ACTIVE": "Active",
-        "INACTIVE": "Inactive"
+        "INACTIVE": "Inactive",
+        "SUSPENDED": "Suspended"
       },
       "specialties": {
         "TRAUMATOLOGICAL": "Traumatological",
         "NEUROLOGICAL": "Neurological",
         "SPORTS": "Sports",
         "GENERAL": "General"
+      },
+      "confirm": {
+        "suspendTitle": "Suspend physiotherapist",
+        "suspendBody": "This will suspend {{name}} and remove the physiotherapist assignment from their patients. Do you want to continue?",
+        "reactivateTitle": "Reactivate physiotherapist",
+        "reactivateBody": "This will reactivate {{name}} in the clinic. Do you want to continue?",
+        "deleteTitle": "Delete physiotherapist",
+        "deleteBody": "This will permanently remove {{name}} if no patients remain assigned. Do you want to continue?"
+      },
+      "notifications": {
+        "editSuccessSummary": "Physiotherapist updated",
+        "editSuccessDetail": "{{name}} was updated successfully.",
+        "editErrorSummary": "Update failed",
+        "editErrorDetail": "We could not update the physiotherapist. Please try again.",
+        "suspendSuccessSummary": "Physiotherapist suspended",
+        "suspendSuccessDetail": "{{name}} was suspended successfully.",
+        "suspendErrorSummary": "Suspend failed",
+        "suspendErrorDetail": "We could not suspend the physiotherapist. Please try again.",
+        "reactivateSuccessSummary": "Physiotherapist reactivated",
+        "reactivateSuccessDetail": "{{name}} was reactivated successfully.",
+        "reactivateErrorSummary": "Reactivation failed",
+        "reactivateErrorDetail": "We could not reactivate the physiotherapist. Please try again.",
+        "deleteSuccessSummary": "Physiotherapist deleted",
+        "deleteSuccessDetail": "{{name}} was removed successfully.",
+        "deleteErrorSummary": "Delete failed",
+        "deleteErrorDetail": "We could not delete the physiotherapist. Please try again."
       }
     },
     "patients": {
@@ -455,9 +487,11 @@
       "unassigned": "Unassigned",
       "actions": {
         "register": "Register Patient",
-        "viewDetails": "View details",
+        "viewDetails": "View detail",
+        "edit": "Edit",
         "assign": "Assign",
-        "reassign": "Reassign"
+        "reassign": "Reassign",
+        "delete": "Delete"
       },
       "columns": {
         "name": "Patient",
@@ -475,6 +509,20 @@
         "DISCHARGED": "Discharged",
         "UNASSIGNED": "Unassigned",
         "INACTIVE": "Inactive"
+      },
+      "deleteConfirm": {
+        "title": "Delete patient",
+        "body": "This will permanently remove {{name}} if no treatment plans remain. Do you want to continue?"
+      },
+      "notifications": {
+        "editSuccessSummary": "Patient updated",
+        "editSuccessDetail": "{{name}} was updated successfully.",
+        "editErrorSummary": "Update failed",
+        "editErrorDetail": "We could not update the patient. Please try again.",
+        "deleteSuccessSummary": "Patient deleted",
+        "deleteSuccessDetail": "{{name}} was removed successfully.",
+        "deleteErrorSummary": "Delete failed",
+        "deleteErrorDetail": "We could not delete the patient. Please try again."
       }
     },
     "assignment": {
@@ -494,6 +542,9 @@
       "errorDetail": "We could not update the patient assignment. Please try again."
     },
     "physiotherapistDetail": {
+      "actions": {
+        "back": "Back"
+      },
       "cards": {
         "identity": "Professional profile",
         "contact": "Contact information",
@@ -511,6 +562,18 @@
         "emptyTitle": "No assigned patients yet",
         "emptyBody": "This physiotherapist does not have assigned patients at the moment."
       }
+    },
+    "patientDetail": {
+      "actions": {
+        "back": "Back"
+      }
+    }
+  },
+  "physiotherapistEditDialog": {
+    "title": "Edit physiotherapist",
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save changes"
     }
   },
   "subscription": {
@@ -624,7 +687,7 @@
       "countryCode": "Country Code",
       "countryCodePlaceholder": "+51",
       "phone": "Phone Number",
-      "phonePlaceholder": "+1 (555) 000-0000"
+      "phonePlaceholder": "987654321"
     },
     "credentials": {
       "title": "Clinical Credentials",
@@ -1147,23 +1210,82 @@
       "email": "Email",
       "action": "Action"
     },
-      "status": {
-        "REGISTERED": "Unassigned",
-        "UNASSIGNED": "Unassigned",
-        "IN_TREATMENT": "In treatment",
-        "COMPLETED": "Completed",
-        "DISCHARGED": "Discharged",
-        "INACTIVE": "Inactive"
-      },
+    "status": {
+      "REGISTERED": "Unassigned",
+      "UNASSIGNED": "Unassigned",
+      "IN_TREATMENT": "In treatment",
+      "COMPLETED": "Completed",
+      "DISCHARGED": "Discharged",
+      "INACTIVE": "Inactive"
+    },
+    "actions": {
+      "view": "View patient",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
     "patientDni": "DNI:",
     "viewPatient": "View patient",
     "showingCount": "Showing {{visible}} of {{total}} patients",
+    "deleteConfirm": {
+      "title": "Delete patient",
+      "body": "{{name}} will be removed from your caseload. This is only allowed when the patient no longer has treatment plans."
+    },
+    "notifications": {
+      "editSuccessSummary": "Patient updated",
+      "editSuccessDetail": "{{name}}'s contact details were updated.",
+      "editErrorSummary": "Could not update patient",
+      "editErrorDetail": "We couldn't save the new contact details right now.",
+      "deleteSuccessSummary": "Patient deleted",
+      "deleteSuccessDetail": "{{name}} was removed from your caseload.",
+      "deleteErrorSummary": "Could not delete patient",
+      "deleteErrorDetail": "We couldn't delete this patient. If treatment plans still exist, the backend will block the operation."
+    },
     "empty": {
       "title": "No patients yet",
       "body": "Your assigned caseload is still empty. Once patients are registered and assigned, they will appear here."
     }
   },
+  "patientEditDialog": {
+    "title": "Edit patient contact",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "countryCode": "Country code",
+      "phoneNumber": "Phone number",
+      "medicalCondition": "Medical condition"
+    },
+    "placeholders": {
+      "firstName": "Mateo",
+      "lastName": "Salazar",
+      "email": "patient@example.com",
+      "countryCode": "+51",
+      "phoneNumber": "998887766",
+      "medicalCondition": "Shoulder mobility recovery - progression phase"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save changes"
+    },
+    "errors": {
+      "firstName": "Enter a first name.",
+      "lastName": "Enter a last name.",
+      "email": "Enter a valid email address.",
+      "phoneNumber": "Enter a phone number.",
+      "medicalCondition": "Enter a medical condition."
+    }
+  },
+  "patientAdminEditDialog": {
+    "title": "Edit patient",
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save changes"
+    }
+  },
   "patientDetail": {
+    "actions": {
+      "back": "Back"
+    },
     "breadcrumb": {
       "patients": "Patients",
       "loading": "Loading patient"
@@ -1201,6 +1323,8 @@
       "title": "Treatment plans",
       "subtitle": "Open an existing plan or create the next treatment track for this patient.",
       "create": "Create treatment plan",
+      "edit": "Edit",
+      "view": "View plan",
       "open": "Open plan",
       "showingCount": "Showing {{visible}} of {{total}} plans",
       "emptyTitle": "No treatment plans yet",
@@ -1210,7 +1334,7 @@
         "status": "Status",
         "period": "Period",
         "routines": "Routines",
-        "action": "Action"
+        "actions": "Actions"
       }
     },
     "planStatus": {
@@ -1223,7 +1347,15 @@
       "dischargeSuccessSummary": "Patient updated",
       "dischargeSuccessDetail": "{{name}} was marked as discharged.",
       "dischargeErrorSummary": "Patient update failed",
-      "dischargeErrorDetail": "We could not discharge this patient right now. Please try again."
+      "dischargeErrorDetail": "We could not discharge this patient right now. Please try again.",
+      "editSuccessSummary": "Patient updated",
+      "editSuccessDetail": "{{name}}'s contact details were updated.",
+      "editErrorSummary": "Could not update patient",
+      "editErrorDetail": "We couldn't save the new contact details right now.",
+      "deleteSuccessSummary": "Patient deleted",
+      "deleteSuccessDetail": "{{name}} was removed from your caseload.",
+      "deleteErrorSummary": "Could not delete patient",
+      "deleteErrorDetail": "We couldn't delete this patient. If treatment plans still exist, the backend will block the operation."
     }
   },
   "registerPatientView": {
@@ -1291,6 +1423,7 @@
     "editTitle": "Treatment plan workspace",
     "subtitle": "Build a treatment track for {{patient}} by organizing routines, schedules, and exercise series from the clinic catalog.",
     "actions": {
+      "back": "Back",
       "create": "Create treatment plan",
       "createAndSave": "Save treatment plan",
       "save": "Save changes",

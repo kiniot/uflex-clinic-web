@@ -100,6 +100,29 @@
       </button>
     </div>
   } @else {
+    <app-patient-contact-edit-dialog
+      [visible]="isEditDialogVisible()"
+      [patient]="selectedPatientForEdit()"
+      [pending]="isUpdatingPatient()"
+      (visibleChange)="!$event ? closeEditPatientDialog() : null"
+      (closed)="closeEditPatientDialog()"
+      (save)="savePatientEdit($event)"
+    />
+
+    <app-confirm-action-dialog
+      [visible]="isDeleteDialogVisible()"
+      [titleKey]="'patientsList.deleteConfirm.title'"
+      [messageKey]="'patientsList.deleteConfirm.body'"
+      [messageParams]="{ name: selectedPatientForDelete()?.fullName ?? '' }"
+      [confirmLabelKey]="'patientsList.actions.delete'"
+      [iconClass]="'pi pi-trash'"
+      [tone]="'danger'"
+      [pending]="isDeletingPatient()"
+      (visibleChange)="!$event ? closeDeleteDialog() : null"
+      (closed)="closeDeleteDialog()"
+      (confirmed)="confirmDeletePatient()"
+    />
+
     <div class="patients-page__table-scroll">
       <table class="patients-page__table">
         <thead>
@@ -145,13 +168,44 @@
               </td>
               <td class="patients-page__contact">{{ patient.email }}</td>
               <td class="patients-page__action-col">
-                <button
-                  type="button"
-                  class="patients-page__row-action"
-                  (click)="onOpenPatient(patient); $event.stopPropagation()"
-                >
-                  {{ 'patientsList.viewPatient' | translate }}
-                </button>
+                <div class="patients-page__actions">
+                  <button
+                    pButton
+                    type="button"
+                    severity="secondary"
+                    [outlined]="true"
+                    class="patients-page__action-btn"
+                    [icon]="'pi pi-eye'"
+                    [pTooltip]="'patientsList.actions.view' | translate"
+                    tooltipPosition="top"
+                    [attr.aria-label]="'patientsList.actions.view' | translate"
+                    (click)="onOpenPatient(patient); $event.stopPropagation()"
+                  ></button>
+                  <button
+                    pButton
+                    type="button"
+                    severity="primary"
+                    [outlined]="true"
+                    class="patients-page__action-btn"
+                    [icon]="'pi pi-pen-to-square'"
+                    [pTooltip]="'patientsList.actions.edit' | translate"
+                    tooltipPosition="top"
+                    [attr.aria-label]="'patientsList.actions.edit' | translate"
+                    (click)="onEditPatient(patient); $event.stopPropagation()"
+                  ></button>
+                  <button
+                    pButton
+                    type="button"
+                    severity="danger"
+                    [outlined]="true"
+                    class="patients-page__action-btn"
+                    [icon]="'pi pi-trash'"
+                    [pTooltip]="'patientsList.actions.delete' | translate"
+                    tooltipPosition="top"
+                    [attr.aria-label]="'patientsList.actions.delete' | translate"
+                    (click)="onRequestDeletePatient(patient); $event.stopPropagation()"
+                  ></button>
+                </div>
               </td>
             </tr>
           }
