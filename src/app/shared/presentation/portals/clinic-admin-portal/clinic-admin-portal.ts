@@ -79,9 +79,9 @@ export class ClinicAdminPortal {
 
   protected navItems = computed<AdminNavItem[]>(() => [
     {
-      label: this.translations()['clinicAdmin.nav.therapy'] ?? '',
-      icon: 'pi-th-large',
-      route: '/clinic-admin/therapy',
+      label: this.translations()['clinicAdmin.nav.organization'] ?? '',
+      icon: 'pi-building',
+      route: '/clinic-admin/organization',
     },
     {
       label: this.translations()['clinicAdmin.nav.device'] ?? '',
@@ -89,9 +89,9 @@ export class ClinicAdminPortal {
       route: '/clinic-admin/device',
     },
     {
-      label: this.translations()['clinicAdmin.nav.organization'] ?? '',
-      icon: 'pi-building',
-      route: '/clinic-admin/organization',
+      label: this.translations()['clinicAdmin.nav.therapy'] ?? '',
+      icon: 'pi-th-large',
+      route: '/clinic-admin/therapy',
     },
     {
       label: this.translations()['clinicAdmin.nav.subscription'] ?? '',

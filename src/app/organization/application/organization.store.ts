@@ -10,6 +10,9 @@ import { Patient } from '../domain/model/patient.entity';
 import { PhysiotherapistProfile } from '../domain/model/physiotherapist-profile.entity';
 import { RegisterPatientCommand } from '../domain/model/register-patient.command';
 import { RegisterPhysiotherapistCommand } from '../domain/model/register-physiotherapist.command';
+import { UpdatePatientByClinicAdminCommand } from '../domain/model/update-patient-by-clinic-admin.command';
+import { UpdatePhysiotherapistCommand } from '../domain/model/update-physiotherapist.command';
+import { UpdatePatientContactCommand } from '../domain/model/update-patient-contact.command';
 import { TeamMember } from '../domain/model/team-member.entity';
 import { OrganizationApi } from '../infrastructure/organization-api';
 import { ClinicAdminProfileResource } from '../infrastructure/clinic-admin-profile-response';
@@ -44,9 +47,15 @@ export class OrganizationStore {
   private readonly loadingSelectedPatientSignal = signal(false);
   private readonly loadingPatientsByPhysiotherapistSignal = signal(false);
   private readonly registeringPhysiotherapistSignal = signal(false);
+  private readonly updatingPhysiotherapistSignal = signal(false);
+  private readonly suspendingPhysiotherapistSignal = signal(false);
+  private readonly reactivatingPhysiotherapistSignal = signal(false);
+  private readonly deletingPhysiotherapistSignal = signal(false);
   private readonly registeringPatientSignal = signal(false);
   private readonly assigningPatientSignal = signal(false);
   private readonly dischargingPatientSignal = signal(false);
+  private readonly updatingPatientSignal = signal(false);
+  private readonly deletingPatientSignal = signal(false);
 
   private readonly currentClinicResolvedSignal = signal(false);
   private readonly currentClinicAdminResolvedSignal = signal(false);
@@ -72,9 +81,15 @@ export class OrganizationStore {
   readonly isLoadingPatientsByPhysiotherapist =
     this.loadingPatientsByPhysiotherapistSignal.asReadonly();
   readonly isRegisteringPhysiotherapist = this.registeringPhysiotherapistSignal.asReadonly();
+  readonly isUpdatingPhysiotherapist = this.updatingPhysiotherapistSignal.asReadonly();
+  readonly isSuspendingPhysiotherapist = this.suspendingPhysiotherapistSignal.asReadonly();
+  readonly isReactivatingPhysiotherapist = this.reactivatingPhysiotherapistSignal.asReadonly();
+  readonly isDeletingPhysiotherapist = this.deletingPhysiotherapistSignal.asReadonly();
   readonly isRegisteringPatient = this.registeringPatientSignal.asReadonly();
   readonly isAssigningPatient = this.assigningPatientSignal.asReadonly();
   readonly isDischargingPatient = this.dischargingPatientSignal.asReadonly();
+  readonly isUpdatingPatient = this.updatingPatientSignal.asReadonly();
+  readonly isDeletingPatient = this.deletingPatientSignal.asReadonly();
 
   readonly inTreatmentPatientsCount = computed(
     () => this.patients().filter((patient) => patient.status === 'IN_TREATMENT').length,
@@ -249,6 +264,59 @@ export class OrganizationStore {
     }
   }
 
+  async updatePhysiotherapist(
+    id: string,
+    command: UpdatePhysiotherapistCommand,
+  ): Promise<PhysiotherapistProfile> {
+    this.updatingPhysiotherapistSignal.set(true);
+    try {
+      const resource = await firstValueFrom(this.organizationApi.updatePhysiotherapist(id, command));
+      return this.syncPhysiotherapistResource(resource);
+    } finally {
+      this.updatingPhysiotherapistSignal.set(false);
+    }
+  }
+
+  async suspendPhysiotherapist(id: string): Promise<void> {
+    this.suspendingPhysiotherapistSignal.set(true);
+    try {
+      await firstValueFrom(this.organizationApi.suspendPhysiotherapist(id));
+      await this.refreshAfterPhysiotherapistMutation(id, { clearIfMissing: false });
+    } finally {
+      this.suspendingPhysiotherapistSignal.set(false);
+    }
+  }
+
+  async reactivatePhysiotherapist(id: string): Promise<void> {
+    this.reactivatingPhysiotherapistSignal.set(true);
+    try {
+      await firstValueFrom(this.organizationApi.reactivatePhysiotherapist(id));
+      await this.refreshAfterPhysiotherapistMutation(id, { clearIfMissing: false });
+    } finally {
+      this.reactivatingPhysiotherapistSignal.set(false);
+    }
+  }
+
+  async deletePhysiotherapist(id: string): Promise<void> {
+    this.deletingPhysiotherapistSignal.set(true);
+    try {
+      await firstValueFrom(this.organizationApi.deletePhysiotherapist(id));
+      this.physiotherapistsSignal.update((physiotherapists) =>
+        physiotherapists.filter((physiotherapist) => physiotherapist.id !== id),
+      );
+      if (this.selectedPhysiotherapistSignal()?.id === id) {
+        this.selectedPhysiotherapistSignal.set(null);
+      }
+      if (this.viewedPhysiotherapistPatientsIdSignal() === id) {
+        this.patientsByPhysiotherapistSignal.set([]);
+        this.viewedPhysiotherapistPatientsIdSignal.set(null);
+      }
+      await this.loadClinicPatients();
+    } finally {
+      this.deletingPhysiotherapistSignal.set(false);
+    }
+  }
+
   async loadClinicPatients(): Promise<Patient[]> {
     this.loadingPatientsSignal.set(true);
     try {
@@ -394,6 +462,63 @@ export class OrganizationStore {
     }
   }
 
+  async updatePatientAsPhysiotherapist(
+    id: string,
+    command: UpdatePatientContactCommand,
+  ): Promise<Patient> {
+    this.updatingPatientSignal.set(true);
+    try {
+      const resource = await firstValueFrom(
+        this.organizationApi.updatePatientAsPhysiotherapist(id, command),
+      );
+      return this.syncPatientResource(resource);
+    } finally {
+      this.updatingPatientSignal.set(false);
+    }
+  }
+
+  async updatePatientAsClinicAdmin(
+    id: string,
+    command: UpdatePatientByClinicAdminCommand,
+  ): Promise<Patient> {
+    this.updatingPatientSignal.set(true);
+    try {
+      const previousPatient = this.patientsSignal().find((patient) => patient.id === id) ?? null;
+      const resource = await firstValueFrom(this.organizationApi.updatePatientAsClinicAdmin(id, command));
+      const patient = this.syncPatientResource(resource);
+      const viewedPhysiotherapistId = this.viewedPhysiotherapistPatientsIdSignal();
+      const previousAssignedId = previousPatient?.assignedPhysiotherapistId ?? null;
+      const nextAssignedId = patient.assignedPhysiotherapistId;
+
+      if (
+        viewedPhysiotherapistId &&
+        (viewedPhysiotherapistId === previousAssignedId || viewedPhysiotherapistId === nextAssignedId)
+      ) {
+        await this.loadPatientsByPhysiotherapistId(viewedPhysiotherapistId);
+      }
+
+      return patient;
+    } finally {
+      this.updatingPatientSignal.set(false);
+    }
+  }
+
+  async deletePatient(id: string): Promise<void> {
+    this.deletingPatientSignal.set(true);
+    try {
+      await firstValueFrom(this.organizationApi.deletePatient(id));
+      this.patientsSignal.update((patients) => patients.filter((patient) => patient.id !== id));
+      this.patientsByPhysiotherapistSignal.update((patients) =>
+        patients.filter((patient) => patient.id !== id),
+      );
+      if (this.selectedPatientSignal()?.id === id) {
+        this.selectedPatientSignal.set(null);
+      }
+    } finally {
+      this.deletingPatientSignal.set(false);
+    }
+  }
+
   private mapClinicProfile(resource: ClinicProfileResource): ClinicProfile {
     return new ClinicProfile({
       id: resource.id,
@@ -522,6 +647,66 @@ export class OrganizationStore {
       }
       return filtered;
     });
+  }
+
+  private syncPatientResource(resource: PatientResource): Patient {
+    const patient = this.mapPatient(resource);
+    this.patientsSignal.update((patients) => {
+      const existing = patients.some((item) => item.id === patient.id);
+      return existing ? patients.map((item) => (item.id === patient.id ? patient : item)) : patients;
+    });
+    this.patientsByPhysiotherapistSignal.update((patients) => {
+      const existing = patients.some((item) => item.id === patient.id);
+      return existing ? patients.map((item) => (item.id === patient.id ? patient : item)) : patients;
+    });
+    if (this.selectedPatientSignal()?.id === patient.id) {
+      this.selectedPatientSignal.set(patient);
+    }
+    return patient;
+  }
+
+  private syncPhysiotherapistResource(
+    resource: PhysiotherapistProfileResource,
+  ): PhysiotherapistProfile {
+    const physiotherapist = this.mapPhysiotherapist(resource);
+    this.physiotherapistsSignal.update((physiotherapists) => {
+      const existing = physiotherapists.some((item) => item.id === physiotherapist.id);
+      return existing
+        ? physiotherapists.map((item) => (item.id === physiotherapist.id ? physiotherapist : item))
+        : physiotherapists;
+    });
+    if (this.selectedPhysiotherapistSignal()?.id === physiotherapist.id) {
+      this.selectedPhysiotherapistSignal.set(physiotherapist);
+    }
+    if (this.currentPhysiotherapistSignal()?.id === physiotherapist.id) {
+      this.currentPhysiotherapistSignal.set(physiotherapist);
+    }
+    return physiotherapist;
+  }
+
+  private async refreshAfterPhysiotherapistMutation(
+    id: string,
+    options: { clearIfMissing: boolean },
+  ): Promise<void> {
+    await this.loadClinicPhysiotherapists();
+    await this.loadClinicPatients();
+
+    const stillExists = this.physiotherapistsSignal().some((physiotherapist) => physiotherapist.id === id);
+    if (!stillExists && options.clearIfMissing) {
+      if (this.selectedPhysiotherapistSignal()?.id === id) {
+        this.selectedPhysiotherapistSignal.set(null);
+      }
+      if (this.viewedPhysiotherapistPatientsIdSignal() === id) {
+        this.patientsByPhysiotherapistSignal.set([]);
+        this.viewedPhysiotherapistPatientsIdSignal.set(null);
+      }
+      return;
+    }
+
+    if (this.selectedPhysiotherapistSignal()?.id === id || this.viewedPhysiotherapistPatientsIdSignal() === id) {
+      await this.loadClinicPhysiotherapistById(id);
+      await this.loadPatientsByPhysiotherapistId(id);
+    }
   }
 
   private formatAddress(clinic: ClinicProfile | null): string {

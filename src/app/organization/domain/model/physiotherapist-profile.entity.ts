@@ -2,7 +2,7 @@ import { BaseEntity } from '../../../shared/domain/model/base-entity';
 
 export type PhysiotherapistSpecialty = 'TRAUMATOLOGICAL' | 'NEUROLOGICAL' | 'SPORTS' | 'GENERAL';
 
-export type PhysiotherapistEmploymentStatus = 'ACTIVE' | 'INACTIVE';
+export type PhysiotherapistEmploymentStatus = 'ACTIVE' | 'INACTIVE' | 'SUSPENDED';
 
 interface PhysiotherapistProfileProps {
   id: string;

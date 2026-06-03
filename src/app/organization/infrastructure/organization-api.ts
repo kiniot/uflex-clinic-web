@@ -6,6 +6,8 @@ import { AssignPatientCommand } from '../domain/model/assign-patient.command';
 import { CreateClinicCommand } from '../domain/model/create-clinic.command';
 import { RegisterPatientCommand } from '../domain/model/register-patient.command';
 import { RegisterPhysiotherapistCommand } from '../domain/model/register-physiotherapist.command';
+import { UpdatePatientByClinicAdminCommand } from '../domain/model/update-patient-by-clinic-admin.command';
+import { UpdatePhysiotherapistCommand } from '../domain/model/update-physiotherapist.command';
 import { AssignPatientApiEndpoint } from './assign-patient-endpoint';
 import { ClinicAdminProfileAssembler } from './clinic-admin-profile-assembler';
 import { ClinicAdminProfileResource } from './clinic-admin-profile-response';
@@ -17,6 +19,8 @@ import { ClinicResource } from './create-clinic-response';
 import { CurrentClinicAdminApiEndpoint } from './current-clinic-admin-endpoint';
 import { CurrentClinicApiEndpoint } from './current-clinic-endpoint';
 import { CurrentPhysiotherapistApiEndpoint } from './current-physiotherapist-endpoint';
+import { DeletePatientApiEndpoint } from './delete-patient-endpoint';
+import { DeletePhysiotherapistApiEndpoint } from './delete-physiotherapist-endpoint';
 import { DischargePatientApiEndpoint } from './discharge-patient-endpoint';
 import { MyPatientsApiEndpoint } from './my-patients-endpoint';
 import { PatientAssembler } from './patient-assembler';
@@ -32,6 +36,12 @@ import { PhysiotherapistsApiEndpoint } from './physiotherapists-endpoint';
 import { RegisterPatientApiEndpoint } from './register-patient-endpoint';
 import { RegisterPatientByClinicAdminApiEndpoint } from './register-patient-by-clinic-admin-endpoint';
 import { RegisterPhysiotherapistApiEndpoint } from './register-physiotherapist-endpoint';
+import { ReactivatePhysiotherapistApiEndpoint } from './reactivate-physiotherapist-endpoint';
+import { UpdatePatientByClinicAdminApiEndpoint } from './update-patient-by-clinic-admin-endpoint';
+import { SuspendPhysiotherapistApiEndpoint } from './suspend-physiotherapist-endpoint';
+import { UpdatePatientByPhysiotherapistApiEndpoint } from './update-patient-by-physiotherapist-endpoint';
+import { UpdatePatientContactCommand } from '../domain/model/update-patient-contact.command';
+import { UpdatePhysiotherapistApiEndpoint } from './update-physiotherapist-endpoint';
 
 /**
  * API service for Organization bounded-context operations.
@@ -47,6 +57,10 @@ export class OrganizationApi extends BaseApi {
   private readonly physiotherapistsEndpoint: PhysiotherapistsApiEndpoint;
   private readonly physiotherapistByIdEndpoint: PhysiotherapistByIdApiEndpoint;
   private readonly registerPhysiotherapistEndpoint: RegisterPhysiotherapistApiEndpoint;
+  private readonly updatePhysiotherapistEndpoint: UpdatePhysiotherapistApiEndpoint;
+  private readonly deletePhysiotherapistEndpoint: DeletePhysiotherapistApiEndpoint;
+  private readonly suspendPhysiotherapistEndpoint: SuspendPhysiotherapistApiEndpoint;
+  private readonly reactivatePhysiotherapistEndpoint: ReactivatePhysiotherapistApiEndpoint;
   private readonly patientsEndpoint: PatientsApiEndpoint;
   private readonly patientsByClinicEndpoint: PatientsByClinicApiEndpoint;
   private readonly patientsByPhysiotherapistEndpoint: PatientsByPhysiotherapistApiEndpoint;
@@ -54,6 +68,9 @@ export class OrganizationApi extends BaseApi {
   private readonly patientByIdEndpoint: PatientByIdApiEndpoint;
   private readonly registerPatientByClinicAdminEndpoint: RegisterPatientByClinicAdminApiEndpoint;
   private readonly registerPatientByPhysiotherapistEndpoint: RegisterPatientApiEndpoint;
+  private readonly updatePatientByClinicAdminEndpoint: UpdatePatientByClinicAdminApiEndpoint;
+  private readonly updatePatientByPhysiotherapistEndpoint: UpdatePatientByPhysiotherapistApiEndpoint;
+  private readonly deletePatientEndpoint: DeletePatientApiEndpoint;
   private readonly assignPatientEndpoint: AssignPatientApiEndpoint;
   private readonly dischargePatientEndpoint: DischargePatientApiEndpoint;
 
@@ -84,6 +101,13 @@ export class OrganizationApi extends BaseApi {
       http,
       physiotherapistAssembler,
     );
+    this.updatePhysiotherapistEndpoint = new UpdatePhysiotherapistApiEndpoint(
+      http,
+      physiotherapistAssembler,
+    );
+    this.deletePhysiotherapistEndpoint = new DeletePhysiotherapistApiEndpoint(http);
+    this.suspendPhysiotherapistEndpoint = new SuspendPhysiotherapistApiEndpoint(http);
+    this.reactivatePhysiotherapistEndpoint = new ReactivatePhysiotherapistApiEndpoint(http);
     this.patientsEndpoint = new PatientsApiEndpoint(http, patientAssembler);
     this.patientsByClinicEndpoint = new PatientsByClinicApiEndpoint(http, patientAssembler);
     this.patientsByPhysiotherapistEndpoint = new PatientsByPhysiotherapistApiEndpoint(
@@ -100,6 +124,15 @@ export class OrganizationApi extends BaseApi {
       http,
       patientAssembler,
     );
+    this.updatePatientByClinicAdminEndpoint = new UpdatePatientByClinicAdminApiEndpoint(
+      http,
+      patientAssembler,
+    );
+    this.updatePatientByPhysiotherapistEndpoint = new UpdatePatientByPhysiotherapistApiEndpoint(
+      http,
+      patientAssembler,
+    );
+    this.deletePatientEndpoint = new DeletePatientApiEndpoint(http);
     this.assignPatientEndpoint = new AssignPatientApiEndpoint(http, patientAssembler);
     this.dischargePatientEndpoint = new DischargePatientApiEndpoint(http);
   }
@@ -128,6 +161,25 @@ export class OrganizationApi extends BaseApi {
     command: RegisterPhysiotherapistCommand,
   ): Observable<PhysiotherapistProfileResource> {
     return this.registerPhysiotherapistEndpoint.registerPhysiotherapist(command);
+  }
+
+  updatePhysiotherapist(
+    id: string,
+    command: UpdatePhysiotherapistCommand,
+  ): Observable<PhysiotherapistProfileResource> {
+    return this.updatePhysiotherapistEndpoint.updatePhysiotherapist(id, command);
+  }
+
+  deletePhysiotherapist(id: string): Observable<void> {
+    return this.deletePhysiotherapistEndpoint.deletePhysiotherapist(id);
+  }
+
+  suspendPhysiotherapist(id: string): Observable<void> {
+    return this.suspendPhysiotherapistEndpoint.suspendPhysiotherapist(id);
+  }
+
+  reactivatePhysiotherapist(id: string): Observable<void> {
+    return this.reactivatePhysiotherapistEndpoint.reactivatePhysiotherapist(id);
   }
 
   getClinicPatients(): Observable<PatientResource[]> {
@@ -164,6 +216,24 @@ export class OrganizationApi extends BaseApi {
 
   registerPatientAsPhysiotherapist(command: RegisterPatientCommand): Observable<PatientResource> {
     return this.registerPatientByPhysiotherapistEndpoint.registerPatient(command);
+  }
+
+  updatePatientAsClinicAdmin(
+    id: string,
+    command: UpdatePatientByClinicAdminCommand,
+  ): Observable<PatientResource> {
+    return this.updatePatientByClinicAdminEndpoint.updatePatient(id, command);
+  }
+
+  updatePatientAsPhysiotherapist(
+    id: string,
+    command: UpdatePatientContactCommand,
+  ): Observable<PatientResource> {
+    return this.updatePatientByPhysiotherapistEndpoint.updatePatient(id, command);
+  }
+
+  deletePatient(id: string): Observable<void> {
+    return this.deletePatientEndpoint.deletePatient(id);
   }
 
   dischargePatient(id: string): Observable<void> {

@@ -51,26 +51,58 @@
                 pButton
                 type="button"
                 severity="secondary"
-                text
-                class="patients-table__action"
+                [outlined]="true"
+                class="patients-table__action-btn"
+                [icon]="'pi pi-eye'"
+                [pTooltip]="'organization.patients.actions.viewDetails' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.patients.actions.viewDetails' | translate"
                 (click)="onRowOpen(patient); $event.stopPropagation()"
-              >
-                {{ 'organization.patients.actions.viewDetails' | translate }}
-              </button>
+              ></button>
               <button
                 pButton
                 type="button"
                 severity="primary"
-                text
-                class="patients-table__action patients-table__action--primary"
-                (click)="onAssign(patient); $event.stopPropagation()"
-              >
-                {{
+                [outlined]="true"
+                class="patients-table__action-btn"
+                [icon]="'pi pi-pen-to-square'"
+                [pTooltip]="'organization.patients.actions.edit' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.patients.actions.edit' | translate"
+                (click)="onEdit(patient); $event.stopPropagation()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                severity="primary"
+                [outlined]="true"
+                class="patients-table__action-btn"
+                [icon]="'pi pi-link'"
+                [pTooltip]="
                   patient.assignedPhysiotherapistId
                     ? ('organization.patients.actions.reassign' | translate)
                     : ('organization.patients.actions.assign' | translate)
-                }}
-              </button>
+                "
+                tooltipPosition="top"
+                [attr.aria-label]="
+                  patient.assignedPhysiotherapistId
+                    ? ('organization.patients.actions.reassign' | translate)
+                    : ('organization.patients.actions.assign' | translate)
+                "
+                (click)="onAssign(patient); $event.stopPropagation()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                severity="danger"
+                [outlined]="true"
+                class="patients-table__action-btn"
+                [icon]="'pi pi-trash'"
+                [pTooltip]="'organization.patients.actions.delete' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.patients.actions.delete' | translate"
+                (click)="onDelete(patient); $event.stopPropagation()"
+              ></button>
             </div>
           </td>
         </tr>

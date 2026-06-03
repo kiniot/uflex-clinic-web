@@ -56,16 +56,56 @@
             </span>
           </td>
           <td class="physios-table__actions-col">
-            <button
-              pButton
-              type="button"
-              severity="secondary"
-              text
-              class="physios-table__action"
-              (click)="onRowOpen(physiotherapist); $event.stopPropagation()"
-            >
-              {{ 'organization.physiotherapists.actions.viewDetails' | translate }}
-            </button>
+            <div class="physios-table__actions">
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                class="physios-table__action-btn"
+                [icon]="'pi pi-eye'"
+                [pTooltip]="'organization.physiotherapists.actions.viewDetails' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.physiotherapists.actions.viewDetails' | translate"
+                (click)="onRowOpen(physiotherapist); $event.stopPropagation()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                severity="primary"
+                [outlined]="true"
+                class="physios-table__action-btn"
+                [icon]="'pi pi-pen-to-square'"
+                [pTooltip]="'organization.physiotherapists.actions.edit' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.physiotherapists.actions.edit' | translate"
+                (click)="onEdit(physiotherapist); $event.stopPropagation()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                [severity]="statusActionSeverity(physiotherapist)"
+                [outlined]="true"
+                class="physios-table__action-btn"
+                [icon]="statusActionIcon(physiotherapist)"
+                [pTooltip]="statusActionKey(physiotherapist) | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="statusActionKey(physiotherapist) | translate"
+                (click)="onToggleStatus(physiotherapist); $event.stopPropagation()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                severity="danger"
+                [outlined]="true"
+                class="physios-table__action-btn"
+                [icon]="'pi pi-trash'"
+                [pTooltip]="'organization.physiotherapists.actions.delete' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.physiotherapists.actions.delete' | translate"
+                (click)="onDelete(physiotherapist); $event.stopPropagation()"
+              ></button>
+            </div>
           </td>
         </tr>
       }

@@ -53,32 +53,19 @@
         <strong class="org-hero__admin-name">{{
           clinicAdmin()?.fullName ?? ('organization.detail.loading' | translate)
         }}</strong>
-        <span class="org-hero__admin-contact">{{ clinicAdmin()?.email ?? '—' }}</span>
-      </article>
-
-      <div class="org-hero__actions">
-        <button
-          pButton
-          type="button"
-          severity="secondary"
-          [outlined]="true"
-          class="org-hero__action"
-          (click)="onRegisterPatient()"
-        >
-          <i class="pi pi-user-plus" aria-hidden="true"></i>
-          <span>{{ 'organization.patients.actions.register' | translate }}</span>
-        </button>
-        <button
-          pButton
-          type="button"
-          severity="primary"
-          class="org-hero__action"
-          (click)="onRegisterPhysiotherapist()"
-        >
+        <span class="org-hero__admin-contact">
+          <i class="pi pi-envelope" aria-hidden="true"></i>
+          {{ clinicAdmin()?.email ?? '—' }}
+        </span>
+        <span class="org-hero__admin-contact">
+          <i class="pi pi-phone" aria-hidden="true"></i>
+          {{ clinicAdmin()?.countryCode }} {{ clinicAdmin()?.phoneNumber }}
+        </span>
+        <span class="org-hero__admin-contact">
           <i class="pi pi-id-card" aria-hidden="true"></i>
-          <span>{{ 'organization.physiotherapists.actions.register' | translate }}</span>
-        </button>
-      </div>
+          {{ 'organization.hero.dni' | translate }}: {{ clinicAdmin()?.dni ?? '—' }}
+        </span>
+      </article>
     </div>
   </header>
 
@@ -189,7 +176,7 @@
             </p>
           </div>
           <button pButton type="button" severity="primary" (click)="onRegisterPhysiotherapist()">
-            <i class="pi pi-plus" aria-hidden="true"></i>
+            <i class="pi pi-id-card" aria-hidden="true"></i>
             <span>{{ 'organization.physiotherapists.actions.register' | translate }}</span>
           </button>
         </header>
@@ -233,6 +220,9 @@
           <app-physiotherapists-table
             [physiotherapists]="visiblePhysiotherapists()"
             (rowOpen)="onOpenPhysiotherapist($event)"
+            (edit)="onEditPhysiotherapist($event)"
+            (toggleStatus)="onTogglePhysiotherapistStatus($event)"
+            (delete)="onRequestDeletePhysiotherapist($event)"
           />
         }
       </section>
@@ -244,7 +234,7 @@
             <p class="org-panel__subtitle">{{ 'organization.patients.subtitle' | translate }}</p>
           </div>
           <button pButton type="button" severity="primary" (click)="onRegisterPatient()">
-            <i class="pi pi-plus" aria-hidden="true"></i>
+            <i class="pi pi-user-plus" aria-hidden="true"></i>
             <span>{{ 'organization.patients.actions.register' | translate }}</span>
           </button>
         </header>
@@ -285,7 +275,9 @@
             [patients]="visiblePatients()"
             [physiotherapistNames]="physiotherapistNameMap()"
             (rowOpen)="onOpenPatient($event)"
+            (edit)="onEditPatient($event)"
             (assign)="onAssignPatient($event)"
+            (delete)="onRequestDeletePatient($event)"
           />
         }
       </section>
@@ -301,5 +293,51 @@
     (visibleChange)="!$event ? closeAssignmentDialog() : null"
     (selectedPhysiotherapistIdChange)="selectedAssignmentPhysiotherapistId.set($event)"
     (save)="saveAssignment()"
+  />
+
+  <app-patient-admin-edit-dialog
+    [visible]="isPatientEditDialogVisible()"
+    [patient]="selectedPatientForEdit()"
+    [pending]="isUpdatingPatient()"
+    (visibleChange)="!$event ? closeEditPatientDialog() : null"
+    (closed)="closeEditPatientDialog()"
+    (save)="savePatientEdit($event)"
+  />
+
+  <app-confirm-action-dialog
+    [visible]="isDeletePatientDialogVisible()"
+    [titleKey]="'organization.patients.deleteConfirm.title'"
+    [messageKey]="'organization.patients.deleteConfirm.body'"
+    [messageParams]="{ name: selectedPatientForDelete()?.fullName ?? '' }"
+    [confirmLabelKey]="'organization.patients.actions.delete'"
+    [iconClass]="'pi pi-trash'"
+    [tone]="'danger'"
+    [pending]="isDeletingPatient()"
+    (visibleChange)="!$event ? closeDeletePatientDialog() : null"
+    (closed)="closeDeletePatientDialog()"
+    (confirmed)="confirmDeletePatient()"
+  />
+
+  <app-physiotherapist-edit-dialog
+    [visible]="isPhysiotherapistEditDialogVisible()"
+    [physiotherapist]="selectedPhysiotherapistForEdit()"
+    [pending]="isUpdatingPhysiotherapist()"
+    (visibleChange)="!$event ? closePhysiotherapistEditDialog() : null"
+    (closed)="closePhysiotherapistEditDialog()"
+    (save)="savePhysiotherapistEdit($event)"
+  />
+
+  <app-confirm-action-dialog
+    [visible]="confirmPhysiotherapistDialogVisible()"
+    [titleKey]="confirmPhysiotherapistDialogTitleKey()"
+    [messageKey]="confirmPhysiotherapistDialogMessageKey()"
+    [messageParams]="confirmPhysiotherapistDialogParams()"
+    [confirmLabelKey]="confirmPhysiotherapistDialogConfirmKey()"
+    [iconClass]="confirmPhysiotherapistDialogIconClass()"
+    [tone]="confirmPhysiotherapistDialogTone()"
+    [pending]="confirmPhysiotherapistDialogPending()"
+    (visibleChange)="!$event ? closePhysiotherapistActionDialog() : null"
+    (closed)="closePhysiotherapistActionDialog()"
+    (confirmed)="confirmPhysiotherapistAction()"
   />
 }

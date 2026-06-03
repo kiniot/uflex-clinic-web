@@ -1,6 +1,6 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -10,10 +10,15 @@ import { AssignPatientCommand } from '../../../domain/model/assign-patient.comma
 import { OrganizationStore } from '../../../application/organization.store';
 import { Patient } from '../../../domain/model/patient.entity';
 import { PhysiotherapistProfile } from '../../../domain/model/physiotherapist-profile.entity';
+import { UpdatePatientByClinicAdminCommand } from '../../../domain/model/update-patient-by-clinic-admin.command';
 import { PatientAssignmentDialog } from '../../components/patient-assignment-dialog/patient-assignment-dialog';
+import { PatientAdminEditDialog } from '../../components/patient-admin-edit-dialog/patient-admin-edit-dialog';
+import { PhysiotherapistEditDialog } from '../../components/physiotherapist-edit-dialog/physiotherapist-edit-dialog';
 import { StatCard } from '../../../../shared/presentation/components/stat-card/stat-card';
 import { PatientsTable } from '../../components/patients-table/patients-table';
 import { PhysiotherapistsTable } from '../../components/physiotherapists-table/physiotherapists-table';
+import { ConfirmActionDialog } from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
+import { UpdatePhysiotherapistCommand } from '../../../domain/model/update-physiotherapist.command';
 
 type OrgTab = 'physiotherapists' | 'patients';
 type PatientAssignmentFilter = 'all' | 'assigned' | 'unassigned';
@@ -32,6 +37,9 @@ interface SelectOption<T> {
     InputTextModule,
     SelectModule,
     PatientAssignmentDialog,
+    PatientAdminEditDialog,
+    PhysiotherapistEditDialog,
+    ConfirmActionDialog,
     StatCard,
     PhysiotherapistsTable,
     PatientsTable,
@@ -42,6 +50,7 @@ interface SelectOption<T> {
 export class OrganizationManagement {
   private readonly store = inject(OrganizationStore);
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly messageService = inject(MessageService);
   private readonly translate = inject(TranslateService);
 
@@ -54,6 +63,12 @@ export class OrganizationManagement {
   protected readonly isLoadingPhysiotherapists = this.store.isLoadingPhysiotherapists;
   protected readonly isLoadingPatients = this.store.isLoadingPatients;
   protected readonly isAssigningPatient = this.store.isAssigningPatient;
+  protected readonly isUpdatingPatient = this.store.isUpdatingPatient;
+  protected readonly isDeletingPatient = this.store.isDeletingPatient;
+  protected readonly isUpdatingPhysiotherapist = this.store.isUpdatingPhysiotherapist;
+  protected readonly isSuspendingPhysiotherapist = this.store.isSuspendingPhysiotherapist;
+  protected readonly isReactivatingPhysiotherapist = this.store.isReactivatingPhysiotherapist;
+  protected readonly isDeletingPhysiotherapist = this.store.isDeletingPhysiotherapist;
   protected readonly loadingRows = [0, 1, 2, 3];
 
   protected readonly activeTab = signal<OrgTab>('physiotherapists');
@@ -67,6 +82,16 @@ export class OrganizationManagement {
 
   protected readonly selectedPatientForAssignment = signal<Patient | null>(null);
   protected readonly selectedAssignmentPhysiotherapistId = signal<string | null>(null);
+  protected readonly selectedPatientForEdit = signal<Patient | null>(null);
+  protected readonly isPatientEditDialogVisible = signal(false);
+  protected readonly selectedPatientForDelete = signal<Patient | null>(null);
+  protected readonly isDeletePatientDialogVisible = signal(false);
+  protected readonly selectedPhysiotherapistForEdit = signal<PhysiotherapistProfile | null>(null);
+  protected readonly isPhysiotherapistEditDialogVisible = signal(false);
+  protected readonly selectedPhysiotherapistForAction = signal<PhysiotherapistProfile | null>(null);
+  protected readonly pendingPhysiotherapistAction = signal<'suspend' | 'reactivate' | 'delete' | null>(
+    null,
+  );
 
   protected readonly totalPhysiotherapists = computed(() => this.physiotherapists().length);
   protected readonly totalPatients = computed(() => this.patients().length);
@@ -120,6 +145,10 @@ export class OrganizationManagement {
     {
       label: this.translate.instant('organization.physiotherapists.status.INACTIVE'),
       value: 'INACTIVE',
+    },
+    {
+      label: this.translate.instant('organization.physiotherapists.status.SUSPENDED'),
+      value: 'SUSPENDED',
     },
   ]);
 
@@ -237,8 +266,86 @@ export class OrganizationManagement {
       .filter(Boolean)
       .join(', ');
   });
+  protected readonly confirmPhysiotherapistDialogVisible = computed(
+    () =>
+      this.selectedPhysiotherapistForAction() !== null &&
+      this.pendingPhysiotherapistAction() !== null,
+  );
+  protected readonly confirmPhysiotherapistDialogTitleKey = computed(() => {
+    switch (this.pendingPhysiotherapistAction()) {
+      case 'suspend':
+        return 'organization.physiotherapists.confirm.suspendTitle';
+      case 'reactivate':
+        return 'organization.physiotherapists.confirm.reactivateTitle';
+      case 'delete':
+        return 'organization.physiotherapists.confirm.deleteTitle';
+      default:
+        return 'shared.confirmAction.title';
+    }
+  });
+  protected readonly confirmPhysiotherapistDialogMessageKey = computed(() => {
+    switch (this.pendingPhysiotherapistAction()) {
+      case 'suspend':
+        return 'organization.physiotherapists.confirm.suspendBody';
+      case 'reactivate':
+        return 'organization.physiotherapists.confirm.reactivateBody';
+      case 'delete':
+        return 'organization.physiotherapists.confirm.deleteBody';
+      default:
+        return 'shared.confirmAction.body';
+    }
+  });
+  protected readonly confirmPhysiotherapistDialogConfirmKey = computed(() => {
+    switch (this.pendingPhysiotherapistAction()) {
+      case 'suspend':
+        return 'organization.physiotherapists.actions.suspend';
+      case 'reactivate':
+        return 'organization.physiotherapists.actions.reactivate';
+      case 'delete':
+        return 'organization.physiotherapists.actions.delete';
+      default:
+        return 'shared.confirmAction.confirm';
+    }
+  });
+  protected readonly confirmPhysiotherapistDialogIconClass = computed(() => {
+    switch (this.pendingPhysiotherapistAction()) {
+      case 'suspend':
+        return 'pi pi-pause-circle';
+      case 'reactivate':
+        return 'pi pi-play-circle';
+      case 'delete':
+        return 'pi pi-trash';
+      default:
+        return 'pi pi-question-circle';
+    }
+  });
+  protected readonly confirmPhysiotherapistDialogTone = computed(() =>
+    this.pendingPhysiotherapistAction() === 'delete' ? 'danger' : 'primary',
+  );
+  protected readonly confirmPhysiotherapistDialogPending = computed(() => {
+    switch (this.pendingPhysiotherapistAction()) {
+      case 'suspend':
+        return this.isSuspendingPhysiotherapist();
+      case 'reactivate':
+        return this.isReactivatingPhysiotherapist();
+      case 'delete':
+        return this.isDeletingPhysiotherapist();
+      default:
+        return false;
+    }
+  });
+  protected readonly confirmPhysiotherapistDialogParams = computed(() => ({
+    name: this.selectedPhysiotherapistForAction()?.fullName ?? '',
+  }));
 
   constructor() {
+    effect(() => {
+      const requestedTab = this.route.snapshot.queryParamMap.get('tab');
+      if (requestedTab === 'patients' || requestedTab === 'physiotherapists') {
+        this.activeTab.set(requestedTab);
+      }
+    });
+
     effect(() => {
       void this.store.loadCurrentClinicOnce();
       void this.store.loadCurrentClinicAdminOnce();
@@ -249,6 +356,12 @@ export class OrganizationManagement {
 
   protected setActiveTab(tab: OrgTab) {
     this.activeTab.set(tab);
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
   }
 
   protected onOpenPhysiotherapist(physiotherapist: PhysiotherapistProfile) {
@@ -267,9 +380,173 @@ export class OrganizationManagement {
     void this.router.navigate(['/clinic-admin/organization/patients/new']);
   }
 
+  protected onEditPhysiotherapist(physiotherapist: PhysiotherapistProfile) {
+    this.selectedPhysiotherapistForEdit.set(physiotherapist);
+    this.isPhysiotherapistEditDialogVisible.set(true);
+  }
+
+  protected closePhysiotherapistEditDialog() {
+    this.isPhysiotherapistEditDialogVisible.set(false);
+    this.selectedPhysiotherapistForEdit.set(null);
+  }
+
+  protected async savePhysiotherapistEdit(command: UpdatePhysiotherapistCommand) {
+    const physiotherapist = this.selectedPhysiotherapistForEdit();
+    if (!physiotherapist) return;
+
+    try {
+      const updated = await this.store.updatePhysiotherapist(physiotherapist.id, command);
+      this.messageService.add({
+        severity: 'success',
+        summary: this.translate.instant('organization.physiotherapists.notifications.editSuccessSummary'),
+        detail: this.translate.instant('organization.physiotherapists.notifications.editSuccessDetail', {
+          name: updated.fullName,
+        }),
+        life: 4000,
+      });
+      this.closePhysiotherapistEditDialog();
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('organization.physiotherapists.notifications.editErrorSummary'),
+        detail: this.translate.instant('organization.physiotherapists.notifications.editErrorDetail'),
+        life: 4500,
+      });
+    }
+  }
+
+  protected onTogglePhysiotherapistStatus(physiotherapist: PhysiotherapistProfile) {
+    const action = physiotherapist.status === 'SUSPENDED' ? 'reactivate' : 'suspend';
+    this.selectedPhysiotherapistForAction.set(physiotherapist);
+    this.pendingPhysiotherapistAction.set(action);
+  }
+
+  protected onRequestDeletePhysiotherapist(physiotherapist: PhysiotherapistProfile) {
+    this.selectedPhysiotherapistForAction.set(physiotherapist);
+    this.pendingPhysiotherapistAction.set('delete');
+  }
+
+  protected closePhysiotherapistActionDialog() {
+    if (this.confirmPhysiotherapistDialogPending()) return;
+    this.selectedPhysiotherapistForAction.set(null);
+    this.pendingPhysiotherapistAction.set(null);
+  }
+
+  protected async confirmPhysiotherapistAction() {
+    const physiotherapist = this.selectedPhysiotherapistForAction();
+    const action = this.pendingPhysiotherapistAction();
+    if (!physiotherapist || !action) return;
+
+    try {
+      if (action === 'suspend') {
+        await this.store.suspendPhysiotherapist(physiotherapist.id);
+      } else if (action === 'reactivate') {
+        await this.store.reactivatePhysiotherapist(physiotherapist.id);
+      } else {
+        await this.store.deletePhysiotherapist(physiotherapist.id);
+      }
+
+      this.messageService.add({
+        severity: 'success',
+        summary: this.translate.instant(
+          `organization.physiotherapists.notifications.${action}SuccessSummary`,
+        ),
+        detail: this.translate.instant(
+          `organization.physiotherapists.notifications.${action}SuccessDetail`,
+          { name: physiotherapist.fullName },
+        ),
+        life: 4000,
+      });
+      this.closePhysiotherapistActionDialog();
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant(
+          `organization.physiotherapists.notifications.${action}ErrorSummary`,
+        ),
+        detail: this.translate.instant(
+          `organization.physiotherapists.notifications.${action}ErrorDetail`,
+          { name: physiotherapist.fullName },
+        ),
+        life: 4500,
+      });
+    }
+  }
+
   protected onAssignPatient(patient: Patient) {
     this.selectedPatientForAssignment.set(patient);
     this.selectedAssignmentPhysiotherapistId.set(patient.assignedPhysiotherapistId);
+  }
+
+  protected onEditPatient(patient: Patient) {
+    this.selectedPatientForEdit.set(patient);
+    this.isPatientEditDialogVisible.set(true);
+  }
+
+  protected closeEditPatientDialog() {
+    this.isPatientEditDialogVisible.set(false);
+    this.selectedPatientForEdit.set(null);
+  }
+
+  protected async savePatientEdit(command: UpdatePatientByClinicAdminCommand) {
+    const patient = this.selectedPatientForEdit();
+    if (!patient) return;
+
+    try {
+      const updated = await this.store.updatePatientAsClinicAdmin(patient.id, command);
+      this.messageService.add({
+        severity: 'success',
+        summary: this.translate.instant('organization.patients.notifications.editSuccessSummary'),
+        detail: this.translate.instant('organization.patients.notifications.editSuccessDetail', {
+          name: updated.fullName,
+        }),
+        life: 4000,
+      });
+      this.closeEditPatientDialog();
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('organization.patients.notifications.editErrorSummary'),
+        detail: this.translate.instant('organization.patients.notifications.editErrorDetail'),
+        life: 4500,
+      });
+    }
+  }
+
+  protected onRequestDeletePatient(patient: Patient) {
+    this.selectedPatientForDelete.set(patient);
+    this.isDeletePatientDialogVisible.set(true);
+  }
+
+  protected closeDeletePatientDialog() {
+    if (this.isDeletingPatient()) return;
+    this.isDeletePatientDialogVisible.set(false);
+    this.selectedPatientForDelete.set(null);
+  }
+
+  protected async confirmDeletePatient() {
+    const patient = this.selectedPatientForDelete();
+    if (!patient) return;
+
+    try {
+      await this.store.deletePatient(patient.id);
+      this.messageService.add({
+        severity: 'success',
+        summary: this.translate.instant('organization.patients.notifications.deleteSuccessSummary'),
+        detail: this.translate.instant('organization.patients.notifications.deleteSuccessDetail', {
+          name: patient.fullName,
+        }),
+        life: 4000,
+      });
+      this.closeDeletePatientDialog();
+    } catch {
+      this.messageService.add({
+        severity: 'error',
+        summary: this.translate.instant('organization.patients.notifications.deleteErrorSummary'),
+        detail: this.translate.instant('organization.patients.notifications.deleteErrorDetail'),
+        life: 4500,
+      });
+    }
   }
 
   protected closeAssignmentDialog() {

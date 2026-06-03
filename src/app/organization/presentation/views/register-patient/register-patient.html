@@ -3,6 +3,10 @@
     <a routerLink="/clinic-admin/organization">{{
       'organization.breadcrumb.organization' | translate
     }}</a>
+    <i class="pi pi-chevron-right" aria-hidden="true"></i>
+    <a routerLink="/clinic-admin/organization" [queryParams]="{ tab: 'patients' }">{{
+      'organization.tabs.patients' | translate
+    }}</a>
   } @else {
     <a routerLink="/physiotherapist/patients">{{
       'registerPatientView.breadcrumb.patients' | translate
@@ -185,15 +189,36 @@
               <label for="patientCountryCode">{{
                 'registerPatientView.contact.countryCode' | translate
               }}</label>
-              <input
-                pInputText
-                id="patientCountryCode"
-                type="text"
+              <p-select
+                inputId="patientCountryCode"
                 formControlName="countryCode"
+                [options]="countryPhoneOptions()"
+                optionLabel="label"
+                optionValue="phoneCode"
+                [filter]="true"
+                filterBy="label,phoneCode"
+                [resetFilterOnHide]="true"
                 [placeholder]="'registerPatientView.contact.countryCodePlaceholder' | translate"
-                [class.ng-invalid]="isInvalidControl(form, 'countryCode')"
-                [class.ng-dirty]="isInvalidControl(form, 'countryCode')"
-              />
+                appendTo="body"
+                styleClass="register-patient__select"
+              >
+                <ng-template #selectedItem>
+                  @if (countryPhoneOption(form.controls.countryCode.value); as option) {
+                    <span class="register-patient__country-option">
+                      <span class="register-patient__country-flag">{{ option.flag }}</span>
+                      <span>{{ option.label }}</span>
+                      <span class="register-patient__country-meta">{{ option.phoneCode }}</span>
+                    </span>
+                  }
+                </ng-template>
+                <ng-template let-option #item>
+                  <span class="register-patient__country-option">
+                    <span class="register-patient__country-flag">{{ option.flag }}</span>
+                    <span>{{ option.label }}</span>
+                    <span class="register-patient__country-meta">{{ option.phoneCode }}</span>
+                  </span>
+                </ng-template>
+              </p-select>
             </div>
 
             <div class="register-patient__field">

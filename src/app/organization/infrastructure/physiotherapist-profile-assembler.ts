@@ -1,10 +1,12 @@
 import { RegisterPhysiotherapistCommand } from '../domain/model/register-physiotherapist.command';
 import { PhysiotherapistProfile } from '../domain/model/physiotherapist-profile.entity';
+import { UpdatePhysiotherapistCommand } from '../domain/model/update-physiotherapist.command';
 import {
   PhysiotherapistProfileResource,
   PhysiotherapistProfileResponse,
 } from './physiotherapist-profile-response';
 import { RegisterPhysiotherapistRequest } from './register-physiotherapist.request';
+import { UpdatePhysiotherapistRequest } from './update-physiotherapist.request';
 
 export class PhysiotherapistProfileAssembler {
   toResourceFromResponse(response: PhysiotherapistProfileResponse): PhysiotherapistProfileResource {
@@ -57,5 +59,19 @@ export class PhysiotherapistProfileAssembler {
       photoUrl: command.photoUrl,
       yearsOfExperience: command.yearsOfExperience,
     } as RegisterPhysiotherapistRequest;
+  }
+
+  toUpdateRequestFromCommand(command: UpdatePhysiotherapistCommand): UpdatePhysiotherapistRequest {
+    return {
+      fullName: command.fullName,
+      specialty: command.specialty,
+      email: command.email,
+      countryCode: command.countryCode,
+      phoneNumber: command.phoneNumber,
+      licenseNumber: command.licenseNumber,
+      professionalSummary: command.professionalSummary,
+      photoUrl: command.photoUrl,
+      yearsOfExperience: command.yearsOfExperience,
+    } as UpdatePhysiotherapistRequest;
   }
 }

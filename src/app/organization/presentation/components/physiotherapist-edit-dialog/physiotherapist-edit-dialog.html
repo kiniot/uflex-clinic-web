@@ -1,0 +1,156 @@
+<p-dialog
+  [visible]="visible()"
+  [modal]="true"
+  [closable]="!pending()"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="!pending()"
+  [style]="{ width: '640px', maxWidth: '96vw' }"
+  [header]="'physiotherapistEditDialog.title' | translate"
+  (visibleChange)="onVisibleChange($event)"
+>
+  <form class="physio-edit-dialog" [formGroup]="form" (ngSubmit)="onSave()">
+    <div class="physio-edit-dialog__grid">
+      <div class="physio-edit-dialog__field">
+        <label for="physio-edit-full-name">{{
+          'registerPhysiotherapist.personal.fullName' | translate
+        }}</label>
+        <input
+          id="physio-edit-full-name"
+          pInputText
+          type="text"
+          formControlName="fullName"
+          [placeholder]="'registerPhysiotherapist.personal.fullNamePlaceholder' | translate"
+        />
+      </div>
+
+      <div class="physio-edit-dialog__field">
+        <label for="physio-edit-specialty">{{
+          'registerPhysiotherapist.personal.specialty' | translate
+        }}</label>
+        <p-select
+          inputId="physio-edit-specialty"
+          formControlName="specialty"
+          [options]="specialtyOptions()"
+          optionLabel="label"
+          optionValue="value"
+        />
+      </div>
+
+      <div class="physio-edit-dialog__field">
+        <label for="physio-edit-email">{{
+          'registerPhysiotherapist.personal.email' | translate
+        }}</label>
+        <input
+          id="physio-edit-email"
+          pInputText
+          type="email"
+          formControlName="email"
+          [placeholder]="'registerPhysiotherapist.personal.emailPlaceholder' | translate"
+        />
+      </div>
+
+      <div class="physio-edit-dialog__field">
+        <label for="physio-edit-country-code">{{
+          'registerPhysiotherapist.personal.countryCode' | translate
+        }}</label>
+        <p-select
+          inputId="physio-edit-country-code"
+          formControlName="countryCode"
+          [options]="countryPhoneOptions()"
+          optionLabel="label"
+          optionValue="phoneCode"
+          [filter]="true"
+          filterBy="label,phoneCode"
+          [resetFilterOnHide]="true"
+          appendTo="body"
+          [placeholder]="'registerPhysiotherapist.personal.countryCodePlaceholder' | translate"
+        >
+          <ng-template #selectedItem>
+            @if (countryPhoneOption(form.controls.countryCode.value); as option) {
+              <span>{{ option.flag }} {{ option.label }} {{ option.phoneCode }}</span>
+            }
+          </ng-template>
+          <ng-template let-option #item>
+            <span>{{ option.flag }} {{ option.label }} {{ option.phoneCode }}</span>
+          </ng-template>
+        </p-select>
+      </div>
+
+      <div class="physio-edit-dialog__field">
+        <label for="physio-edit-phone-number">{{
+          'registerPhysiotherapist.personal.phone' | translate
+        }}</label>
+        <input
+          id="physio-edit-phone-number"
+          pInputText
+          type="tel"
+          formControlName="phoneNumber"
+          [placeholder]="'registerPhysiotherapist.personal.phonePlaceholder' | translate"
+        />
+      </div>
+
+      <div class="physio-edit-dialog__field">
+        <label for="physio-edit-license">{{
+          'registerPhysiotherapist.credentials.licenseNumber' | translate
+        }}</label>
+        <input
+          id="physio-edit-license"
+          pInputText
+          type="text"
+          formControlName="licenseNumber"
+          [placeholder]="'registerPhysiotherapist.credentials.licenseNumberPlaceholder' | translate"
+        />
+      </div>
+
+      <div class="physio-edit-dialog__field">
+        <label for="physio-edit-years">{{
+          'registerPhysiotherapist.credentials.yearsOfExperience' | translate
+        }}</label>
+        <p-inputnumber inputId="physio-edit-years" formControlName="yearsOfExperience" [min]="0" />
+      </div>
+
+      <div class="physio-edit-dialog__field">
+        <label for="physio-edit-photo-url">{{
+          'registerPhysiotherapist.photo.urlLabel' | translate
+        }}</label>
+        <input
+          id="physio-edit-photo-url"
+          pInputText
+          type="url"
+          formControlName="photoUrl"
+          [placeholder]="'registerPhysiotherapist.photo.urlPlaceholder' | translate"
+        />
+      </div>
+    </div>
+
+    <div class="physio-edit-dialog__field">
+      <label for="physio-edit-summary">{{
+        'registerPhysiotherapist.credentials.summary' | translate
+      }}</label>
+      <textarea
+        id="physio-edit-summary"
+        pTextarea
+        rows="4"
+        formControlName="professionalSummary"
+        [placeholder]="'registerPhysiotherapist.credentials.summaryPlaceholder' | translate"
+      ></textarea>
+    </div>
+
+    <div class="physio-edit-dialog__actions">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [disabled]="pending()"
+        (click)="onVisibleChange(false)"
+      >
+        {{ 'physiotherapistEditDialog.actions.cancel' | translate }}
+      </button>
+      <button pButton type="submit" severity="primary" [loading]="pending()" [disabled]="pending()">
+        {{ 'physiotherapistEditDialog.actions.save' | translate }}
+      </button>
+    </div>
+  </form>
+</p-dialog>

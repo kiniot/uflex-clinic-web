@@ -1,0 +1,146 @@
+<p-dialog
+  [visible]="visible()"
+  [modal]="true"
+  [closable]="!pending()"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="!pending()"
+  [style]="{ width: '480px' }"
+  [header]="'patientEditDialog.title' | translate"
+  (visibleChange)="onVisibleChange($event)"
+>
+  <form class="patient-edit-dialog" [formGroup]="form" (ngSubmit)="onSave()">
+    <div class="patient-edit-dialog__grid">
+      <div class="patient-edit-dialog__field">
+        <label for="patient-edit-first-name">{{
+          'patientEditDialog.fields.firstName' | translate
+        }}</label>
+        <input
+          id="patient-edit-first-name"
+          pInputText
+          type="text"
+          formControlName="firstName"
+          [placeholder]="'patientEditDialog.placeholders.firstName' | translate"
+        />
+        @if (isInvalidControl(form, 'firstName')) {
+          <small class="patient-edit-dialog__error">
+            {{ 'patientEditDialog.errors.firstName' | translate }}
+          </small>
+        }
+      </div>
+
+      <div class="patient-edit-dialog__field">
+        <label for="patient-edit-last-name">{{
+          'patientEditDialog.fields.lastName' | translate
+        }}</label>
+        <input
+          id="patient-edit-last-name"
+          pInputText
+          type="text"
+          formControlName="lastName"
+          [placeholder]="'patientEditDialog.placeholders.lastName' | translate"
+        />
+        @if (isInvalidControl(form, 'lastName')) {
+          <small class="patient-edit-dialog__error">
+            {{ 'patientEditDialog.errors.lastName' | translate }}
+          </small>
+        }
+      </div>
+    </div>
+
+    <div class="patient-edit-dialog__field">
+      <label for="patient-edit-email">{{ 'patientEditDialog.fields.email' | translate }}</label>
+      <input
+        id="patient-edit-email"
+        pInputText
+        type="email"
+        formControlName="email"
+        [placeholder]="'patientEditDialog.placeholders.email' | translate"
+      />
+      @if (isInvalidControl(form, 'email')) {
+        <small class="patient-edit-dialog__error">
+          {{ 'patientEditDialog.errors.email' | translate }}
+        </small>
+      }
+    </div>
+
+    <div class="patient-edit-dialog__field">
+      <label for="patient-edit-country-code">{{
+        'patientEditDialog.fields.countryCode' | translate
+      }}</label>
+      <p-select
+        inputId="patient-edit-country-code"
+        formControlName="countryCode"
+        [options]="countryOptions()"
+        optionLabel="label"
+        optionValue="phoneCode"
+        [filter]="true"
+        filterBy="label,phoneCode"
+        [resetFilterOnHide]="true"
+        appendTo="body"
+        [placeholder]="'patientEditDialog.placeholders.countryCode' | translate"
+      >
+        <ng-template #selectedItem>
+          @if (countryPhoneOption(form.controls.countryCode.value); as option) {
+            <span>{{ option.flag }} {{ option.label }} {{ option.phoneCode }}</span>
+          }
+        </ng-template>
+        <ng-template let-option #item>
+          <span>{{ option.flag }} {{ option.label }} {{ option.phoneCode }}</span>
+        </ng-template>
+      </p-select>
+    </div>
+
+    <div class="patient-edit-dialog__field">
+      <label for="patient-edit-phone-number">{{
+        'patientEditDialog.fields.phoneNumber' | translate
+      }}</label>
+      <input
+        id="patient-edit-phone-number"
+        pInputText
+        type="tel"
+        formControlName="phoneNumber"
+        [placeholder]="'patientEditDialog.placeholders.phoneNumber' | translate"
+      />
+      @if (isInvalidControl(form, 'phoneNumber')) {
+        <small class="patient-edit-dialog__error">
+          {{ 'patientEditDialog.errors.phoneNumber' | translate }}
+        </small>
+      }
+    </div>
+
+    <div class="patient-edit-dialog__field">
+      <label for="patient-edit-medical-condition">{{
+        'patientEditDialog.fields.medicalCondition' | translate
+      }}</label>
+      <input
+        id="patient-edit-medical-condition"
+        pInputText
+        type="text"
+        formControlName="medicalCondition"
+        [placeholder]="'patientEditDialog.placeholders.medicalCondition' | translate"
+      />
+      @if (isInvalidControl(form, 'medicalCondition')) {
+        <small class="patient-edit-dialog__error">
+          {{ 'patientEditDialog.errors.medicalCondition' | translate }}
+        </small>
+      }
+    </div>
+
+    <div class="patient-edit-dialog__actions">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [disabled]="pending()"
+        (click)="visible.set(false)"
+      >
+        {{ 'patientEditDialog.actions.cancel' | translate }}
+      </button>
+      <button pButton type="submit" severity="primary" [loading]="pending()" [disabled]="pending()">
+        {{ 'patientEditDialog.actions.save' | translate }}
+      </button>
+    </div>
+  </form>
+</p-dialog>

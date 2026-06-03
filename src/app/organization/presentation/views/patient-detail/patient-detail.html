@@ -1,5 +1,13 @@
 <nav class="patient-detail__breadcrumb" aria-label="Breadcrumb">
-  <a [routerLink]="breadcrumbBaseRoute">{{ breadcrumbBaseLabelKey | translate }}</a>
+  @if (isAdminContext) {
+    <a routerLink="/clinic-admin/organization">{{
+      'organization.breadcrumb.organization' | translate
+    }}</a>
+    <i class="pi pi-angle-right" aria-hidden="true"></i>
+  }
+  <a [routerLink]="breadcrumbBaseRoute" [queryParams]="breadcrumbBaseQueryParams">{{
+    breadcrumbBaseLabelKey | translate
+  }}</a>
   <i class="pi pi-angle-right" aria-hidden="true"></i>
   <span>{{ patient()?.fullName ?? ('patientDetail.breadcrumb.loading' | translate) }}</span>
 </nav>
@@ -28,34 +36,113 @@
       </span>
     </div>
 
-    @if (isAdminContext) {
-      <button
-        pButton
-        type="button"
-        severity="primary"
-        class="patient-detail__cta"
-        [loading]="isAssigningPatient()"
-        [disabled]="isAssigningPatient()"
-        (click)="openAssignmentDialog()"
-      >
-        <i class="pi pi-link" aria-hidden="true"></i>
-        <span>{{ assignmentActionLabel() }}</span>
-      </button>
-    } @else {
-      <button
-        pButton
-        type="button"
-        severity="secondary"
-        [outlined]="true"
-        class="patient-detail__cta"
-        [loading]="isDischargingPatient()"
-        [disabled]="patient()!.status === 'DISCHARGED' || isDischargingPatient()"
-        (click)="onDischargePatient()"
-      >
-        <i class="pi pi-check-circle" aria-hidden="true"></i>
-        <span>{{ 'patientDetail.dischargePatient' | translate }}</span>
-      </button>
-    }
+    <div class="patient-detail__header-actions">
+      @if (isAdminContext) {
+        <a
+          pButton
+          [routerLink]="breadcrumbBaseRoute"
+          [queryParams]="breadcrumbBaseQueryParams"
+          severity="secondary"
+          [outlined]="true"
+          class="patient-detail__cta"
+        >
+          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+          <span>{{ 'organization.patientDetail.actions.back' | translate }}</span>
+        </a>
+        <button
+          pButton
+          type="button"
+          severity="primary"
+          [outlined]="true"
+          class="patient-detail__cta"
+          [disabled]="isUpdatingPatient()"
+          (click)="openPatientEditDialog()"
+        >
+          <i class="pi pi-pen-to-square" aria-hidden="true"></i>
+          <span>{{ 'organization.patients.actions.edit' | translate }}</span>
+        </button>
+        <button
+          pButton
+          type="button"
+          severity="primary"
+          [outlined]="true"
+          class="patient-detail__cta"
+          [loading]="isAssigningPatient()"
+          [disabled]="isAssigningPatient()"
+          (click)="openAssignmentDialog()"
+        >
+          <i class="pi pi-link" aria-hidden="true"></i>
+          <span>{{ assignmentActionLabel() }}</span>
+        </button>
+        <button
+          pButton
+          type="button"
+          severity="danger"
+          [outlined]="true"
+          class="patient-detail__cta"
+          [disabled]="isDeletingPatient()"
+          (click)="openDeletePatientDialog()"
+        >
+          <i class="pi pi-trash" aria-hidden="true"></i>
+          <span>{{ 'organization.patients.actions.delete' | translate }}</span>
+        </button>
+      } @else {
+        <a
+          pButton
+          [routerLink]="breadcrumbBaseRoute"
+          severity="secondary"
+          [outlined]="true"
+          class="patient-detail__cta"
+        >
+          <i class="pi pi-arrow-left" aria-hidden="true"></i>
+          <span>{{ 'patientDetail.actions.back' | translate }}</span>
+        </a>
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="true"
+          class="patient-detail__cta"
+          [loading]="isDischargingPatient()"
+          [disabled]="patient()!.status === 'DISCHARGED' || isDischargingPatient()"
+          (click)="onDischargePatient()"
+        >
+          <i class="pi pi-check-circle" aria-hidden="true"></i>
+          <span>{{ 'patientDetail.dischargePatient' | translate }}</span>
+        </button>
+
+        <button
+          pButton
+          type="button"
+          severity="primary"
+          [outlined]="true"
+          class="patient-detail__cta"
+          [disabled]="isUpdatingPatient()"
+          (click)="openPatientEditDialog()"
+        >
+          <i class="pi pi-pen-to-square" aria-hidden="true"></i>
+          <span>{{ 'patientsList.actions.edit' | translate }}</span>
+        </button>
+
+        <button
+          pButton
+          type="button"
+          severity="danger"
+          [outlined]="true"
+          class="patient-detail__cta"
+          [disabled]="isDeletingPatient()"
+          (click)="openDeletePatientDialog()"
+        >
+          <i class="pi pi-trash" aria-hidden="true"></i>
+          <span>{{ 'patientsList.actions.delete' | translate }}</span>
+        </button>
+
+        <a pButton routerLink="treatment-plans/new" severity="primary" class="patient-detail__cta">
+          <i class="pi pi-plus" aria-hidden="true"></i>
+          <span>{{ 'patientDetail.plans.create' | translate }}</span>
+        </a>
+      }
+    </div>
   </header>
 
   <section class="patient-detail__summary">
@@ -149,6 +236,29 @@
       (selectedPhysiotherapistIdChange)="selectedAssignmentPhysiotherapistId.set($event)"
       (save)="saveAssignment()"
     />
+
+    <app-patient-admin-edit-dialog
+      [visible]="isPatientEditDialogVisible()"
+      [patient]="patient()"
+      [pending]="isUpdatingPatient()"
+      (visibleChange)="!$event ? closePatientEditDialog() : null"
+      (closed)="closePatientEditDialog()"
+      (save)="saveAdminPatientEdit($event)"
+    />
+
+    <app-confirm-action-dialog
+      [visible]="isDeletePatientDialogVisible()"
+      [titleKey]="'organization.patients.deleteConfirm.title'"
+      [messageKey]="'organization.patients.deleteConfirm.body'"
+      [messageParams]="{ name: patient()?.fullName ?? '' }"
+      [confirmLabelKey]="'organization.patients.actions.delete'"
+      [iconClass]="'pi pi-trash'"
+      [tone]="'danger'"
+      [pending]="isDeletingPatient()"
+      (visibleChange)="!$event ? closeDeletePatientDialog() : null"
+      (closed)="closeDeletePatientDialog()"
+      (confirmed)="confirmDeletePatient()"
+    />
   }
 
   @if (!isAdminContext) {
@@ -160,11 +270,6 @@
             {{ 'patientDetail.plans.subtitle' | translate }}
           </p>
         </div>
-
-        <a routerLink="treatment-plans/new" class="patient-detail__plans-cta">
-          <i class="pi pi-plus" aria-hidden="true"></i>
-          <span>{{ 'patientDetail.plans.create' | translate }}</span>
-        </a>
       </header>
 
       @if (isLoadingTreatmentPlans()) {
@@ -195,13 +300,17 @@
                 <th>{{ 'patientDetail.plans.columns.period' | translate }}</th>
                 <th>{{ 'patientDetail.plans.columns.routines' | translate }}</th>
                 <th class="patient-detail__plans-action-col">
-                  {{ 'patientDetail.plans.columns.action' | translate }}
+                  {{ 'patientDetail.plans.columns.actions' | translate }}
                 </th>
               </tr>
             </thead>
             <tbody>
               @for (plan of treatmentPlans(); track plan.id) {
-                <tr class="patient-detail__plans-row">
+                <tr
+                  class="patient-detail__plans-row"
+                  [routerLink]="['treatment-plans', plan.id]"
+                  tabindex="0"
+                >
                   <td class="patient-detail__plans-name">{{ plan.name }}</td>
                   <td>
                     <span
@@ -218,12 +327,95 @@
                   </td>
                   <td class="patient-detail__plans-routines">{{ plan.routines.length }}</td>
                   <td class="patient-detail__plans-action-col">
-                    <a
-                      [routerLink]="['treatment-plans', plan.id]"
-                      class="patient-detail__plans-action"
-                    >
-                      {{ 'patientDetail.plans.open' | translate }}
-                    </a>
+                    <div class="patient-detail__plans-actions">
+                      <a
+                        pButton
+                        [routerLink]="['treatment-plans', plan.id]"
+                        severity="secondary"
+                        [outlined]="true"
+                        class="patient-detail__plans-action-btn"
+                        [icon]="'pi pi-eye'"
+                        [pTooltip]="'patientDetail.plans.view' | translate"
+                        tooltipPosition="top"
+                        [attr.aria-label]="'patientDetail.plans.view' | translate"
+                        (click)="$event.stopPropagation()"
+                      ></a>
+
+                      @if (canShowActivateAction(plan)) {
+                        <button
+                          pButton
+                          type="button"
+                          severity="secondary"
+                          [outlined]="true"
+                          class="patient-detail__plans-action-btn"
+                          [icon]="'pi pi-play-circle'"
+                          [pTooltip]="'treatmentPlanWorkspace.actions.activate' | translate"
+                          tooltipPosition="top"
+                          [attr.aria-label]="'treatmentPlanWorkspace.actions.activate' | translate"
+                          (click)="$event.stopPropagation(); onRequestPlanAction('activate', plan)"
+                        ></button>
+                      }
+
+                      @if (canShowCompleteAction(plan)) {
+                        <button
+                          pButton
+                          type="button"
+                          severity="secondary"
+                          [outlined]="true"
+                          class="patient-detail__plans-action-btn"
+                          [icon]="'pi pi-check-circle'"
+                          [pTooltip]="'treatmentPlanWorkspace.actions.complete' | translate"
+                          tooltipPosition="top"
+                          [attr.aria-label]="'treatmentPlanWorkspace.actions.complete' | translate"
+                          (click)="$event.stopPropagation(); onRequestPlanAction('complete', plan)"
+                        ></button>
+                      }
+
+                      @if (canShowEditAction(plan)) {
+                        <a
+                          pButton
+                          [routerLink]="['treatment-plans', plan.id]"
+                          severity="primary"
+                          [outlined]="true"
+                          class="patient-detail__plans-action-btn"
+                          [icon]="'pi pi-pen-to-square'"
+                          [pTooltip]="'patientDetail.plans.edit' | translate"
+                          tooltipPosition="top"
+                          [attr.aria-label]="'patientDetail.plans.edit' | translate"
+                          (click)="$event.stopPropagation()"
+                        ></a>
+                      }
+
+                      @if (canShowCancelAction(plan)) {
+                        <button
+                          pButton
+                          type="button"
+                          severity="danger"
+                          [outlined]="true"
+                          class="patient-detail__plans-action-btn"
+                          [icon]="'pi pi-ban'"
+                          [pTooltip]="'treatmentPlanWorkspace.actions.cancel' | translate"
+                          tooltipPosition="top"
+                          [attr.aria-label]="'treatmentPlanWorkspace.actions.cancel' | translate"
+                          (click)="$event.stopPropagation(); onRequestPlanAction('cancel', plan)"
+                        ></button>
+                      }
+
+                      @if (canShowDeleteAction(plan)) {
+                        <button
+                          pButton
+                          type="button"
+                          severity="danger"
+                          [outlined]="true"
+                          class="patient-detail__plans-action-btn"
+                          [icon]="'pi pi-trash'"
+                          [pTooltip]="'treatmentPlanWorkspace.actions.delete' | translate"
+                          tooltipPosition="top"
+                          [attr.aria-label]="'treatmentPlanWorkspace.actions.delete' | translate"
+                          (click)="$event.stopPropagation(); onRequestPlanAction('delete', plan)"
+                        ></button>
+                      }
+                    </div>
                   </td>
                 </tr>
               }
@@ -241,5 +433,43 @@
         </footer>
       }
     </section>
+
+    <app-patient-contact-edit-dialog
+      [visible]="isPatientEditDialogVisible()"
+      [patient]="patient()"
+      [pending]="isUpdatingPatient()"
+      (visibleChange)="!$event ? closePatientEditDialog() : null"
+      (closed)="closePatientEditDialog()"
+      (save)="savePatientEdit($event)"
+    />
+
+    <app-confirm-action-dialog
+      [visible]="isDeletePatientDialogVisible()"
+      [titleKey]="'patientsList.deleteConfirm.title'"
+      [messageKey]="'patientsList.deleteConfirm.body'"
+      [messageParams]="{ name: patient()?.fullName ?? '' }"
+      [confirmLabelKey]="'patientsList.actions.delete'"
+      [iconClass]="'pi pi-trash'"
+      [tone]="'danger'"
+      [pending]="isDeletingPatient()"
+      (visibleChange)="!$event ? closeDeletePatientDialog() : null"
+      (closed)="closeDeletePatientDialog()"
+      (confirmed)="confirmDeletePatient()"
+    />
+
+    <app-confirm-action-dialog
+      [visible]="confirmDialogVisible()"
+      [titleKey]="confirmDialogTitleKey()"
+      [messageKey]="confirmDialogMessageKey()"
+      [titleParams]="confirmDialogParams()"
+      [messageParams]="confirmDialogParams()"
+      [confirmLabelKey]="confirmDialogActionLabelKey()"
+      [iconClass]="confirmDialogIconClass()"
+      [tone]="confirmDialogTone()"
+      [pending]="isRunningPlanAction()"
+      (visibleChange)="!$event ? closePlanActionDialog() : null"
+      (closed)="closePlanActionDialog()"
+      (confirmed)="confirmPlanAction()"
+    />
   }
 }

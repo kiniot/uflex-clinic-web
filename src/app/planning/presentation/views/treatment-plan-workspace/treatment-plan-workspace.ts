@@ -771,12 +771,7 @@ export class TreatmentPlanWorkspace {
           this.buildCreateCommand(),
         );
         await this.planningStore.loadTreatmentPlansByPatient(patientId);
-        await this.router.navigate([
-          '/physiotherapist/patients',
-          patientId,
-          'treatment-plans',
-          created.id,
-        ]);
+        await this.router.navigate(['/physiotherapist/patients', patientId]);
         this.notifySuccess(
           'treatmentPlanWorkspace.notifications.createSuccessSummary',
           'treatmentPlanWorkspace.notifications.createSuccessDetail',
