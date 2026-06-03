@@ -1,4 +1,7 @@
+import { CreateExerciseCommand } from '../domain/model/create-exercise.command';
 import { ExerciseCatalogItem } from '../domain/model/exercise-catalog-item.entity';
+import { UpdateExerciseCommand } from '../domain/model/update-exercise.command';
+import { SaveExerciseRequest } from './save-exercise.request';
 import {
   ExerciseCatalogItemResource,
   ExerciseCatalogItemResponse,
@@ -25,5 +28,25 @@ export class ExerciseCatalogItemAssembler {
       movementType: resource.movementType,
       videoUrl: resource.videoUrl,
     });
+  }
+
+  toRequestFromCreateCommand(command: CreateExerciseCommand): SaveExerciseRequest {
+    return {
+      name: command.name,
+      description: command.description,
+      bodyPart: command.bodyPart,
+      movementType: command.movementType,
+      videoUrl: command.videoUrl,
+    } as SaveExerciseRequest;
+  }
+
+  toRequestFromUpdateCommand(command: UpdateExerciseCommand): SaveExerciseRequest {
+    return {
+      name: command.name,
+      description: command.description,
+      bodyPart: command.bodyPart,
+      movementType: command.movementType,
+      videoUrl: command.videoUrl,
+    } as SaveExerciseRequest;
   }
 }

@@ -59,6 +59,7 @@ export class ClinicAdminPortal {
       'clinicAdmin.brand.name',
       'clinicAdmin.brand.subtitle',
       'clinicAdmin.nav.therapy',
+      'clinicAdmin.nav.exercises',
       'clinicAdmin.nav.device',
       'clinicAdmin.nav.organization',
       'clinicAdmin.nav.subscription',
@@ -92,6 +93,11 @@ export class ClinicAdminPortal {
       label: this.translations()['clinicAdmin.nav.therapy'] ?? '',
       icon: 'pi-th-large',
       route: '/clinic-admin/therapy',
+    },
+    {
+      label: this.translations()['clinicAdmin.nav.exercises'] ?? '',
+      icon: 'pi-book',
+      route: '/clinic-admin/exercises',
     },
     {
       label: this.translations()['clinicAdmin.nav.subscription'] ?? '',

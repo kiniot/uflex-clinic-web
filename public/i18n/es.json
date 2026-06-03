@@ -42,6 +42,7 @@
     },
     "nav": {
       "therapy": "Terapia",
+      "exercises": "Ejercicios",
       "device": "Dispositivos",
       "organization": "Organización",
       "subscription": "Suscripción",
@@ -74,6 +75,95 @@
     "profile": {
       "title": "Perfil",
       "subtitle": "Configuración y preferencias de tu cuenta."
+    }
+  },
+  "exerciseCatalogAdmin": {
+    "title": "Catálogo de ejercicios",
+    "subtitle": "Crea y mantiene la biblioteca clínica de ejercicios que los fisioterapeutas usan en los planes de tratamiento.",
+    "actions": {
+      "create": "Nuevo ejercicio",
+      "edit": "Editar ejercicio",
+      "delete": "Eliminar ejercicio",
+      "save": "Guardar cambios",
+      "cancel": "Cancelar",
+      "retry": "Reintentar"
+    },
+    "filters": {
+      "searchPlaceholder": "Buscar ejercicios por nombre o descripción...",
+      "allBodyParts": "Todas las partes del cuerpo",
+      "allMovementTypes": "Todos los movimientos"
+    },
+    "table": {
+      "title": "Biblioteca clínica",
+      "subtitle": "Estos ejercicios quedan disponibles en el workspace de planes de tratamiento para los fisioterapeutas.",
+      "showingCount": "Mostrando {{visible}} de {{total}} ejercicios"
+    },
+    "columns": {
+      "name": "Ejercicio",
+      "bodyPart": "Parte del cuerpo",
+      "movementType": "Movimiento",
+      "video": "Video",
+      "actions": "Acciones"
+    },
+    "bodyPart": {
+      "ELBOW": "Codo",
+      "WRIST": "Muñeca"
+    },
+    "movementType": {
+      "PRONATION": "Pronación",
+      "SUPINATION": "Supinación",
+      "FLEXION": "Flexión",
+      "EXTENSION": "Extensión"
+    },
+    "video": {
+      "available": "Disponible",
+      "pending": "Pendiente"
+    },
+    "empty": {
+      "title": "Aún no hay ejercicios",
+      "body": "Crea el primer ejercicio para empezar a construir el catálogo de la clínica.",
+      "filteredTitle": "Ningún ejercicio coincide con estos filtros",
+      "filteredBody": "Prueba otro término de búsqueda o limpia los filtros para ver más resultados."
+    },
+    "error": {
+      "title": "El catálogo de ejercicios no está disponible",
+      "body": "No pudimos cargar la biblioteca clínica de ejercicios en este momento."
+    },
+    "form": {
+      "createTitle": "Crear ejercicio",
+      "editTitle": "Editar ejercicio",
+      "subtitle": "Registra ahora la metadata del ejercicio. La carga de video estará disponible cuando el backend soporte adjuntos.",
+      "name": "Nombre del ejercicio",
+      "namePlaceholder": "ej. Supinación de muñeca",
+      "bodyPart": "Parte del cuerpo objetivo",
+      "bodyPartPlaceholder": "Selecciona parte del cuerpo",
+      "movementType": "Tipo de movimiento",
+      "movementTypePlaceholder": "Selecciona movimiento",
+      "description": "Descripción terapéutica",
+      "descriptionPlaceholder": "Describe la intención terapéutica y cómo debe realizarse el ejercicio...",
+      "videoUrl": "URL del video (opcional)",
+      "videoUrlPlaceholder": "https://cdn.uflex.app/exercises/example.mp4",
+      "videoUrlHint": "Déjalo vacío por ahora si el video todavía no está publicado.",
+      "videoSectionTitle": "Placeholder de video",
+      "videoSectionBody": "El producto final permitirá adjuntar un video aquí. Por ahora esta área es solo un placeholder visual.",
+      "uploadHint": "Arrastra o sube un video aquí",
+      "uploadMeta": "La carga aún no está activa. El archivo seleccionado no se envía al backend."
+    },
+    "deleteConfirm": {
+      "title": "Eliminar ejercicio",
+      "body": "¿Seguro que deseas eliminar {{name}} del catálogo de la clínica?"
+    },
+    "notifications": {
+      "createSuccessSummary": "Ejercicio creado",
+      "createSuccessDetail": "{{name}} ya está disponible en el catálogo clínico.",
+      "editSuccessSummary": "Ejercicio actualizado",
+      "editSuccessDetail": "{{name}} se actualizó correctamente.",
+      "deleteSuccessSummary": "Ejercicio eliminado",
+      "deleteSuccessDetail": "{{name}} fue retirado del catálogo clínico.",
+      "deleteErrorSummary": "No se pudo eliminar el ejercicio",
+      "deleteErrorDetail": "Inténtalo de nuevo en un momento.",
+      "saveErrorSummary": "No se pudo guardar el ejercicio",
+      "saveErrorDetail": "Revisa la información e inténtalo nuevamente."
     }
   },
   "profile": {

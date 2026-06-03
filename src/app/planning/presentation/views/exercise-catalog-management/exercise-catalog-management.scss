@@ -1,0 +1,303 @@
+@use '../../../../../styles/theme-transition' as theme;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.exercise-admin__filters {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) repeat(2, minmax(180px, 220px));
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 12px;
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .exercise-admin__filters {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.exercise-admin__search {
+  width: 100%;
+  min-width: 0;
+}
+
+.exercise-admin__select {
+  width: 100%;
+}
+
+:host ::ng-deep .exercise-admin__select .p-select {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+}
+
+:host ::ng-deep .exercise-admin__select .p-select-label {
+  display: flex;
+  align-items: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+.exercise-admin__table-card {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  overflow: hidden;
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .exercise-admin__table-card {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.exercise-admin__table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.exercise-admin__table-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-text-color);
+  margin: 0;
+}
+
+.exercise-admin__table-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+  margin: 4px 0 0;
+}
+
+.exercise-admin__loading {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+
+.exercise-admin__loading-row {
+  display: grid;
+  grid-template-columns: 1.8fr 0.8fr 0.9fr 0.8fr 0.6fr;
+  gap: 12px;
+}
+
+.exercise-admin__loading-block {
+  display: block;
+  height: 18px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-surface-200) 85%, transparent);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .exercise-admin__loading-block {
+  background: color-mix(in srgb, var(--p-surface-300) 70%, transparent);
+}
+
+.exercise-admin__loading-block--lg {
+  height: 46px;
+}
+
+.exercise-admin__loading-block--sm {
+  width: 70%;
+}
+
+.exercise-admin__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 38px 24px 42px;
+}
+
+.exercise-admin__empty-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.exercise-admin__empty-title {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--p-text-color);
+  margin: 0;
+}
+
+.exercise-admin__empty-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+  margin: 0;
+  max-width: 460px;
+}
+
+.exercise-admin__table-scroll {
+  overflow-x: auto;
+}
+
+.exercise-admin__table {
+  width: 100%;
+  min-width: 820px;
+  border-collapse: collapse;
+}
+
+.exercise-admin__table th {
+  text-align: left;
+  padding: 14px 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+  border-bottom: 1px solid var(--p-surface-200);
+}
+
+:host-context(.app-dark) .exercise-admin__table th {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.exercise-admin__row {
+  cursor: pointer;
+}
+
+.exercise-admin__row td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--p-surface-200);
+  vertical-align: middle;
+  transition:
+    background-color var(--app-theme-transition-duration, 220ms) ease,
+    color var(--app-theme-transition-duration, 220ms) ease;
+}
+
+:host-context(.app-dark) .exercise-admin__row td {
+  border-bottom-color: var(--p-surface-300);
+}
+
+.exercise-admin__row:hover td {
+  background: color-mix(in srgb, var(--p-surface-50) 70%, transparent);
+}
+
+:host-context(.app-dark) .exercise-admin__row:hover td {
+  background: color-mix(in srgb, var(--p-surface-200) 65%, transparent);
+}
+
+.exercise-admin__exercise {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.exercise-admin__exercise-name {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.exercise-admin__exercise-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+.exercise-admin__meta-cell {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--p-text-color);
+}
+
+.exercise-admin__video-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  background: color-mix(in srgb, var(--p-amber-500) 14%, transparent);
+  color: var(--p-amber-500);
+}
+
+.exercise-admin__video-pill--ready {
+  background: color-mix(in srgb, var(--p-emerald-500) 14%, transparent);
+  color: var(--p-emerald-500);
+}
+
+.exercise-admin__action-col {
+  white-space: nowrap;
+  min-width: 120px;
+}
+
+.exercise-admin__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+:host ::ng-deep .exercise-admin__action-btn,
+:host ::ng-deep .exercise-admin__action-btn .p-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+}
+
+.exercise-admin__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px 18px;
+}
+
+.exercise-admin__counter {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+@media (max-width: 960px) {
+  .exercise-admin__filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .exercise-admin__search {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .exercise-admin__filters {
+    grid-template-columns: 1fr;
+  }
+
+  .exercise-admin__search {
+    grid-column: auto;
+  }
+}

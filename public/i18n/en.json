@@ -42,6 +42,7 @@
     },
     "nav": {
       "therapy": "Therapy",
+      "exercises": "Exercises",
       "device": "Device",
       "organization": "Organization",
       "subscription": "Subscription",
@@ -74,6 +75,95 @@
     "profile": {
       "title": "Profile",
       "subtitle": "Your account settings and preferences."
+    }
+  },
+  "exerciseCatalogAdmin": {
+    "title": "Exercise Catalog",
+    "subtitle": "Create and maintain the clinic exercise library used by physiotherapists in treatment plans.",
+    "actions": {
+      "create": "New Exercise",
+      "edit": "Edit exercise",
+      "delete": "Delete exercise",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "retry": "Retry"
+    },
+    "filters": {
+      "searchPlaceholder": "Search exercises by name or description...",
+      "allBodyParts": "All body parts",
+      "allMovementTypes": "All movement types"
+    },
+    "table": {
+      "title": "Clinic library",
+      "subtitle": "These exercises become available in the treatment-plan workspace for physiotherapists.",
+      "showingCount": "Showing {{visible}} of {{total}} exercises"
+    },
+    "columns": {
+      "name": "Exercise",
+      "bodyPart": "Body part",
+      "movementType": "Movement",
+      "video": "Video",
+      "actions": "Actions"
+    },
+    "bodyPart": {
+      "ELBOW": "Elbow",
+      "WRIST": "Wrist"
+    },
+    "movementType": {
+      "PRONATION": "Pronation",
+      "SUPINATION": "Supination",
+      "FLEXION": "Flexion",
+      "EXTENSION": "Extension"
+    },
+    "video": {
+      "available": "Available",
+      "pending": "Pending"
+    },
+    "empty": {
+      "title": "No exercises yet",
+      "body": "Create the first exercise to start building the clinic catalog.",
+      "filteredTitle": "No exercises match these filters",
+      "filteredBody": "Try another search term or clear the filters to see more results."
+    },
+    "error": {
+      "title": "Exercise catalog unavailable",
+      "body": "We could not load the clinic exercise library right now."
+    },
+    "form": {
+      "createTitle": "Create Exercise",
+      "editTitle": "Edit Exercise",
+      "subtitle": "Register the exercise metadata now. Video upload will be enabled once the backend supports attachments.",
+      "name": "Exercise name",
+      "namePlaceholder": "e.g. Wrist supination",
+      "bodyPart": "Target body part",
+      "bodyPartPlaceholder": "Select body part",
+      "movementType": "Movement type",
+      "movementTypePlaceholder": "Select movement type",
+      "description": "Therapeutic description",
+      "descriptionPlaceholder": "Describe the therapeutic intent and how the exercise should be performed...",
+      "videoUrl": "Video URL (optional)",
+      "videoUrlPlaceholder": "https://cdn.uflex.app/exercises/example.mp4",
+      "videoUrlHint": "Leave this empty for now if the video is not published yet.",
+      "videoSectionTitle": "Video placeholder",
+      "videoSectionBody": "The final product will support attaching a video here. For now this area is only a visual placeholder.",
+      "uploadHint": "Drag or upload a video here",
+      "uploadMeta": "Upload is not active yet. The selected file is not sent to the backend."
+    },
+    "deleteConfirm": {
+      "title": "Delete exercise",
+      "body": "Are you sure you want to delete {{name}} from the clinic catalog?"
+    },
+    "notifications": {
+      "createSuccessSummary": "Exercise created",
+      "createSuccessDetail": "{{name}} is now available in the clinic catalog.",
+      "editSuccessSummary": "Exercise updated",
+      "editSuccessDetail": "{{name}} was updated successfully.",
+      "deleteSuccessSummary": "Exercise deleted",
+      "deleteSuccessDetail": "{{name}} was removed from the clinic catalog.",
+      "deleteErrorSummary": "Could not delete exercise",
+      "deleteErrorDetail": "Try again in a moment.",
+      "saveErrorSummary": "Could not save exercise",
+      "saveErrorDetail": "Review the information and try again."
     }
   },
   "profile": {

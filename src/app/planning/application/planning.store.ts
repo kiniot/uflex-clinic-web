@@ -4,6 +4,7 @@ import { ClinicalAlert } from '../domain/model/clinical-alert.entity';
 import { ClinicalMetrics } from '../domain/model/clinical-metrics';
 import { ClinicalTrajectory } from '../domain/model/clinical-trajectory';
 import { AddRoutineCommand } from '../domain/model/add-routine.command';
+import { CreateExerciseCommand } from '../domain/model/create-exercise.command';
 import { CreateTreatmentPlanCommand } from '../domain/model/create-treatment-plan.command';
 import { ExerciseCatalogItem } from '../domain/model/exercise-catalog-item.entity';
 import { Patient } from '../domain/model/patient.entity';
@@ -12,6 +13,7 @@ import { RoutineExercise } from '../domain/model/routine-exercise.entity';
 import { Session } from '../domain/model/session.entity';
 import { TreatmentPlanRoutine } from '../domain/model/treatment-plan-routine.entity';
 import { TreatmentPlan } from '../domain/model/treatment-plan.entity';
+import { UpdateExerciseCommand } from '../domain/model/update-exercise.command';
 import { UpdateRoutineCommand } from '../domain/model/update-routine.command';
 import { UpdateTreatmentPlanCommand } from '../domain/model/update-treatment-plan.command';
 import { MOCK_CLINICAL_ALERTS } from '../infrastructure/clinical-alert.mock';
@@ -46,7 +48,10 @@ export class PlanningStore {
   private readonly exerciseCatalogSignal = signal<ExerciseCatalogItem[]>([]);
   private readonly selectedExerciseCatalogItemSignal = signal<ExerciseCatalogItem | null>(null);
   private readonly loadingExerciseCatalogSignal = signal(false);
+  private readonly loadingSelectedExerciseCatalogItemSignal = signal(false);
   private readonly exerciseCatalogErrorSignal = signal<string | null>(null);
+  private readonly savingExerciseSignal = signal(false);
+  private readonly deletingExerciseSignal = signal(false);
 
   readonly patients = this.patientsSignal.asReadonly();
   readonly dailySessions = this.dailySessionsSignal.asReadonly();
@@ -61,7 +66,11 @@ export class PlanningStore {
   readonly exerciseCatalog = this.exerciseCatalogSignal.asReadonly();
   readonly selectedExerciseCatalogItem = this.selectedExerciseCatalogItemSignal.asReadonly();
   readonly isLoadingExerciseCatalog = this.loadingExerciseCatalogSignal.asReadonly();
+  readonly isLoadingSelectedExerciseCatalogItem =
+    this.loadingSelectedExerciseCatalogItemSignal.asReadonly();
   readonly exerciseCatalogError = this.exerciseCatalogErrorSignal.asReadonly();
+  readonly isSavingExercise = this.savingExerciseSignal.asReadonly();
+  readonly isDeletingExercise = this.deletingExerciseSignal.asReadonly();
 
   constructor(private planningApi: PlanningApi) {}
 
@@ -240,13 +249,65 @@ export class PlanningStore {
       return existing;
     }
 
-    const resource = await firstValueFrom(this.planningApi.getExerciseById(id));
-    const exercise = this.mapExerciseCatalogItem(resource);
-    this.selectedExerciseCatalogItemSignal.set(exercise);
-    this.exerciseCatalogSignal.update((items) =>
-      items.some((item) => item.id === exercise.id) ? items : [...items, exercise],
-    );
-    return exercise;
+    this.loadingSelectedExerciseCatalogItemSignal.set(true);
+    try {
+      const resource = await firstValueFrom(this.planningApi.getExerciseById(id));
+      const exercise = this.mapExerciseCatalogItem(resource);
+      this.selectedExerciseCatalogItemSignal.set(exercise);
+      this.exerciseCatalogSignal.update((items) =>
+        items.some((item) => item.id === exercise.id) ? items : [...items, exercise],
+      );
+      return exercise;
+    } finally {
+      this.loadingSelectedExerciseCatalogItemSignal.set(false);
+    }
+  }
+
+  async createExercise(command: CreateExerciseCommand): Promise<ExerciseCatalogItem> {
+    this.savingExerciseSignal.set(true);
+    try {
+      const resource = await firstValueFrom(this.planningApi.createExercise(command));
+      const exercise = this.mapExerciseCatalogItem(resource);
+      this.exerciseCatalogSignal.update((items) => [exercise, ...items]);
+      this.selectedExerciseCatalogItemSignal.set(exercise);
+      return exercise;
+    } finally {
+      this.savingExerciseSignal.set(false);
+    }
+  }
+
+  async updateExercise(id: string, command: UpdateExerciseCommand): Promise<ExerciseCatalogItem> {
+    this.savingExerciseSignal.set(true);
+    try {
+      const resource = await firstValueFrom(this.planningApi.updateExercise(id, command));
+      const exercise = this.mapExerciseCatalogItem(resource);
+      this.selectedExerciseCatalogItemSignal.set(exercise);
+      this.exerciseCatalogSignal.update((items) =>
+        items.some((item) => item.id === exercise.id)
+          ? items.map((item) => (item.id === exercise.id ? exercise : item))
+          : [exercise, ...items],
+      );
+      return exercise;
+    } finally {
+      this.savingExerciseSignal.set(false);
+    }
+  }
+
+  async deleteExercise(id: string): Promise<void> {
+    this.deletingExerciseSignal.set(true);
+    try {
+      await firstValueFrom(this.planningApi.deleteExercise(id));
+      this.exerciseCatalogSignal.update((items) => items.filter((item) => item.id !== id));
+      if (this.selectedExerciseCatalogItemSignal()?.id === id) {
+        this.selectedExerciseCatalogItemSignal.set(null);
+      }
+    } finally {
+      this.deletingExerciseSignal.set(false);
+    }
+  }
+
+  clearSelectedExerciseCatalogItem() {
+    this.selectedExerciseCatalogItemSignal.set(null);
   }
 
   private syncTreatmentPlan(resource: TreatmentPlanResource): TreatmentPlan {
