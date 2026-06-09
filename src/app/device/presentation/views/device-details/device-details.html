@@ -1,4 +1,6 @@
-<a class="detail__back" routerLink="/clinic-admin/device">
+<p-toast position="top-right"/>
+
+<a class="detail__back" routerLink="../..">
   <i class="pi pi-arrow-left" aria-hidden="true"></i>
   <span>{{ 'deviceDetails.backToInventory' | translate }}</span>
 </a>
@@ -6,7 +8,7 @@
 @if (device(); as device) {
   <app-page-header
     [title]="'deviceDetails.title' | translate"
-    [subtitle]="'deviceDetails.subtitle' | translate: { kitId: device.kitId }">
+    [subtitle]="'deviceDetails.subtitle' | translate: { kitId: device.serialNumber }">
   </app-page-header>
 
   <section class="detail__content">
@@ -17,13 +19,13 @@
       <div class="detail__grid">
         <div class="detail__item">
           <span class="detail__label">{{ 'deviceDetails.summary.kitId' | translate }}</span>
-          <span class="detail__value">{{ device.kitId }}</span>
+          <span class="detail__value">{{ device.serialNumber }}</span>
         </div>
         <div class="detail__item">
           <span class="detail__label">{{ 'deviceDetails.summary.linkedPatient' | translate }}</span>
           <span class="detail__value">
-            @if (device.linkedPatient) {
-              {{ device.linkedPatient }}
+            @if (device.currentPatientFullName) {
+              {{ device.currentPatientFullName }}
             } @else {
               <span class="detail__muted">{{ 'deviceManagement.unassigned' | translate }}</span>
             }
@@ -37,40 +39,150 @@
           <span class="detail__label">{{ 'deviceDetails.summary.firmware' | translate }}</span>
           <span class="detail__value">{{ device.firmwareVersion }}</span>
         </div>
+        <div class="detail__item">
+          <span class="detail__label">{{ 'deviceDetails.summary.macAddress' | translate }}</span>
+          <span class="detail__value">{{ device.macAddress }}</span>
+        </div>
+        <div class="detail__item">
+          <span class="detail__label">{{ 'deviceDetails.summary.model' | translate }}</span>
+          <span class="detail__value">{{ device.model }}</span>
+        </div>
       </div>
     </article>
 
     <article class="detail__card">
       <header class="detail__card-header">
         <h2 class="detail__card-title">{{ 'deviceDetails.status.title' | translate }}</h2>
-        <p class="detail__card-subtitle">{{ 'deviceDetails.status.subtitle' | translate }}</p>
       </header>
+      <div class="detail__status-display">
+        <span class="detail__status-label">{{ 'deviceDetails.status.label' | translate }}</span>
+        <span class="detail__status-pill detail__status-pill--{{ device.status }}">
+          {{ 'deviceManagement.status.' + device.status | translate }}
+        </span>
+      </div>
+    </article>
 
-      <form class="detail__form" [formGroup]="form" (ngSubmit)="onSave()">
-        <label for="status">{{ 'deviceDetails.status.label' | translate }}</label>
-        <p-select inputId="status"
-                  formControlName="status"
-                  [options]="statusOptions()"
-                  optionLabel="label"
-                  optionValue="value"
-                  [placeholder]="'deviceDetails.status.placeholder' | translate"
-                  [class.ng-invalid]="isInvalidControl(form,'status')"
-                  [class.ng-dirty]="isInvalidControl(form,'status')"/>
+    <article class="detail__card">
+      <header class="detail__card-header">
+        <h2 class="detail__card-title">{{ 'deviceDetails.actions.title' | translate }}</h2>
+      </header>
+      <div class="detail__action-cards">
+        @if (canAssign()) {
+          <div class="action-card action-card--assign">
+            <i class="pi pi-user-plus action-card__icon" aria-hidden="true"></i>
+            <h3 class="action-card__title">{{ 'deviceDetails.cards.assignPatient.title' | translate }}</h3>
+            <p class="action-card__desc">{{ 'deviceDetails.cards.assignPatient.desc' | translate }}</p>
+            <button pButton type="button" severity="primary" class="action-card__btn"
+                    (click)="onOpenAssignDialog()">
+              {{ 'deviceDetails.cards.assignPatient.button' | translate }}
+            </button>
+          </div>
+        }
 
-        <div class="detail__actions">
-          <button type="button" pButton severity="secondary" [outlined]="true"
-                  class="detail__btn"
-                  (click)="onCancel()">
-            {{ 'deviceDetails.actions.cancel' | translate }}
-          </button>
-          <button type="submit" pButton severity="primary"
-                  class="detail__btn detail__btn--primary">
-            {{ 'deviceDetails.actions.save' | translate }}
-          </button>
-        </div>
-      </form>
+        @if (canUnassign()) {
+          <div class="action-card action-card--unassign">
+            <i class="pi pi-user-minus action-card__icon" aria-hidden="true"></i>
+            <h3 class="action-card__title">{{ 'deviceDetails.cards.unassignPatient.title' | translate }}</h3>
+            <p class="action-card__desc">{{ 'deviceDetails.cards.unassignPatient.desc' | translate }}</p>
+            <button pButton type="button" severity="danger" class="action-card__btn"
+                    (click)="onOpenUnassignConfirm()">
+              {{ 'deviceDetails.cards.unassignPatient.button' | translate }}
+            </button>
+          </div>
+        }
+
+        @if (canMarkNeedsCalibration()) {
+          <div class="action-card action-card--calibrate">
+            <i class="pi pi-exclamation-triangle action-card__icon" aria-hidden="true"></i>
+            <h3 class="action-card__title">{{ 'deviceDetails.cards.markNeedsCalibration.title' | translate }}</h3>
+            <p class="action-card__desc">{{ 'deviceDetails.cards.markNeedsCalibration.desc' | translate }}</p>
+            <button pButton type="button" severity="help" class="action-card__btn"
+                    (click)="onOpenMarkNeedsCalibrationConfirm()">
+              {{ 'deviceDetails.cards.markNeedsCalibration.button' | translate }}
+            </button>
+          </div>
+        }
+
+        @if (canValidateCalibration()) {
+          <div class="action-card action-card--validate">
+            <i class="pi pi-check-circle action-card__icon" aria-hidden="true"></i>
+            <h3 class="action-card__title">{{ 'deviceDetails.cards.validateCalibration.title' | translate }}</h3>
+            <p class="action-card__desc">{{ 'deviceDetails.cards.validateCalibration.desc' | translate }}</p>
+            <button pButton type="button" severity="success" class="action-card__btn"
+                    (click)="onOpenValidateCalibrationConfirm()">
+              {{ 'deviceDetails.cards.validateCalibration.button' | translate }}
+            </button>
+          </div>
+        }
+
+        @if (!canAssign() && !canUnassign() && !canMarkNeedsCalibration() && !canValidateCalibration()) {
+          <p class="detail__no-actions">{{ 'deviceDetails.actions.noActions' | translate }}</p>
+        }
+      </div>
     </article>
   </section>
+
+  <!-- Assign Patient Dialog -->
+  <p-dialog
+    [(visible)]="assignDialogVisible"
+    [modal]="true"
+    [closable]="true"
+    [dismissableMask]="true"
+    [style]="{ width: '32rem', maxWidth: '92vw' }"
+    [header]="'deviceDetails.assignDialog.title' | translate">
+    <div class="assign-dialog">
+      <p class="assign-dialog__body">
+        {{ 'deviceDetails.assignDialog.body' | translate: { kitId: device.serialNumber } }}
+      </p>
+
+      <label class="assign-dialog__label" for="patientSelect">
+        {{ 'deviceDetails.assignDialog.selectLabel' | translate }}
+      </label>
+      <p-select
+        inputId="patientSelect"
+        class="assign-dialog__select"
+        [options]="patientOptions()"
+        [filter]="true"
+        filterBy="label"
+        [resetFilterOnHide]="true"
+        appendTo="body"
+        scrollHeight="18rem"
+        [placeholder]="'deviceDetails.assignDialog.placeholder' | translate"
+        [ngModel]="selectedPatientId()"
+        (ngModelChange)="selectedPatientId.set($event)"
+        optionLabel="label"
+        optionValue="value"
+      />
+    </div>
+    <ng-template #footer>
+      <div class="assign-dialog__footer">
+        <button pButton type="button" severity="secondary" [outlined]="true"
+                (click)="assignDialogVisible.set(false)">
+          {{ 'deviceDetails.actions.cancel' | translate }}
+        </button>
+        <button pButton type="button" severity="primary"
+                [loading]="isAssigning()"
+                [disabled]="!selectedPatientId() || isAssigning()"
+                (click)="onConfirmAssign()">
+          {{ 'deviceDetails.actions.confirmAssign' | translate }}
+        </button>
+      </div>
+    </ng-template>
+  </p-dialog>
+
+  <!-- Confirm Action Dialog -->
+  <app-confirm-action-dialog
+    [visible]="confirmDialogVisible()"
+    [titleKey]="confirmDialogTitleKey()"
+    [messageKey]="confirmDialogMessageKey()"
+    [confirmLabelKey]="confirmDialogActionLabelKey()"
+    [iconClass]="confirmDialogIconClass()"
+    [tone]="confirmDialogTone()"
+    [pending]="confirmDialogPending()"
+    (visibleChange)="!$event ? onCloseDialog() : null"
+    (closed)="onCloseDialog()"
+    (confirmed)="onConfirmAction()"
+  />
 } @else {
   <section class="detail__empty">
     <p>{{ 'deviceDetails.empty' | translate }}</p>
@@ -81,4 +193,3 @@
     </button>
   </section>
 }
-

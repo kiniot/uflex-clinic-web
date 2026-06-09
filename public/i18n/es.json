@@ -273,22 +273,38 @@
       "runDiagnostics": "Ejecutar diagnóstico",
       "calibrate": "Calibrar",
       "linkToPatient": "Vincular paciente",
-      "registerDevice": "Registrar dispositivo"
+      "registerDevice": "Registrar dispositivo",
+      "viewDetails": "Ver detalles",
+      "deleteDevice": "Eliminar dispositivo",
+      "unassignPatient": "Desvincular paciente"
+    },
+    "deleteConfirm": {
+      "title": "Eliminar dispositivo",
+      "body": "¿Estás seguro de que deseas eliminar este dispositivo? Esta acción no se puede deshacer."
+    },
+    "unassignConfirm": {
+      "title": "Desvincular paciente",
+      "body": "¿Estás seguro de que deseas desvincular a este paciente del dispositivo?"
     },
     "stats": {
       "totalActiveKits": "Kits activos totales",
       "requiresCalibration": "Requieren calibración",
       "networkStatus": "Estado de red",
-      "delta": "+4 esta semana",
+      "syncedThisWeek": "{{count}} sincronizados esta semana",
       "within7Days": "En 7 días",
-      "online": "En línea"
+      "online": "En línea",
+      "availableKits": "Kits disponibles",
+      "assignedKits": "Kits asignados",
+      "inMaintenanceKits": "En mantenimiento",
+      "lowBatteryKits": "Batería baja",
+      "offlineKits": "Desconectados"
     },
     "fleetStatus": "Estado de la flota",
     "columns": {
       "kitId": "ID del kit IoT",
       "linkedPatient": "Paciente vinculado",
       "batteryLevel": "Nivel de batería",
-      "bluetooth": "Bluetooth",
+      "connectivity": "Conectividad",
       "calibration": "Calibración",
       "firmware": "Firmware",
       "status": "Estado",
@@ -302,9 +318,22 @@
     "status": {
       "online": "En línea",
       "idle": "Inactivo",
-      "offline": "Desconectado"
+      "offline": "Desconectado",
+      "AVAILABLE": "Disponible",
+      "ASSIGNED": "Asignado",
+      "IN_MAINTENANCE": "En mantenimiento",
+      "RETIRED": "Retirado"
     },
-    "unassigned": "Sin asignar"
+    "unassigned": "Sin asignar",
+    "empty": "No se encontraron dispositivos con los filtros seleccionados.",
+    "filters": {
+      "all": "Todas las conexiones",
+      "allCalibration": "Todas las calibraciones",
+      "allStatus": "Todos los estados",
+      "connectivityPlaceholder": "Conectividad",
+      "calibrationPlaceholder": "Calibración",
+      "statusPlaceholder": "Estado"
+    }
   },
   "deviceDetails": {
     "backToInventory": "Volver al inventario",
@@ -315,7 +344,9 @@
       "kitId": "ID del kit IoT",
       "linkedPatient": "Paciente vinculado",
       "batteryLevel": "Nivel de batería",
-      "firmware": "Firmware"
+      "firmware": "Firmware",
+      "macAddress": "Dirección MAC",
+      "model": "Modelo"
     },
     "status": {
       "title": "Estado del dispositivo",
@@ -324,8 +355,60 @@
       "placeholder": "Selecciona estado"
     },
     "actions": {
+      "title": "Acciones del dispositivo",
       "cancel": "Cancelar",
-      "save": "Guardar estado"
+      "save": "Guardar estado",
+      "assignPatient": "Asignar paciente",
+      "unassignPatient": "Desvincular paciente",
+      "markNeedsCalibration": "Marcar para calibración",
+      "validateCalibration": "Validar calibración",
+      "confirmAssign": "Asignar",
+      "noActions": "No hay acciones disponibles para este dispositivo"
+    },
+    "cards": {
+      "assignPatient": {
+        "title": "¿Necesitas asignar este kit a un paciente?",
+        "desc": "Selecciona un paciente de la clínica para vincularlo a este dispositivo y comenzar su monitoreo.",
+        "button": "Asignar paciente"
+      },
+      "unassignPatient": {
+        "title": "¿El paciente ya no usa este dispositivo?",
+        "desc": "Desvincula al paciente actual y libera el kit para reasignarlo a otro paciente de la clínica.",
+        "button": "Desvincular paciente"
+      },
+      "markNeedsCalibration": {
+        "title": "¿El dispositivo necesita calibración?",
+        "desc": "Marca el dispositivo para mantenimiento. Se desvinculará al paciente actual y el estado cambiará a EN MANTENIMIENTO.",
+        "button": "Marcar para calibración"
+      },
+      "validateCalibration": {
+        "title": "¿La calibración ya fue completada?",
+        "desc": "Confirma que el dispositivo ha sido calibrado correctamente y está listo para ser asignado a un paciente.",
+        "button": "Validar calibración"
+      }
+    },
+    "assignDialog": {
+      "title": "Asignar paciente",
+      "body": "Selecciona un paciente para asignar al kit {{kitId}}",
+      "selectLabel": "Paciente",
+      "placeholder": "Buscar paciente..."
+    },
+    "confirm": {
+      "unassignPatient": {
+        "title": "Desvincular paciente",
+        "body": "¿Estás seguro de que deseas desvincular al paciente de este dispositivo?",
+        "confirm": "Desvincular"
+      },
+      "markNeedsCalibration": {
+        "title": "Marcar para calibración",
+        "body": "Esto marcará el dispositivo como necesitando calibración. El estado cambiará a EN MANTENIMIENTO y se desvinculará al paciente actual.",
+        "confirm": "Marcar para calibración"
+      },
+      "validateCalibration": {
+        "title": "Validar calibración",
+        "body": "Esto marcará el dispositivo como calibrado. El estado cambiará a DISPONIBLE.",
+        "confirm": "Validar"
+      }
     },
     "empty": "No se encontró un dispositivo para este kit."
   },
@@ -376,20 +459,15 @@
     },
     "hardware": {
       "title": "Especificaciones de hardware",
-      "kitSerial": "Número de serie del kit",
-      "kitSerialPlaceholder": "ej. UF-2024-X982",
-      "batchId": "ID de lote",
-      "batchIdPlaceholder": "ej. BT-0092-A",
-      "hardwareVersion": "Versión de hardware",
-      "hardwareVersionPlaceholder": "Selecciona versión",
+      "serialNumber": "Número de serie",
+      "serialNumberPlaceholder": "ej. UF-2024-X982",
+      "macAddress": "Dirección MAC",
+      "macAddressPlaceholder": "ej. AA:BB:CC:DD:EE:FF",
+      "model": "Modelo",
+      "modelPlaceholder": "ej. UFlex Tracker Pro",
       "firmwareVersion": "Versión de firmware",
       "firmwareVersionPlaceholder": "ej. 1.0.4-stable",
-      "firmwareCurrent": "Actual",
-      "versions": {
-        "flex30": "FlexSense v3.0",
-        "flex40": "FlexSense v4.0",
-        "flex42": "FlexSense v4.2"
-      }
+      "firmwareCurrent": "Actual"
     },
     "actions": {
       "discard": "Descartar",
@@ -402,6 +480,11 @@
       "pending": "Pendiente",
       "complete": "Completo",
       "stepCounter": "Paso {{current}} de {{total}}: Verificación"
+    },
+    "steps": {
+      "formValidation": "Validación del formulario",
+      "databaseSync": "Sincronización con base de datos",
+      "iotKeyExchange": "Intercambio de claves IoT"
     },
     "bestPractices": {
       "title": "Buenas prácticas",
@@ -1214,13 +1297,12 @@
     },
     "title": "Inventario de dispositivos",
     "subtitle": "Administra y monitorea tu flota de sensores clínicos. Controla la salud de la batería, el estado de conectividad y asigna dispositivos a tratamientos activos.",
-    "assignToPatient": "Asignar a paciente",
     "connectivity": {
       "title": "Conectividad de flota",
       "active": "Dispositivos activos",
       "available": "Unidades disponibles",
       "inService": "En servicio",
-      "fromLastWeek": "vs. semana pasada",
+      "syncedThisWeek": "sincronizados esta semana",
       "maintenanceRequired": "Mantenimiento requerido"
     },
     "battery": {
@@ -1228,13 +1310,10 @@
       "high": "80-100% (Alta)",
       "mid": "20-80% (Media)",
       "low": "0-20% (Baja)",
-      "units": "unidades",
-      "chargingReport": "Ver reporte de carga"
+      "units": "unidades"
     },
     "table": {
-      "title": "Inventario",
-      "filter": "Filtrar",
-      "export": "Exportar"
+      "title": "Inventario"
     },
     "columns": {
       "deviceId": "ID Dispositivo",
@@ -1245,25 +1324,22 @@
       "assignment": "Asignación",
       "action": "Acción"
     },
-    "status": {
-      "available": "Disponible",
-      "active": "Activo",
-      "offline": "Desconectado"
-    },
+    "noSync": "Nunca sincronizó",
     "actions": {
       "assign": "Asignar",
-      "manage": "Gestionar"
+      "unassign": "Desvincular",
+      "calibrate": "Calibrar",
+      "viewDetails": "Ver detalles"
     },
-    "showingCount": "Mostrando {{visible}} de {{total}} dispositivos",
+    "showingCount": "{{visible}} dispositivos",
     "maintenance": {
       "title": "Mantenimiento requerido",
-      "body": "4 dispositivos fueron marcados para diagnóstico de hardware tras reportar datos de calibración inconsistentes.",
-      "cta": "Solicitar servicio"
+      "body": "{{count}} dispositivos están actualmente en mantenimiento."
     },
     "quick": {
       "title": "Asignación rápida",
       "body": "Asigna rápidamente sensores disponibles a nuevos pacientes.",
-      "cta": "Iniciar asistente"
+      "cta": "Ir a Pacientes"
     },
     "monitor": {
       "title": "Monitor de conectividad",

@@ -395,22 +395,29 @@
   font-weight: 700;
 }
 
-.inv__status--available {
-  background: rgba(52, 199, 155, 0.16);
+.inv__status--AVAILABLE {
+  background: rgba(52, 199, 155, 0.18);
   color: #16785a;
 }
 
-.inv__status--active {
-  background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
-  color: var(--p-primary-color);
+.inv__status--ASSIGNED {
+  background: rgba(7, 77, 97, 0.15);
+  color: #074d61;
 }
 
-.inv__status--offline {
+.inv__status--IN_MAINTENANCE {
+  background: rgba(255, 173, 51, 0.18);
+  color: #b38600;
+}
+
+.inv__status--RETIRED {
   background: var(--p-surface-200);
   color: var(--p-text-muted-color);
 }
 
-:host-context(.app-dark) .inv__status--available { color: #34c79b; }
+:host-context(.app-dark) .inv__status--AVAILABLE { color: #34c79b; }
+:host-context(.app-dark) .inv__status--ASSIGNED { color: var(--p-primary-color); }
+:host-context(.app-dark) .inv__status--IN_MAINTENANCE { color: #e8a317; }
 
 .inv__battery-cell {
   display: inline-flex;
@@ -471,8 +478,39 @@
   background: color-mix(in srgb, var(--p-primary-color) 8%, transparent);
 }
 
-.inv__row-action--muted {
-  color: var(--p-text-muted-color);
+.inv__row-action--assign {
+  color: #16785a;
+  background: rgba(52, 199, 155, 0.12);
+  font-size: 11px;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.inv__row-action--unassign {
+  color: #b6322f;
+  background: rgba(217, 83, 79, 0.12);
+  font-size: 11px;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.inv__row-action--calibrate {
+  color: #b38600;
+  background: rgba(255, 173, 51, 0.14);
+  font-size: 11px;
+  padding: 4px 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.inv__row-action--delete {
+  color: #b6322f;
+}
+
+.inv__row-action--delete:hover {
+  background: rgba(217, 83, 79, 0.12);
 }
 
 .inv__table-footer {
@@ -492,24 +530,13 @@
   color: var(--p-text-muted-color);
 }
 
-.inv__pager {
-  display: inline-flex;
-  gap: 4px;
-}
-
-.inv__pager button {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  border: 1px solid var(--p-surface-200);
-  background: var(--p-surface-0);
-  cursor: pointer;
-  @include theme.surface;
-}
-
-:host-context(.app-dark) .inv__pager button {
-  background: var(--p-surface-100);
-  border-color: var(--p-surface-300);
+.inv__empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--p-text-muted-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 /* Bottom 3 cards */
@@ -763,3 +790,9 @@
   background: #34c79b;
   display: inline-block;
 }
+
+.inv__monitor-dot--degraded { background: #e89f41; }
+.inv__monitor-dot--down { background: #d9534f; }
+
+.inv__monitor-status--degraded { color: #e89f41; }
+.inv__monitor-status--down { color: #d9534f; }

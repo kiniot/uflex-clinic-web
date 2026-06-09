@@ -4,7 +4,7 @@ import {TranslatePipe, TranslateService} from '@ngx-translate/core';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {ButtonModule} from 'primeng/button';
 import {PageHeader} from '../../../../shared/presentation/components/page-header/page-header';
-import {MOCK_CALIBRATION_SESSION} from '../../../infrastructure/calibration.mock';
+import {MOCK_CALIBRATION_SESSION, CALIBRATION_STEPS} from '../../../infrastructure/calibration-session.mock';
 import {CalibrationSteps} from '../../components/calibration-steps/calibration-steps';
 import {HardwareIntegrity} from '../../components/hardware-integrity/hardware-integrity';
 import {LiveAlignment} from '../../components/live-alignment/live-alignment';

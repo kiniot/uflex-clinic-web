@@ -1,10 +1,32 @@
 <section class="fleet">
   <header class="fleet__header">
     <h2 class="fleet__title">{{ 'deviceManagement.fleetStatus' | translate }}</h2>
-    <button type="button" class="fleet__filter-btn" aria-label="filter">
-      <i class="pi pi-filter" aria-hidden="true"></i>
-    </button>
+    <ng-content select="[fleetHeaderAction]"/>
   </header>
+
+  <div class="fleet__filters">
+    <p-select class="fleet__filter-select"
+              [options]="connectivityOptions()"
+              [ngModel]="connectivityFilter()"
+              (ngModelChange)="connectivityFilter.set($event)"
+              optionLabel="label"
+              optionValue="value"
+              [placeholder]="'deviceManagement.filters.connectivityPlaceholder' | translate"/>
+    <p-select class="fleet__filter-select"
+              [options]="calibrationOptions()"
+              [ngModel]="calibrationFilter()"
+              (ngModelChange)="calibrationFilter.set($event)"
+              optionLabel="label"
+              optionValue="value"
+              [placeholder]="'deviceManagement.filters.calibrationPlaceholder' | translate"/>
+    <p-select class="fleet__filter-select"
+              [options]="statusOptions()"
+              [ngModel]="statusFilter()"
+              (ngModelChange)="statusFilter.set($event)"
+              optionLabel="label"
+              optionValue="value"
+              [placeholder]="'deviceManagement.filters.statusPlaceholder' | translate"/>
+  </div>
 
   <div class="fleet__scroll">
     <table class="fleet__table">
@@ -13,7 +35,7 @@
           <th>{{ 'deviceManagement.columns.kitId' | translate }}</th>
           <th>{{ 'deviceManagement.columns.linkedPatient' | translate }}</th>
           <th>{{ 'deviceManagement.columns.batteryLevel' | translate }}</th>
-          <th>{{ 'deviceManagement.columns.bluetooth' | translate }}</th>
+          <th>{{ 'deviceManagement.columns.connectivity' | translate }}</th>
           <th>{{ 'deviceManagement.columns.calibration' | translate }}</th>
           <th>{{ 'deviceManagement.columns.firmware' | translate }}</th>
           <th>{{ 'deviceManagement.columns.status' | translate }}</th>
@@ -21,13 +43,13 @@
         </tr>
       </thead>
       <tbody>
-        @for (device of devices(); track device.id) {
+        @for (device of filteredDevices(); track device.id) {
           <tr>
-            <td class="fleet__kit-id">{{ device.kitId }}</td>
+            <td class="fleet__kit-id">{{ device.serialNumber }}</td>
 
             <td>
-              @if (device.linkedPatient) {
-                {{ device.linkedPatient }}
+              @if (device.currentPatientFullName) {
+                {{ device.currentPatientFullName }}
               } @else {
                 <span class="fleet__muted">{{ 'deviceManagement.unassigned' | translate }}</span>
               }
@@ -45,27 +67,24 @@
             </td>
 
             <td>
-              <i class="pi pi-bluetooth fleet__bt"
-                 [class.fleet__bt--on]="device.bluetoothConnected"
-                 [class.fleet__bt--off]="!device.bluetoothConnected"
-                 aria-hidden="true"></i>
+              <span class="fleet__online-indicator"
+                    [class.fleet__online-indicator--online]="!device.offline"
+                    [class.fleet__online-indicator--offline]="device.offline">
+                <span class="fleet__online-dot" aria-hidden="true"></span>
+                <span>{{ (device.offline ? 'deviceManagement.status.offline' : 'deviceManagement.status.online') | translate }}</span>
+              </span>
             </td>
 
             <td>
-              @if (device.calibrationStatus === 'valid') {
+              @if (device.calibrationStatus === 'VALID') {
                 <span class="fleet__cal fleet__cal--valid">
                   <i class="pi pi-check-circle" aria-hidden="true"></i>
                   {{ 'deviceManagement.calibration.valid' | translate }}
                 </span>
-              } @else if (device.calibrationStatus === 'expired') {
+              } @else if (device.calibrationStatus === 'NEEDS_CALIBRATION') {
                 <span class="fleet__cal fleet__cal--expired">
                   <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
                   {{ 'deviceManagement.calibration.expired' | translate }}
-                </span>
-              } @else {
-                <span class="fleet__cal fleet__cal--pending">
-                  <i class="pi pi-clock" aria-hidden="true"></i>
-                  {{ 'deviceManagement.calibration.pending' | translate }}
                 </span>
               }
             </td>
@@ -79,11 +98,22 @@
             </td>
 
             <td class="fleet__actions-col">
-              <button type="button" class="fleet__row-action"
-                      (click)="onRowAction(device, $event)"
-                      aria-label="actions">
-                <i class="pi pi-ellipsis-v" aria-hidden="true"></i>
+              <button type="button" class="fleet__action-btn"
+                      (click)="onViewDetails(device, $event)"
+                      [attr.aria-label]="'deviceManagement.actions.viewDetails' | translate">
+                <i class="pi pi-eye" aria-hidden="true"></i>
               </button>
+              <button type="button" class="fleet__action-btn fleet__action-btn--danger"
+                      (click)="onDeleteDevice(device, $event)"
+                      [attr.aria-label]="'deviceManagement.actions.deleteDevice' | translate">
+                <i class="pi pi-trash" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="8" class="fleet__empty">
+              {{ 'deviceManagement.empty' | translate }}
             </td>
           </tr>
         }

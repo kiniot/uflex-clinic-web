@@ -3,12 +3,10 @@ import {Routes} from '@angular/router';
 const deviceInventory = () =>
   import('./views/device-inventory/device-inventory').then(m => m.DeviceInventory);
 
-/**
- * Device routes for the physiotherapist role. Default is the Device
- * Inventory view (assignment-focused). The clinic admin's operational
- * sub-routes (calibrate, diagnostics, register, link) are exposed by
- * {@link deviceRoutes} instead.
- */
+const deviceDetails = () =>
+  import('./views/device-details/device-details').then(m => m.DeviceDetails);
+
 export const physiotherapistDeviceRoutes: Routes = [
-  {path: '', loadComponent: deviceInventory}
+  {path: '', loadComponent: deviceInventory},
+  {path: 'details/:serialNumber', loadComponent: deviceDetails}
 ];
