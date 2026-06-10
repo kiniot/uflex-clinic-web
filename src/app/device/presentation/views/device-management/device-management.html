@@ -1,18 +1,6 @@
 <app-page-header
   [title]="'deviceManagement.title' | translate"
   [subtitle]="'deviceManagement.subtitle' | translate">
-  <button pButton type="button" severity="secondary" [outlined]="true"
-          class="device__action-btn"
-          routerLink="diagnostics">
-    <i class="pi pi-bolt" aria-hidden="true"></i>
-    <span>{{ 'deviceManagement.actions.runDiagnostics' | translate }}</span>
-  </button>
-  <button pButton type="button" severity="secondary" [outlined]="true"
-          class="device__action-btn"
-          routerLink="calibrate">
-    <i class="pi pi-refresh" aria-hidden="true"></i>
-    <span>{{ 'deviceManagement.actions.calibrate' | translate }}</span>
-  </button>
 </app-page-header>
 
 <section class="device__stats">
@@ -23,6 +11,7 @@
         <span class="device__stat-number">{{ fleetMetrics().total }}</span>
       </div>
       <span class="device__stat-badge">{{ 'deviceManagement.stats.syncedThisWeek' | translate: { count: syncedThisWeek() } }}</span>
+      <span class="device__stat-note">{{ 'deviceManagement.stats.totalActiveKitsNote' | translate }}</span>
     </div>
   </app-stat-card>
 
@@ -32,6 +21,7 @@
         <i class="pi pi-check-circle device__stat-icon device__stat-icon--success" aria-hidden="true"></i>
         <span class="device__stat-number device__stat-number--success">{{ fleetMetrics().available }}</span>
       </div>
+      <span class="device__stat-note">{{ 'deviceManagement.stats.availableKitsNote' | translate }}</span>
     </div>
   </app-stat-card>
 
@@ -41,6 +31,7 @@
         <i class="pi pi-users device__stat-icon device__stat-icon--primary" aria-hidden="true"></i>
         <span class="device__stat-number device__stat-number--primary">{{ fleetMetrics().assigned }}</span>
       </div>
+      <span class="device__stat-note">{{ 'deviceManagement.stats.assignedKitsNote' | translate }}</span>
     </div>
   </app-stat-card>
 
@@ -50,6 +41,7 @@
         <i class="pi pi-wrench device__stat-icon device__stat-icon--warning" aria-hidden="true"></i>
         <span class="device__stat-number device__stat-number--warning">{{ fleetMetrics().inMaintenance }}</span>
       </div>
+      <span class="device__stat-note">{{ 'deviceManagement.stats.inMaintenanceKitsNote' | translate }}</span>
     </div>
   </app-stat-card>
 
@@ -59,6 +51,7 @@
         <i class="pi pi-exclamation-triangle device__stat-icon device__stat-icon--alert" aria-hidden="true"></i>
         <span class="device__stat-number device__stat-number--alert">{{ fleetMetrics().lowBattery }}</span>
       </div>
+      <span class="device__stat-note">{{ 'deviceManagement.stats.lowBatteryKitsNote' | translate }}</span>
     </div>
   </app-stat-card>
 
@@ -68,6 +61,7 @@
         <i class="pi pi-ban device__stat-icon device__stat-icon--muted" aria-hidden="true"></i>
         <span class="device__stat-number device__stat-number--muted">{{ fleetMetrics().offline }}</span>
       </div>
+      <span class="device__stat-note">{{ 'deviceManagement.stats.offlineKitsNote' | translate }}</span>
     </div>
   </app-stat-card>
 </section>

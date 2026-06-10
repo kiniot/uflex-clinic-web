@@ -133,11 +133,6 @@
   color: var(--p-text-muted-color);
 }
 
-.fleet__actions-col {
-  text-align: right;
-  width: 100px;
-}
-
 /* Battery */
 .fleet-battery {
   display: inline-flex;
@@ -283,26 +278,23 @@
 }
 
 /* Action buttons */
-.fleet__action-btn {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  border: 0;
-  background: transparent;
-  color: var(--p-text-muted-color);
-  cursor: pointer;
+.fleet__actions-col {
+  width: 120px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.fleet__actions {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  @include theme.surface;
+  gap: 8px;
 }
 
-.fleet__action-btn:hover {
-  background: var(--p-surface-100);
-  color: var(--p-text-color);
-}
-
-.fleet__action-btn--danger:hover {
-  background: rgba(217, 83, 79, 0.12);
-  color: #c73a3a;
+:host ::ng-deep .fleet__action-btn,
+:host ::ng-deep .fleet__action-btn .p-button {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 10px;
 }

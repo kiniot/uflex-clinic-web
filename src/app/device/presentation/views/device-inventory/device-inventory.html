@@ -72,6 +72,18 @@
 <section class="inv__table-card">
   <header class="inv__table-header">
     <h2 class="inv__table-title">{{ 'deviceInventory.table.title' | translate }}</h2>
+    <div class="inv__table-tabs" role="tablist">
+      <button type="button" class="inv__table-tab"
+              [class.inv__table-tab--active]="activeTab() === 'available'"
+              (click)="setActiveTab('available')">
+        {{ 'deviceInventory.tabs.available' | translate }}
+      </button>
+      <button type="button" class="inv__table-tab"
+              [class.inv__table-tab--active]="activeTab() === 'myDevices'"
+              (click)="setActiveTab('myDevices')">
+        {{ 'deviceInventory.tabs.myDevices' | translate }}
+      </button>
+    </div>
   </header>
 
   <div class="inv__table-scroll">
@@ -88,7 +100,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (device of devices(); track device.id) {
+        @for (device of filteredDevices(); track device.id) {
           <tr class="inv__row">
             <td>
               <div class="inv__device">
@@ -143,7 +155,7 @@
 
   <footer class="inv__table-footer">
     <span class="inv__counter">
-      {{ 'deviceInventory.showingCount' | translate: {visible: devices().length, total: devices().length} }}
+      {{ 'deviceInventory.showingCount' | translate: {visible: filteredDevices().length, total: devices().length} }}
     </span>
   </footer>
 </section>

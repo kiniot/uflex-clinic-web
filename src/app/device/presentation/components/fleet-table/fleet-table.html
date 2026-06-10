@@ -98,16 +98,18 @@
             </td>
 
             <td class="fleet__actions-col">
-              <button type="button" class="fleet__action-btn"
-                      (click)="onViewDetails(device, $event)"
-                      [attr.aria-label]="'deviceManagement.actions.viewDetails' | translate">
-                <i class="pi pi-eye" aria-hidden="true"></i>
-              </button>
-              <button type="button" class="fleet__action-btn fleet__action-btn--danger"
-                      (click)="onDeleteDevice(device, $event)"
-                      [attr.aria-label]="'deviceManagement.actions.deleteDevice' | translate">
-                <i class="pi pi-trash" aria-hidden="true"></i>
-              </button>
+              <div class="fleet__actions">
+                <button pButton type="button" severity="secondary" [outlined]="true"
+                        class="fleet__action-btn" [icon]="'pi pi-eye'"
+                        [pTooltip]="'deviceManagement.actions.viewDetails' | translate"
+                        tooltipPosition="top"
+                        (click)="onViewDetails(device, $event)"></button>
+                <button pButton type="button" severity="danger" [outlined]="true"
+                        class="fleet__action-btn" [icon]="'pi pi-trash'"
+                        [pTooltip]="'deviceManagement.actions.deleteDevice' | translate"
+                        tooltipPosition="top"
+                        (click)="onDeleteDevice(device, $event)"></button>
+              </div>
             </td>
           </tr>
         } @empty {

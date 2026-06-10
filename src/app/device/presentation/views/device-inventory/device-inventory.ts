@@ -6,8 +6,11 @@ import {ButtonModule} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
 import {MessageService} from 'primeng/api';
 import {DeviceStore} from '../../../application/device.store';
+import {OrganizationStore} from '../../../../organization/application/organization.store';
 import {Device} from '../../../domain/model/device.entity';
 import {ConfirmActionDialog} from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
+
+type InventoryTab = 'available' | 'myDevices';
 
 @Component({
   selector: 'app-device-inventory',
@@ -26,6 +29,7 @@ import {ConfirmActionDialog} from '../../../../shared/presentation/components/co
 })
 export class DeviceInventory {
   private readonly store = inject(DeviceStore);
+  private readonly orgStore = inject(OrganizationStore);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly messageService = inject(MessageService);
@@ -34,6 +38,26 @@ export class DeviceInventory {
   protected readonly fleetMetrics = this.store.fleetMetrics;
   protected readonly syncedThisWeek = this.store.syncedThisWeek;
   protected readonly availableUnitsPct = this.store.availableUnitsPct;
+
+  /* Tab state */
+  protected readonly activeTab = signal<InventoryTab>('available');
+  private readonly myPatientIds = computed(() =>
+    new Set(this.orgStore.patients().map(p => p.id))
+  );
+
+  protected readonly filteredDevices = computed(() => {
+    const tab = this.activeTab();
+    const all = this.devices();
+
+    if (tab === 'available') {
+      return all.filter(d => d.status === 'AVAILABLE');
+    }
+
+    const ids = this.myPatientIds();
+    return all.filter(d =>
+      d.currentPatientId != null && ids.has(d.currentPatientId)
+    );
+  });
 
   /* Battery health computed from real device data */
   protected readonly batteryHighCount = computed(() =>
@@ -63,6 +87,14 @@ export class DeviceInventory {
   protected readonly confirmDialogActionLabelKey = signal('');
   protected readonly confirmDialogPending = signal(false);
   protected readonly selectedDeviceForAction = signal<Device | null>(null);
+
+  constructor() {
+    void this.orgStore.loadMyPatients();
+  }
+
+  protected setActiveTab(tab: InventoryTab) {
+    this.activeTab.set(tab);
+  }
 
   /* Actions */
 

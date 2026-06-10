@@ -288,16 +288,22 @@
     },
     "stats": {
       "totalActiveKits": "Total Active Kits",
+      "totalActiveKitsNote": "In inventory",
       "requiresCalibration": "Requires Calibration",
       "networkStatus": "Network Status",
       "syncedThisWeek": "{{count}} synced this week",
       "within7Days": "Within 7 days",
       "online": "Online",
       "availableKits": "Available Kits",
+      "availableKitsNote": "Ready to assign",
       "assignedKits": "Assigned Kits",
+      "assignedKitsNote": "In use",
       "inMaintenanceKits": "In Maintenance",
+      "inMaintenanceKitsNote": "Needs service",
       "lowBatteryKits": "Low Battery",
-      "offlineKits": "Offline"
+      "lowBatteryKitsNote": "Needs charge",
+      "offlineKits": "Offline",
+      "offlineKitsNote": "Disconnected"
     },
     "fleetStatus": "Fleet Status",
     "columns": {
@@ -1332,6 +1338,10 @@
       "viewDetails": "View details"
     },
     "showingCount": "{{visible}} devices",
+    "tabs": {
+      "available": "Available",
+      "myDevices": "My devices"
+    },
     "maintenance": {
       "title": "Maintenance Needed",
       "body": "{{count}} devices are currently in maintenance."

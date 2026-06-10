@@ -72,7 +72,7 @@
             <i class="pi pi-user-plus action-card__icon" aria-hidden="true"></i>
             <h3 class="action-card__title">{{ 'deviceDetails.cards.assignPatient.title' | translate }}</h3>
             <p class="action-card__desc">{{ 'deviceDetails.cards.assignPatient.desc' | translate }}</p>
-            <button pButton type="button" severity="primary" class="action-card__btn"
+            <button pButton type="button" severity="primary" [outlined]="true" class="action-card__btn"
                     (click)="onOpenAssignDialog()">
               {{ 'deviceDetails.cards.assignPatient.button' | translate }}
             </button>
@@ -84,7 +84,7 @@
             <i class="pi pi-user-minus action-card__icon" aria-hidden="true"></i>
             <h3 class="action-card__title">{{ 'deviceDetails.cards.unassignPatient.title' | translate }}</h3>
             <p class="action-card__desc">{{ 'deviceDetails.cards.unassignPatient.desc' | translate }}</p>
-            <button pButton type="button" severity="danger" class="action-card__btn"
+            <button pButton type="button" severity="danger" [outlined]="true" class="action-card__btn"
                     (click)="onOpenUnassignConfirm()">
               {{ 'deviceDetails.cards.unassignPatient.button' | translate }}
             </button>
@@ -96,7 +96,7 @@
             <i class="pi pi-exclamation-triangle action-card__icon" aria-hidden="true"></i>
             <h3 class="action-card__title">{{ 'deviceDetails.cards.markNeedsCalibration.title' | translate }}</h3>
             <p class="action-card__desc">{{ 'deviceDetails.cards.markNeedsCalibration.desc' | translate }}</p>
-            <button pButton type="button" severity="help" class="action-card__btn"
+            <button pButton type="button" severity="warn" [outlined]="true" class="action-card__btn"
                     (click)="onOpenMarkNeedsCalibrationConfirm()">
               {{ 'deviceDetails.cards.markNeedsCalibration.button' | translate }}
             </button>
@@ -108,7 +108,7 @@
             <i class="pi pi-check-circle action-card__icon" aria-hidden="true"></i>
             <h3 class="action-card__title">{{ 'deviceDetails.cards.validateCalibration.title' | translate }}</h3>
             <p class="action-card__desc">{{ 'deviceDetails.cards.validateCalibration.desc' | translate }}</p>
-            <button pButton type="button" severity="success" class="action-card__btn"
+            <button pButton type="button" severity="success" [outlined]="true" class="action-card__btn"
                     (click)="onOpenValidateCalibrationConfirm()">
               {{ 'deviceDetails.cards.validateCalibration.button' | translate }}
             </button>

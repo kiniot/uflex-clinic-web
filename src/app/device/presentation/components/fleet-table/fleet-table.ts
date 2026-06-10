@@ -2,7 +2,9 @@ import {Component, computed, inject, input, output, signal} from '@angular/core'
 import {FormsModule} from '@angular/forms';
 import {toSignal} from '@angular/core/rxjs-interop';
 import {TranslatePipe, TranslateService} from '@ngx-translate/core';
+import {ButtonModule} from 'primeng/button';
 import {SelectModule} from 'primeng/select';
+import {TooltipModule} from 'primeng/tooltip';
 import {Device} from '../../../domain/model/device.entity';
 
 interface SelectOption<T> {
@@ -12,7 +14,7 @@ interface SelectOption<T> {
 
 @Component({
   selector: 'app-fleet-table',
-  imports: [FormsModule, TranslatePipe, SelectModule],
+  imports: [FormsModule, TranslatePipe, SelectModule, ButtonModule, TooltipModule],
   templateUrl: './fleet-table.html',
   styleUrl: './fleet-table.scss'
 })
