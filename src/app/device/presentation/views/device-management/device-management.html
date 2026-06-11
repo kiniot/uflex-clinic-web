@@ -69,6 +69,7 @@
 <app-fleet-table
   [devices]="devices()"
   (viewDetails)="onViewDetails($event)"
+  (rowOpen)="onViewDetails($event)"
   (deleteDevice)="onDeleteDevice($event)">
   <button fleetHeaderAction pButton type="button" severity="primary"
           class="device__action-btn"

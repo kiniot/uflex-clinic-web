@@ -67,12 +67,25 @@ export class DeviceDetails {
   protected readonly isAssigning = signal(false);
 
   protected readonly patientOptions = computed(() => {
+    const assignedIds = this.assignedPatientIds();
     const byPhysio = this.orgStore.patientsByPhysiotherapist();
     if (byPhysio.length > 0) {
-      return byPhysio.map(p => ({label: p.fullName, value: p.id}));
+      return byPhysio
+        .filter(p => !assignedIds.has(p.id))
+        .map(p => ({label: p.fullName, value: p.id}));
     }
-    return this.orgStore.patients().map(p => ({label: p.fullName, value: p.id}));
+    return this.orgStore.patients()
+      .filter(p => !assignedIds.has(p.id))
+      .map(p => ({label: p.fullName, value: p.id}));
   });
+
+  private readonly assignedPatientIds = computed(() =>
+    new Set(
+      this.store.devices()
+        .filter(d => d.currentPatientId != null)
+        .map(d => d.currentPatientId!)
+    )
+  );
 
   /* Contextual action visibility */
 

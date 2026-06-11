@@ -385,10 +385,20 @@
 
 .inv__row {
   border-bottom: 1px solid var(--p-surface-100);
+  cursor: pointer;
   @include theme.border;
 }
 
-:host-context(.app-dark) .inv__row { border-bottom-color: var(--p-surface-200); }
+.inv__row:hover {
+  background: var(--p-surface-50);
+}
+
+:host-context(.app-dark) .inv__row {
+  border-bottom-color: var(--p-surface-200);
+}
+:host-context(.app-dark) .inv__row:hover {
+  background: var(--p-surface-200);
+}
 .inv__row:last-child { border-bottom: 0; }
 
 .inv__device {

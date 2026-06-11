@@ -101,7 +101,7 @@
       </thead>
       <tbody>
         @for (device of filteredDevices(); track device.id) {
-          <tr class="inv__row">
+          <tr class="inv__row" (click)="onViewDetails(device)">
             <td>
               <div class="inv__device">
                 <i class="pi pi-microchip inv__device-icon" aria-hidden="true"></i>
@@ -134,13 +134,13 @@
                         class="inv__action-btn" [icon]="'pi pi-eye'"
                         [pTooltip]="'deviceInventory.actions.viewDetails' | translate"
                         tooltipPosition="top"
-                        (click)="onViewDetails(device)"></button>
+                        (click)="onViewDetails(device); $event.stopPropagation()"></button>
 
                 <button pButton type="button" severity="danger" [outlined]="true"
                         class="inv__action-btn" [icon]="'pi pi-trash'"
                         [pTooltip]="'deviceManagement.actions.deleteDevice' | translate"
                         tooltipPosition="top"
-                        (click)="onOpenDeleteConfirm(device)"></button>
+                        (click)="onOpenDeleteConfirm(device); $event.stopPropagation()"></button>
               </div>
             </td>
           </tr>

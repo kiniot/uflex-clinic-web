@@ -44,7 +44,7 @@
       </thead>
       <tbody>
         @for (device of filteredDevices(); track device.id) {
-          <tr>
+          <tr (click)="onRowClick(device)">
             <td class="fleet__kit-id">{{ device.serialNumber }}</td>
 
             <td>
