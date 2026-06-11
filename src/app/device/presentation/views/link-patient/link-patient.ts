@@ -9,22 +9,9 @@ import {InputTextModule} from 'primeng/inputtext';
 import {SelectModule} from 'primeng/select';
 import {SearchInput} from '../../../../shared/presentation/components/search-input/search-input';
 import {DeviceStore} from '../../../application/device.store';
-import {Device} from '../../../domain/model/device.entity';
-import {LinkPatientCommand} from '../../../domain/model/link-patient.command';
-import {PlanningStore} from '../../../../planning/application/planning.store';
-import {Patient} from '../../../../planning/domain/model/patient.entity';
+import {AssignDeviceCommand} from '../../../domain/model/assign-device.command';
+import {Patient, DeviceOption} from './link-patient.types';
 
-interface DeviceOption {
-  label: string;
-  value: number;
-}
-
-/**
- * Link IoT Device view inside the Device bounded context. Lets a clinician
- * select a patient (from the Planning bounded context) and assign one of
- * the available uFlex devices. Emits a LinkPatientCommand on confirm and
- * routes back to the inventory.
- */
 @Component({
   selector: 'app-link-patient',
   imports: [
@@ -44,42 +31,28 @@ export class LinkPatient {
   private translate = inject(TranslateService);
   private router = inject(Router);
   private deviceStore = inject(DeviceStore);
-  private planningStore = inject(PlanningStore);
-
-  protected readonly patients = this.planningStore.patients;
 
   protected readonly filterText = signal('');
-  protected readonly selectedPatientId = signal<number | null>(null);
-  protected readonly selectedDeviceId = signal<number | null>(null);
-
-  protected readonly filteredPatients = computed<Patient[]>(() => {
-    const term = this.filterText().trim().toLowerCase();
-    if (!term) return this.patients();
-    return this.patients().filter(p =>
-      p.name.toLowerCase().includes(term) || p.mrn.toLowerCase().includes(term)
-    );
-  });
-
-  protected readonly availableDevices = computed<Device[]>(() =>
-    this.deviceStore.devices().filter(d => d.linkedPatient === null && d.status !== 'offline')
-  );
+  protected readonly selectedPatientId = signal<string | null>(null);
+  protected readonly selectedDeviceId = signal<string | null>(null);
 
   protected readonly deviceOptions = computed<DeviceOption[]>(() =>
-    this.availableDevices().map(d => ({label: d.kitId, value: d.id}))
+    this.deviceStore.devices()
+      .filter(d => d.currentPatientId === null && d.status === 'AVAILABLE')
+      .map(d => ({label: d.serialNumber, value: d.serialNumber}))
   );
 
-  protected readonly selectedPatient = computed<Patient | null>(() => {
-    const id = this.selectedPatientId();
-    return id != null ? this.patients().find(p => p.id === id) ?? null : null;
+  protected readonly filteredPatients = computed<Patient[]>(() => {
+    return [];
   });
 
-  protected readonly selectedDevice = computed<Device | null>(() => {
+  protected readonly selectedDevice = computed<{serialNumber: string} | null>(() => {
     const id = this.selectedDeviceId();
-    return id != null ? this.deviceStore.devices().find(d => d.id === id) ?? null : null;
+    return id != null ? {serialNumber: id} : null;
   });
 
   protected readonly canConfirm = computed(() =>
-    this.selectedPatient() !== null && this.selectedDevice() !== null
+    this.selectedPatientId() !== null && this.selectedDeviceId() !== null
   );
 
   private readonly translations = toSignal(
@@ -96,11 +69,11 @@ export class LinkPatient {
   );
 
   protected readonly assignedPatientLabel = computed(() =>
-    this.selectedPatient()?.name ?? this.translations()['deviceLink.unselectedPatient'] ?? ''
+    this.translations()['deviceLink.unselectedPatient'] ?? ''
   );
 
   protected readonly assignedKitLabel = computed(() =>
-    this.selectedDevice()?.kitId ?? this.translations()['deviceLink.unselectedKit'] ?? ''
+    this.selectedDevice()?.serialNumber ?? this.translations()['deviceLink.unselectedKit'] ?? ''
   );
 
   protected onSelectPatient(patient: Patient) {
@@ -112,16 +85,11 @@ export class LinkPatient {
   }
 
   protected onConfirm() {
-    const patient = this.selectedPatient();
-    const device = this.selectedDevice();
-    if (!patient || !device) return;
+    const patientId = this.selectedPatientId();
+    const serialNumber = this.selectedDeviceId();
+    if (!patientId || !serialNumber) return;
 
-    const command = new LinkPatientCommand({
-      patientId: patient.id,
-      deviceId: device.id,
-      protocolDuration: this.protocolDuration()
-    });
-    console.log('Link patient command', command);
+    this.deviceStore.assignDevice(serialNumber, patientId);
     this.router.navigate(['/clinic-admin/device']);
   }
 }

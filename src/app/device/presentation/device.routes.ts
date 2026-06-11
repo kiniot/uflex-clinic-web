@@ -21,7 +21,7 @@ const deviceDetails = () =>
  */
 export const deviceRoutes: Routes = [
   {path: '', loadComponent: deviceManagement},
-  {path: 'details/:id', loadComponent: deviceDetails},
+  {path: 'details/:serialNumber', loadComponent: deviceDetails},
   {path: 'calibrate', loadComponent: deviceCalibration},
   {path: 'diagnostics', loadComponent: deviceDiagnostics},
   {path: 'register', loadComponent: registerDevice},

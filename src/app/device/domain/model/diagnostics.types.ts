@@ -1,18 +1,9 @@
-/**
- * Domain types for the System Diagnostics flow inside the Device
- * bounded context.
- */
-
-export type DiagnosticScopeColor = 'info' | 'success' | 'warning' | 'error';
-export type DiagnosticSeverity = 'success' | 'warning' | 'error';
-
 export interface DiagnosticLogEntry {
   timestamp: string;
   scope: string;
-  scopeColor?: DiagnosticScopeColor;
   message: string;
-  /** Optional inline highlight rendered after the message. */
-  highlight?: {text: string; severity: DiagnosticSeverity};
+  highlight?: {text: string; severity: 'success' | 'warning' | 'error'};
+  scopeColor?: string;
 }
 
 export interface DiagnosticPhase {
@@ -21,12 +12,14 @@ export interface DiagnosticPhase {
   active: boolean;
 }
 
-export interface DiagnosticMetric {
-  id: 'battery' | 'signal' | 'temperature';
-  icon: string;
-  unit: string;
-  primary: string;
-  secondary: string;
+export interface DiagnosticMetrics {
+  batteryHealthPct: number;
+  batteryDetail: string;
+  signalDbm: number;
+  signalBars: number;
+  signalDetail: string;
+  operatingTempC: number;
+  tempRangeLabel: string;
 }
 
 export interface DiagnosticSession {
@@ -35,14 +28,6 @@ export interface DiagnosticSession {
   scanProgressPct: number;
   estimatedRemainingLabel: string;
   phases: DiagnosticPhase[];
-  metrics: {
-    batteryHealthPct: number;
-    batteryDetail: string;
-    signalDbm: number;
-    signalBars: number;
-    signalDetail: string;
-    operatingTempC: number;
-    tempRangeLabel: string;
-  };
+  metrics: DiagnosticMetrics;
   logs: DiagnosticLogEntry[];
 }

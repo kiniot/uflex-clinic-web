@@ -166,6 +166,18 @@ function environmentFile() {
       'NG_APP_PLATFORM_PROVIDER_CURRENT_SUBSCRIPTION_ENDPOINT_PATH',
       '/subscriptions/current',
     ),
+    platformProviderDevicesEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_DEVICES_ENDPOINT_PATH',
+      '/devices',
+    ),
+    platformProviderDeviceMetricsEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_DEVICE_METRICS_ENDPOINT_PATH',
+      '/devices/metrics',
+    ),
+    platformProviderMyAssignedDeviceEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_MY_ASSIGNED_DEVICE_ENDPOINT_PATH',
+      '/devices/my-assigned',
+    ),
   };
 
   return `export const environment = ${JSON.stringify(config, null, 2)};\n`;
