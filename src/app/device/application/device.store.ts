@@ -131,17 +131,20 @@ export class DeviceStore {
     });
   }
 
-  assignDevice(serialNumber: string, patientId: string): void {
+  assignDevice(serialNumber: string, patientId: string): Observable<Device> {
     const command: AssignDeviceCommand = {serialNumber, patientId};
-    this.deviceAssignmentApi.assign(command).subscribe({
-      next: (updatedDevice) => {
+    return this.deviceAssignmentApi.assign(command).pipe(
+      tap((updatedDevice) => {
         this.devicesSignal.update(devices =>
           devices.map(d => d.serialNumber === serialNumber ? updatedDevice : d)
         );
         this.recomputeFleetMetrics();
-      },
-      error: (err: Error) => this.errorSignal.set(err.message)
-    });
+      }),
+      catchError((err: Error) => {
+        this.errorSignal.set(err.message);
+        throw err;
+      })
+    );
   }
 
   unassignDevice(serialNumber: string): void {

@@ -27,7 +27,7 @@ export class DeviceAssignmentApiEndpoint extends ErrorHandlingEnabledBaseType {
       patientId: command.patientId,
     };
 
-    return this.http.patch<DeviceResponse>(endpointUrl, request).pipe(
+    return this.http.post<DeviceResponse>(endpointUrl, request).pipe(
       map((response: DeviceResponse) => this.assembler.toEntityFromResource(response)),
       catchError(this.handleError('Failed to assign device')),
     );

@@ -1304,9 +1304,9 @@
     "title": "Device Inventory",
     "subtitle": "Manage and monitor your clinical sensor fleet. Monitor battery health, connectivity status, and assign devices to active patient rehabilitation tracks.",
     "connectivity": {
-      "title": "Fleet Connectivity",
+      "title": "My Fleet Connectivity",
       "active": "Active Devices",
-      "available": "Available Units",
+      "available": "Online Units",
       "inService": "In Service",
       "syncedThisWeek": "synced this week",
       "maintenanceRequired": "Maintenance required"
@@ -1341,25 +1341,6 @@
     "tabs": {
       "available": "Available",
       "myDevices": "My devices"
-    },
-    "maintenance": {
-      "title": "Maintenance Needed",
-      "body": "{{count}} devices are currently in maintenance."
-    },
-    "quick": {
-      "title": "Quick Assignment",
-      "body": "Quickly allocate available sensors to new patient profiles.",
-      "cta": "Go to Patients"
-    },
-    "monitor": {
-      "title": "Connectivity Monitor",
-      "body": "Real-time status of the local clinic gateway and Bluetooth mesh network.",
-      "gateway": "Gateway",
-      "statusValue": {
-        "stable": "Stable",
-        "degraded": "Degraded",
-        "down": "Down"
-      }
     }
   },
   "patientsList": {

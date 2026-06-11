@@ -24,22 +24,22 @@
     <div class="inv__connectivity-grid">
       <div class="inv__metric">
         <span class="inv__metric-label">{{ 'deviceInventory.connectivity.active' | translate }}</span>
-        <strong class="inv__metric-value">{{ fleetMetrics().total | number }}</strong>
+        <strong class="inv__metric-value">{{ myPatientDevices().length | number }}</strong>
         <span class="inv__metric-delta">
           <i class="pi pi-arrow-up" aria-hidden="true"></i>
-          +{{ syncedThisWeek() }} {{ 'deviceInventory.connectivity.syncedThisWeek' | translate }}
+          +{{ myPatientSyncedThisWeek() }} {{ 'deviceInventory.connectivity.syncedThisWeek' | translate }}
         </span>
       </div>
       <div class="inv__metric">
         <span class="inv__metric-label">{{ 'deviceInventory.connectivity.available' | translate }}</span>
-        <strong class="inv__metric-value">{{ fleetMetrics().available }}</strong>
+        <strong class="inv__metric-value">{{ myPatientOnlineCount() }}</strong>
         <div class="inv__metric-bar">
-          <div class="inv__metric-bar-fill" [style.width.%]="availableUnitsPct()"></div>
+          <div class="inv__metric-bar-fill" [style.width.%]="myPatientOnlinePct()"></div>
         </div>
       </div>
       <div class="inv__metric inv__metric--service">
         <span class="inv__metric-label">{{ 'deviceInventory.connectivity.inService' | translate }}</span>
-        <strong class="inv__metric-value inv__metric-value--danger">{{ fleetMetrics().inMaintenance }}</strong>
+        <strong class="inv__metric-value inv__metric-value--danger">{{ myPatientInMaintenance() }}</strong>
         <span class="inv__metric-sub inv__metric-sub--danger">
           {{ 'deviceInventory.connectivity.maintenanceRequired' | translate }}
         </span>
@@ -53,17 +53,17 @@
       <li class="inv__battery-row">
         <span class="inv__battery-dot inv__battery-dot--high" aria-hidden="true"></span>
         <span class="inv__battery-label">{{ 'deviceInventory.battery.high' | translate }}</span>
-        <span class="inv__battery-value">{{ batteryHighCount() }} {{ 'deviceInventory.battery.units' | translate }}</span>
+        <span class="inv__battery-value">{{ myPatientBatteryHighCount() }} {{ 'deviceInventory.battery.units' | translate }}</span>
       </li>
       <li class="inv__battery-row">
         <span class="inv__battery-dot inv__battery-dot--mid" aria-hidden="true"></span>
         <span class="inv__battery-label">{{ 'deviceInventory.battery.mid' | translate }}</span>
-        <span class="inv__battery-value">{{ batteryMidCount() }} {{ 'deviceInventory.battery.units' | translate }}</span>
+        <span class="inv__battery-value">{{ myPatientBatteryMidCount() }} {{ 'deviceInventory.battery.units' | translate }}</span>
       </li>
       <li class="inv__battery-row">
         <span class="inv__battery-dot inv__battery-dot--low" aria-hidden="true"></span>
         <span class="inv__battery-label">{{ 'deviceInventory.battery.low' | translate }}</span>
-        <span class="inv__battery-value">{{ batteryLowCount() }} {{ 'deviceInventory.battery.units' | translate }}</span>
+        <span class="inv__battery-value">{{ myPatientBatteryLowCount() }} {{ 'deviceInventory.battery.units' | translate }}</span>
       </li>
     </ul>
   </article>
@@ -129,17 +129,19 @@
               {{ device.currentPatientFullName ?? ('deviceManagement.unassigned' | translate) }}
             </td>
             <td class="inv__action-col">
-              <button type="button" class="inv__row-action"
-                      (click)="onViewDetails(device)"
-                      [attr.aria-label]="'deviceInventory.actions.viewDetails' | translate">
-                <i class="pi pi-eye" aria-hidden="true"></i>
-              </button>
+              <div class="inv__actions">
+                <button pButton type="button" severity="secondary" [outlined]="true"
+                        class="inv__action-btn" [icon]="'pi pi-eye'"
+                        [pTooltip]="'deviceInventory.actions.viewDetails' | translate"
+                        tooltipPosition="top"
+                        (click)="onViewDetails(device)"></button>
 
-              <button type="button" class="inv__row-action inv__row-action--delete"
-                      (click)="onOpenDeleteConfirm(device)"
-                      [attr.aria-label]="'deviceManagement.actions.deleteDevice' | translate">
-                <i class="pi pi-trash" aria-hidden="true"></i>
-              </button>
+                <button pButton type="button" severity="danger" [outlined]="true"
+                        class="inv__action-btn" [icon]="'pi pi-trash'"
+                        [pTooltip]="'deviceManagement.actions.deleteDevice' | translate"
+                        tooltipPosition="top"
+                        (click)="onOpenDeleteConfirm(device)"></button>
+              </div>
             </td>
           </tr>
         } @empty {
@@ -158,48 +160,6 @@
       {{ 'deviceInventory.showingCount' | translate: {visible: filteredDevices().length, total: devices().length} }}
     </span>
   </footer>
-</section>
-
-<section class="inv__bottom">
-  <article class="inv__maintenance">
-    <h3 class="inv__maintenance-title">{{ 'deviceInventory.maintenance.title' | translate }}</h3>
-    <p class="inv__maintenance-body">
-      {{ 'deviceInventory.maintenance.body' | translate: {count: fleetMetrics().inMaintenance} }}
-    </p>
-  </article>
-
-  <article class="inv__quick">
-    <header class="inv__quick-header">
-      <h3 class="inv__quick-title">{{ 'deviceInventory.quick.title' | translate }}</h3>
-      <span class="inv__quick-icon" aria-hidden="true">
-        <i class="pi pi-user-plus"></i>
-      </span>
-    </header>
-    <p class="inv__quick-body">{{ 'deviceInventory.quick.body' | translate }}</p>
-    <button pButton type="button" severity="primary" [outlined]="true"
-            class="inv__quick-cta"
-            routerLink="/physiotherapist/patients">
-      <span>{{ 'deviceInventory.quick.cta' | translate }}</span>
-    </button>
-  </article>
-
-  <article class="inv__monitor">
-    <div class="inv__monitor-pattern" aria-hidden="true"></div>
-    <span class="inv__monitor-icon" aria-hidden="true">
-      <i class="pi pi-shield"></i>
-    </span>
-    <h3 class="inv__monitor-title">{{ 'deviceInventory.monitor.title' | translate }}</h3>
-    <p class="inv__monitor-body">{{ 'deviceInventory.monitor.body' | translate }}</p>
-    <span class="inv__monitor-status"
-          [class.inv__monitor-status--degraded]="gatewayStatus() === 'degraded'"
-          [class.inv__monitor-status--down]="gatewayStatus() === 'down'">
-      <span class="inv__monitor-dot"
-            [class.inv__monitor-dot--degraded]="gatewayStatus() === 'degraded'"
-            [class.inv__monitor-dot--down]="gatewayStatus() === 'down'"
-            aria-hidden="true"></span>
-      {{ 'deviceInventory.monitor.gateway' | translate }}: {{ 'deviceInventory.monitor.statusValue.' + gatewayStatus() | translate }}
-    </span>
-  </article>
 </section>
 
 <!-- Confirm Action Dialog -->

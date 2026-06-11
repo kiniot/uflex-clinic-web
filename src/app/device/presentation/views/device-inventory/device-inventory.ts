@@ -4,6 +4,7 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {TranslatePipe} from '@ngx-translate/core';
 import {ButtonModule} from 'primeng/button';
 import {ToastModule} from 'primeng/toast';
+import {TooltipModule} from 'primeng/tooltip';
 import {MessageService} from 'primeng/api';
 import {DeviceStore} from '../../../application/device.store';
 import {OrganizationStore} from '../../../../organization/application/organization.store';
@@ -20,6 +21,7 @@ type InventoryTab = 'available' | 'myDevices';
     TranslatePipe,
     ButtonModule,
     ToastModule,
+    TooltipModule,
     RouterLink,
     ConfirmActionDialog
   ],
@@ -35,9 +37,6 @@ export class DeviceInventory {
   private readonly messageService = inject(MessageService);
 
   protected readonly devices = this.store.devices;
-  protected readonly fleetMetrics = this.store.fleetMetrics;
-  protected readonly syncedThisWeek = this.store.syncedThisWeek;
-  protected readonly availableUnitsPct = this.store.availableUnitsPct;
 
   /* Tab state */
   protected readonly activeTab = signal<InventoryTab>('available');
@@ -59,24 +58,43 @@ export class DeviceInventory {
     );
   });
 
-  /* Battery health computed from real device data */
-  protected readonly batteryHighCount = computed(() =>
-    this.devices().filter(d => d.batteryLevel >= 80).length
+  /* Metrics scoped to the physiotherapist's patients */
+  protected readonly myPatientDevices = computed(() =>
+    this.devices().filter(d => d.currentPatientId != null && this.myPatientIds().has(d.currentPatientId))
   );
-  protected readonly batteryMidCount = computed(() =>
-    this.devices().filter(d => d.batteryLevel >= 20 && d.batteryLevel < 80).length
-  );
-  protected readonly batteryLowCount = computed(() => this.fleetMetrics().lowBattery);
 
-  /* Gateway status derived from offline count */
-  protected readonly gatewayStatus = computed(() => {
-    const offline = this.fleetMetrics().offline;
-    const total = this.fleetMetrics().total;
-    if (total === 0) return 'stable';
-    if (offline === total) return 'down';
-    if (offline === 0) return 'stable';
-    return 'degraded';
+  protected readonly myPatientOnlineCount = computed(() =>
+    this.myPatientDevices().filter(d => !d.offline).length
+  );
+
+  protected readonly myPatientOnlinePct = computed(() => {
+    const total = this.myPatientDevices().length;
+    if (total === 0) return 0;
+    return Math.round((this.myPatientOnlineCount() / total) * 100);
   });
+
+  protected readonly myPatientInMaintenance = computed(() =>
+    this.myPatientDevices().filter(d => d.status === 'IN_MAINTENANCE').length
+  );
+
+  protected readonly myPatientSyncedThisWeek = computed(() => {
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    return this.myPatientDevices().filter(d => d.lastSyncAt && d.lastSyncAt >= weekAgo).length;
+  });
+
+  /* Battery health scoped to the physiotherapist's patients */
+  protected readonly myPatientBatteryHighCount = computed(() =>
+    this.myPatientDevices().filter(d => d.batteryLevel >= 80).length
+  );
+
+  protected readonly myPatientBatteryMidCount = computed(() =>
+    this.myPatientDevices().filter(d => d.batteryLevel >= 20 && d.batteryLevel < 80).length
+  );
+
+  protected readonly myPatientBatteryLowCount = computed(() =>
+    this.myPatientDevices().filter(d => d.batteryLevel < 20).length
+  );
 
   /* Confirm dialog state */
   protected readonly confirmDialogVisible = signal(false);

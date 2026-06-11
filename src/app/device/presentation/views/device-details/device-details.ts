@@ -125,10 +125,17 @@ export class DeviceDetails {
     if (!patientId || !device) return;
 
     this.isAssigning.set(true);
-    this.store.assignDevice(device.serialNumber, patientId);
-    this.isAssigning.set(false);
-    this.assignDialogVisible.set(false);
-    this.messageService.add({severity: 'success', summary: 'Paciente asignado', detail: `Dispositivo asignado exitosamente`});
+    this.store.assignDevice(device.serialNumber, patientId).subscribe({
+      next: () => {
+        this.isAssigning.set(false);
+        this.assignDialogVisible.set(false);
+        this.messageService.add({severity: 'success', summary: 'Paciente asignado', detail: `Dispositivo asignado exitosamente`});
+      },
+      error: () => {
+        this.isAssigning.set(false);
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'No se pudo asignar el paciente al dispositivo'});
+      }
+    });
   }
 
   /* Unassign Patient flow */

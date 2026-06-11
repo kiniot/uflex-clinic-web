@@ -1304,9 +1304,9 @@
     "title": "Inventario de dispositivos",
     "subtitle": "Administra y monitorea tu flota de sensores clínicos. Controla la salud de la batería, el estado de conectividad y asigna dispositivos a tratamientos activos.",
     "connectivity": {
-      "title": "Conectividad de flota",
+      "title": "Conectividad de mis dispositivos",
       "active": "Dispositivos activos",
-      "available": "Unidades disponibles",
+      "available": "Unidades en línea",
       "inService": "En servicio",
       "syncedThisWeek": "sincronizados esta semana",
       "maintenanceRequired": "Mantenimiento requerido"
@@ -1341,25 +1341,6 @@
     "tabs": {
       "available": "Disponibles",
       "myDevices": "Mis dispositivos"
-    },
-    "maintenance": {
-      "title": "Mantenimiento requerido",
-      "body": "{{count}} dispositivos están actualmente en mantenimiento."
-    },
-    "quick": {
-      "title": "Asignación rápida",
-      "body": "Asigna rápidamente sensores disponibles a nuevos pacientes.",
-      "cta": "Ir a Pacientes"
-    },
-    "monitor": {
-      "title": "Monitor de conectividad",
-      "body": "Estado en tiempo real del gateway local y la malla Bluetooth.",
-      "gateway": "Gateway",
-      "statusValue": {
-        "stable": "Estable",
-        "degraded": "Degradado",
-        "down": "Caído"
-      }
     }
   },
   "patientsList": {
