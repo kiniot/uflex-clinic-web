@@ -3,6 +3,7 @@ export interface RegisterDeviceRequest {
   macAddress: string;
   firmwareVersion?: string;
   model?: string;
+  advertisedName?: string;
 }
 
 export interface UpdateDeviceStatusRequest {

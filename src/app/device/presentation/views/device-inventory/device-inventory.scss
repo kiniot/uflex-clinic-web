@@ -20,9 +20,16 @@
   text-decoration: none;
 }
 
-.inv__breadcrumb a:hover { color: var(--p-text-color); }
-.inv__breadcrumb i { font-size: 10px; }
-.inv__breadcrumb span { color: var(--p-primary-color); font-weight: 600; }
+.inv__breadcrumb a:hover {
+  color: var(--p-text-color);
+}
+.inv__breadcrumb i {
+  font-size: 10px;
+}
+.inv__breadcrumb span {
+  color: var(--p-primary-color);
+  font-weight: 600;
+}
 
 .inv__header {
   display: flex;
@@ -76,7 +83,9 @@
 }
 
 @media (max-width: 1100px) {
-  .inv__top { grid-template-columns: 1fr; }
+  .inv__top {
+    grid-template-columns: 1fr;
+  }
 }
 
 .inv__connectivity,
@@ -129,7 +138,9 @@
 }
 
 @media (max-width: 720px) {
-  .inv__connectivity-grid { grid-template-columns: 1fr; }
+  .inv__connectivity-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .inv__metric {
@@ -155,8 +166,12 @@
   letter-spacing: -0.01em;
 }
 
-.inv__metric-value--danger { color: #b6322f; }
-:host-context(.app-dark) .inv__metric-value--danger { color: #ff8a87; }
+.inv__metric-value--danger {
+  color: #b6322f;
+}
+:host-context(.app-dark) .inv__metric-value--danger {
+  color: #ff8a87;
+}
 
 .inv__metric-delta {
   display: inline-flex;
@@ -168,7 +183,9 @@
   color: #16785a;
 }
 
-:host-context(.app-dark) .inv__metric-delta { color: #34c79b; }
+:host-context(.app-dark) .inv__metric-delta {
+  color: #34c79b;
+}
 
 .inv__metric-bar {
   height: 6px;
@@ -178,7 +195,9 @@
   @include theme.surface;
 }
 
-:host-context(.app-dark) .inv__metric-bar { background: var(--p-surface-200); }
+:host-context(.app-dark) .inv__metric-bar {
+  background: var(--p-surface-200);
+}
 
 .inv__metric-bar-fill {
   height: 100%;
@@ -192,8 +211,12 @@
   color: var(--p-text-muted-color);
 }
 
-.inv__metric-sub--danger { color: #b6322f; }
-:host-context(.app-dark) .inv__metric-sub--danger { color: #ff8a87; }
+.inv__metric-sub--danger {
+  color: #b6322f;
+}
+:host-context(.app-dark) .inv__metric-sub--danger {
+  color: #ff8a87;
+}
 
 /* Battery card */
 .inv__battery-title {
@@ -227,9 +250,15 @@
   display: inline-block;
 }
 
-.inv__battery-dot--high { background: #34c79b; }
-.inv__battery-dot--mid { background: #e89f41; }
-.inv__battery-dot--low { background: #d9534f; }
+.inv__battery-dot--high {
+  background: #34c79b;
+}
+.inv__battery-dot--mid {
+  background: #e89f41;
+}
+.inv__battery-dot--low {
+  background: #d9534f;
+}
 
 .inv__battery-label {
   font-family: 'Inter', sans-serif;
@@ -255,7 +284,9 @@
   padding: 0;
 }
 
-.inv__battery-link:hover { text-decoration: underline; }
+.inv__battery-link:hover {
+  text-decoration: underline;
+}
 
 /* Inventory table card */
 .inv__table-card {
@@ -343,14 +374,18 @@
   @include theme.surface;
 }
 
-.inv__icon-btn:hover { background: var(--p-surface-50); }
+.inv__icon-btn:hover {
+  background: var(--p-surface-50);
+}
 
 :host-context(.app-dark) .inv__icon-btn {
   background: var(--p-surface-100);
   border-color: var(--p-surface-300);
 }
 
-.inv__table-scroll { overflow-x: auto; }
+.inv__table-scroll {
+  overflow-x: auto;
+}
 
 .inv__table {
   width: 100%;
@@ -381,7 +416,9 @@
   @include theme.border;
 }
 
-:host-context(.app-dark) .inv__table thead th { border-color: var(--p-surface-300); }
+:host-context(.app-dark) .inv__table thead th {
+  border-color: var(--p-surface-300);
+}
 
 .inv__row {
   border-bottom: 1px solid var(--p-surface-100);
@@ -399,7 +436,9 @@
 :host-context(.app-dark) .inv__row:hover {
   background: var(--p-surface-200);
 }
-.inv__row:last-child { border-bottom: 0; }
+.inv__row:last-child {
+  border-bottom: 0;
+}
 
 .inv__device {
   display: inline-flex;
@@ -420,10 +459,18 @@
 }
 
 .inv__device-id {
+  display: block;
   font-family: 'Inter', sans-serif;
   font-size: 13px;
   font-weight: 700;
   color: var(--p-text-color);
+}
+
+.inv__device-meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--p-text-muted-color);
 }
 
 .inv__model {
@@ -458,9 +505,15 @@
   color: var(--p-text-muted-color);
 }
 
-:host-context(.app-dark) .inv__status--AVAILABLE { color: #34c79b; }
-:host-context(.app-dark) .inv__status--ASSIGNED { color: var(--p-primary-color); }
-:host-context(.app-dark) .inv__status--IN_MAINTENANCE { color: #e8a317; }
+:host-context(.app-dark) .inv__status--AVAILABLE {
+  color: #34c79b;
+}
+:host-context(.app-dark) .inv__status--ASSIGNED {
+  color: var(--p-primary-color);
+}
+:host-context(.app-dark) .inv__status--IN_MAINTENANCE {
+  color: #e8a317;
+}
 
 .inv__battery-cell {
   display: inline-flex;
@@ -477,7 +530,9 @@
   @include theme.surface;
 }
 
-:host-context(.app-dark) .inv__battery-bar { background: var(--p-surface-300); }
+:host-context(.app-dark) .inv__battery-bar {
+  background: var(--p-surface-300);
+}
 
 .inv__battery-fill {
   height: 100%;
@@ -485,7 +540,9 @@
   background: #34c79b;
 }
 
-.inv__battery-fill--low { background: #e89f41; }
+.inv__battery-fill--low {
+  background: #e89f41;
+}
 
 .inv__battery-pct {
   font-family: 'Inter', sans-serif;
@@ -500,7 +557,9 @@
   color: var(--p-text-muted-color);
 }
 
-.inv__assignment { color: var(--p-text-color); }
+.inv__assignment {
+  color: var(--p-text-color);
+}
 
 .inv__action-col {
   width: 100px;
@@ -532,7 +591,9 @@
   @include theme.border;
 }
 
-:host-context(.app-dark) .inv__table-footer { border-top-color: var(--p-surface-200); }
+:host-context(.app-dark) .inv__table-footer {
+  border-top-color: var(--p-surface-200);
+}
 
 .inv__counter {
   font-family: 'Inter', sans-serif;

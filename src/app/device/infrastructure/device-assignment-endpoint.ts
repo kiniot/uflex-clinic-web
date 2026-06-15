@@ -1,13 +1,13 @@
-import {environment} from '../../../environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {Observable, map, catchError} from 'rxjs';
-import {AssignDeviceCommand} from '../domain/model/assign-device.command';
-import {AssignDeviceToPatientRequest} from './device.request';
-import {DeviceResponse} from './device.response';
-import {buildApiUrl} from '../../shared/infrastructure/api-url';
-import {ErrorHandlingEnabledBaseType} from '../../shared/infrastructure/error-handling-enabled-base-type';
-import {Device} from '../domain/model/device.entity';
-import {DeviceAssembler} from './device.assembler';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map, catchError } from 'rxjs';
+import { AssignDeviceCommand } from '../domain/model/assign-device.command';
+import { AssignDeviceToPatientRequest } from './device.request';
+import { DeviceResponse } from './device.response';
+import { buildApiUrl } from '../../shared/infrastructure/api-url';
+import { ErrorHandlingEnabledBaseType } from '../../shared/infrastructure/error-handling-enabled-base-type';
+import { Device } from '../domain/model/device.entity';
+import { DeviceAssembler } from './device.assembler';
 
 export class DeviceAssignmentApiEndpoint extends ErrorHandlingEnabledBaseType {
   constructor(
@@ -20,7 +20,7 @@ export class DeviceAssignmentApiEndpoint extends ErrorHandlingEnabledBaseType {
   assign(command: AssignDeviceCommand): Observable<Device> {
     const endpointUrl = buildApiUrl(
       environment.apiBaseUrl,
-      `${environment.platformProviderDevicesEndpointPath}/${command.serialNumber}/patient-assignments`,
+      `${environment.platformProviderDevicesEndpointPath}/${command.deviceId}/patient-assignments`,
     );
 
     const request: AssignDeviceToPatientRequest = {
@@ -33,14 +33,14 @@ export class DeviceAssignmentApiEndpoint extends ErrorHandlingEnabledBaseType {
     );
   }
 
-  unassign(serialNumber: string): Observable<void> {
+  unassign(deviceId: string): Observable<void> {
     const endpointUrl = buildApiUrl(
       environment.apiBaseUrl,
-      `${environment.platformProviderDevicesEndpointPath}/${serialNumber}/patient-assignments`,
+      `${environment.platformProviderDevicesEndpointPath}/${deviceId}/patient-assignments`,
     );
 
-    return this.http.delete<void>(endpointUrl).pipe(
-      catchError(this.handleError('Failed to unassign device')),
-    );
+    return this.http
+      .delete<void>(endpointUrl)
+      .pipe(catchError(this.handleError('Failed to unassign device')));
   }
 }

@@ -1,4 +1,4 @@
-import {BaseResource} from '../../shared/infrastructure/base-response';
+import { BaseResource } from '../../shared/infrastructure/base-response';
 
 export interface DeviceResource extends BaseResource {
   serialNumber: string;
@@ -6,9 +6,10 @@ export interface DeviceResource extends BaseResource {
   firmwareVersion: string;
   batteryLevel: number;
   model: string;
+  advertisedName: string | null;
   calibrationStatus: 'VALID' | 'NEEDS_CALIBRATION';
   status: 'AVAILABLE' | 'ASSIGNED' | 'IN_MAINTENANCE' | 'RETIRED';
-  lastSyncAt: string | null;
+  lastSeenAt: string | null;
   clinicId: string;
   currentPatientId: string | null;
   currentPatientFullName: string | null;

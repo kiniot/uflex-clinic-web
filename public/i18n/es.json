@@ -14,7 +14,14 @@
   "page-not-found": {
     "title": "Página no encontrada",
     "content": "La ruta <strong>{{ invalid_path }}</strong> es inválida.",
-    "go-home": "Ir a Inicio"
+    "go-portal": "Ir a mi portal",
+    "go-sign-in": "Volver a iniciar sesión"
+  },
+  "forbidden": {
+    "title": "Acceso denegado",
+    "content": "No tienes permisos para acceder a esta página o portal.",
+    "go-portal": "Ir a mi portal",
+    "go-sign-in": "Volver a iniciar sesión"
   },
   "footer": {
     "copyright": "Copyright © 2026 KinIoT.",
@@ -291,7 +298,7 @@
       "totalActiveKitsNote": "En inventario",
       "requiresCalibration": "Requieren calibración",
       "networkStatus": "Estado de red",
-      "syncedThisWeek": "{{count}} sincronizados esta semana",
+      "seenThisWeek": "{{count}} vistos esta semana",
       "within7Days": "En 7 días",
       "online": "En línea",
       "availableKits": "Kits disponibles",
@@ -348,11 +355,14 @@
     "summary": {
       "title": "Resumen del dispositivo",
       "kitId": "ID del kit IoT",
+      "advertisedName": "Nombre BLE anunciado",
       "linkedPatient": "Paciente vinculado",
       "batteryLevel": "Nivel de batería",
       "firmware": "Firmware",
       "macAddress": "Dirección MAC",
-      "model": "Modelo"
+      "model": "Modelo",
+      "lastSeenAt": "Última vez visto",
+      "notAvailable": "No disponible"
     },
     "status": {
       "title": "Estado del dispositivo",
@@ -450,7 +460,7 @@
       "capacity": "Capacidad",
       "firmware": "Firmware",
       "connection": "Conexión",
-      "lastSync": "Última sincronización"
+      "lastSeen": "Última vez visto"
     }
   },
   "deviceRegister": {
@@ -469,6 +479,8 @@
       "serialNumberPlaceholder": "ej. UF-2024-X982",
       "macAddress": "Dirección MAC",
       "macAddressPlaceholder": "ej. AA:BB:CC:DD:EE:FF",
+      "advertisedName": "Nombre BLE anunciado",
+      "advertisedNamePlaceholder": "ej. UFLEX-DEV-0012",
       "model": "Modelo",
       "modelPlaceholder": "ej. UFlex Tracker Pro",
       "firmwareVersion": "Versión de firmware",
@@ -1149,6 +1161,40 @@
       "generic": "No se pudo cambiar la contraseña. Intenta de nuevo."
     }
   },
+  "errors": {
+    "toast": {
+      "errorSummary": "No se pudo completar la solicitud",
+      "warnSummary": "Revisa esta solicitud"
+    },
+    "network": {
+      "unreachable": "No pudimos conectarnos con el servidor. Verifica tu conexión e inténtalo nuevamente."
+    },
+    "unexpected": {
+      "generic": "No pudimos completar la solicitud. Intenta nuevamente."
+    },
+    "http": {
+      "422": "No pudimos procesar la información enviada. Revísala e inténtalo nuevamente.",
+      "429": "Se enviaron demasiadas solicitudes. Espera un momento e inténtalo otra vez.",
+      "502": "El servicio no está disponible temporalmente. Intenta nuevamente en unos minutos.",
+      "generic": "No pudimos completar la solicitud. Intenta nuevamente."
+    },
+    "codes": {
+      "AUTH_REQUIRED": "Necesitas iniciar sesión para continuar.",
+      "ACCESS_DENIED": "No tienes permisos para realizar esta acción.",
+      "BAD_REQUEST": "No pudimos procesar la solicitud. Revisa la información enviada.",
+      "CONFLICT": "No se pudo completar esta acción porque el recurso está en un estado de conflicto.",
+      "NOT_FOUND": "No pudimos encontrar el recurso solicitado.",
+      "INTERNAL_SERVER_ERROR": "Ocurrió un error inesperado en el servidor. Intenta nuevamente.",
+      "EMAIL_ALREADY_IN_USE": "Este correo electrónico ya está en uso.",
+      "INVALID_CREDENTIALS": "Las credenciales proporcionadas no son válidas.",
+      "ROLE_NOT_FOUND": "No pudimos encontrar el rol solicitado.",
+      "TENANT_ASSIGNMENT": "No pudimos completar la asignación del tenant.",
+      "USER_TENANT_ALREADY_ASSIGNED": "Este usuario ya está asignado al tenant.",
+      "USER_TENANT_NOT_ASSIGNED": "Este usuario no está asignado al tenant.",
+      "USER_WITH_EMAIL_NOT_FOUND": "No pudimos encontrar un usuario con ese correo electrónico.",
+      "USER_WITH_ID_NOT_FOUND": "No pudimos encontrar el usuario solicitado."
+    }
+  },
   "topbar": {
     "settings": "Configuración",
     "changePassword": "Cambiar contraseña"
@@ -1308,7 +1354,7 @@
       "active": "Dispositivos activos",
       "available": "Unidades en línea",
       "inService": "En servicio",
-      "syncedThisWeek": "sincronizados esta semana",
+      "seenThisWeek": "vistos esta semana",
       "maintenanceRequired": "Mantenimiento requerido"
     },
     "battery": {
@@ -1326,11 +1372,11 @@
       "model": "Modelo",
       "status": "Estado",
       "battery": "Batería",
-      "lastSync": "Última sincronización",
+      "lastSeen": "Última vez visto",
       "assignment": "Asignación",
       "action": "Acción"
     },
-    "noSync": "Nunca sincronizó",
+    "noLastSeen": "Nunca visto",
     "actions": {
       "assign": "Asignar",
       "unassign": "Desvincular",

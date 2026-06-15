@@ -1,4 +1,4 @@
 export interface AssignDeviceCommand {
-  serialNumber: string;
+  deviceId: string;
   patientId: string;
 }

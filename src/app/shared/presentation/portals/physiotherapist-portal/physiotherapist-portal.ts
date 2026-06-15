@@ -50,9 +50,9 @@ export class PhysiotherapistPortal {
   protected currentEmail = this.iamStore.currentEmail;
 
   protected currentRoleLabel = computed(() => {
-    const roles = this.iamStore.currentRoles();
-    if (!roles.length) return '';
-    return ROLE_LABELS[roles[0]] ?? roles[0];
+    const role = this.iamStore.currentEffectiveRole();
+    if (!role) return '';
+    return ROLE_LABELS[role] ?? role;
   });
 
   protected avatarInitials = computed(() => {

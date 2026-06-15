@@ -1,4 +1,4 @@
-<p-toast position="top-right"/>
+<p-toast position="top-right" />
 
 <a class="detail__back" routerLink="../..">
   <i class="pi pi-arrow-left" aria-hidden="true"></i>
@@ -8,7 +8,8 @@
 @if (device(); as device) {
   <app-page-header
     [title]="'deviceDetails.title' | translate"
-    [subtitle]="'deviceDetails.subtitle' | translate: { kitId: device.serialNumber }">
+    [subtitle]="'deviceDetails.subtitle' | translate: { kitId: device.serialNumber }"
+  >
   </app-page-header>
 
   <section class="detail__content">
@@ -20,6 +21,20 @@
         <div class="detail__item">
           <span class="detail__label">{{ 'deviceDetails.summary.kitId' | translate }}</span>
           <span class="detail__value">{{ device.serialNumber }}</span>
+        </div>
+        <div class="detail__item">
+          <span class="detail__label">{{
+            'deviceDetails.summary.advertisedName' | translate
+          }}</span>
+          <span class="detail__value">
+            @if (device.advertisedName) {
+              {{ device.advertisedName }}
+            } @else {
+              <span class="detail__muted">{{
+                'deviceDetails.summary.notAvailable' | translate
+              }}</span>
+            }
+          </span>
         </div>
         <div class="detail__item">
           <span class="detail__label">{{ 'deviceDetails.summary.linkedPatient' | translate }}</span>
@@ -47,6 +62,18 @@
           <span class="detail__label">{{ 'deviceDetails.summary.model' | translate }}</span>
           <span class="detail__value">{{ device.model }}</span>
         </div>
+        <div class="detail__item">
+          <span class="detail__label">{{ 'deviceDetails.summary.lastSeenAt' | translate }}</span>
+          <span class="detail__value">
+            @if (device.lastSeenAt) {
+              {{ device.lastSeenAt | date: 'short' }}
+            } @else {
+              <span class="detail__muted">{{
+                'deviceDetails.summary.notAvailable' | translate
+              }}</span>
+            }
+          </span>
+        </div>
       </div>
     </article>
 
@@ -70,10 +97,20 @@
         @if (canAssign()) {
           <div class="action-card action-card--assign">
             <i class="pi pi-user-plus action-card__icon" aria-hidden="true"></i>
-            <h3 class="action-card__title">{{ 'deviceDetails.cards.assignPatient.title' | translate }}</h3>
-            <p class="action-card__desc">{{ 'deviceDetails.cards.assignPatient.desc' | translate }}</p>
-            <button pButton type="button" severity="primary" [outlined]="true" class="action-card__btn"
-                    (click)="onOpenAssignDialog()">
+            <h3 class="action-card__title">
+              {{ 'deviceDetails.cards.assignPatient.title' | translate }}
+            </h3>
+            <p class="action-card__desc">
+              {{ 'deviceDetails.cards.assignPatient.desc' | translate }}
+            </p>
+            <button
+              pButton
+              type="button"
+              severity="primary"
+              [outlined]="true"
+              class="action-card__btn"
+              (click)="onOpenAssignDialog()"
+            >
               {{ 'deviceDetails.cards.assignPatient.button' | translate }}
             </button>
           </div>
@@ -82,10 +119,20 @@
         @if (canUnassign()) {
           <div class="action-card action-card--unassign">
             <i class="pi pi-user-minus action-card__icon" aria-hidden="true"></i>
-            <h3 class="action-card__title">{{ 'deviceDetails.cards.unassignPatient.title' | translate }}</h3>
-            <p class="action-card__desc">{{ 'deviceDetails.cards.unassignPatient.desc' | translate }}</p>
-            <button pButton type="button" severity="danger" [outlined]="true" class="action-card__btn"
-                    (click)="onOpenUnassignConfirm()">
+            <h3 class="action-card__title">
+              {{ 'deviceDetails.cards.unassignPatient.title' | translate }}
+            </h3>
+            <p class="action-card__desc">
+              {{ 'deviceDetails.cards.unassignPatient.desc' | translate }}
+            </p>
+            <button
+              pButton
+              type="button"
+              severity="danger"
+              [outlined]="true"
+              class="action-card__btn"
+              (click)="onOpenUnassignConfirm()"
+            >
               {{ 'deviceDetails.cards.unassignPatient.button' | translate }}
             </button>
           </div>
@@ -94,10 +141,20 @@
         @if (canMarkNeedsCalibration()) {
           <div class="action-card action-card--calibrate">
             <i class="pi pi-exclamation-triangle action-card__icon" aria-hidden="true"></i>
-            <h3 class="action-card__title">{{ 'deviceDetails.cards.markNeedsCalibration.title' | translate }}</h3>
-            <p class="action-card__desc">{{ 'deviceDetails.cards.markNeedsCalibration.desc' | translate }}</p>
-            <button pButton type="button" severity="warn" [outlined]="true" class="action-card__btn"
-                    (click)="onOpenMarkNeedsCalibrationConfirm()">
+            <h3 class="action-card__title">
+              {{ 'deviceDetails.cards.markNeedsCalibration.title' | translate }}
+            </h3>
+            <p class="action-card__desc">
+              {{ 'deviceDetails.cards.markNeedsCalibration.desc' | translate }}
+            </p>
+            <button
+              pButton
+              type="button"
+              severity="warn"
+              [outlined]="true"
+              class="action-card__btn"
+              (click)="onOpenMarkNeedsCalibrationConfirm()"
+            >
               {{ 'deviceDetails.cards.markNeedsCalibration.button' | translate }}
             </button>
           </div>
@@ -106,16 +163,28 @@
         @if (canValidateCalibration()) {
           <div class="action-card action-card--validate">
             <i class="pi pi-check-circle action-card__icon" aria-hidden="true"></i>
-            <h3 class="action-card__title">{{ 'deviceDetails.cards.validateCalibration.title' | translate }}</h3>
-            <p class="action-card__desc">{{ 'deviceDetails.cards.validateCalibration.desc' | translate }}</p>
-            <button pButton type="button" severity="success" [outlined]="true" class="action-card__btn"
-                    (click)="onOpenValidateCalibrationConfirm()">
+            <h3 class="action-card__title">
+              {{ 'deviceDetails.cards.validateCalibration.title' | translate }}
+            </h3>
+            <p class="action-card__desc">
+              {{ 'deviceDetails.cards.validateCalibration.desc' | translate }}
+            </p>
+            <button
+              pButton
+              type="button"
+              severity="success"
+              [outlined]="true"
+              class="action-card__btn"
+              (click)="onOpenValidateCalibrationConfirm()"
+            >
               {{ 'deviceDetails.cards.validateCalibration.button' | translate }}
             </button>
           </div>
         }
 
-        @if (!canAssign() && !canUnassign() && !canMarkNeedsCalibration() && !canValidateCalibration()) {
+        @if (
+          !canAssign() && !canUnassign() && !canMarkNeedsCalibration() && !canValidateCalibration()
+        ) {
           <p class="detail__no-actions">{{ 'deviceDetails.actions.noActions' | translate }}</p>
         }
       </div>
@@ -129,7 +198,8 @@
     [closable]="true"
     [dismissableMask]="true"
     [style]="{ width: '32rem', maxWidth: '92vw' }"
-    [header]="'deviceDetails.assignDialog.title' | translate">
+    [header]="'deviceDetails.assignDialog.title' | translate"
+  >
     <div class="assign-dialog">
       <p class="assign-dialog__body">
         {{ 'deviceDetails.assignDialog.body' | translate: { kitId: device.serialNumber } }}
@@ -156,14 +226,23 @@
     </div>
     <ng-template #footer>
       <div class="assign-dialog__footer">
-        <button pButton type="button" severity="secondary" [outlined]="true"
-                (click)="assignDialogVisible.set(false)">
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [outlined]="true"
+          (click)="assignDialogVisible.set(false)"
+        >
           {{ 'deviceDetails.actions.cancel' | translate }}
         </button>
-        <button pButton type="button" severity="primary"
-                [loading]="isAssigning()"
-                [disabled]="!selectedPatientId() || isAssigning()"
-                (click)="onConfirmAssign()">
+        <button
+          pButton
+          type="button"
+          severity="primary"
+          [loading]="isAssigning()"
+          [disabled]="!selectedPatientId() || isAssigning()"
+          (click)="onConfirmAssign()"
+        >
           {{ 'deviceDetails.actions.confirmAssign' | translate }}
         </button>
       </div>
@@ -186,9 +265,14 @@
 } @else {
   <section class="detail__empty">
     <p>{{ 'deviceDetails.empty' | translate }}</p>
-    <button type="button" pButton severity="secondary" [outlined]="true"
-            class="detail__btn"
-            (click)="onCancel()">
+    <button
+      type="button"
+      pButton
+      severity="secondary"
+      [outlined]="true"
+      class="detail__btn"
+      (click)="onCancel()"
+    >
       {{ 'deviceDetails.actions.cancel' | translate }}
     </button>
   </section>

@@ -1,7 +1,7 @@
-import {Device} from '../domain/model/device.entity';
-import {DeviceResource} from './device.resource';
-import {BaseAssembler} from '../../shared/infrastructure/base-assembler';
-import {BaseResponse} from '../../shared/infrastructure/base-response';
+import { Device } from '../domain/model/device.entity';
+import { DeviceResource } from './device.resource';
+import { BaseAssembler } from '../../shared/infrastructure/base-assembler';
+import { BaseResponse } from '../../shared/infrastructure/base-response';
 
 export class DeviceAssembler implements BaseAssembler<Device, DeviceResource, BaseResponse> {
   toEntityFromResource(resource: DeviceResource): Device {
@@ -12,13 +12,14 @@ export class DeviceAssembler implements BaseAssembler<Device, DeviceResource, Ba
       firmwareVersion: resource.firmwareVersion,
       batteryLevel: resource.batteryLevel,
       model: resource.model,
+      advertisedName: resource.advertisedName,
       calibrationStatus: resource.calibrationStatus,
       status: resource.status,
-      lastSyncAt: resource.lastSyncAt ? new Date(resource.lastSyncAt) : null,
+      lastSeenAt: resource.lastSeenAt ? new Date(resource.lastSeenAt) : null,
       clinicId: resource.clinicId,
       currentPatientId: resource.currentPatientId,
       currentPatientFullName: resource.currentPatientFullName,
-      offline: resource.offline
+      offline: resource.offline,
     });
   }
 
@@ -30,18 +31,19 @@ export class DeviceAssembler implements BaseAssembler<Device, DeviceResource, Ba
       firmwareVersion: entity.firmwareVersion,
       batteryLevel: entity.batteryLevel,
       model: entity.model,
+      advertisedName: entity.advertisedName,
       calibrationStatus: entity.calibrationStatus,
       status: entity.status,
-      lastSyncAt: entity.lastSyncAt ? entity.lastSyncAt.toISOString() : null,
+      lastSeenAt: entity.lastSeenAt ? entity.lastSeenAt.toISOString() : null,
       clinicId: entity.clinicId,
       currentPatientId: entity.currentPatientId,
       currentPatientFullName: entity.currentPatientFullName,
-      offline: entity.offline
+      offline: entity.offline,
     };
   }
 
   toEntitiesFromResponse(response: unknown): Device[] {
     const resources = response as DeviceResource[];
-    return resources.map(r => this.toEntityFromResource(r));
+    return resources.map((r) => this.toEntityFromResource(r));
   }
 }

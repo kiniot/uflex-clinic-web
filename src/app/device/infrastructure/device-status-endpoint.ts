@@ -1,13 +1,13 @@
-import {environment} from '../../../environments/environment';
-import {HttpClient} from '@angular/common/http';
-import {Observable, map, catchError} from 'rxjs';
-import {UpdateDeviceStatusCommand} from '../domain/model/update-device-status.command';
-import {UpdateDeviceStatusRequest} from './device.request';
-import {DeviceResponse} from './device.response';
-import {buildApiUrl} from '../../shared/infrastructure/api-url';
-import {ErrorHandlingEnabledBaseType} from '../../shared/infrastructure/error-handling-enabled-base-type';
-import {Device} from '../domain/model/device.entity';
-import {DeviceAssembler} from './device.assembler';
+import { environment } from '../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map, catchError } from 'rxjs';
+import { UpdateDeviceStatusCommand } from '../domain/model/update-device-status.command';
+import { UpdateDeviceStatusRequest } from './device.request';
+import { DeviceResponse } from './device.response';
+import { buildApiUrl } from '../../shared/infrastructure/api-url';
+import { ErrorHandlingEnabledBaseType } from '../../shared/infrastructure/error-handling-enabled-base-type';
+import { Device } from '../domain/model/device.entity';
+import { DeviceAssembler } from './device.assembler';
 
 export class DeviceStatusApiEndpoint extends ErrorHandlingEnabledBaseType {
   constructor(
@@ -20,7 +20,7 @@ export class DeviceStatusApiEndpoint extends ErrorHandlingEnabledBaseType {
   updateStatus(command: UpdateDeviceStatusCommand): Observable<Device> {
     const endpointUrl = buildApiUrl(
       environment.apiBaseUrl,
-      `${environment.platformProviderDevicesEndpointPath}/${command.serialNumber}/status`,
+      `${environment.platformProviderDevicesEndpointPath}/${command.deviceId}/status`,
     );
 
     const request: UpdateDeviceStatusRequest = {

@@ -1,4 +1,4 @@
-import {DeviceStatus, CalibrationStatus} from '../domain/model/device.types';
+import { DeviceStatus, CalibrationStatus } from '../domain/model/device.types';
 
 export interface DeviceResponse {
   id: string;
@@ -7,9 +7,10 @@ export interface DeviceResponse {
   firmwareVersion: string;
   batteryLevel: number;
   model: string;
+  advertisedName: string | null;
   calibrationStatus: CalibrationStatus;
   status: DeviceStatus;
-  lastSyncAt: string | null;
+  lastSeenAt: string | null;
   clinicId: string;
   currentPatientId: string | null;
   currentPatientFullName: string | null;

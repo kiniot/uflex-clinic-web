@@ -9,6 +9,11 @@ import { iamInterceptor } from './iam/infrastructure/iam.interceptor';
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
 import { appPreset } from './app.preset';
+import {
+  provideAppErrorCatalog,
+  globalAppErrorCatalog,
+} from './shared/application/app-error-catalog';
+import { iamAppErrorCatalog } from './iam/application/iam-error-catalog';
 
 /**
  * Application configuration for dependency injection and providers in the infrastructure layer.
@@ -23,6 +28,8 @@ export const appConfig: ApplicationConfig = {
     }),
     provideRouter(routes, withViewTransitions()),
     MessageService,
+    provideAppErrorCatalog(globalAppErrorCatalog),
+    provideAppErrorCatalog(iamAppErrorCatalog),
     providePrimeNG({
       ripple: true,
       theme: {
