@@ -1,9 +1,10 @@
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
-import {BaseEntity} from '../domain/model/base-entity';
-import {BaseResource, BaseResponse} from './base-response';
-import {BaseAssembler} from './base-assembler';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { BaseEntity } from '../domain/model/base-entity';
+import { BaseResource, BaseResponse } from './base-response';
+import { BaseAssembler } from './base-assembler';
+import { toAppError } from './app-error.mapper';
 
 /**
  * Base class for API endpoint operations with generic CRUD functionality.
@@ -32,7 +33,6 @@ export abstract class BaseApiEndpoint<
   getAll(): Observable<TEntity[]> {
     return this.http.get<TResponse | TResource[]>(this.endpointUrl).pipe(
       map((response) => {
-        console.log(response);
         if (Array.isArray(response)) {
           return response.map((resource) => this.assembler.toEntityFromResource(resource));
         }
@@ -99,15 +99,7 @@ export abstract class BaseApiEndpoint<
    */
   protected handleError(operation: string) {
     return (error: HttpErrorResponse): Observable<never> => {
-      let errorMessage = operation;
-      if (error.error instanceof ErrorEvent) {
-        errorMessage = `${operation}: ${error.error.message}`;
-      } else if (error.status === 404) {
-        errorMessage = `${operation}: Resource not found`;
-      } else {
-        errorMessage = `${operation}: Server returned code ${error.status}`;
-      }
-      return throwError(() => new Error(errorMessage));
+      return throwError(() => toAppError(error, operation));
     };
   }
 }

@@ -30,6 +30,7 @@ import {
   SubscriptionCurrency,
 } from '../../../../subscription/domain/model/subscription-catalog.types';
 import { SubscriptionTier } from '../../../../subscription/domain/model/subscription-tier.entity';
+import { AppErrorNotifier } from '../../../../shared/application/app-error-notifier';
 
 type SignUpStep = 'plan' | 'account' | 'clinic';
 type EntryStepParam = 'account' | null;
@@ -65,6 +66,7 @@ export class SignUpForm extends BaseForm implements OnInit {
   private readonly subscriptionStore = inject(SubscriptionStore);
   private readonly messageService = inject(MessageService);
   private readonly translate = inject(TranslateService);
+  private readonly appErrorNotifier = inject(AppErrorNotifier);
 
   readonly enterpriseContactUrl = 'https://uflex-landing-page.vercel.app/#contact';
   readonly isSubmitting = signal(false);
@@ -296,12 +298,10 @@ export class SignUpForm extends BaseForm implements OnInit {
         detail: this.translate.instant('signUp.notifications.accountCreatedDetail'),
         life: 4000,
       });
-    } catch {
-      this.messageService.add({
-        severity: 'error',
-        summary: this.translate.instant('signUp.notifications.errorSummary'),
-        detail: this.translate.instant('signUp.notifications.genericError'),
-        life: 4500,
+    } catch (err) {
+      this.appErrorNotifier.showHttpError(err, {
+        summaryKey: 'signUp.notifications.errorSummary',
+        fallbackDetailKey: 'signUp.notifications.genericError',
       });
     } finally {
       this.isSubmitting.set(false);

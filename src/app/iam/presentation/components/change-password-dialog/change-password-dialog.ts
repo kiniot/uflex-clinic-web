@@ -1,5 +1,12 @@
 import { Component, inject, input, model, output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -7,6 +14,7 @@ import { PasswordModule } from 'primeng/password';
 import { MessageModule } from 'primeng/message';
 import { IamStore } from '../../../application/iam.store';
 import { ChangePasswordCommand } from '../../../domain/model/change-password.command';
+import { AppErrorMessageResolver } from '../../../../shared/application/app-error-message-resolver';
 
 /**
  * Modal dialog for changing the authenticated user's password.
@@ -14,12 +22,20 @@ import { ChangePasswordCommand } from '../../../domain/model/change-password.com
  */
 @Component({
   selector: 'app-change-password-dialog',
-  imports: [ReactiveFormsModule, TranslatePipe, DialogModule, ButtonModule, PasswordModule, MessageModule],
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    DialogModule,
+    ButtonModule,
+    PasswordModule,
+    MessageModule,
+  ],
   templateUrl: './change-password-dialog.html',
-  styleUrl: './change-password-dialog.scss'
+  styleUrl: './change-password-dialog.scss',
 })
 export class ChangePasswordDialog {
   private store = inject(IamStore);
+  private appErrorMessageResolver = inject(AppErrorMessageResolver);
 
   visible = model.required<boolean>();
   readonly closed = output<void>();
@@ -29,11 +45,20 @@ export class ChangePasswordDialog {
 
   protected form = new FormGroup(
     {
-      currentPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-      newPassword: new FormControl('', { nonNullable: true, validators: [Validators.required, Validators.minLength(8)] }),
-      confirmPassword: new FormControl('', { nonNullable: true, validators: [Validators.required] })
+      currentPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
+      newPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required, Validators.minLength(8)],
+      }),
+      confirmPassword: new FormControl('', {
+        nonNullable: true,
+        validators: [Validators.required],
+      }),
     },
-    { validators: this.passwordsMatchValidator }
+    { validators: this.passwordsMatchValidator },
   );
 
   private passwordsMatchValidator(group: AbstractControl): ValidationErrors | null {
@@ -55,7 +80,7 @@ export class ChangePasswordDialog {
 
     const command = new ChangePasswordCommand({
       currentPassword: this.form.value.currentPassword!,
-      newPassword: this.form.value.newPassword!
+      newPassword: this.form.value.newPassword!,
     });
 
     try {
@@ -63,10 +88,15 @@ export class ChangePasswordDialog {
       this.feedback = { severity: 'success', message: 'changePassword.success' };
       this.form.reset();
     } catch (err: unknown) {
-      const status = (err as { status?: number })?.status;
+      const resolved = this.appErrorMessageResolver.resolveMessage(err, {
+        fallbackDetailKey: 'changePassword.error.generic',
+      });
       this.feedback = {
         severity: 'error',
-        message: status === 400 ? 'changePassword.error.invalidCurrent' : 'changePassword.error.generic'
+        message:
+          resolved.detailKey === 'errors.codes.INVALID_CREDENTIALS'
+            ? 'changePassword.error.invalidCurrent'
+            : resolved.detailKey,
       };
     } finally {
       this.submitting = false;

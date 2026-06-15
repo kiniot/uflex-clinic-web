@@ -1154,6 +1154,40 @@
       "generic": "Could not change the password. Please try again."
     }
   },
+  "errors": {
+    "toast": {
+      "errorSummary": "Request failed",
+      "warnSummary": "Please review this request"
+    },
+    "network": {
+      "unreachable": "We could not connect to the server. Please verify your connection and try again."
+    },
+    "unexpected": {
+      "generic": "We could not complete the request. Please try again."
+    },
+    "http": {
+      "422": "We could not process the submitted information. Please review it and try again.",
+      "429": "Too many requests were sent. Please wait a moment and try again.",
+      "502": "The service is temporarily unavailable. Please try again shortly.",
+      "generic": "We could not complete the request. Please try again."
+    },
+    "codes": {
+      "AUTH_REQUIRED": "You need to sign in to continue.",
+      "ACCESS_DENIED": "You do not have permission to perform this action.",
+      "BAD_REQUEST": "We could not process the request. Please review the submitted information.",
+      "CONFLICT": "This action could not be completed because the resource is in a conflicting state.",
+      "NOT_FOUND": "The requested resource could not be found.",
+      "INTERNAL_SERVER_ERROR": "An unexpected server error occurred. Please try again.",
+      "EMAIL_ALREADY_IN_USE": "This email address is already in use.",
+      "INVALID_CREDENTIALS": "The provided credentials are invalid.",
+      "ROLE_NOT_FOUND": "The requested role could not be found.",
+      "TENANT_ASSIGNMENT": "We could not complete the tenant assignment.",
+      "USER_TENANT_ALREADY_ASSIGNED": "This user is already assigned to the tenant.",
+      "USER_TENANT_NOT_ASSIGNED": "This user is not assigned to the tenant.",
+      "USER_WITH_EMAIL_NOT_FOUND": "We could not find a user with that email address.",
+      "USER_WITH_ID_NOT_FOUND": "We could not find the requested user."
+    }
+  },
   "topbar": {
     "settings": "Settings",
     "changePassword": "Change password"

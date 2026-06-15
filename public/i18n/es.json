@@ -1154,6 +1154,40 @@
       "generic": "No se pudo cambiar la contraseña. Intenta de nuevo."
     }
   },
+  "errors": {
+    "toast": {
+      "errorSummary": "No se pudo completar la solicitud",
+      "warnSummary": "Revisa esta solicitud"
+    },
+    "network": {
+      "unreachable": "No pudimos conectarnos con el servidor. Verifica tu conexión e inténtalo nuevamente."
+    },
+    "unexpected": {
+      "generic": "No pudimos completar la solicitud. Intenta nuevamente."
+    },
+    "http": {
+      "422": "No pudimos procesar la información enviada. Revísala e inténtalo nuevamente.",
+      "429": "Se enviaron demasiadas solicitudes. Espera un momento e inténtalo otra vez.",
+      "502": "El servicio no está disponible temporalmente. Intenta nuevamente en unos minutos.",
+      "generic": "No pudimos completar la solicitud. Intenta nuevamente."
+    },
+    "codes": {
+      "AUTH_REQUIRED": "Necesitas iniciar sesión para continuar.",
+      "ACCESS_DENIED": "No tienes permisos para realizar esta acción.",
+      "BAD_REQUEST": "No pudimos procesar la solicitud. Revisa la información enviada.",
+      "CONFLICT": "No se pudo completar esta acción porque el recurso está en un estado de conflicto.",
+      "NOT_FOUND": "No pudimos encontrar el recurso solicitado.",
+      "INTERNAL_SERVER_ERROR": "Ocurrió un error inesperado en el servidor. Intenta nuevamente.",
+      "EMAIL_ALREADY_IN_USE": "Este correo electrónico ya está en uso.",
+      "INVALID_CREDENTIALS": "Las credenciales proporcionadas no son válidas.",
+      "ROLE_NOT_FOUND": "No pudimos encontrar el rol solicitado.",
+      "TENANT_ASSIGNMENT": "No pudimos completar la asignación del tenant.",
+      "USER_TENANT_ALREADY_ASSIGNED": "Este usuario ya está asignado al tenant.",
+      "USER_TENANT_NOT_ASSIGNED": "Este usuario no está asignado al tenant.",
+      "USER_WITH_EMAIL_NOT_FOUND": "No pudimos encontrar un usuario con ese correo electrónico.",
+      "USER_WITH_ID_NOT_FOUND": "No pudimos encontrar el usuario solicitado."
+    }
+  },
   "topbar": {
     "settings": "Configuración",
     "changePassword": "Cambiar contraseña"
