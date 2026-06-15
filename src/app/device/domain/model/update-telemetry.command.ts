@@ -1,4 +1,4 @@
 export interface UpdateTelemetryCommand {
-  serialNumber: string;
+  deviceId: string;
   batteryLevel: number;
 }

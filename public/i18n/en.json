@@ -291,7 +291,7 @@
       "totalActiveKitsNote": "In inventory",
       "requiresCalibration": "Requires Calibration",
       "networkStatus": "Network Status",
-      "syncedThisWeek": "{{count}} synced this week",
+      "seenThisWeek": "{{count}} seen this week",
       "within7Days": "Within 7 days",
       "online": "Online",
       "availableKits": "Available Kits",
@@ -348,11 +348,14 @@
     "summary": {
       "title": "Device Overview",
       "kitId": "IoT Kit ID",
+      "advertisedName": "BLE advertised name",
       "linkedPatient": "Linked Patient",
       "batteryLevel": "Battery Level",
       "firmware": "Firmware",
       "macAddress": "MAC Address",
-      "model": "Model"
+      "model": "Model",
+      "lastSeenAt": "Last seen",
+      "notAvailable": "Not available"
     },
     "status": {
       "title": "Device Status",
@@ -450,7 +453,7 @@
       "capacity": "Capacity",
       "firmware": "Firmware",
       "connection": "Connection",
-      "lastSync": "Last Sync"
+      "lastSeen": "Last Seen"
     }
   },
   "deviceRegister": {
@@ -469,6 +472,8 @@
       "serialNumberPlaceholder": "e.g. UF-2024-X982",
       "macAddress": "MAC Address",
       "macAddressPlaceholder": "e.g. AA:BB:CC:DD:EE:FF",
+      "advertisedName": "BLE advertised name",
+      "advertisedNamePlaceholder": "e.g. UFLEX-DEV-0012",
       "model": "Model",
       "modelPlaceholder": "e.g. UFlex Tracker Pro",
       "firmwareVersion": "Firmware Version",
@@ -1308,7 +1313,7 @@
       "active": "Active Devices",
       "available": "Online Units",
       "inService": "In Service",
-      "syncedThisWeek": "synced this week",
+      "seenThisWeek": "seen this week",
       "maintenanceRequired": "Maintenance required"
     },
     "battery": {
@@ -1326,11 +1331,11 @@
       "model": "Model",
       "status": "Status",
       "battery": "Battery",
-      "lastSync": "Last Sync",
+      "lastSeen": "Last Seen",
       "assignment": "Assignment",
       "action": "Action"
     },
-    "noSync": "Never synced",
+    "noLastSeen": "Never seen",
     "actions": {
       "assign": "Assign",
       "unassign": "Unassign",

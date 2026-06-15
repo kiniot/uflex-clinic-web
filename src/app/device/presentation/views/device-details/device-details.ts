@@ -1,22 +1,24 @@
-import {Component, computed, inject, signal} from '@angular/core';
-import {toSignal} from '@angular/core/rxjs-interop';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
-import {ButtonModule} from 'primeng/button';
-import {DialogModule} from 'primeng/dialog';
-import {SelectModule} from 'primeng/select';
-import {FormsModule} from '@angular/forms';
-import {ToastModule} from 'primeng/toast';
-import {MessageService} from 'primeng/api';
-import {PageHeader} from '../../../../shared/presentation/components/page-header/page-header';
-import {ConfirmActionDialog} from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
-import {DeviceStore} from '../../../application/device.store';
-import {OrganizationStore} from '../../../../organization/application/organization.store';
-import {IamStore} from '../../../../iam/application/iam.store';
+import { Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { SelectModule } from 'primeng/select';
+import { FormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
+import { PageHeader } from '../../../../shared/presentation/components/page-header/page-header';
+import { ConfirmActionDialog } from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
+import { DeviceStore } from '../../../application/device.store';
+import { OrganizationStore } from '../../../../organization/application/organization.store';
+import { IamStore } from '../../../../iam/application/iam.store';
 
 @Component({
   selector: 'app-device-details',
   imports: [
+    DatePipe,
     RouterLink,
     TranslatePipe,
     ButtonModule,
@@ -25,11 +27,11 @@ import {IamStore} from '../../../../iam/application/iam.store';
     FormsModule,
     ToastModule,
     PageHeader,
-    ConfirmActionDialog
+    ConfirmActionDialog,
   ],
   providers: [MessageService],
   templateUrl: './device-details.html',
-  styleUrl: './device-details.scss'
+  styleUrl: './device-details.scss',
 })
 export class DeviceDetails {
   private readonly store = inject(DeviceStore);
@@ -40,16 +42,16 @@ export class DeviceDetails {
   private readonly messageService = inject(MessageService);
 
   private readonly paramMap = toSignal(this.route.paramMap, {
-    initialValue: this.route.snapshot.paramMap
+    initialValue: this.route.snapshot.paramMap,
   });
 
-  protected readonly serialNumber = computed(() => String(this.paramMap().get('serialNumber')));
+  protected readonly deviceId = computed(() => String(this.paramMap().get('deviceId')));
   protected readonly device = computed(() =>
-    this.store.devices().find(device => device.serialNumber === this.serialNumber())
+    this.store.devices().find((device) => device.id === this.deviceId()),
   );
 
   private readonly isPhysiotherapist = computed(() =>
-    this.iamStore.currentRoles().includes('ROLE_PHYSIOTHERAPIST')
+    this.iamStore.currentRoles().includes('ROLE_PHYSIOTHERAPIST'),
   );
 
   /* Confirm dialog state */
@@ -71,20 +73,23 @@ export class DeviceDetails {
     const byPhysio = this.orgStore.patientsByPhysiotherapist();
     if (byPhysio.length > 0) {
       return byPhysio
-        .filter(p => !assignedIds.has(p.id))
-        .map(p => ({label: p.fullName, value: p.id}));
+        .filter((p) => !assignedIds.has(p.id))
+        .map((p) => ({ label: p.fullName, value: p.id }));
     }
-    return this.orgStore.patients()
-      .filter(p => !assignedIds.has(p.id))
-      .map(p => ({label: p.fullName, value: p.id}));
+    return this.orgStore
+      .patients()
+      .filter((p) => !assignedIds.has(p.id))
+      .map((p) => ({ label: p.fullName, value: p.id }));
   });
 
-  private readonly assignedPatientIds = computed(() =>
-    new Set(
-      this.store.devices()
-        .filter(d => d.currentPatientId != null)
-        .map(d => d.currentPatientId!)
-    )
+  private readonly assignedPatientIds = computed(
+    () =>
+      new Set(
+        this.store
+          .devices()
+          .filter((d) => d.currentPatientId != null)
+          .map((d) => d.currentPatientId!),
+      ),
   );
 
   /* Contextual action visibility */
@@ -114,7 +119,7 @@ export class DeviceDetails {
   /* Navigation */
 
   protected onCancel() {
-    this.router.navigate(['..'], {relativeTo: this.route});
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   /* Assign Patient flow (Option B: inline dialog) */
@@ -138,16 +143,24 @@ export class DeviceDetails {
     if (!patientId || !device) return;
 
     this.isAssigning.set(true);
-    this.store.assignDevice(device.serialNumber, patientId).subscribe({
+    this.store.assignDevice(device.id, patientId).subscribe({
       next: () => {
         this.isAssigning.set(false);
         this.assignDialogVisible.set(false);
-        this.messageService.add({severity: 'success', summary: 'Paciente asignado', detail: `Dispositivo asignado exitosamente`});
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Paciente asignado',
+          detail: `Dispositivo asignado exitosamente`,
+        });
       },
       error: () => {
         this.isAssigning.set(false);
-        this.messageService.add({severity: 'error', summary: 'Error', detail: 'No se pudo asignar el paciente al dispositivo'});
-      }
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'No se pudo asignar el paciente al dispositivo',
+        });
+      },
     });
   }
 
@@ -192,22 +205,70 @@ export class DeviceDetails {
 
     if (actionKey === 'deviceDetails.confirm.unassignPatient.confirm') {
       this.confirmDialogPending.set(true);
-      this.store.unassignDevice(device.serialNumber);
-      this.confirmDialogPending.set(false);
-      this.confirmDialogVisible.set(false);
-      this.messageService.add({severity: 'success', summary: 'Paciente desvinculado', detail: `Paciente desvinculado del dispositivo`});
+      this.store.unassignDevice(device.id).subscribe({
+        next: () => {
+          this.confirmDialogPending.set(false);
+          this.confirmDialogVisible.set(false);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Paciente desvinculado',
+            detail: `Paciente desvinculado del dispositivo`,
+          });
+        },
+        error: () => {
+          this.confirmDialogPending.set(false);
+          this.confirmDialogVisible.set(false);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo desvincular el paciente del dispositivo',
+          });
+        },
+      });
     } else if (actionKey === 'deviceDetails.confirm.markNeedsCalibration.confirm') {
       this.confirmDialogPending.set(true);
-      this.store.calibrateDevice(device.serialNumber, 'needs_calibration');
-      this.confirmDialogPending.set(false);
-      this.confirmDialogVisible.set(false);
-      this.messageService.add({severity: 'success', summary: 'Marcado para calibración', detail: `Dispositivo marcado para calibración`});
+      this.store.calibrateDevice(device.id, 'needs_calibration').subscribe({
+        next: () => {
+          this.confirmDialogPending.set(false);
+          this.confirmDialogVisible.set(false);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Marcado para calibración',
+            detail: `Dispositivo marcado para calibración`,
+          });
+        },
+        error: () => {
+          this.confirmDialogPending.set(false);
+          this.confirmDialogVisible.set(false);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo marcar el dispositivo para calibración',
+          });
+        },
+      });
     } else if (actionKey === 'deviceDetails.confirm.validateCalibration.confirm') {
       this.confirmDialogPending.set(true);
-      this.store.calibrateDevice(device.serialNumber, 'validate');
-      this.confirmDialogPending.set(false);
-      this.confirmDialogVisible.set(false);
-      this.messageService.add({severity: 'success', summary: 'Calibración validada', detail: `Calibración del dispositivo validada`});
+      this.store.calibrateDevice(device.id, 'validate').subscribe({
+        next: () => {
+          this.confirmDialogPending.set(false);
+          this.confirmDialogVisible.set(false);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Calibración validada',
+            detail: `Calibración del dispositivo validada`,
+          });
+        },
+        error: () => {
+          this.confirmDialogPending.set(false);
+          this.confirmDialogVisible.set(false);
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'No se pudo validar la calibración del dispositivo',
+          });
+        },
+      });
     }
   }
 

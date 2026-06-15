@@ -126,6 +126,18 @@
   font-weight: 600;
 }
 
+.fleet__kit-id span,
+.fleet__kit-meta {
+  display: block;
+}
+
+.fleet__kit-meta {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+}
+
 .fleet__muted {
   color: var(--p-text-muted-color);
 }
@@ -160,9 +172,15 @@
   transition: width 200ms ease;
 }
 
-.fleet-battery--high { background: #34c79b; }
-.fleet-battery--medium { background: #1f3a4d; }
-.fleet-battery--low { background: #d9534f; }
+.fleet-battery--high {
+  background: #34c79b;
+}
+.fleet-battery--medium {
+  background: #1f3a4d;
+}
+.fleet-battery--low {
+  background: #d9534f;
+}
 
 .fleet-battery__label {
   font-weight: 500;
@@ -204,8 +222,12 @@
   background: #d9534f;
 }
 
-:host-context(.app-dark) .fleet__online-indicator--online { color: #34c79b; }
-:host-context(.app-dark) .fleet__online-indicator--offline { color: #ff8a87; }
+:host-context(.app-dark) .fleet__online-indicator--online {
+  color: #34c79b;
+}
+:host-context(.app-dark) .fleet__online-indicator--offline {
+  color: #ff8a87;
+}
 
 /* Empty state */
 .fleet__empty {
@@ -225,11 +247,19 @@
   font-weight: 500;
 }
 
-.fleet__cal i { font-size: 13px; }
+.fleet__cal i {
+  font-size: 13px;
+}
 
-.fleet__cal--valid { color: #1c7e5d; }
-.fleet__cal--expired { color: #c73a3a; }
-.fleet__cal--pending { color: var(--p-text-muted-color); }
+.fleet__cal--valid {
+  color: #1c7e5d;
+}
+.fleet__cal--expired {
+  color: #c73a3a;
+}
+.fleet__cal--pending {
+  color: var(--p-text-muted-color);
+}
 
 /* Status pill */
 .fleet__status {

@@ -291,7 +291,7 @@
       "totalActiveKitsNote": "En inventario",
       "requiresCalibration": "Requieren calibración",
       "networkStatus": "Estado de red",
-      "syncedThisWeek": "{{count}} sincronizados esta semana",
+      "seenThisWeek": "{{count}} vistos esta semana",
       "within7Days": "En 7 días",
       "online": "En línea",
       "availableKits": "Kits disponibles",
@@ -348,11 +348,14 @@
     "summary": {
       "title": "Resumen del dispositivo",
       "kitId": "ID del kit IoT",
+      "advertisedName": "Nombre BLE anunciado",
       "linkedPatient": "Paciente vinculado",
       "batteryLevel": "Nivel de batería",
       "firmware": "Firmware",
       "macAddress": "Dirección MAC",
-      "model": "Modelo"
+      "model": "Modelo",
+      "lastSeenAt": "Última vez visto",
+      "notAvailable": "No disponible"
     },
     "status": {
       "title": "Estado del dispositivo",
@@ -450,7 +453,7 @@
       "capacity": "Capacidad",
       "firmware": "Firmware",
       "connection": "Conexión",
-      "lastSync": "Última sincronización"
+      "lastSeen": "Última vez visto"
     }
   },
   "deviceRegister": {
@@ -469,6 +472,8 @@
       "serialNumberPlaceholder": "ej. UF-2024-X982",
       "macAddress": "Dirección MAC",
       "macAddressPlaceholder": "ej. AA:BB:CC:DD:EE:FF",
+      "advertisedName": "Nombre BLE anunciado",
+      "advertisedNamePlaceholder": "ej. UFLEX-DEV-0012",
       "model": "Modelo",
       "modelPlaceholder": "ej. UFlex Tracker Pro",
       "firmwareVersion": "Versión de firmware",
@@ -1308,7 +1313,7 @@
       "active": "Dispositivos activos",
       "available": "Unidades en línea",
       "inService": "En servicio",
-      "syncedThisWeek": "sincronizados esta semana",
+      "seenThisWeek": "vistos esta semana",
       "maintenanceRequired": "Mantenimiento requerido"
     },
     "battery": {
@@ -1326,11 +1331,11 @@
       "model": "Modelo",
       "status": "Estado",
       "battery": "Batería",
-      "lastSync": "Última sincronización",
+      "lastSeen": "Última vez visto",
       "assignment": "Asignación",
       "action": "Acción"
     },
-    "noSync": "Nunca sincronizó",
+    "noLastSeen": "Nunca visto",
     "actions": {
       "assign": "Asignar",
       "unassign": "Desvincular",

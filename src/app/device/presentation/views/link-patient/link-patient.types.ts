@@ -8,7 +8,9 @@ export interface Patient {
 }
 
 export interface Device {
+  id: string;
   serialNumber: string;
+  advertisedName: string | null;
 }
 
 export interface DeviceOption {

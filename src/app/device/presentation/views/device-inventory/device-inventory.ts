@@ -1,15 +1,15 @@
-import {Component, computed, inject, signal} from '@angular/core';
-import {DatePipe, DecimalPipe} from '@angular/common';
-import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import {TranslatePipe} from '@ngx-translate/core';
-import {ButtonModule} from 'primeng/button';
-import {ToastModule} from 'primeng/toast';
-import {TooltipModule} from 'primeng/tooltip';
-import {MessageService} from 'primeng/api';
-import {DeviceStore} from '../../../application/device.store';
-import {OrganizationStore} from '../../../../organization/application/organization.store';
-import {Device} from '../../../domain/model/device.entity';
-import {ConfirmActionDialog} from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
+import { Component, computed, inject, signal } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ButtonModule } from 'primeng/button';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { MessageService } from 'primeng/api';
+import { DeviceStore } from '../../../application/device.store';
+import { OrganizationStore } from '../../../../organization/application/organization.store';
+import { Device } from '../../../domain/model/device.entity';
+import { ConfirmActionDialog } from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
 
 type InventoryTab = 'available' | 'myDevices';
 
@@ -22,12 +22,11 @@ type InventoryTab = 'available' | 'myDevices';
     ButtonModule,
     ToastModule,
     TooltipModule,
-    RouterLink,
-    ConfirmActionDialog
+    ConfirmActionDialog,
   ],
   providers: [MessageService],
   templateUrl: './device-inventory.html',
-  styleUrl: './device-inventory.scss'
+  styleUrl: './device-inventory.scss',
 })
 export class DeviceInventory {
   private readonly store = inject(DeviceStore);
@@ -40,8 +39,8 @@ export class DeviceInventory {
 
   /* Tab state */
   protected readonly activeTab = signal<InventoryTab>('available');
-  private readonly myPatientIds = computed(() =>
-    new Set(this.orgStore.patients().map(p => p.id))
+  private readonly myPatientIds = computed(
+    () => new Set(this.orgStore.patients().map((p) => p.id)),
   );
 
   protected readonly filteredDevices = computed(() => {
@@ -49,22 +48,22 @@ export class DeviceInventory {
     const all = this.devices();
 
     if (tab === 'available') {
-      return all.filter(d => d.status === 'AVAILABLE');
+      return all.filter((d) => d.status === 'AVAILABLE');
     }
 
     const ids = this.myPatientIds();
-    return all.filter(d =>
-      d.currentPatientId != null && ids.has(d.currentPatientId)
-    );
+    return all.filter((d) => d.currentPatientId != null && ids.has(d.currentPatientId));
   });
 
   /* Metrics scoped to the physiotherapist's patients */
   protected readonly myPatientDevices = computed(() =>
-    this.devices().filter(d => d.currentPatientId != null && this.myPatientIds().has(d.currentPatientId))
+    this.devices().filter(
+      (d) => d.currentPatientId != null && this.myPatientIds().has(d.currentPatientId),
+    ),
   );
 
-  protected readonly myPatientOnlineCount = computed(() =>
-    this.myPatientDevices().filter(d => !d.offline).length
+  protected readonly myPatientOnlineCount = computed(
+    () => this.myPatientDevices().filter((d) => !d.offline).length,
   );
 
   protected readonly myPatientOnlinePct = computed(() => {
@@ -73,27 +72,27 @@ export class DeviceInventory {
     return Math.round((this.myPatientOnlineCount() / total) * 100);
   });
 
-  protected readonly myPatientInMaintenance = computed(() =>
-    this.myPatientDevices().filter(d => d.status === 'IN_MAINTENANCE').length
+  protected readonly myPatientInMaintenance = computed(
+    () => this.myPatientDevices().filter((d) => d.status === 'IN_MAINTENANCE').length,
   );
 
-  protected readonly myPatientSyncedThisWeek = computed(() => {
+  protected readonly myPatientSeenThisWeek = computed(() => {
     const now = new Date();
     const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-    return this.myPatientDevices().filter(d => d.lastSyncAt && d.lastSyncAt >= weekAgo).length;
+    return this.myPatientDevices().filter((d) => d.lastSeenAt && d.lastSeenAt >= weekAgo).length;
   });
 
   /* Battery health scoped to the physiotherapist's patients */
-  protected readonly myPatientBatteryHighCount = computed(() =>
-    this.myPatientDevices().filter(d => d.batteryLevel >= 80).length
+  protected readonly myPatientBatteryHighCount = computed(
+    () => this.myPatientDevices().filter((d) => d.batteryLevel >= 80).length,
   );
 
-  protected readonly myPatientBatteryMidCount = computed(() =>
-    this.myPatientDevices().filter(d => d.batteryLevel >= 20 && d.batteryLevel < 80).length
+  protected readonly myPatientBatteryMidCount = computed(
+    () => this.myPatientDevices().filter((d) => d.batteryLevel >= 20 && d.batteryLevel < 80).length,
   );
 
-  protected readonly myPatientBatteryLowCount = computed(() =>
-    this.myPatientDevices().filter(d => d.batteryLevel < 20).length
+  protected readonly myPatientBatteryLowCount = computed(
+    () => this.myPatientDevices().filter((d) => d.batteryLevel < 20).length,
   );
 
   /* Confirm dialog state */
@@ -117,7 +116,7 @@ export class DeviceInventory {
   /* Actions */
 
   protected onViewDetails(device: Device) {
-    this.router.navigate(['details', device.serialNumber], {relativeTo: this.route});
+    this.router.navigate(['details', device.id], { relativeTo: this.route });
   }
 
   protected onOpenDeleteConfirm(device: Device) {
@@ -135,16 +134,20 @@ export class DeviceInventory {
     if (!device) return;
 
     this.confirmDialogPending.set(true);
-    this.store.deleteDevice(device.serialNumber).subscribe({
+    this.store.deleteDevice(device.id).subscribe({
       next: () => {
         this.confirmDialogPending.set(false);
         this.confirmDialogVisible.set(false);
-        this.messageService.add({severity: 'success', summary: 'Dispositivo eliminado', detail: `Dispositivo ${device.serialNumber} eliminado`});
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Dispositivo eliminado',
+          detail: `Dispositivo ${device.serialNumber} eliminado`,
+        });
       },
       error: () => {
         this.confirmDialogPending.set(false);
         this.confirmDialogVisible.set(false);
-      }
+      },
     });
   }
 

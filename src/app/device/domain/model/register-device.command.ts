@@ -3,4 +3,5 @@ export interface RegisterDeviceCommand {
   macAddress: string;
   firmwareVersion?: string;
   model?: string;
+  advertisedName?: string;
 }
