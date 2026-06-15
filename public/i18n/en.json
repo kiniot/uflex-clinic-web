@@ -14,7 +14,14 @@
   "page-not-found": {
     "title": "Page not found",
     "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",
-    "go-home": "Go Home"
+    "go-portal": "Go to my portal",
+    "go-sign-in": "Back to sign in"
+  },
+  "forbidden": {
+    "title": "Access forbidden",
+    "content": "You do not have permission to access this page or portal.",
+    "go-portal": "Go to my portal",
+    "go-sign-in": "Back to sign in"
   },
   "footer": {
     "copyright": "Copyright © 2026 KinIoT.",

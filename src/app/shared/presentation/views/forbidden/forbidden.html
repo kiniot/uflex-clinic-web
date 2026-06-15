@@ -1,0 +1,8 @@
+<div class="status-view container-with-spacing">
+  <h1>{{ 'forbidden.title' | translate }}</h1>
+  <p>{{ 'forbidden.content' | translate }}</p>
+
+  <button pButton type="button" (click)="navigateToPrimaryAction()">
+    {{ actionLabelKey() | translate }}
+  </button>
+</div>

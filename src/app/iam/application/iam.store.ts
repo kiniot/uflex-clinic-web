@@ -9,13 +9,12 @@ import { SignInResource } from '../infrastructure/sign-in-response';
 import { SignUpResource } from '../infrastructure/sign-up-response';
 
 const ROLE_TO_HOME_ROUTE: Record<string, string> = {
-  ROLE_CLINIC_ADMIN: '/clinic-admin/organization',
+  ROLE_CLINIC_ADMIN: '/clinic-admin',
   ROLE_PHYSIOTHERAPIST: '/physiotherapist',
-  ROLE_PATIENT: '/home',
-  ROLE_USER: '/home',
 };
 
-const FALLBACK_HOME_ROUTE = '/home';
+const ROLE_PRIORITY = ['ROLE_CLINIC_ADMIN', 'ROLE_PHYSIOTHERAPIST'] as const;
+type PortalRole = (typeof ROLE_PRIORITY)[number];
 
 interface JwtPayload {
   sub?: string;
@@ -44,6 +43,12 @@ export class IamStore {
   readonly currentUserId = this.currentUserIdSignal.asReadonly();
   readonly currentRoles = this.currentRolesSignal.asReadonly();
   readonly currentTenantId = this.currentTenantIdSignal.asReadonly();
+  readonly currentEffectiveRole = computed<PortalRole | null>(() =>
+    this.resolveEffectiveRole(this.currentRolesSignal()),
+  );
+  readonly currentPortalLandingRoute = computed(() =>
+    this.portalLandingRouteForRoles(this.currentRolesSignal()),
+  );
 
   /**
    * @deprecated kept for backwards compatibility — use {@link currentEmail}.
@@ -74,7 +79,10 @@ export class IamStore {
             resolve(signInResource);
             return;
           }
-          const destination = redirectTo ?? this.resolveHomeRoute(signInResource.roles ?? []);
+          const destination =
+            redirectTo ??
+            this.portalLandingRouteForRoles(signInResource.roles ?? []) ??
+            '/forbidden';
           router.navigate([destination]).then(() => resolve(signInResource));
         },
         error: (err) => {
@@ -150,12 +158,22 @@ export class IamStore {
     this.currentTenantIdSignal.set(null);
   }
 
-  private resolveHomeRoute(roles: string[]): string {
-    for (const role of roles) {
-      const route = ROLE_TO_HOME_ROUTE[role];
-      if (route) return route;
+  hasPortalAccess(roles: string[] = this.currentRolesSignal()): boolean {
+    return this.resolveEffectiveRole(roles) !== null;
+  }
+
+  portalLandingRouteForRoles(roles: string[] = this.currentRolesSignal()): string | null {
+    const effectiveRole = this.resolveEffectiveRole(roles);
+    return effectiveRole ? ROLE_TO_HOME_ROUTE[effectiveRole] : null;
+  }
+
+  resolveEffectiveRole(roles: string[] = this.currentRolesSignal()): PortalRole | null {
+    for (const role of ROLE_PRIORITY) {
+      if (roles.includes(role)) {
+        return role;
+      }
     }
-    return FALLBACK_HOME_ROUTE;
+    return null;
   }
 
   /**

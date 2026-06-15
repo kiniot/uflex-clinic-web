@@ -1,0 +1,10 @@
+.status-view {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+}
+
+.status-view p {
+  margin: 0;
+  max-width: 40rem;
+}

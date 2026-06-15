@@ -15,7 +15,7 @@ describe('ClinicAdminPortal', () => {
           provide: IamStore,
           useValue: {
             currentEmail: signal('admin@uflex.app').asReadonly(),
-            currentRoles: signal(['ROLE_CLINIC_ADMIN']).asReadonly(),
+            currentEffectiveRole: signal('ROLE_CLINIC_ADMIN').asReadonly(),
             signOut: vi.fn(),
           },
         },

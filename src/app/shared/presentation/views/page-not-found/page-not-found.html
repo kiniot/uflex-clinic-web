@@ -2,7 +2,7 @@
   <h1>{{ 'page-not-found.title' | translate }}</h1>
   <div [innerHTML]="'page-not-found.content' | translate: { invalid_path: invalidPath }"></div>
 
-  <button type="button" class="btn-home" (click)="navigateToHome()">
-    {{ 'page-not-found.go-home' | translate }}
+  <button pButton type="button" class="btn-home" (click)="navigateToPrimaryAction()">
+    {{ actionLabelKey() | translate }}
   </button>
 </div>
