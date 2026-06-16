@@ -12,14 +12,21 @@
     "content": "Welcome to KinIoT uFlex."
   },
   "page-not-found": {
+    "eyebrow": "Navigation mismatch",
     "title": "Page not found",
-    "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",
+    "content": "The page you requested does not exist in the current portal or is no longer available.",
+    "path-label": "Requested path",
+    "helper": "We can take you back to the portal that matches your session.",
     "go-portal": "Go to my portal",
     "go-sign-in": "Back to sign in"
   },
   "forbidden": {
+    "eyebrow": "Protected area",
     "title": "Access forbidden",
     "content": "You do not have permission to access this page or portal.",
+    "noteLabel": "Session status",
+    "notePortal": "Your session is active, but this area belongs to a different portal than the one assigned to your role.",
+    "noteNoPortal": "Your account is authenticated, but it does not currently have a portal assigned in this web application.",
     "go-portal": "Go to my portal",
     "go-sign-in": "Back to sign in"
   },
@@ -314,7 +321,7 @@
     },
     "fleetStatus": "Fleet Status",
     "columns": {
-      "kitId": "IoT Kit ID",
+      "kitId": "Serial Number",
       "linkedPatient": "Linked Patient",
       "batteryLevel": "Battery Level",
       "connectivity": "Connectivity",
@@ -351,10 +358,10 @@
   "deviceDetails": {
     "backToInventory": "Back to Inventory",
     "title": "IoT Details",
-    "subtitle": "Kit {{kitId}}",
+    "subtitle": "Serial Number {{kitId}}",
     "summary": {
       "title": "Device Overview",
-      "kitId": "IoT Kit ID",
+      "kitId": "Serial Number",
       "advertisedName": "BLE advertised name",
       "linkedPatient": "Linked Patient",
       "batteryLevel": "Battery Level",
@@ -554,7 +561,7 @@
       "title": "Final Assignment",
       "reviewBadge": "REVIEW DRAFT",
       "assignedPatient": "Assigned Patient",
-      "kitIdentification": "Kit Identification",
+      "kitIdentification": "Serial Number",
       "protocolDuration": "Protocol Duration",
       "confirm": "Confirm Device Assignment",
       "cancel": "Cancel Operation"
@@ -1368,7 +1375,7 @@
       "title": "Device Inventory"
     },
     "columns": {
-      "deviceId": "Device ID",
+      "deviceId": "Serial Number",
       "model": "Model",
       "status": "Status",
       "battery": "Battery",

@@ -12,14 +12,21 @@
     "content": "Bienvenido a KinIoT uFlex."
   },
   "page-not-found": {
+    "eyebrow": "Desajuste de navegación",
     "title": "Página no encontrada",
-    "content": "La ruta <strong>{{ invalid_path }}</strong> es inválida.",
+    "content": "La página que solicitaste no existe en el portal actual o ya no está disponible.",
+    "path-label": "Ruta solicitada",
+    "helper": "Podemos llevarte de vuelta al portal que corresponde con tu sesión.",
     "go-portal": "Ir a mi portal",
     "go-sign-in": "Volver a iniciar sesión"
   },
   "forbidden": {
+    "eyebrow": "Área protegida",
     "title": "Acceso denegado",
     "content": "No tienes permisos para acceder a esta página o portal.",
+    "noteLabel": "Estado de la sesión",
+    "notePortal": "Tu sesión está activa, pero esta área pertenece a un portal distinto al que corresponde a tu rol.",
+    "noteNoPortal": "Tu cuenta está autenticada, pero actualmente no tiene un portal asignado dentro de esta aplicación web.",
     "go-portal": "Ir a mi portal",
     "go-sign-in": "Volver a iniciar sesión"
   },
@@ -314,7 +321,7 @@
     },
     "fleetStatus": "Estado de la flota",
     "columns": {
-      "kitId": "ID del kit IoT",
+      "kitId": "Número de serie",
       "linkedPatient": "Paciente vinculado",
       "batteryLevel": "Nivel de batería",
       "connectivity": "Conectividad",
@@ -351,10 +358,10 @@
   "deviceDetails": {
     "backToInventory": "Volver al inventario",
     "title": "Detalles del IoT",
-    "subtitle": "Kit {{kitId}}",
+    "subtitle": "Número de serie {{kitId}}",
     "summary": {
       "title": "Resumen del dispositivo",
-      "kitId": "ID del kit IoT",
+      "kitId": "Número de serie",
       "advertisedName": "Nombre BLE anunciado",
       "linkedPatient": "Paciente vinculado",
       "batteryLevel": "Nivel de batería",
@@ -554,7 +561,7 @@
       "title": "Asignación final",
       "reviewBadge": "REVISIÓN",
       "assignedPatient": "Paciente asignado",
-      "kitIdentification": "Identificación del kit",
+      "kitIdentification": "Número de serie",
       "protocolDuration": "Duración del protocolo",
       "confirm": "Confirmar asignación",
       "cancel": "Cancelar operación"
@@ -1368,7 +1375,7 @@
       "title": "Inventario"
     },
     "columns": {
-      "deviceId": "ID Dispositivo",
+      "deviceId": "Número de serie",
       "model": "Modelo",
       "status": "Estado",
       "battery": "Batería",
