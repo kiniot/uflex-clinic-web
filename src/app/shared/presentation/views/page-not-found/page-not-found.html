@@ -1,8 +1,33 @@
-<div class="container-with-spacing">
-  <h1>{{ 'page-not-found.title' | translate }}</h1>
-  <div [innerHTML]="'page-not-found.content' | translate: { invalid_path: invalidPath }"></div>
+<section class="status-shell">
+  <article class="status-card">
+    <div class="status-card__signal">
+      <span class="status-card__signal-ring"></span>
+      <i class="pi pi-compass status-card__signal-icon" aria-hidden="true"></i>
+    </div>
 
-  <button pButton type="button" class="btn-home" (click)="navigateToPrimaryAction()">
-    {{ actionLabelKey() | translate }}
-  </button>
-</div>
+    <div class="status-card__copy">
+      <span class="status-card__eyebrow">{{ 'page-not-found.eyebrow' | translate }}</span>
+      <h1 class="status-card__title">{{ 'page-not-found.title' | translate }}</h1>
+      <p class="status-card__body">{{ 'page-not-found.content' | translate }}</p>
+
+      <div class="status-card__path">
+        <span class="status-card__path-label">{{ 'page-not-found.path-label' | translate }}</span>
+        <code class="status-card__path-value">{{ displayPath() }}</code>
+      </div>
+    </div>
+
+    <div class="status-card__actions">
+      <button
+        pButton
+        type="button"
+        class="status-card__primary"
+        (click)="navigateToPrimaryAction()"
+      >
+        {{ actionLabelKey() | translate }}
+      </button>
+      @if (hasPortalAccess()) {
+        <span class="status-card__helper">{{ 'page-not-found.helper' | translate }}</span>
+      }
+    </div>
+  </article>
+</section>

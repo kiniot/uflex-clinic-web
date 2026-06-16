@@ -14,11 +14,12 @@ export class Forbidden {
   private readonly router = inject(Router);
   private readonly iamStore = inject(IamStore);
 
+  protected readonly hasPortalAccess = computed(() => this.iamStore.hasPortalAccess());
   protected readonly actionTarget = computed(
     () => this.iamStore.currentPortalLandingRoute() ?? '/sign-in',
   );
   protected readonly actionLabelKey = computed(() =>
-    this.iamStore.hasPortalAccess() ? 'forbidden.go-portal' : 'forbidden.go-sign-in',
+    this.hasPortalAccess() ? 'forbidden.go-portal' : 'forbidden.go-sign-in',
   );
 
   protected navigateToPrimaryAction() {

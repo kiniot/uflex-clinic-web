@@ -16,12 +16,14 @@ export class PageNotFound implements OnInit {
   private router: Router = inject(Router);
   private iamStore = inject(IamStore);
 
+  protected readonly hasPortalAccess = computed(() => this.iamStore.hasPortalAccess());
   protected readonly actionTarget = computed(
     () => this.iamStore.currentPortalLandingRoute() ?? '/sign-in',
   );
   protected readonly actionLabelKey = computed(() =>
-    this.iamStore.hasPortalAccess() ? 'page-not-found.go-portal' : 'page-not-found.go-sign-in',
+    this.hasPortalAccess() ? 'page-not-found.go-portal' : 'page-not-found.go-sign-in',
   );
+  protected readonly displayPath = computed(() => this.invalidPath || '/');
 
   ngOnInit() {
     this.invalidPath = this.route.snapshot.url.map((url) => url.path).join('/');

@@ -1,8 +1,32 @@
-<div class="status-view container-with-spacing">
-  <h1>{{ 'forbidden.title' | translate }}</h1>
-  <p>{{ 'forbidden.content' | translate }}</p>
+<section class="status-shell">
+  <article class="status-card">
+    <div class="status-card__signal">
+      <span class="status-card__signal-ring"></span>
+      <i class="pi pi-lock status-card__signal-icon" aria-hidden="true"></i>
+    </div>
 
-  <button pButton type="button" (click)="navigateToPrimaryAction()">
-    {{ actionLabelKey() | translate }}
-  </button>
-</div>
+    <div class="status-card__copy">
+      <span class="status-card__eyebrow">{{ 'forbidden.eyebrow' | translate }}</span>
+      <h1 class="status-card__title">{{ 'forbidden.title' | translate }}</h1>
+      <p class="status-card__body">{{ 'forbidden.content' | translate }}</p>
+
+      <div class="status-card__note">
+        <span class="status-card__note-label">{{ 'forbidden.noteLabel' | translate }}</span>
+        <p class="status-card__note-body">
+          {{ (hasPortalAccess() ? 'forbidden.notePortal' : 'forbidden.noteNoPortal') | translate }}
+        </p>
+      </div>
+    </div>
+
+    <div class="status-card__actions">
+      <button
+        pButton
+        type="button"
+        class="status-card__primary"
+        (click)="navigateToPrimaryAction()"
+      >
+        {{ actionLabelKey() | translate }}
+      </button>
+    </div>
+  </article>
+</section>
