@@ -1,118 +1,256 @@
 <header class="roster-page__header">
   <div class="roster-page__header-text">
-    <span class="roster-page__eyebrow">{{ 'therapyRoster.eyebrow' | translate }}</span>
-    <h1 class="roster-page__title">{{ 'therapyRoster.title' | translate }}</h1>
-    <p class="roster-page__subtitle">{{ 'therapyRoster.subtitle' | translate }}</p>
+    <span class="roster-page__eyebrow">{{ 'therapySessions.eyebrow' | translate }}</span>
+    <h1 class="roster-page__title">{{ titleKey() | translate }}</h1>
+    <p class="roster-page__subtitle">{{ subtitleKey() | translate }}</p>
   </div>
-  <button pButton type="button" severity="primary"
-          class="roster-page__cta"
-          (click)="onRegisterPatient()">
-    <i class="pi pi-user-plus" aria-hidden="true"></i>
-    <span>{{ 'therapyRoster.registerPatient' | translate }}</span>
+  <button
+    pButton
+    type="button"
+    severity="secondary"
+    class="therapy-session-refresh"
+    (click)="onRefreshPatientContext()"
+  >
+    <span>{{ 'therapySessions.refresh' | translate }}</span>
   </button>
 </header>
 
 <section class="roster-page__kpis">
-  <article class="kpi kpi--throughput">
+  <article class="kpi">
     <div class="kpi__main">
-      <h3 class="kpi__title">{{ 'therapyRoster.kpi.throughput' | translate }}</h3>
-      <p class="kpi__sub">{{ 'therapyRoster.kpi.throughputSub' | translate }}</p>
+      <h3 class="kpi__title">{{ 'therapySessions.kpi.totalPatients' | translate }}</h3>
+      <p class="kpi__sub">{{ 'therapySessions.kpi.totalPatientsSub' | translate }}</p>
       <div class="kpi__value-row">
-        <span class="kpi__value">{{ overview().throughputPct }}%</span>
-        <span class="kpi__delta">
-          <i class="pi pi-arrow-up" aria-hidden="true"></i>
-          +{{ overview().throughputDeltaPct }}%
-        </span>
-      </div>
-    </div>
-    <div class="kpi__visual" aria-hidden="true">
-      <div class="kpi__visual-card">
-        <span class="kpi__visual-mark">uF</span>
-        <span class="kpi__visual-tag">{{ 'therapyRoster.kpi.throughputBadge' | translate }}</span>
+        <span class="kpi__value">{{ patients().length }}</span>
       </div>
     </div>
   </article>
 
-  <article class="kpi kpi--devices">
-    <span class="kpi__icon kpi__icon--accent" aria-hidden="true">
-      <i class="pi pi-wifi"></i>
-    </span>
-    <span class="kpi__value kpi__value--small">{{ overview().activeDevices }} {{ 'therapyRoster.kpi.active' | translate }}</span>
-    <p class="kpi__sub">{{ 'therapyRoster.kpi.devicesSub' | translate }}</p>
-    <div class="kpi__bar">
-      <div class="kpi__bar-fill" [style.width.%]="devicesUsagePct()"></div>
-    </div>
+  <article class="kpi">
+    <h3 class="kpi__title">{{ 'therapySessions.kpi.inTreatment' | translate }}</h3>
+    <p class="kpi__sub">{{ 'therapySessions.kpi.inTreatmentSub' | translate }}</p>
+    <span class="kpi__value">{{ inTreatmentPatientsCount() }}</span>
   </article>
 
-  <article class="kpi kpi--reviews">
-    <span class="kpi__icon kpi__icon--inverse" aria-hidden="true">
-      <i class="pi pi-calendar"></i>
-    </span>
-    <span class="kpi__value kpi__value--inverse">{{ overview().pendingReviews }} {{ 'therapyRoster.kpi.reviews' | translate }}</span>
-    <p class="kpi__sub kpi__sub--inverse">{{ 'therapyRoster.kpi.reviewsSub' | translate }}</p>
-    <span class="kpi__badge">{{ 'therapyRoster.kpi.actionRequired' | translate }}</span>
-  </article>
 </section>
 
-<section class="roster-page__roster-card">
-  <header class="roster-page__roster-header">
-    <div class="roster-page__roster-tabs">
-      <h2 class="roster-page__roster-title">{{ 'therapyRoster.roster' | translate }}</h2>
-      <button type="button" class="roster-page__tab"
-              [class.roster-page__tab--active]="activeTab() === 'all'"
-              (click)="onTab('all')">
-        {{ 'therapyRoster.tabs.all' | translate }} ({{ overview().totalActivePatients }})
-      </button>
-      <button type="button" class="roster-page__tab"
-              [class.roster-page__tab--active]="activeTab() === 'connected'"
-              (click)="onTab('connected')">
-        {{ 'therapyRoster.tabs.connected' | translate }} ({{ connectedCount() }})
-      </button>
-    </div>
-    <div class="roster-page__roster-filters">
-      <button type="button" class="roster-page__icon-btn" aria-label="filter">
-        <i class="pi pi-filter" aria-hidden="true"></i>
-      </button>
-      <button type="button" class="roster-page__icon-btn" aria-label="more">
-        <i class="pi pi-sort-alt" aria-hidden="true"></i>
-      </button>
-    </div>
-  </header>
+<section class="therapy-session-layout">
+  <article class="roster-page__roster-card therapy-session-card">
+    <header class="roster-page__roster-header">
+      <div class="roster-page__roster-tabs">
+        <h2 class="roster-page__roster-title">
+          {{ 'therapySessions.patientListTitle' | translate }}
+        </h2>
+      </div>
+      <span class="roster-page__counter">
+        {{ 'therapySessions.patientListCount' | translate: { count: patients().length } }}
+      </span>
+    </header>
 
-  <app-therapy-roster-table [patients]="visiblePatients()"
-                             (reviewOpen)="onReviewTherapy($event)"/>
-
-  <footer class="roster-page__footer">
-    <span class="roster-page__counter">
-      {{ 'therapyRoster.showingCount' | translate: {visible: visiblePatients().length, total: overview().totalActivePatients} }}
-    </span>
-    <div class="roster-page__pager">
-      <button type="button">{{ 'therapyRoster.previous' | translate }}</button>
-      <button type="button">{{ 'therapyRoster.next' | translate }}</button>
-    </div>
-  </footer>
-  <button type="button" class="roster-page__fab" (click)="onAddPatient()" aria-label="Add patient">
-    <i class="pi pi-plus" aria-hidden="true"></i>
-  </button>
-</section>
-
-<section class="roster-page__bottom">
-  <article class="roster-page__promo">
-    <div class="roster-page__promo-pattern" aria-hidden="true"></div>
-    <div class="roster-page__promo-text">
-      <h3 class="roster-page__promo-title">{{ 'therapyRoster.promo.title' | translate }}</h3>
-      <p class="roster-page__promo-body">{{ 'therapyRoster.promo.body' | translate }}</p>
-      <button pButton type="button" class="roster-page__promo-cta" (click)="onExploreSensors()">
-        <span>{{ 'therapyRoster.promo.cta' | translate }}</span>
-      </button>
-    </div>
+    @if (isLoadingPatients()) {
+      <div class="therapy-session-empty">{{ 'therapySessions.loadingPatients' | translate }}</div>
+    } @else if (!patients().length) {
+      <div class="therapy-session-empty">
+        <strong>{{ 'therapySessions.noPatientsTitle' | translate }}</strong>
+        <span>{{ 'therapySessions.noPatientsBody' | translate }}</span>
+      </div>
+    } @else {
+      <div class="therapy-session-patient-list">
+        @for (patient of patients(); track patient.id) {
+          <button
+            type="button"
+            class="therapy-session-patient-item"
+            [class.therapy-session-patient-item--active]="hasSelectedPatient(patient.id)"
+            (click)="onSelectPatient(patient)"
+          >
+            <span class="therapy-session-patient-avatar">{{ initials(patient) }}</span>
+            <span class="therapy-session-patient-copy">
+              <strong>{{ patientDisplayName(patient) }}</strong>
+              <span>{{ patient.medicalCondition }}</span>
+              <small>{{ 'patientsList.status.' + patient.status | translate }}</small>
+            </span>
+          </button>
+        }
+      </div>
+    }
   </article>
 
-  <button type="button" class="roster-page__template" (click)="onCreateTemplate()">
-    <span class="roster-page__template-plus" aria-hidden="true">
-      <i class="pi pi-plus"></i>
-    </span>
-    <strong class="roster-page__template-title">{{ 'therapyRoster.template.title' | translate }}</strong>
-    <span class="roster-page__template-body">{{ 'therapyRoster.template.body' | translate }}</span>
-  </button>
+  <section class="therapy-session-detail">
+    <header class="therapy-session-detail__header">
+      <div>
+        <h2 class="roster-page__roster-title">{{ 'therapySessions.detailTitle' | translate }}</h2>
+      </div>
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        class="therapy-session-detail__action"
+        [disabled]="!selectedPatient()"
+        (click)="onOpenPatient()"
+      >
+        <span>{{ openPatientLabelKey() | translate }}</span>
+      </button>
+    </header>
+
+    @if (contextError()) {
+      <div class="therapy-session-error">{{ 'therapySessions.contextError' | translate }}</div>
+    }
+
+    <div class="therapy-session-panels">
+      <article class="therapy-session-panel">
+        <h3>{{ 'therapySessions.scheduleTitle' | translate }}</h3>
+
+        @if (isLoadingPatientContext()) {
+          <p>{{ 'therapySessions.loadingContext' | translate }}</p>
+        }
+        @else if (dailySchedule()) {
+
+          @if (hasEmptySchedule()) {
+            <div class="therapy-session-empty-state-wrapper">
+              <div class="therapy-session-empty-state-badge">
+                {{ 'therapySessions.scheduleEmptyBadge' | translate }}
+              </div>
+              <!-- Opcional: Puedes meter un párrafo descriptivo extra si quieres -->
+            </div>
+          }
+          @else {
+            <dl class="therapy-session-definition">
+              <div>
+                <dt>{{ 'therapySessions.scheduleDate' | translate }}</dt>
+                <dd>{{ dailySchedule()!.date }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'therapySessions.assignedProgram' | translate }}</dt>
+                <dd>{{ assignedProgramLabelKey() | translate }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'therapySessions.totalSeries' | translate }}</dt>
+                <dd>{{ dailySchedule()!.totalSeries }}</dd>
+              </div>
+              <div>
+                <dt>{{ 'therapySessions.estimatedDuration' | translate }}</dt>
+                <dd>{{ dailySchedule()!.estimatedDurationMinutes }} min</dd>
+              </div>
+            </dl>
+          }
+
+        } @else {
+          <p>{{ 'therapySessions.noSchedule' | translate }}</p>
+        }
+      </article>
+
+      <article class="therapy-session-panel">
+        <h3>{{ 'therapySessions.activeSessionTitle' | translate }}</h3>
+        @if (activeSession()) {
+          <dl class="therapy-session-definition">
+            <div>
+              <dt>{{ 'therapySessions.responsibleSpecialist' | translate }}</dt>
+              <dd>
+                @if (currentPhysiotherapist()) {
+                  {{ responsibleSpecialistLabel() }}
+                } @else {
+                  {{ responsibleSpecialistLabel() | translate }}
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.status' | translate }}</dt>
+              <dd>{{ sessionStatusKey(activeSession()!.status) | translate }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.startedAt' | translate }}</dt>
+              <dd>
+                {{
+                  activeSession()!.startedAt ? (activeSession()!.startedAt | date: 'hh:mm a') : '—'
+                }}
+              </dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.finalizedAt' | translate }}</dt>
+              <dd>
+                {{
+                  activeSession()!.finalizedAt
+                    ? (activeSession()!.finalizedAt | date: 'hh:mm a')
+                    : '—'
+                }}
+              </dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.hardwareStatus' | translate }}</dt>
+              <dd>{{ hardwareStatusLabelKey() | translate }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.painLevel' | translate }}</dt>
+              <dd>
+                @if (isTranslatableValue(currentPainLevelLabel())) {
+                  {{ currentPainLevelLabel() | translate }}
+                } @else {
+                  {{ currentPainLevelLabel() }}
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.clinicalReview' | translate }}</dt>
+              <dd>{{ clinicalReviewLabelKey() | translate }}</dd>
+            </div>
+          </dl>
+        } @else {
+          <p>{{ 'therapySessions.noActiveSession' | translate }}</p>
+        }
+      </article>
+
+      <article class="therapy-session-panel therapy-session-panel--wide">
+        <h3>{{ 'therapySessions.progressTitle' | translate }}</h3>
+        @if (sessionProgress()) {
+          <dl class="therapy-session-definition">
+            <div>
+              <dt>{{ 'therapySessions.sessionStatus' | translate }}</dt>
+              <dd>{{ sessionStatusKey(sessionProgress()!.status) | translate }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.currentSerieId' | translate }}</dt>
+              <dd>{{ currentSerieLabel() }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.hardwareStatus' | translate }}</dt>
+              <dd>{{ hardwareStatusLabelKey() | translate }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.painLevel' | translate }}</dt>
+              <dd>
+                @if (isTranslatableValue(currentPainLevelLabel())) {
+                  {{ currentPainLevelLabel() | translate }}
+                } @else {
+                  {{ currentPainLevelLabel() }}
+                }
+              </dd>
+            </div>
+            <div>
+              <dt>{{ 'therapySessions.clinicalReview' | translate }}</dt>
+              <dd>{{ clinicalReviewLabelKey() | translate }}</dd>
+            </div>
+          </dl>
+
+          @if (sessionProgress()!.seriesProgress.length) {
+            <div class="therapy-session-series-list">
+              @for (serie of sessionProgress()!.seriesProgress; track serie.serieId) {
+                <div class="therapy-session-series-item">
+                  <strong>{{ serieLabel(serie.serieId, $index) }}</strong>
+                  <span>
+                    {{ serie.currentRepetitions ?? 0 }} / {{ serie.targetRepetitions ?? 0 }}
+                    {{ 'therapySessions.repetitions' | translate }}
+                  </span>
+                  <small>{{ serieStatusKey(serie.status) | translate }}</small>
+                </div>
+              }
+            </div>
+          } @else {
+            <p>{{ 'therapySessions.noSeriesProgress' | translate }}</p>
+          }
+        } @else {
+          <p>{{ 'therapySessions.noProgress' | translate }}</p>
+        }
+      </article>
+    </div>
+  </section>
 </section>
