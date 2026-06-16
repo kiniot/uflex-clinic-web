@@ -62,12 +62,14 @@
 /* KPI cards */
 .roster-page__kpis {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
 }
 
 @media (max-width: 1100px) {
-  .roster-page__kpis { grid-template-columns: 1fr; }
+  .roster-page__kpis {
+    grid-template-columns: 1fr;
+  }
 }
 
 .kpi {
@@ -116,10 +118,6 @@
   letter-spacing: -0.01em;
 }
 
-.kpi__value--small {
-  font-size: 22px;
-}
-
 .kpi__delta {
   display: inline-flex;
   align-items: center;
@@ -160,7 +158,9 @@
   @include theme.surface;
 }
 
-:host-context(.app-dark) .kpi__bar { background: var(--p-surface-200); }
+:host-context(.app-dark) .kpi__bar {
+  background: var(--p-surface-200);
+}
 
 .kpi__bar-fill {
   height: 100%;
@@ -229,38 +229,6 @@
 
 :host-context(.app-dark) .kpi__visual-tag {
   background: var(--p-surface-100);
-}
-
-/* Reviews card (filled dark teal) */
-.kpi--reviews {
-  background: var(--p-primary-color);
-  border-color: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
-}
-
-:host-context(.app-dark) .kpi.kpi--reviews {
-  background: var(--p-primary-color);
-  border-color: var(--p-primary-color);
-  color: var(--p-primary-contrast-color);
-}
-
-.kpi--reviews .kpi__title { color: var(--p-primary-contrast-color); }
-
-.kpi__value--inverse { color: var(--p-primary-contrast-color); font-size: 22px; }
-.kpi__sub--inverse { color: var(--p-primary-contrast-color); opacity: 0.85; }
-
-.kpi__badge {
-  align-self: flex-start;
-  font-family: 'Inter', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--p-primary-contrast-color);
-  padding: 4px 8px;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.16);
-  @include theme.surface;
 }
 
 /* Roster card */
@@ -420,7 +388,9 @@
 }
 
 @media (max-width: 1100px) {
-  .roster-page__bottom { grid-template-columns: 1fr; }
+  .roster-page__bottom {
+    grid-template-columns: 1fr;
+  }
 }
 
 .roster-page__promo {
@@ -540,4 +510,285 @@
   color: var(--p-text-muted-color);
   line-height: 1.5;
   max-width: 240px;
+}
+
+.therapy-session-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 1100px) {
+  .therapy-session-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.therapy-session-card {
+  min-height: 420px;
+}
+
+.therapy-session-patient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 0 16px 16px;
+}
+
+.therapy-session-patient-item {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--p-surface-200);
+  border-radius: 12px;
+  background: var(--p-surface-0);
+  text-align: left;
+  cursor: pointer;
+  @include theme.surface;
+}
+
+.therapy-session-patient-item--active {
+  border-color: var(--p-primary-color);
+  background: color-mix(in srgb, var(--p-primary-color) 7%, var(--p-surface-0));
+}
+
+:host-context(.app-dark) .therapy-session-patient-item {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+:host-context(.app-dark) .therapy-session-patient-item--active {
+  background: color-mix(in srgb, var(--p-primary-color) 12%, var(--p-surface-100));
+}
+
+.therapy-session-patient-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
+  color: var(--p-primary-color);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+}
+
+.therapy-session-patient-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.therapy-session-patient-copy strong,
+.therapy-session-patient-copy span,
+.therapy-session-patient-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.therapy-session-patient-copy span,
+.therapy-session-patient-copy small {
+  font-family: 'Inter', sans-serif;
+  color: var(--p-text-muted-color);
+}
+
+.therapy-session-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.therapy-session-detail__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+:host ::ng-deep .therapy-session-refresh.p-button,
+:host ::ng-deep .therapy-session-detail__action.p-button {
+  color: var(--p-text-color);
+  border-color: var(--p-surface-300);
+  background: var(--p-surface-0);
+}
+
+:host ::ng-deep .therapy-session-refresh.p-button:not(:disabled):hover,
+:host ::ng-deep .therapy-session-detail__action.p-button:not(:disabled):hover {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-400);
+  color: var(--p-text-color);
+}
+
+:host ::ng-deep .therapy-session-refresh.p-button:disabled,
+:host ::ng-deep .therapy-session-detail__action.p-button:disabled {
+  color: var(--p-text-muted-color);
+}
+
+:host-context(.app-dark) ::ng-deep .therapy-session-refresh.p-button,
+:host-context(.app-dark) ::ng-deep .therapy-session-detail__action.p-button {
+  color: var(--p-surface-0);
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-300);
+}
+
+:host-context(.app-dark)
+  ::ng-deep
+  .therapy-session-refresh.p-button:not(:disabled):hover,
+:host-context(.app-dark)
+  ::ng-deep
+  .therapy-session-detail__action.p-button:not(:disabled):hover {
+  color: var(--p-surface-0);
+  background: var(--p-surface-300);
+  border-color: var(--p-surface-400);
+}
+
+:host-context(.app-dark) ::ng-deep .therapy-session-refresh.p-button:disabled,
+:host-context(.app-dark) ::ng-deep .therapy-session-detail__action.p-button:disabled {
+  color: var(--p-text-muted-color);
+  background: var(--p-surface-200);
+}
+
+.therapy-session-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .therapy-session-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+.therapy-session-panel {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .therapy-session-panel {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.therapy-session-panel h3 {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  color: var(--p-text-color);
+}
+
+.therapy-session-panel p {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--p-text-muted-color);
+}
+
+:host-context(.app-dark) .therapy-session-panel p {
+  color: var(--p-text-color);
+}
+
+.therapy-session-panel--wide {
+  grid-column: 1 / -1;
+}
+
+.therapy-session-definition {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.therapy-session-definition div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.therapy-session-definition dt {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+.therapy-session-definition dd {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-color);
+  word-break: break-word;
+}
+
+.therapy-session-empty-state-badge {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  @include theme.surface;
+}
+
+.therapy-session-series-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.therapy-session-series-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: var(--p-surface-50);
+  border: 1px solid var(--p-surface-200);
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .therapy-session-series-item {
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-300);
+}
+
+.therapy-session-series-item span,
+.therapy-session-series-item small,
+.therapy-session-empty,
+.therapy-session-error {
+  font-family: 'Inter', sans-serif;
+  color: var(--p-text-muted-color);
+}
+
+.therapy-session-empty,
+.therapy-session-error {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px 20px;
+}
+
+.therapy-session-error {
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--p-red-500) 8%, var(--p-surface-0));
+  border: 1px solid color-mix(in srgb, var(--p-red-500) 20%, var(--p-surface-200));
+}
+
+:host-context(.app-dark) .therapy-session-error {
+  background: color-mix(in srgb, var(--p-red-500) 12%, var(--p-surface-100));
+  border-color: color-mix(in srgb, var(--p-red-500) 24%, var(--p-surface-300));
 }
