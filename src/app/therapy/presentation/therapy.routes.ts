@@ -1,16 +1,13 @@
-import {Routes} from '@angular/router';
+import { Routes } from '@angular/router';
 
-const therapyManagement = () =>
-  import('./views/therapy-management/therapy-management').then(m => m.TherapyManagement);
-const registerExercise = () =>
-  import('./views/register-exercise/register-exercise').then(m => m.RegisterExercise);
+const therapyRoster = () =>
+  import('./views/therapy-roster/therapy-roster').then((m) => m.TherapyRoster);
 
 /**
- * Routes for the Therapy bounded context. Portals mount these under their
- * own path (e.g. /clinic-admin/therapy → therapy-management;
- * /clinic-admin/therapy/register → register-exercise).
+ * Routes for the Therapy bounded context. The admin landing now focuses on
+ * therapy sessions; exercise catalog management lives under `/exercises`.
  */
 export const therapyRoutes: Routes = [
-  {path: '', loadComponent: therapyManagement},
-  {path: 'register', loadComponent: registerExercise}
+  { path: '', loadComponent: therapyRoster, data: { roleContext: 'admin' } },
+  { path: 'register', redirectTo: '/clinic-admin/exercises/new', pathMatch: 'full' },
 ];
