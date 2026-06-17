@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -70,6 +72,7 @@
   background: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
   border-radius: 12px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .cal-tile {
@@ -87,6 +90,7 @@
   background: var(--p-surface-100);
   color: var(--p-primary-color);
   font-size: 14px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .cal-tile__icon {

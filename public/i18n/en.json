@@ -12,11 +12,26 @@
     "content": "Welcome to KinIoT uFlex."
   },
   "page-not-found": {
+    "eyebrow": "Navigation mismatch",
     "title": "Page not found",
-    "content": "The path <strong>{{ invalid_path }}</strong> is not valid.",
-    "go-home": "Go Home"
+    "content": "The page you requested does not exist in the current portal or is no longer available.",
+    "path-label": "Requested path",
+    "helper": "We can take you back to the portal that matches your session.",
+    "go-portal": "Go to my portal",
+    "go-sign-in": "Back to sign in"
+  },
+  "forbidden": {
+    "eyebrow": "Protected area",
+    "title": "Access forbidden",
+    "content": "You do not have permission to access this page or portal.",
+    "noteLabel": "Session status",
+    "notePortal": "Your session is active, but this area belongs to a different portal than the one assigned to your role.",
+    "noteNoPortal": "Your account is authenticated, but it does not currently have a portal assigned in this web application.",
+    "go-portal": "Go to my portal",
+    "go-sign-in": "Back to sign in"
   },
   "footer": {
+    "copyright": "Copyright © 2026 KinIoT.",
     "rights": "All rights reserved.",
     "powered-by": "Powered by",
     "and": "and"
@@ -25,14 +40,23 @@
     "physiotherapist": "Physiotherapist",
     "clinicAdmin": "Clinic Admin"
   },
+  "countries": {
+    "peru": "Peru",
+    "chile": "Chile",
+    "colombia": "Colombia",
+    "ecuador": "Ecuador",
+    "mexico": "Mexico",
+    "argentina": "Argentina",
+    "unitedStates": "United States"
+  },
   "clinicAdmin": {
     "brand": {
       "name": "uFlex",
-      "subtitle": "Clinician Portal",
-      "badge": "ADMIN"
+      "subtitle": "Clinical Portal"
     },
     "nav": {
       "therapy": "Therapy",
+      "exercises": "Exercises",
       "device": "Device",
       "organization": "Organization",
       "subscription": "Subscription",
@@ -42,6 +66,7 @@
     },
     "topbar": {
       "searchPlaceholder": "Search patients or devices...",
+      "rolePill": "Admin",
       "clinicSelector": "Clinic Selector"
     },
     "therapy": {
@@ -64,6 +89,95 @@
     "profile": {
       "title": "Profile",
       "subtitle": "Your account settings and preferences."
+    }
+  },
+  "exerciseCatalogAdmin": {
+    "title": "Exercise Catalog",
+    "subtitle": "Create and maintain the clinic exercise library used by physiotherapists in treatment plans.",
+    "actions": {
+      "create": "New Exercise",
+      "edit": "Edit exercise",
+      "delete": "Delete exercise",
+      "save": "Save changes",
+      "cancel": "Cancel",
+      "retry": "Retry"
+    },
+    "filters": {
+      "searchPlaceholder": "Search exercises by name or description...",
+      "allBodyParts": "All body parts",
+      "allMovementTypes": "All movement types"
+    },
+    "table": {
+      "title": "Clinic library",
+      "subtitle": "These exercises become available in the treatment-plan workspace for physiotherapists.",
+      "showingCount": "Showing {{visible}} of {{total}} exercises"
+    },
+    "columns": {
+      "name": "Exercise",
+      "bodyPart": "Body part",
+      "movementType": "Movement",
+      "video": "Video",
+      "actions": "Actions"
+    },
+    "bodyPart": {
+      "ELBOW": "Elbow",
+      "WRIST": "Wrist"
+    },
+    "movementType": {
+      "PRONATION": "Pronation",
+      "SUPINATION": "Supination",
+      "FLEXION": "Flexion",
+      "EXTENSION": "Extension"
+    },
+    "video": {
+      "available": "Available",
+      "pending": "Pending"
+    },
+    "empty": {
+      "title": "No exercises yet",
+      "body": "Create the first exercise to start building the clinic catalog.",
+      "filteredTitle": "No exercises match these filters",
+      "filteredBody": "Try another search term or clear the filters to see more results."
+    },
+    "error": {
+      "title": "Exercise catalog unavailable",
+      "body": "We could not load the clinic exercise library right now."
+    },
+    "form": {
+      "createTitle": "Create Exercise",
+      "editTitle": "Edit Exercise",
+      "subtitle": "Register the exercise metadata now. Video upload will be enabled once the backend supports attachments.",
+      "name": "Exercise name",
+      "namePlaceholder": "e.g. Wrist supination",
+      "bodyPart": "Target body part",
+      "bodyPartPlaceholder": "Select body part",
+      "movementType": "Movement type",
+      "movementTypePlaceholder": "Select movement type",
+      "description": "Therapeutic description",
+      "descriptionPlaceholder": "Describe the therapeutic intent and how the exercise should be performed...",
+      "videoUrl": "Video URL (optional)",
+      "videoUrlPlaceholder": "https://cdn.uflex.app/exercises/example.mp4",
+      "videoUrlHint": "Leave this empty for now if the video is not published yet.",
+      "videoSectionTitle": "Video placeholder",
+      "videoSectionBody": "The final product will support attaching a video here. For now this area is only a visual placeholder.",
+      "uploadHint": "Drag or upload a video here",
+      "uploadMeta": "Upload is not active yet. The selected file is not sent to the backend."
+    },
+    "deleteConfirm": {
+      "title": "Delete exercise",
+      "body": "Are you sure you want to delete {{name}} from the clinic catalog?"
+    },
+    "notifications": {
+      "createSuccessSummary": "Exercise created",
+      "createSuccessDetail": "{{name}} is now available in the clinic catalog.",
+      "editSuccessSummary": "Exercise updated",
+      "editSuccessDetail": "{{name}} was updated successfully.",
+      "deleteSuccessSummary": "Exercise deleted",
+      "deleteSuccessDetail": "{{name}} was removed from the clinic catalog.",
+      "deleteErrorSummary": "Could not delete exercise",
+      "deleteErrorDetail": "Try again in a moment.",
+      "saveErrorSummary": "Could not save exercise",
+      "saveErrorDetail": "Review the information and try again."
     }
   },
   "profile": {
@@ -173,22 +287,44 @@
       "runDiagnostics": "Run Diagnostics",
       "calibrate": "Calibrate",
       "linkToPatient": "Link to Patient",
-      "registerDevice": "Register Device"
+      "registerDevice": "Register Device",
+      "viewDetails": "View details",
+      "deleteDevice": "Delete device",
+      "unassignPatient": "Unassign patient"
+    },
+    "deleteConfirm": {
+      "title": "Delete device",
+      "body": "Are you sure you want to delete this device? This action cannot be undone."
+    },
+    "unassignConfirm": {
+      "title": "Unassign patient",
+      "body": "Are you sure you want to unassign this patient from the device?"
     },
     "stats": {
       "totalActiveKits": "Total Active Kits",
+      "totalActiveKitsNote": "In inventory",
       "requiresCalibration": "Requires Calibration",
       "networkStatus": "Network Status",
-      "delta": "+4 this week",
+      "seenThisWeek": "{{count}} seen this week",
       "within7Days": "Within 7 days",
-      "online": "Online"
+      "online": "Online",
+      "availableKits": "Available Kits",
+      "availableKitsNote": "Ready to assign",
+      "assignedKits": "Assigned Kits",
+      "assignedKitsNote": "In use",
+      "inMaintenanceKits": "In Maintenance",
+      "inMaintenanceKitsNote": "Needs service",
+      "lowBatteryKits": "Low Battery",
+      "lowBatteryKitsNote": "Needs charge",
+      "offlineKits": "Offline",
+      "offlineKitsNote": "Disconnected"
     },
     "fleetStatus": "Fleet Status",
     "columns": {
-      "kitId": "IoT Kit ID",
+      "kitId": "Serial Number",
       "linkedPatient": "Linked Patient",
       "batteryLevel": "Battery Level",
-      "bluetooth": "Bluetooth",
+      "connectivity": "Connectivity",
       "calibration": "Calibration",
       "firmware": "Firmware",
       "status": "Status",
@@ -202,20 +338,38 @@
     "status": {
       "online": "Online",
       "idle": "Idle",
-      "offline": "Offline"
+      "offline": "Offline",
+      "AVAILABLE": "Available",
+      "ASSIGNED": "Assigned",
+      "IN_MAINTENANCE": "In Maintenance",
+      "RETIRED": "Retired"
     },
-    "unassigned": "Unassigned"
+    "unassigned": "Unassigned",
+    "empty": "No devices found with the selected filters.",
+    "filters": {
+      "all": "All Connections",
+      "allCalibration": "All Calibrations",
+      "allStatus": "All Statuses",
+      "connectivityPlaceholder": "Connectivity",
+      "calibrationPlaceholder": "Calibration",
+      "statusPlaceholder": "Status"
+    }
   },
   "deviceDetails": {
     "backToInventory": "Back to Inventory",
     "title": "IoT Details",
-    "subtitle": "Kit {{kitId}}",
+    "subtitle": "Serial Number {{kitId}}",
     "summary": {
       "title": "Device Overview",
-      "kitId": "IoT Kit ID",
+      "kitId": "Serial Number",
+      "advertisedName": "BLE advertised name",
       "linkedPatient": "Linked Patient",
       "batteryLevel": "Battery Level",
-      "firmware": "Firmware"
+      "firmware": "Firmware",
+      "macAddress": "MAC Address",
+      "model": "Model",
+      "lastSeenAt": "Last seen",
+      "notAvailable": "Not available"
     },
     "status": {
       "title": "Device Status",
@@ -224,8 +378,60 @@
       "placeholder": "Select status"
     },
     "actions": {
+      "title": "Device Actions",
       "cancel": "Cancel",
-      "save": "Save Status"
+      "save": "Save Status",
+      "assignPatient": "Assign Patient",
+      "unassignPatient": "Unassign Patient",
+      "markNeedsCalibration": "Mark for Calibration",
+      "validateCalibration": "Validate Calibration",
+      "confirmAssign": "Assign",
+      "noActions": "No actions available for this device"
+    },
+    "cards": {
+      "assignPatient": {
+        "title": "Need to assign this kit to a patient?",
+        "desc": "Select a patient from the clinic to link them to this device and start monitoring.",
+        "button": "Assign Patient"
+      },
+      "unassignPatient": {
+        "title": "Is the patient no longer using this device?",
+        "desc": "Unlink the current patient and free the kit to be reassigned to another patient.",
+        "button": "Unassign Patient"
+      },
+      "markNeedsCalibration": {
+        "title": "Does the device need calibration?",
+        "desc": "Mark the device for maintenance. The current patient will be unassigned and the status will change to IN MAINTENANCE.",
+        "button": "Mark for Calibration"
+      },
+      "validateCalibration": {
+        "title": "Has the calibration been completed?",
+        "desc": "Confirm that the device has been successfully calibrated and is ready to be assigned to a patient.",
+        "button": "Validate Calibration"
+      }
+    },
+    "assignDialog": {
+      "title": "Assign Patient",
+      "body": "Select a patient to assign to kit {{kitId}}",
+      "selectLabel": "Patient",
+      "placeholder": "Search patient..."
+    },
+    "confirm": {
+      "unassignPatient": {
+        "title": "Unassign Patient",
+        "body": "Are you sure you want to unassign the patient from this device?",
+        "confirm": "Unassign"
+      },
+      "markNeedsCalibration": {
+        "title": "Mark for Calibration",
+        "body": "This will mark the device as needing calibration. The status will change to IN_MAINTENANCE and the current patient will be unassigned.",
+        "confirm": "Mark for Calibration"
+      },
+      "validateCalibration": {
+        "title": "Validate Calibration",
+        "body": "This will mark the device as calibrated. The status will change to AVAILABLE.",
+        "confirm": "Validate"
+      }
     },
     "empty": "No device found for this kit."
   },
@@ -261,7 +467,7 @@
       "capacity": "Capacity",
       "firmware": "Firmware",
       "connection": "Connection",
-      "lastSync": "Last Sync"
+      "lastSeen": "Last Seen"
     }
   },
   "deviceRegister": {
@@ -276,20 +482,17 @@
     },
     "hardware": {
       "title": "Hardware Specifications",
-      "kitSerial": "Kit Serial Number",
-      "kitSerialPlaceholder": "e.g. UF-2024-X982",
-      "batchId": "Batch ID",
-      "batchIdPlaceholder": "e.g. BT-0092-A",
-      "hardwareVersion": "Hardware Version",
-      "hardwareVersionPlaceholder": "Select Version",
+      "serialNumber": "Serial Number",
+      "serialNumberPlaceholder": "e.g. UF-2024-X982",
+      "macAddress": "MAC Address",
+      "macAddressPlaceholder": "e.g. AA:BB:CC:DD:EE:FF",
+      "advertisedName": "BLE advertised name",
+      "advertisedNamePlaceholder": "e.g. UFLEX-DEV-0012",
+      "model": "Model",
+      "modelPlaceholder": "e.g. UFlex Tracker Pro",
       "firmwareVersion": "Firmware Version",
       "firmwareVersionPlaceholder": "e.g. 1.0.4-stable",
-      "firmwareCurrent": "Current",
-      "versions": {
-        "flex30": "FlexSense v3.0",
-        "flex40": "FlexSense v4.0",
-        "flex42": "FlexSense v4.2"
-      }
+      "firmwareCurrent": "Current"
     },
     "actions": {
       "discard": "Discard",
@@ -302,6 +505,11 @@
       "pending": "Pending",
       "complete": "Complete",
       "stepCounter": "Step {{current}} of {{total}}: Verification"
+    },
+    "steps": {
+      "formValidation": "Form Validation",
+      "databaseSync": "Database Sync",
+      "iotKeyExchange": "IoT Key Exchange"
     },
     "bestPractices": {
       "title": "Best Practices",
@@ -353,7 +561,7 @@
       "title": "Final Assignment",
       "reviewBadge": "REVIEW DRAFT",
       "assignedPatient": "Assigned Patient",
-      "kitIdentification": "Kit Identification",
+      "kitIdentification": "Serial Number",
       "protocolDuration": "Protocol Duration",
       "confirm": "Confirm Device Assignment",
       "cancel": "Cancel Operation"
@@ -366,107 +574,292 @@
     "unselectedKit": "No kit selected"
   },
   "organization": {
-    "actions": {
-      "editClinic": "Edit Clinic Profile",
-      "addPhysiotherapist": "Add Physiotherapist"
+    "breadcrumb": {
+      "organization": "Organization"
     },
-    "stats": {
+    "hero": {
+      "eyebrow": "Clinic operations",
+      "fallback": "Clinic organization",
+      "ruc": "RUC",
+      "managedBy": "Managed by",
+      "dni": "DNI"
+    },
+    "metrics": {
+      "totalPhysiotherapists": "Total Physiotherapists",
+      "physiotherapistsNote": "Active roster in this clinic",
       "totalPatients": "Total Patients",
-      "activePhysiotherapists": "Active Physiotherapists",
-      "availableIotKits": "Available IoT Kits",
-      "onLeave": "On Leave"
+      "patientsNote": "Patients currently registered",
+      "assignedPatients": "Assigned Patients",
+      "assignedNote": "Linked to a physiotherapist",
+      "unassignedPatients": "Unassigned Patients",
+      "unassignedNote": "Pending assignment",
+      "patientStatuses": "Patient Statuses"
     },
     "tabs": {
       "physiotherapists": "Physiotherapists",
       "patients": "Patients"
     },
-    "patientsTabEmpty": "Patient roster lives in the Planning context. Coming soon to this view.",
-    "showingCount": "Showing {{visible}} of {{total}} staff members",
-    "columns": {
-      "staffMember": "Staff Member",
-      "specializedRole": "Specialized Role",
-      "activePatients": "Active Patients",
-      "status": "Status",
-      "actions": "Actions"
+    "workspace": {
+      "results": "Showing {{visible}} of {{total}} records"
     },
-    "role": {
-      "neuro-rehab": "Neuro-Rehab",
-      "post-op-recovery": "Post-Op Recovery",
-      "geriatric-mobility": "Geriatric Mobility",
-      "iot-mobility": "IoT Mobility",
-      "sports-rehab": "Sports Rehab"
+    "filters": {
+      "allStatuses": "All statuses",
+      "allSpecialties": "All specialties",
+      "allAssignments": "All assignments",
+      "assignedOnly": "Assigned only",
+      "unassignedOnly": "Unassigned only"
     },
-    "status": {
-      "active": "Active",
-      "on-leave": "On Leave",
-      "inactive": "Inactive"
+    "loading": {
+      "physiotherapists": "Loading physiotherapists...",
+      "patients": "Loading patients..."
     },
-    "performance": {
-      "title": "Performance Overview",
-      "description": "Organization recovery success rate has increased by 7.4% over the last quarter. Patient retention for remote sessions is currently at 92%.",
-      "cta": "View Detailed Analytics"
+    "detail": {
+      "loading": "Loading..."
     },
-    "recentUpdates": {
-      "title": "Recent Updates",
-      "firmware": "New IoT firmware (v2.4.1) deployed to 86 kits.",
-      "subscription": "Subscription renewed for next billing cycle."
+    "physiotherapists": {
+      "title": "Clinical staff",
+      "subtitle": "Physiotherapists currently operating inside this clinic.",
+      "searchPlaceholder": "Search by name or email",
+      "empty": "No physiotherapists match the current filters.",
+      "experienceValue": "{{years}} years",
+      "actions": {
+        "register": "Register Physiotherapist",
+        "viewDetails": "View detail",
+        "edit": "Edit",
+        "suspend": "Suspend",
+        "reactivate": "Reactivate",
+        "delete": "Delete"
+      },
+      "columns": {
+        "name": "Name",
+        "specialty": "Specialty",
+        "contact": "Contact",
+        "license": "License",
+        "experience": "Experience",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "status": {
+        "ACTIVE": "Active",
+        "INACTIVE": "Inactive",
+        "SUSPENDED": "Suspended"
+      },
+      "specialties": {
+        "TRAUMATOLOGICAL": "Traumatological",
+        "NEUROLOGICAL": "Neurological",
+        "SPORTS": "Sports",
+        "GENERAL": "General"
+      },
+      "confirm": {
+        "suspendTitle": "Suspend physiotherapist",
+        "suspendBody": "This will suspend {{name}} and remove the physiotherapist assignment from their patients. Do you want to continue?",
+        "reactivateTitle": "Reactivate physiotherapist",
+        "reactivateBody": "This will reactivate {{name}} in the clinic. Do you want to continue?",
+        "deleteTitle": "Delete physiotherapist",
+        "deleteBody": "This will permanently remove {{name}} if no patients remain assigned. Do you want to continue?"
+      },
+      "notifications": {
+        "editSuccessSummary": "Physiotherapist updated",
+        "editSuccessDetail": "{{name}} was updated successfully.",
+        "editErrorSummary": "Update failed",
+        "editErrorDetail": "We could not update the physiotherapist. Please try again.",
+        "suspendSuccessSummary": "Physiotherapist suspended",
+        "suspendSuccessDetail": "{{name}} was suspended successfully.",
+        "suspendErrorSummary": "Suspend failed",
+        "suspendErrorDetail": "We could not suspend the physiotherapist. Please try again.",
+        "reactivateSuccessSummary": "Physiotherapist reactivated",
+        "reactivateSuccessDetail": "{{name}} was reactivated successfully.",
+        "reactivateErrorSummary": "Reactivation failed",
+        "reactivateErrorDetail": "We could not reactivate the physiotherapist. Please try again.",
+        "deleteSuccessSummary": "Physiotherapist deleted",
+        "deleteSuccessDetail": "{{name}} was removed successfully.",
+        "deleteErrorSummary": "Delete failed",
+        "deleteErrorDetail": "We could not delete the physiotherapist. Please try again."
+      }
+    },
+    "patients": {
+      "title": "Patient registry",
+      "subtitle": "Patients managed by this clinic administrator.",
+      "searchPlaceholder": "Search by patient name or DNI",
+      "empty": "No patients match the current filters.",
+      "unassigned": "Unassigned",
+      "actions": {
+        "register": "Register Patient",
+        "viewDetails": "View detail",
+        "edit": "Edit",
+        "assign": "Assign",
+        "reassign": "Reassign",
+        "delete": "Delete"
+      },
+      "columns": {
+        "name": "Patient",
+        "dni": "DNI",
+        "condition": "Medical condition",
+        "physiotherapist": "Physiotherapist",
+        "status": "Status",
+        "contact": "Contact",
+        "actions": "Actions"
+      },
+      "status": {
+        "REGISTERED": "Unassigned",
+        "IN_TREATMENT": "In treatment",
+        "COMPLETED": "Completed",
+        "DISCHARGED": "Discharged",
+        "UNASSIGNED": "Unassigned",
+        "INACTIVE": "Inactive"
+      },
+      "deleteConfirm": {
+        "title": "Delete patient",
+        "body": "This will permanently remove {{name}} if no treatment plans remain. Do you want to continue?"
+      },
+      "notifications": {
+        "editSuccessSummary": "Patient updated",
+        "editSuccessDetail": "{{name}} was updated successfully.",
+        "editErrorSummary": "Update failed",
+        "editErrorDetail": "We could not update the patient. Please try again.",
+        "deleteSuccessSummary": "Patient deleted",
+        "deleteSuccessDetail": "{{name}} was removed successfully.",
+        "deleteErrorSummary": "Delete failed",
+        "deleteErrorDetail": "We could not delete the patient. Please try again."
+      }
+    },
+    "assignment": {
+      "title": "Assign physiotherapist",
+      "body": "Select the physiotherapist who will take ownership of {{patient}}.",
+      "cardTitle": "Assignment",
+      "assignLabel": "Choose the initial owner",
+      "reassignLabel": "Update the current owner",
+      "selectLabel": "Physiotherapist",
+      "searchPlaceholder": "Type to filter physiotherapists",
+      "keepUnassigned": "Keep unassigned",
+      "cancel": "Cancel",
+      "confirm": "Save assignment",
+      "successSummary": "Assignment updated",
+      "successDetail": "The patient assignment has been updated successfully.",
+      "errorSummary": "Assignment failed",
+      "errorDetail": "We could not update the patient assignment. Please try again."
+    },
+    "physiotherapistDetail": {
+      "actions": {
+        "back": "Back"
+      },
+      "cards": {
+        "identity": "Professional profile",
+        "contact": "Contact information",
+        "summary": "Professional summary"
+      },
+      "fields": {
+        "hireDate": "Hire date",
+        "email": "Email",
+        "clinic": "Clinic"
+      },
+      "emptySummary": "No professional summary was provided for this physiotherapist yet.",
+      "patients": {
+        "title": "Assigned patients",
+        "subtitle": "{{count}} active patients currently assigned",
+        "emptyTitle": "No assigned patients yet",
+        "emptyBody": "This physiotherapist does not have assigned patients at the moment."
+      }
+    },
+    "patientDetail": {
+      "actions": {
+        "back": "Back"
+      }
+    }
+  },
+  "physiotherapistEditDialog": {
+    "title": "Edit physiotherapist",
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save changes"
     }
   },
   "subscription": {
     "title": "Subscription",
-    "subtitle": "Manage your clinical licensing, payment methods, and billing history.",
+    "subtitle": "Review your clinic's active commercial subscription and plan capacity.",
     "actions": {
       "downloadAudit": "Download Audit Report",
       "upgradePlan": "Upgrade Plan"
     },
     "active": {
       "badge": "Active Plan",
-      "billedMonthly": "billed monthly",
-      "changeCycle": "Change billing cycle",
-      "cancel": "Cancel subscription",
-      "activeLicenses": "Active Licenses",
-      "storageUsage": "Storage Usage",
-      "apiStatus": "API Status",
-      "api": {
-        "healthy": "Healthy",
-        "degraded": "Degraded",
-        "down": "Down"
-      }
+      "startedAt": "Started",
+      "renewsAt": "Renews",
+      "endsAt": "Ends",
+      "currency": "Currency"
     },
-    "payment": {
-      "title": "Payment Method",
-      "cardHolder": "Card Holder",
-      "expires": "Expires",
-      "update": "Update Payment Method"
+    "loading": {
+      "eyebrow": "Syncing subscription",
+      "title": "Loading current plan",
+      "body": "We are retrieving the active subscription registered for this clinic."
     },
-    "billing": {
-      "title": "Billing History",
-      "viewAll": "View All Invoices",
-      "columns": {
-        "amount": "Mount",
-        "plan": "Plan",
-        "status": "Status"
+    "empty": {
+      "eyebrow": "No active record",
+      "title": "No active subscription was found",
+      "body": "The platform did not return an active commercial subscription for this clinic yet."
+    },
+    "capacity": {
+      "eyebrow": "Plan coverage",
+      "title": "Current operating capacity",
+      "description": "These limits come directly from the subscription tier currently assigned to your clinic.",
+      "maxPhysiotherapists": "Physiotherapists",
+      "maxPatients": "Patients",
+      "maxKits": "IoT kits",
+      "baseKits": "Base kits included",
+      "additionalKits": {
+        "label": "Additional kits",
+        "none": "Not available for this plan",
+        "unlimited": "Available without an upper limit",
+        "limited": "Up to {{count}} additional kits"
+      },
+      "unavailable": "Tier capacity details are not available for the active subscription."
+    },
+    "tiers": {
+      "trial": "Trial",
+      "pilot": "Pilot",
+      "professional": "Professional",
+      "enterprise": "Enterprise"
+    },
+    "values": {
+      "unlimited": "Unlimited",
+      "notApplicable": "Not applicable",
+      "billing": {
+        "monthly": "monthly",
+        "yearly": "yearly"
       },
       "status": {
-        "paid": "Paid",
+        "active": "Active",
         "pending": "Pending",
-        "failed": "Failed"
+        "cancelled": "Cancelled",
+        "expired": "Expired"
       }
     },
-    "upsell": {
-      "title": "Advance Your Practice",
-      "description": "Unlock exclusive clinical features by upgrading to Clinical Research tier.",
-      "feature1": "Advanced Gait Analytics",
-      "feature2": "Global Research DB Access",
-      "feature3": "White-label Patient Portal",
-      "cta": "Learn More about Clinical Research"
-    },
-    "plans": {
-      "title": "Available Clinical Plans",
-      "perMonth": "/mo",
-      "selected": "Selected",
-      "currentPlan": "Current Plan",
-      "alreadyActive": "Already Active"
+    "checkout": {
+      "confirmingEyebrow": "Confirming payment",
+      "confirmingTitle": "We are validating your subscription",
+      "confirmingBody": "Stripe has returned control to the app. We are waiting for your subscription to finish activating inside uFlex.",
+      "successEyebrow": "Payment confirmed",
+      "successTitle": "Your subscription is active",
+      "successBody": "Your clinic is configured and you can continue operating inside uFlex right away.",
+      "pendingEyebrow": "Activation in progress",
+      "pendingTitle": "Your payment was received",
+      "pendingBody": "We are finishing your subscription activation. You can continue to the portal while we complete the final sync.",
+      "cancelEyebrow": "Payment cancelled",
+      "cancelTitle": "Your checkout is still pending",
+      "cancelBody": "The subscription payment was not completed. You can retry checkout or go back and adjust your commercial selection.",
+      "continueToPortal": "Go to clinic portal",
+      "retry": "Retry payment",
+      "changePlan": "Change plan",
+      "retryErrorSummary": "Checkout could not be resumed",
+      "retryErrorDetail": "We could not create a new payment session. Please try again in a few minutes.",
+      "summary": {
+        "plan": "Plan",
+        "billing": "Billing",
+        "amount": "Amount",
+        "status": "Status",
+        "renewsAt": "Renews",
+        "kits": "Kits"
+      }
     }
   },
   "registerPhysiotherapist": {
@@ -489,20 +882,25 @@
       "specialtyPlaceholder": "Orthopedic PT",
       "email": "Email Address",
       "emailPlaceholder": "sarah.j@clinic.com",
+      "countryCode": "Country Code",
+      "countryCodePlaceholder": "+51",
       "phone": "Phone Number",
-      "phonePlaceholder": "+1 (555) 000-0000"
+      "phonePlaceholder": "987654321"
     },
     "credentials": {
       "title": "Clinical Credentials",
       "licenseNumber": "License Number",
       "licenseNumberPlaceholder": "PT-98234-X",
+      "yearsOfExperience": "Years of Experience",
       "summary": "Professional Summary",
       "summaryPlaceholder": "Brief overview of clinical expertise and years of experience..."
     },
     "photo": {
       "title": "Profile Photo",
-      "upload": "Click to upload",
-      "formats": "Upload a high-resolution professional headshot. JPEG, PNG, or GIF. Max size 5MB."
+      "upload": "Profile image URL",
+      "urlLabel": "Photo URL",
+      "urlPlaceholder": "https://example.com/photos/pepe.jpg",
+      "formats": "Use a stable image URL that can be displayed in the clinician directory."
     },
     "quickTip": {
       "title": "Quick Tip",
@@ -514,6 +912,12 @@
       "dbConnected": "Database Connected",
       "sslSecured": "SSL Secured Journey",
       "activeClinicians": "12 Active Clinicians"
+    },
+    "notifications": {
+      "successSummary": "Physiotherapist registered",
+      "successDetail": "{{name}} is now part of the clinic staff.",
+      "errorSummary": "Registration failed",
+      "errorDetail": "We could not register the physiotherapist. Please try again."
     }
   },
   "deviceDiagnostics": {
@@ -540,7 +944,7 @@
     }
   },
   "signIn": {
-    "subtitle": "Clinical Telerehabilitation Platform",
+    "subtitle": "Access your account",
     "email": {
       "label": "Email address",
       "placeholder": "Enter your email"
@@ -553,7 +957,6 @@
     "rememberMe": "Remember me for 30 days",
     "submit": "Sign In",
     "createAccount": "Create Account",
-    "trustMessage": "Secure clinical access for authorized medical personnel only.",
     "notifications": {
       "errorSummary": "Sign-in failed",
       "invalidCredentials": "The email or password is incorrect.",
@@ -561,12 +964,73 @@
     }
   },
   "signUp": {
-    "title": "Create your account",
-    "subtitle": "Join the connected rehabilitation network.",
-    "roleLabel": "Select your role",
-    "roles": {
-      "physiotherapist": "Physiotherapist",
-      "clinicAdmin": "Clinic Admin"
+    "planStep": {
+      "title": "Choose your ideal plan",
+      "subtitle": "Launch your clinic in minutes.",
+      "helper": "We keep your selection through the whole registration flow.",
+      "billing": {
+        "label": "Billing",
+        "options": {
+          "monthly": "Monthly",
+          "yearly": "Yearly"
+        }
+      },
+      "currency": {
+        "label": "Currency",
+        "options": {
+          "pen": "Peruvian Sol",
+          "usd": "US Dollar"
+        }
+      },
+      "loading": "Loading subscription catalog...",
+      "chooseKits": "Choose kits",
+      "continuePlan": "Continue with this plan",
+      "contactSales": "Contact sales",
+      "kitsLabel": "Total IoT kits",
+      "kitsHint": "You can choose from {{min}} up to {{max}} kits for this plan.",
+      "kitFee": "Plus a one-time payment of {{amount}} for each IoT kit.",
+      "unlimited": "Unlimited",
+      "stats": {
+        "physios": "{{count}} physiotherapists",
+        "patients": "{{count}} patients",
+        "kits": "{{base}} to {{max}} kits"
+      },
+      "tiers": {
+        "pilot": {
+          "badge": "Starter",
+          "name": "Pilot",
+          "description": "Ideal for starting with an agile, professional, and easy-to-deploy operation.",
+          "featureAnalytics": "Web dashboard with per-patient analytics",
+          "featureRom": "Range-of-motion tracking per session",
+          "featureSupport": "Email support"
+        },
+        "professional": {
+          "badge": "Most chosen",
+          "name": "Professional",
+          "description": "Designed for growing clinics that serve a steady therapeutic workflow.",
+          "featureAnalytics": "Advanced analytics with trend views",
+          "featureAlerts": "Automated patient alerts",
+          "featureReports": "Automated PDF reports",
+          "featureSupport": "Priority WhatsApp support"
+        },
+        "enterprise": {
+          "badge": "Maximum",
+          "name": "Enterprise",
+          "description": "Built for high-demand operations that require a tailored proposal and broad deployment.",
+          "customPrice": "Custom",
+          "contactNote": "Monthly or yearly terms are defined directly with our commercial team.",
+          "featureUnlimited": "Unlimited physiotherapists and patients",
+          "featureHce": "Private EHR integration",
+          "featureWhiteLabel": "Institutional white-label branding",
+          "featureSupport24x7": "24/7 support with a dedicated account lead"
+        }
+      }
+    },
+    "accountStep": {
+      "title": "Create your account",
+      "subtitle": "We will use this account to manage your clinic and continue with checkout.",
+      "back": "Back to plan",
+      "submit": "Create account"
     },
     "fullName": {
       "label": "Full Name",
@@ -589,57 +1053,99 @@
       "placeholder": "Re-enter your password",
       "mismatch": "Passwords do not match."
     },
-    "invitationCode": {
-      "label": "Clinic Invitation Code",
-      "optional": "(Optional)",
-      "placeholder": "e.g. CLINIC-1234"
-    },
-    "submit": "Create Account",
-    "haveAccount": "Already have an account?",
-    "signInLink": "Sign In",
     "clinicStep": {
-      "title": "Create your clinic",
-      "subtitle": "Complete your onboarding by registering the clinic that will operate in uFlex.",
+      "title": "Register your clinic",
+      "subtitle": "Complete the clinic information and shipping address to activate the subscription checkout.",
+      "identity": {
+        "title": "Clinic details",
+        "subtitle": "We will use these details to identify your organization."
+      },
+      "contact": {
+        "title": "Primary contact",
+        "subtitle": "This will be the clinic's main contact channel."
+      },
       "legalName": {
         "label": "Legal Name",
-        "placeholder": "Enter the clinic's legal name"
+        "placeholder": "Clinic legal name"
       },
       "commercialName": {
         "label": "Commercial Name",
-        "placeholder": "Enter the clinic's commercial name"
+        "placeholder": "Commercial name"
       },
       "ruc": {
         "label": "RUC",
-        "placeholder": "11-digit tax id",
+        "placeholder": "11-digit tax ID",
         "error": "Enter a valid 11-digit RUC."
       },
       "email": {
         "label": "Clinic Email",
-        "placeholder": "Enter the clinic email"
+        "placeholder": "Primary email"
       },
       "countryCode": {
-        "label": "Country Code",
-        "placeholder": "e.g. +51",
-        "error": "Enter a valid international code."
+        "label": "Country / code",
+        "placeholder": "Select a country",
+        "error": "Select a valid international code."
       },
       "phoneNumber": {
         "label": "Phone Number",
-        "placeholder": "Enter the clinic phone number",
+        "placeholder": "Phone number",
         "error": "Enter a valid phone number."
       },
+      "address": {
+        "title": "Shipping address",
+        "subtitle": "We will use this address to deliver the clinic's IoT kits.",
+        "countryCode": {
+          "label": "Country",
+          "placeholder": "Select a country",
+          "error": "Select a valid country."
+        },
+        "region": {
+          "label": "Region / State",
+          "placeholder": "Region or state"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "City"
+        },
+        "addressLine1": {
+          "label": "Primary address line",
+          "placeholder": "Street, avenue, or number"
+        },
+        "addressLine2": {
+          "label": "Secondary address line",
+          "labelOptional": "Secondary address line (optional)",
+          "placeholder": "Floor, office, or landmark"
+        },
+        "postalCode": {
+          "label": "Postal Code",
+          "labelOptional": "Postal Code (optional)",
+          "placeholder": "Postal code"
+        }
+      },
       "back": "Back",
-      "submit": "Create Clinic",
-      "footer": "Step 2 of 2: register your clinic to finish the onboarding flow."
+      "submit": "Create clinic and continue to payment",
+      "footer": "The next step will open Stripe so you can complete your subscription payment."
+    },
+    "summary": {
+      "label": "Onboarding summary",
+      "edit": "Change plan",
+      "currency": "Currency",
+      "billing": "Billing",
+      "kits": "Requested kits",
+      "kitUnitPrice": "Kit unit price",
+      "kitCharge": "Total kit charge",
+      "total": "Estimated total",
+      "kitBreakdown": "Includes {{count}} total kits and {{extra}} add-on kits above the plan baseline."
     },
     "notifications": {
       "accountCreatedSummary": "Account created",
       "accountCreatedDetail": "Your account is ready. Now register your clinic to finish onboarding.",
-      "successSummary": "Clinic created",
-      "successDetail": "Your account and clinic were registered successfully. You can now sign in.",
       "errorSummary": "Registration failed",
       "genericError": "We could not create the account. Please try again.",
       "clinicErrorSummary": "Clinic registration failed",
-      "clinicGenericError": "We could not create the clinic. Please try again."
+      "clinicGenericError": "We could not create the clinic. Please try again.",
+      "checkoutSummary": "Clinic created",
+      "checkoutDetail": "Your clinic is already registered. We will take you to the subscription screen so you can retry checkout."
     }
   },
   "changePassword": {
@@ -662,6 +1168,40 @@
       "generic": "Could not change the password. Please try again."
     }
   },
+  "errors": {
+    "toast": {
+      "errorSummary": "Request failed",
+      "warnSummary": "Please review this request"
+    },
+    "network": {
+      "unreachable": "We could not connect to the server. Please verify your connection and try again."
+    },
+    "unexpected": {
+      "generic": "We could not complete the request. Please try again."
+    },
+    "http": {
+      "422": "We could not process the submitted information. Please review it and try again.",
+      "429": "Too many requests were sent. Please wait a moment and try again.",
+      "502": "The service is temporarily unavailable. Please try again shortly.",
+      "generic": "We could not complete the request. Please try again."
+    },
+    "codes": {
+      "AUTH_REQUIRED": "You need to sign in to continue.",
+      "ACCESS_DENIED": "You do not have permission to perform this action.",
+      "BAD_REQUEST": "We could not process the request. Please review the submitted information.",
+      "CONFLICT": "This action could not be completed because the resource is in a conflicting state.",
+      "NOT_FOUND": "The requested resource could not be found.",
+      "INTERNAL_SERVER_ERROR": "An unexpected server error occurred. Please try again.",
+      "EMAIL_ALREADY_IN_USE": "This email address is already in use.",
+      "INVALID_CREDENTIALS": "The provided credentials are invalid.",
+      "ROLE_NOT_FOUND": "The requested role could not be found.",
+      "TENANT_ASSIGNMENT": "We could not complete the tenant assignment.",
+      "USER_TENANT_ALREADY_ASSIGNED": "This user is already assigned to the tenant.",
+      "USER_TENANT_NOT_ASSIGNED": "This user is not assigned to the tenant.",
+      "USER_WITH_EMAIL_NOT_FOUND": "We could not find a user with that email address.",
+      "USER_WITH_ID_NOT_FOUND": "We could not find the requested user."
+    }
+  },
   "topbar": {
     "settings": "Settings",
     "changePassword": "Change password"
@@ -669,14 +1209,14 @@
   "physiotherapist": {
     "brand": {
       "name": "uFlex",
-      "subtitle": "CLINICIAN PORTAL"
+      "subtitle": "Clinical Portal"
     },
     "nav": {
       "dashboard": "Dashboard",
       "therapy": "Therapy",
       "planning": "Planning",
       "device": "Device",
-      "organization": "Organization",
+      "organization": "Patients",
       "support": "Support",
       "logout": "Logout"
     },
@@ -758,6 +1298,188 @@
       "body": "Save time by building reusable therapy protocols for common injury types."
     }
   },
+  "therapySessions": {
+    "eyebrow": "Therapy Sessions",
+    "adminTitle": "Clinic Session Oversight",
+    "adminSubtitle": "Review patient schedules, active sessions, and live execution data across the clinic.",
+    "physiotherapistTitle": "Session Execution Hub",
+    "physiotherapistSubtitle": "Select a patient from your caseload and review the scheduled routine, active session, and live progress.",
+    "refresh": "Refresh",
+    "kpi": {
+      "totalPatients": "Patients in scope",
+      "totalPatientsSub": "Loaded for this therapy workspace",
+      "inTreatment": "In treatment",
+      "inTreatmentSub": "Patients currently progressing through care",
+      "currentContext": "Current context"
+    },
+    "noSelection": "No patient selected",
+    "patientListTitle": "Patients",
+    "patientListCount": "{{count}} loaded",
+    "loadingPatients": "Loading patients...",
+    "noPatientsTitle": "No patients available",
+    "noPatientsBody": "This role currently has no patients available for therapy session review.",
+    "detailTitle": "Session detail",
+    "supervisionTitle": "Clinical supervision view",
+    "supervisionBody": "This view prioritizes monitoring, clinical context, and alerts. Operational session execution remains reserved for the physiotherapist.",
+    "supervisionMetrics": {
+      "activeSessions": "Active sessions",
+      "activeSessionsSub": "Patients with a prepared or in-progress clinical execution",
+      "reviewAlerts": "Clinical alerts",
+      "reviewAlertsSub": "Sessions that require review due to pain or anomalies",
+      "activeDevices": "Active devices",
+      "activeDevicesSub": "Connected or assigned kits available for therapy"
+    },
+    "supervisionEmpty": {
+      "title": "There are no active sessions right now",
+      "body": "When a patient has a prepared or in-progress session, it will appear in this panel."
+    },
+    "selectPatientHint": "Select a patient to inspect their therapy context.",
+    "openAdminPatient": "Open patient profile",
+    "openPhysiotherapistPatient": "Open patient workspace",
+    "startSessionAction": "Start session",
+    "openPreparationWorkspace": "Open clinical preparation",
+    "contextError": "We could not load the latest therapy session context for this patient.",
+    "scheduleTitle": "Therapy schedule",
+    "schedulePickerHint": "Review the patient's therapy schedule for a specific date.",
+    "scheduleDatePickerLabel": "Schedule date",
+    "loadingContext": "Loading therapy context...",
+    "scheduleDate": "Date",
+    "assignedProgram": "Assigned program",
+    "routineId": "Routine ID",
+    "programAssignedCustom": "Custom program",
+    "programAssignedEmpty": "Unassigned",
+    "notScheduled": "No scheduled routine",
+    "scheduleEmpty": {
+      "noPlanTitle": "No active plan for this date",
+      "noPlanMessage": "Activate or assign a current treatment plan to schedule therapy for this day.",
+      "noRoutineTitle": "No routine for this day",
+      "noRoutineMessage": "The active plan has no exercises for the selected date. Try another date.",
+      "unknownTitle": "Schedule unresolved",
+      "unknownMessage": "We could not determine the therapy schedule for this date."
+    },
+    "scheduleResolutionTitle": "Schedule resolution",
+    "totalSeries": "Total series",
+    "estimatedDuration": "Estimated duration",
+    "noSchedule": "No therapy schedule is available for the selected patient.",
+    "scheduleResolution": {
+      "FOUND": "Routine resolved successfully",
+      "NO_ROUTINE_FOR_DAY": "The patient has no routine scheduled for this day",
+      "NO_ACTIVE_PLAN_FOR_DATE": "The patient has no active plan for this date",
+      "UNKNOWN": "No resolution available"
+    },
+    "activeSessionTitle": "Active session",
+    "sessionId": "Session ID",
+    "status": "Status",
+    "startedAt": "Started at",
+    "finalizedAt": "Finalized at",
+    "responsibleSpecialist": "Responsible specialist",
+    "responsibleSpecialistFallback": "Not assigned yet",
+    "responsibleSpecialistFallbackAdmin": "Clinical team",
+    "hardwareStatus": "IoT hardware",
+    "hardwarePending": "Pending confirmation",
+    "hardwareConnected": "Sensor connected / calibrated",
+    "hardwareReady": "Sensors placed and confirmed",
+    "hardwareNotReady": "Sensors not placed",
+    "hardwareDeviceLinked": "Device linked",
+    "hardwareUnavailable": "No device data yet",
+    "hardwareDeviceId": "Confirmed device",
+    "painLevel": "Pain level",
+    "painLevelPending": "No patient report yet",
+    "painLevelUnavailable": "Unavailable",
+    "clinicalReview": "Clinical review",
+    "clinicalReviewRequired": "Review required",
+    "clinicalReviewNotRequired": "No alerts",
+    "noStatus": "Unknown",
+    "noActiveSession": "No active therapy session was found for the selected patient.",
+    "progressTitle": "Execution progress",
+    "sessionStatus": "Session status",
+    "currentSerieId": "Current serie",
+    "progressSummary": "Overall progress",
+    "seriesCompleted": "completed series",
+    "repetitions": "repetitions",
+    "noSeriesProgress": "No series progress has been reported yet.",
+    "noProgress": "No live execution progress is available yet.",
+    "today": "Today",
+    "operations": {
+      "preparationTitle": "Session preparation",
+      "treatmentPlan": "Active treatment plan",
+      "routine": "Routine for the day",
+      "device": "Assigned device",
+      "prepareAction": "Prepare session",
+      "hardwareTitle": "Hardware confirmation",
+      "hardwareBody": "Confirm the linked device and whether sensors are already placed on the patient.",
+      "sensorsPlaced": "Sensors placed",
+      "confirmHardwareAction": "Confirm hardware",
+      "closureTitle": "Closure and contingency",
+      "closureBody": "Finalize the session once it ends or cancel it if execution must stop.",
+      "finalizeAction": "Finalize session",
+      "cancelReason": "Cancellation reason",
+      "cancelAction": "Cancel session",
+      "stepper": {
+        "ariaLabel": "Therapy session operational flow",
+        "step1Title": "Preparation",
+        "step2Title": "Hardware",
+        "step3Title": "Execution",
+        "step4Title": "Closure",
+        "valueUnassigned": "Unassigned",
+        "executionTitle": "Session execution",
+        "executionReadyHint": "Hardware confirmed. Start the session when the patient is ready.",
+        "closedCompletedTitle": "Session finalized",
+        "closedCompletedBody": "The session was completed successfully.",
+        "closedCancelledTitle": "Session cancelled",
+        "closedCancelledBody": "The session was cancelled."
+      }
+    },
+    "validation": {
+      "treatmentPlanRequired": "An active treatment plan is required to prepare the session.",
+      "deviceRequired": "An assigned device is required.",
+      "routineRequired": "A resolved routine is required for the selected date.",
+      "cancelReasonRequired": "A cancellation reason is required."
+    },
+    "preparationReady": "The session can be prepared with the currently assigned plan, routine, and device.",
+    "preparationBlockedActiveSession": "There is already an active or prepared session for this patient.",
+    "preparationMissingPlan": "There is no active or scheduled treatment plan for this patient.",
+    "preparationMissingDevice": "There is no device linked to this patient.",
+    "preparationMissingRoutine": "There is no valid routine for the selected date.",
+    "notifications": {
+      "prepareSuccessSummary": "Therapy",
+      "prepareSuccessDetail": "The session was prepared successfully.",
+      "prepareErrorSummary": "Therapy",
+      "prepareErrorDetail": "The therapy session could not be prepared.",
+      "hardwareSuccessSummary": "Therapy",
+      "hardwareSuccessDetail": "The session hardware was confirmed successfully.",
+      "hardwareErrorSummary": "Therapy",
+      "hardwareErrorDetail": "The session hardware could not be confirmed.",
+      "startSuccessSummary": "Therapy",
+      "startSuccessDetail": "The therapy session started successfully.",
+      "startErrorSummary": "Therapy",
+      "startErrorDetail": "Failed to start the therapy session.",
+      "finalizeSuccessSummary": "Therapy",
+      "finalizeSuccessDetail": "The therapy session was finalized successfully.",
+      "finalizeErrorSummary": "Therapy",
+      "finalizeErrorDetail": "Failed to finalize the therapy session.",
+      "cancelSuccessSummary": "Therapy",
+      "cancelSuccessDetail": "The therapy session was canceled successfully.",
+      "cancelErrorSummary": "Therapy",
+      "cancelErrorDetail": "Failed to cancel the therapy session."
+    },
+    "statuses": {
+      "session": {
+        "Pending": "Pending",
+        "Ready": "Ready",
+        "InProgress": "In progress",
+        "Completed": "Completed",
+        "Cancelled": "Cancelled",
+        "Unknown": "Unknown"
+      },
+      "serie": {
+        "Pending": "Pending",
+        "Started": "Started",
+        "Validated": "Validated",
+        "Unknown": "Unknown"
+      }
+    }
+  },
   "therapyRoadmap": {
     "breadcrumb": {
       "patients": "Patients",
@@ -816,13 +1538,12 @@
     },
     "title": "Device Inventory",
     "subtitle": "Manage and monitor your clinical sensor fleet. Monitor battery health, connectivity status, and assign devices to active patient rehabilitation tracks.",
-    "assignToPatient": "Assign to Patient",
     "connectivity": {
-      "title": "Fleet Connectivity",
+      "title": "My Fleet Connectivity",
       "active": "Active Devices",
-      "available": "Available Units",
+      "available": "Online Units",
       "inService": "In Service",
-      "fromLastWeek": "from last week",
+      "seenThisWeek": "seen this week",
       "maintenanceRequired": "Maintenance required"
     },
     "battery": {
@@ -830,57 +1551,407 @@
       "high": "80-100% (High)",
       "mid": "20-80% (Mid)",
       "low": "0-20% (Low)",
-      "units": "units",
-      "chargingReport": "View charging report"
+      "units": "units"
     },
     "table": {
-      "title": "Device Inventory",
+      "title": "Device Inventory"
+    },
+    "columns": {
+      "deviceId": "Serial Number",
+      "model": "Model",
+      "status": "Status",
+      "battery": "Battery",
+      "lastSeen": "Last Seen",
+      "assignment": "Assignment",
+      "action": "Action"
+    },
+    "noLastSeen": "Never seen",
+    "actions": {
+      "assign": "Assign",
+      "unassign": "Unassign",
+      "calibrate": "Calibrate",
+      "viewDetails": "View details"
+    },
+    "showingCount": "{{visible}} devices",
+    "tabs": {
+      "available": "Available",
+      "myDevices": "My devices"
+    }
+  },
+  "patientsList": {
+    "eyebrow": "Assigned Caseload",
+    "title": "Patients",
+    "subtitle": "Review your active caseload, monitor treatment status, and open each patient workspace for plan management.",
+    "registerPatient": "Register patient",
+    "summary": {
+      "totalPatients": "My patients",
+      "inTreatment": "In treatment",
+      "currentClinic": "Current clinic",
+      "myCaseload": "Assigned to you"
+    },
+    "table": {
+      "title": "Patient roster",
       "filter": "Filter",
       "export": "Export"
     },
     "columns": {
-      "deviceId": "Device ID",
-      "model": "Model",
+      "patient": "Patient",
+      "condition": "Medical condition",
       "status": "Status",
-      "battery": "Battery",
-      "lastSync": "Last Sync",
-      "assignment": "Assignment",
+      "phone": "Phone",
+      "email": "Email",
       "action": "Action"
     },
     "status": {
-      "available": "Available",
-      "active": "Active",
-      "offline": "Offline"
+      "REGISTERED": "Unassigned",
+      "UNASSIGNED": "Unassigned",
+      "IN_TREATMENT": "In treatment",
+      "COMPLETED": "Completed",
+      "DISCHARGED": "Discharged",
+      "INACTIVE": "Inactive"
     },
     "actions": {
-      "assign": "Assign",
-      "manage": "Manage"
+      "view": "View patient",
+      "edit": "Edit",
+      "delete": "Delete"
     },
-    "showingCount": "Showing {{visible}} of {{total}} devices",
-    "maintenance": {
-      "title": "Maintenance Needed",
-      "body": "4 devices have been flagged for hardware diagnostics after reporting inconsistent calibration data.",
-      "cta": "Request Service"
+    "patientDni": "DNI:",
+    "viewPatient": "View patient",
+    "showingCount": "Showing {{visible}} of {{total}} patients",
+    "deleteConfirm": {
+      "title": "Delete patient",
+      "body": "{{name}} will be removed from your caseload. This is only allowed when the patient no longer has treatment plans."
     },
-    "quick": {
-      "title": "Quick Assignment",
-      "body": "Quickly allocate available sensors to new patient profiles.",
-      "cta": "Start Assignment Wizard"
+    "notifications": {
+      "editSuccessSummary": "Patient updated",
+      "editSuccessDetail": "{{name}}'s contact details were updated.",
+      "editErrorSummary": "Could not update patient",
+      "editErrorDetail": "We couldn't save the new contact details right now.",
+      "deleteSuccessSummary": "Patient deleted",
+      "deleteSuccessDetail": "{{name}} was removed from your caseload.",
+      "deleteErrorSummary": "Could not delete patient",
+      "deleteErrorDetail": "We couldn't delete this patient. If treatment plans still exist, the backend will block the operation."
     },
-    "monitor": {
-      "title": "Connectivity Monitor",
-      "body": "Real-time status of the local clinic gateway and Bluetooth mesh network.",
-      "gateway": "Gateway",
-      "statusValue": {
-        "stable": "Stable",
-        "degraded": "Degraded",
-        "down": "Down"
+    "empty": {
+      "title": "No patients yet",
+      "body": "Your assigned caseload is still empty. Once patients are registered and assigned, they will appear here."
+    }
+  },
+  "patientEditDialog": {
+    "title": "Edit patient contact",
+    "fields": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "email": "Email",
+      "countryCode": "Country code",
+      "phoneNumber": "Phone number",
+      "medicalCondition": "Medical condition"
+    },
+    "placeholders": {
+      "firstName": "Mateo",
+      "lastName": "Salazar",
+      "email": "patient@example.com",
+      "countryCode": "+51",
+      "phoneNumber": "998887766",
+      "medicalCondition": "Shoulder mobility recovery - progression phase"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save changes"
+    },
+    "errors": {
+      "firstName": "Enter a first name.",
+      "lastName": "Enter a last name.",
+      "email": "Enter a valid email address.",
+      "phoneNumber": "Enter a phone number.",
+      "medicalCondition": "Enter a medical condition."
+    }
+  },
+  "patientAdminEditDialog": {
+    "title": "Edit patient",
+    "actions": {
+      "cancel": "Cancel",
+      "save": "Save changes"
+    }
+  },
+  "patientDetail": {
+    "actions": {
+      "back": "Back"
+    },
+    "breadcrumb": {
+      "patients": "Patients",
+      "loading": "Loading patient"
+    },
+    "dischargePatient": "Discharge patient",
+    "status": {
+      "REGISTERED": "Unassigned",
+      "UNASSIGNED": "Unassigned",
+      "IN_TREATMENT": "In treatment",
+      "COMPLETED": "Completed",
+      "DISCHARGED": "Discharged",
+      "INACTIVE": "Inactive"
+    },
+    "gender": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "OTHER": "Other"
+    },
+    "cards": {
+      "identity": "Patient identity",
+      "contact": "Contact",
+      "assignment": "Assignment"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "dni": "DNI",
+      "gender": "Gender",
+      "birthDate": "Birth date",
+      "email": "Email",
+      "phone": "Phone",
+      "physiotherapist": "Assigned physiotherapist",
+      "clinic": "Clinic"
+    },
+    "plans": {
+      "title": "Treatment plans",
+      "subtitle": "Open an existing plan or create the next treatment track for this patient.",
+      "create": "Create treatment plan",
+      "edit": "Edit",
+      "view": "View plan",
+      "open": "Open plan",
+      "showingCount": "Showing {{visible}} of {{total}} plans",
+      "emptyTitle": "No treatment plans yet",
+      "emptyBody": "Create the first treatment plan to start scheduling routines and exercise series for this patient.",
+      "columns": {
+        "name": "Plan name",
+        "status": "Status",
+        "period": "Period",
+        "routines": "Routines",
+        "actions": "Actions"
       }
+    },
+    "planStatus": {
+      "SCHEDULED": "Scheduled",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELED": "Canceled"
+    },
+    "notifications": {
+      "dischargeSuccessSummary": "Patient updated",
+      "dischargeSuccessDetail": "{{name}} was marked as discharged.",
+      "dischargeErrorSummary": "Patient update failed",
+      "dischargeErrorDetail": "We could not discharge this patient right now. Please try again.",
+      "editSuccessSummary": "Patient updated",
+      "editSuccessDetail": "{{name}}'s contact details were updated.",
+      "editErrorSummary": "Could not update patient",
+      "editErrorDetail": "We couldn't save the new contact details right now.",
+      "deleteSuccessSummary": "Patient deleted",
+      "deleteSuccessDetail": "{{name}} was removed from your caseload.",
+      "deleteErrorSummary": "Could not delete patient",
+      "deleteErrorDetail": "We couldn't delete this patient. If treatment plans still exist, the backend will block the operation."
+    }
+  },
+  "registerPatientView": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "newPatient": "Register patient"
+    },
+    "eyebrow": "New Patient Intake",
+    "title": "Register patient",
+    "subtitle": "Create the patient profile inside your clinic so you can immediately continue with treatment planning.",
+    "actions": {
+      "cancel": "Cancel",
+      "register": "Register patient"
+    },
+    "genderOptions": {
+      "MALE": "Male",
+      "FEMALE": "Female",
+      "OTHER": "Other"
+    },
+    "identity": {
+      "title": "Patient identity",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "dni": "DNI",
+      "birthDate": "Birth date",
+      "gender": "Gender",
+      "firstNamePlaceholder": "Ignacio",
+      "lastNamePlaceholder": "Mestanza",
+      "dniPlaceholder": "72326004"
+    },
+    "contact": {
+      "title": "Contact details",
+      "email": "Email",
+      "countryCode": "Country code",
+      "phoneNumber": "Phone number",
+      "emailPlaceholder": "patient@example.com",
+      "countryCodePlaceholder": "+51",
+      "phoneNumberPlaceholder": "958273817"
+    },
+    "clinical": {
+      "title": "Clinical context",
+      "medicalCondition": "Medical condition",
+      "medicalConditionPlaceholder": "Forearm fracture recovery"
+    },
+    "insight": {
+      "title": "Assignment flow",
+      "body": "Patients registered from this workspace are created in your clinic and assigned to your caseload automatically.",
+      "assignedToYou": "Assigned to you after registration"
+    },
+    "notifications": {
+      "successSummary": "Patient registered",
+      "successDetail": "{{name}} is now available in your caseload.",
+      "errorSummary": "Registration failed",
+      "errorDetail": "We could not register the patient right now. Please review the information and try again."
+    }
+  },
+  "treatmentPlanWorkspace": {
+    "breadcrumb": {
+      "patients": "Patients",
+      "patient": "Patient",
+      "create": "Create treatment plan",
+      "edit": "Edit treatment plan"
+    },
+    "createTitle": "Create treatment plan",
+    "editTitle": "Treatment plan workspace",
+    "subtitle": "Build a treatment track for {{patient}} by organizing routines, schedules, and exercise series from the clinic catalog.",
+    "actions": {
+      "back": "Back",
+      "create": "Create treatment plan",
+      "createAndSave": "Save treatment plan",
+      "save": "Save changes",
+      "activate": "Activate",
+      "complete": "Complete",
+      "cancel": "Cancel",
+      "delete": "Delete plan"
+    },
+    "fields": {
+      "name": "Plan name",
+      "status": "Status",
+      "startsAt": "Starts at",
+      "endsAt": "Ends at"
+    },
+    "statusOptions": {
+      "SCHEDULED": "Scheduled",
+      "ACTIVE": "Active",
+      "COMPLETED": "Completed",
+      "CANCELED": "Canceled"
+    },
+    "dayOptions": {
+      "MONDAY": "Monday",
+      "TUESDAY": "Tuesday",
+      "WEDNESDAY": "Wednesday",
+      "THURSDAY": "Thursday",
+      "FRIDAY": "Friday",
+      "SATURDAY": "Saturday",
+      "SUNDAY": "Sunday"
+    },
+    "movementLabels": {
+      "PRONATION": "Pronation",
+      "SUPINATION": "Supination",
+      "FLEXION": "Flexion",
+      "EXTENSION": "Extension",
+      "ELBOW": "Elbow",
+      "WRIST": "Wrist"
+    },
+    "bodyPartLabels": {
+      "ELBOW": "Elbow",
+      "WRIST": "Wrist"
+    },
+    "placeholders": {
+      "name": "Forearm mobility plan"
+    },
+    "builder": {
+      "title": "Routine builder",
+      "subtitle": "Configure the weekly structure of the treatment plan and tune each prescribed exercise series.",
+      "addRoutine": "Add routine",
+      "routine": "Routine",
+      "emptyTitle": "No routines yet",
+      "emptyBody": "Add the first routine, then select it to start attaching exercises from the catalog."
+    },
+    "routine": {
+      "fields": {
+        "name": "Routine name",
+        "order": "Order",
+        "orderPositiveError": "Use an order of 1 or higher.",
+        "orderUniqueError": "That order is already in use.",
+        "day": "Day of week",
+        "time": "Scheduled time"
+      },
+      "placeholders": {
+        "name": "Morning mobility"
+      }
+    },
+    "series": {
+      "title": "Exercise series",
+      "selectionReady": "Selected for catalog insertions",
+      "selectHint": "Select this routine to add exercises from the catalog",
+      "empty": "No exercises added yet.",
+      "itemLabel": "Series",
+      "fields": {
+        "rom": "Range of motion (deg)",
+        "romShort": "Range of motion (degrees)",
+        "repetitions": "Repetitions",
+        "duration": "Duration (sec)",
+        "rest": "Rest (sec)"
+      }
+    },
+    "confirm": {
+      "activateTitle": "Activate plan",
+      "activateBody": "The plan {{plan}} will move to active status and be ready for clinical execution.",
+      "completeTitle": "Complete plan",
+      "completeBody": "The plan {{plan}} will be marked as completed for {{patient}}.",
+      "cancelTitle": "Cancel plan",
+      "cancelBody": "The plan {{plan}} will stop being available for {{patient}}. This action may affect the treatment schedule.",
+      "deleteTitle": "Delete plan",
+      "deleteBody": "The plan {{plan}} will be removed from {{patient}}'s clinical workspace. This action cannot be undone."
+    },
+    "catalog": {
+      "title": "Exercise catalog",
+      "subtitle": "Choose exercises created by the clinic and add them to the selected routine. Video references are shown only as metadata for now.",
+      "selectedRoutine": "Routine {{order}} selected",
+      "noRoutineSelected": "Select a routine first",
+      "emptyTitle": "No exercises available",
+      "emptyBody": "There are no published exercises in the clinic catalog yet. Physiotherapists only select existing exercises here; they do not create them from this view.",
+      "errorTitle": "We could not load the catalog",
+      "errorBody": "The routine builder is still available, but we need the clinic exercise list before exercise series can be added.",
+      "retry": "Retry load",
+      "videoRef": "Video reference",
+      "add": "Add to routine"
+    },
+    "notifications": {
+      "catalogLoadErrorSummary": "Exercise catalog unavailable",
+      "catalogLoadErrorDetail": "We could not fetch the clinic exercise list. You can retry from the catalog panel.",
+      "createSuccessSummary": "Treatment plan created",
+      "createSuccessDetail": "The treatment plan is now available for {{patient}}.",
+      "saveSuccessSummary": "Treatment plan updated",
+      "saveSuccessDetail": "Your treatment plan changes were saved successfully.",
+      "deleteSuccessSummary": "Treatment plan deleted",
+      "deleteSuccessDetail": "The treatment plan was removed from the patient workspace.",
+      "activateSuccessSummary": "Treatment plan activated",
+      "activateSuccessDetail": "The selected plan is now active.",
+      "completeSuccessSummary": "Treatment plan completed",
+      "completeSuccessDetail": "The selected plan was marked as completed.",
+      "cancelSuccessSummary": "Treatment plan canceled",
+      "cancelSuccessDetail": "The selected plan was canceled.",
+      "routineOrderErrorSummary": "Fix the routine order",
+      "routineOrderErrorDetail": "Each routine must have a unique, valid order before the plan can be saved.",
+      "saveErrorSummary": "Treatment plan update failed",
+      "saveErrorDetail": "We could not save the treatment plan right now. Please try again.",
+      "actionErrorSummary": "Treatment plan action failed",
+      "actionErrorDetail": "We could not complete that treatment plan action right now. Please try again."
+    }
+  },
+  "shared": {
+    "confirmAction": {
+      "title": "Confirm action",
+      "body": "Please confirm if you want to continue with this action.",
+      "confirm": "Confirm",
+      "cancel": "Go back"
     }
   },
   "organizationView": {
-    "title": "Organization View",
-    "subtitle": "Oversee clinical performance, manage caseloads, and optimize patient allocation.",
+    "title": "Patients",
+    "subtitle": "Review incoming patients, balance clinician caseloads, and coordinate assignments.",
     "summary": {
       "totalStaff": "Total Staff",
       "avgProductivity": "Avg. Productivity"

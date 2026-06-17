@@ -1,0 +1,35 @@
+.patient-admin-edit-dialog {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.patient-admin-edit-dialog__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.patient-admin-edit-dialog__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.patient-admin-edit-dialog__field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+.patient-admin-edit-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+@media (max-width: 720px) {
+  .patient-admin-edit-dialog__grid {
+    grid-template-columns: 1fr;
+  }
+}

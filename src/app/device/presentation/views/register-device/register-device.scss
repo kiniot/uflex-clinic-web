@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -70,6 +72,7 @@
   background: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
+  @include theme.surface;
 }
 
 @media (max-width: 720px) {
@@ -92,6 +95,7 @@
   border: 1.5px dashed var(--p-surface-300);
   border-radius: 12px;
   color: var(--p-text-muted-color);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .quick-entry__placeholder {
@@ -129,6 +133,7 @@
   align-items: center;
   justify-content: center;
   font-size: 14px;
+  @include theme.surface;
 }
 
 .quick-entry__title {
@@ -167,6 +172,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .hardware {

@@ -1,0 +1,65 @@
+@mixin text {
+  transition: none;
+}
+
+@mixin surface {
+  transition:
+    background-color var(--app-theme-transition-duration) ease,
+    border-color var(--app-theme-transition-duration) ease;
+}
+
+@mixin surface-with-shadow {
+  transition:
+    background-color var(--app-theme-transition-duration) ease,
+    border-color var(--app-theme-transition-duration) ease,
+    box-shadow var(--app-theme-transition-duration) ease;
+}
+
+@mixin interactive-surface {
+  transition:
+    background-color var(--app-theme-transition-duration) ease,
+    border-color var(--app-theme-transition-duration) ease,
+    box-shadow var(--app-theme-transition-duration) ease,
+    transform var(--app-theme-transition-duration) ease,
+    outline-color var(--app-theme-transition-duration) ease;
+}
+
+@mixin border {
+  transition: border-color var(--app-theme-transition-duration) ease;
+}
+
+@mixin layer-fade {
+  transition: opacity var(--app-theme-transition-duration) ease;
+}
+
+@mixin icon {
+  transition: none;
+}
+
+.theme-transition-text {
+  @include text;
+}
+
+.theme-transition-surface {
+  @include surface;
+}
+
+.theme-transition-surface-shadow {
+  @include surface-with-shadow;
+}
+
+.theme-transition-interactive {
+  @include interactive-surface;
+}
+
+.theme-transition-border {
+  @include border;
+}
+
+.theme-transition-layer {
+  @include layer-fade;
+}
+
+.theme-transition-icon {
+  @include icon;
+}

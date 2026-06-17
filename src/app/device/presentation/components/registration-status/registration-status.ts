@@ -1,12 +1,12 @@
 import {Component, computed, input} from '@angular/core';
 import {TranslatePipe} from '@ngx-translate/core';
-import {RegistrationStep} from '../../../domain/model/registration.types';
 
-/**
- * Live session tracker shown alongside the device registration form.
- * Each step renders with its current status (in-progress / pending /
- * complete) and a progress bar at the bottom shows overall advancement.
- */
+export interface RegistrationStep {
+  id: string;
+  label: string;
+  status: 'pending' | 'in-progress' | 'complete';
+}
+
 @Component({
   selector: 'app-registration-status',
   imports: [TranslatePipe],

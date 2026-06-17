@@ -1,0 +1,268 @@
+@use '../../../../../styles/theme-transition' as theme;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.register-patient__breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+.register-patient__breadcrumb a {
+  color: var(--p-text-muted-color);
+  text-decoration: none;
+}
+
+.register-patient__breadcrumb a:hover {
+  color: var(--p-text-color);
+}
+
+.register-patient__breadcrumb-current {
+  color: var(--p-primary-color);
+  font-weight: 600;
+}
+
+.register-patient__header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.register-patient__header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.register-patient__eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+}
+
+.register-patient__title {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--p-text-color);
+}
+
+.register-patient__subtitle {
+  margin: 0;
+  max-width: 620px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+}
+
+.register-patient__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+:host ::ng-deep .register-patient__btn,
+:host ::ng-deep .register-patient__btn .p-button {
+  height: 40px;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.register-patient__form,
+.register-patient__grid,
+.register-patient__main,
+.register-patient__side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.register-patient__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.9fr);
+  align-items: start;
+}
+
+@media (max-width: 1080px) {
+  .register-patient__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.register-patient__card,
+.register-patient__insight {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  padding: 18px 20px;
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .register-patient__card,
+:host-context(.app-dark) .register-patient__insight {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.register-patient__card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.register-patient__card-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.register-patient__card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
+  color: var(--p-primary-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  @include theme.surface;
+}
+
+.register-patient__card-title {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.register-patient__row {
+  display: grid;
+  gap: 16px;
+}
+
+.register-patient__row--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.register-patient__row--split {
+  grid-template-columns: minmax(180px, 0.9fr) minmax(0, 1.4fr);
+}
+
+.register-patient__row--stack {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 760px) {
+  .register-patient__row--2,
+  .register-patient__row--split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.register-patient__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.register-patient__field label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--p-text-color);
+}
+
+:host ::ng-deep .register-patient__field .p-inputtext,
+:host ::ng-deep .register-patient__field .p-select {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+}
+
+:host ::ng-deep .register-patient__field textarea.p-textarea {
+  width: 100%;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  min-height: 116px;
+}
+
+.register-patient__country-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+}
+
+.register-patient__country-flag {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.register-patient__country-meta {
+  color: var(--p-text-muted-color);
+  margin-left: auto;
+}
+
+:host ::ng-deep .register-patient__select .p-select-label {
+  display: flex;
+  align-items: center;
+}
+
+.register-patient__insight {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.register-patient__insight-title {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.register-patient__insight-body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--p-text-muted-color);
+}
+
+.register-patient__insight-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  @include theme.surface;
+}

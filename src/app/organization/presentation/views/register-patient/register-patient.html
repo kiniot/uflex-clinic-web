@@ -1,0 +1,283 @@
+<nav class="register-patient__breadcrumb" aria-label="breadcrumb">
+  @if (isAdminContext) {
+    <a routerLink="/clinic-admin/organization">{{
+      'organization.breadcrumb.organization' | translate
+    }}</a>
+    <i class="pi pi-chevron-right" aria-hidden="true"></i>
+    <a routerLink="/clinic-admin/organization" [queryParams]="{ tab: 'patients' }">{{
+      'organization.tabs.patients' | translate
+    }}</a>
+  } @else {
+    <a routerLink="/physiotherapist/patients">{{
+      'registerPatientView.breadcrumb.patients' | translate
+    }}</a>
+  }
+  <i class="pi pi-chevron-right" aria-hidden="true"></i>
+  <span class="register-patient__breadcrumb-current">
+    @if (isAdminContext) {
+      {{ 'organization.patients.actions.register' | translate }}
+    } @else {
+      {{ 'registerPatientView.breadcrumb.newPatient' | translate }}
+    }
+  </span>
+</nav>
+
+<header class="register-patient__header">
+  <div class="register-patient__header-text">
+    <span class="register-patient__eyebrow">{{ 'registerPatientView.eyebrow' | translate }}</span>
+    <h1 class="register-patient__title">{{ 'registerPatientView.title' | translate }}</h1>
+    <p class="register-patient__subtitle">{{ 'registerPatientView.subtitle' | translate }}</p>
+  </div>
+  <div class="register-patient__actions">
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      [outlined]="true"
+      class="register-patient__btn"
+      [disabled]="isRegisteringPatient()"
+      (click)="onCancel()"
+    >
+      {{ 'registerPatientView.actions.cancel' | translate }}
+    </button>
+    <button
+      pButton
+      type="button"
+      severity="primary"
+      class="register-patient__btn register-patient__btn--primary"
+      [loading]="isRegisteringPatient()"
+      [disabled]="isRegisteringPatient()"
+      (click)="onSubmit()"
+    >
+      <i class="pi pi-save" aria-hidden="true"></i>
+      <span>{{ 'registerPatientView.actions.register' | translate }}</span>
+    </button>
+  </div>
+</header>
+
+<form class="register-patient__form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="register-patient__grid">
+    <div class="register-patient__main">
+      <article class="register-patient__card">
+        <header class="register-patient__card-header">
+          <i class="pi pi-user register-patient__card-icon" aria-hidden="true"></i>
+          <h2 class="register-patient__card-title">
+            {{ 'registerPatientView.identity.title' | translate }}
+          </h2>
+        </header>
+        <div class="register-patient__row register-patient__row--2">
+          <div class="register-patient__field">
+            <label for="patientFirstName">{{
+              'registerPatientView.identity.firstName' | translate
+            }}</label>
+            <input
+              pInputText
+              id="patientFirstName"
+              type="text"
+              formControlName="firstName"
+              [placeholder]="'registerPatientView.identity.firstNamePlaceholder' | translate"
+              [class.ng-invalid]="isInvalidControl(form, 'firstName')"
+              [class.ng-dirty]="isInvalidControl(form, 'firstName')"
+            />
+          </div>
+
+          <div class="register-patient__field">
+            <label for="patientLastName">{{
+              'registerPatientView.identity.lastName' | translate
+            }}</label>
+            <input
+              pInputText
+              id="patientLastName"
+              type="text"
+              formControlName="lastName"
+              [placeholder]="'registerPatientView.identity.lastNamePlaceholder' | translate"
+              [class.ng-invalid]="isInvalidControl(form, 'lastName')"
+              [class.ng-dirty]="isInvalidControl(form, 'lastName')"
+            />
+          </div>
+
+          <div class="register-patient__field">
+            <label for="patientDni">{{ 'registerPatientView.identity.dni' | translate }}</label>
+            <input
+              pInputText
+              id="patientDni"
+              type="text"
+              formControlName="dni"
+              [placeholder]="'registerPatientView.identity.dniPlaceholder' | translate"
+              [class.ng-invalid]="isInvalidControl(form, 'dni')"
+              [class.ng-dirty]="isInvalidControl(form, 'dni')"
+            />
+          </div>
+
+          <div class="register-patient__field">
+            <label for="patientBirthDate">{{
+              'registerPatientView.identity.birthDate' | translate
+            }}</label>
+            <input
+              pInputText
+              id="patientBirthDate"
+              type="date"
+              formControlName="birthDate"
+              [class.ng-invalid]="isInvalidControl(form, 'birthDate')"
+              [class.ng-dirty]="isInvalidControl(form, 'birthDate')"
+            />
+          </div>
+
+          <div class="register-patient__field">
+            <label for="patientGender">{{
+              'registerPatientView.identity.gender' | translate
+            }}</label>
+            <p-select
+              inputId="patientGender"
+              formControlName="gender"
+              [options]="genderOptions()"
+              optionLabel="label"
+              optionValue="value"
+            />
+          </div>
+        </div>
+      </article>
+
+      <article class="register-patient__card">
+        <header class="register-patient__card-header">
+          <i class="pi pi-heart register-patient__card-icon" aria-hidden="true"></i>
+          <h2 class="register-patient__card-title">
+            {{ 'registerPatientView.clinical.title' | translate }}
+          </h2>
+        </header>
+        <div class="register-patient__field">
+          <label for="patientCondition">{{
+            'registerPatientView.clinical.medicalCondition' | translate
+          }}</label>
+          <textarea
+            pTextarea
+            id="patientCondition"
+            rows="4"
+            formControlName="medicalCondition"
+            [placeholder]="'registerPatientView.clinical.medicalConditionPlaceholder' | translate"
+            [class.ng-invalid]="isInvalidControl(form, 'medicalCondition')"
+            [class.ng-dirty]="isInvalidControl(form, 'medicalCondition')"
+          ></textarea>
+        </div>
+      </article>
+    </div>
+
+    <aside class="register-patient__side">
+      <article class="register-patient__card">
+        <header class="register-patient__card-header">
+          <i class="pi pi-envelope register-patient__card-icon" aria-hidden="true"></i>
+          <h2 class="register-patient__card-title">
+            {{ 'registerPatientView.contact.title' | translate }}
+          </h2>
+        </header>
+        <div class="register-patient__row register-patient__row--stack">
+          <div class="register-patient__field">
+            <label for="patientEmail">{{ 'registerPatientView.contact.email' | translate }}</label>
+            <input
+              pInputText
+              id="patientEmail"
+              type="email"
+              formControlName="email"
+              [placeholder]="'registerPatientView.contact.emailPlaceholder' | translate"
+              [class.ng-invalid]="isInvalidControl(form, 'email')"
+              [class.ng-dirty]="isInvalidControl(form, 'email')"
+            />
+          </div>
+
+          <div class="register-patient__row register-patient__row--split">
+            <div class="register-patient__field">
+              <label for="patientCountryCode">{{
+                'registerPatientView.contact.countryCode' | translate
+              }}</label>
+              <p-select
+                inputId="patientCountryCode"
+                formControlName="countryCode"
+                [options]="countryPhoneOptions()"
+                optionLabel="label"
+                optionValue="phoneCode"
+                [filter]="true"
+                filterBy="label,phoneCode"
+                [resetFilterOnHide]="true"
+                [placeholder]="'registerPatientView.contact.countryCodePlaceholder' | translate"
+                appendTo="body"
+                styleClass="register-patient__select"
+              >
+                <ng-template #selectedItem>
+                  @if (countryPhoneOption(form.controls.countryCode.value); as option) {
+                    <span class="register-patient__country-option">
+                      <span class="register-patient__country-flag">{{ option.flag }}</span>
+                      <span>{{ option.label }}</span>
+                      <span class="register-patient__country-meta">{{ option.phoneCode }}</span>
+                    </span>
+                  }
+                </ng-template>
+                <ng-template let-option #item>
+                  <span class="register-patient__country-option">
+                    <span class="register-patient__country-flag">{{ option.flag }}</span>
+                    <span>{{ option.label }}</span>
+                    <span class="register-patient__country-meta">{{ option.phoneCode }}</span>
+                  </span>
+                </ng-template>
+              </p-select>
+            </div>
+
+            <div class="register-patient__field">
+              <label for="patientPhoneNumber">{{
+                'registerPatientView.contact.phoneNumber' | translate
+              }}</label>
+              <input
+                pInputText
+                id="patientPhoneNumber"
+                type="tel"
+                formControlName="phoneNumber"
+                [placeholder]="'registerPatientView.contact.phoneNumberPlaceholder' | translate"
+                [class.ng-invalid]="isInvalidControl(form, 'phoneNumber')"
+                [class.ng-dirty]="isInvalidControl(form, 'phoneNumber')"
+              />
+            </div>
+          </div>
+        </div>
+      </article>
+
+      @if (isAdminContext) {
+        <article class="register-patient__card">
+          <header class="register-patient__card-header">
+            <i class="pi pi-link register-patient__card-icon" aria-hidden="true"></i>
+            <h2 class="register-patient__card-title">
+              {{ 'organization.assignment.cardTitle' | translate }}
+            </h2>
+          </header>
+          <div class="register-patient__field">
+            <label for="patientAssignedPhysiotherapist">{{
+              'organization.assignment.selectLabel' | translate
+            }}</label>
+            <p-select
+              inputId="patientAssignedPhysiotherapist"
+              formControlName="assignedPhysiotherapistId"
+              [options]="physiotherapistOptions()"
+              [filter]="true"
+              filterBy="label"
+              [resetFilterOnHide]="true"
+              [placeholder]="'organization.assignment.searchPlaceholder' | translate"
+              optionLabel="label"
+              optionValue="value"
+            />
+          </div>
+        </article>
+      } @else {
+        <article class="register-patient__insight">
+          <h3 class="register-patient__insight-title">
+            {{ 'registerPatientView.insight.title' | translate }}
+          </h3>
+          <p class="register-patient__insight-body">
+            {{ 'registerPatientView.insight.body' | translate }}
+          </p>
+          <div class="register-patient__insight-pill">
+            <i class="pi pi-link" aria-hidden="true"></i>
+            <span>{{ 'registerPatientView.insight.assignedToYou' | translate }}</span>
+          </div>
+        </article>
+      }
+    </aside>
+  </div>
+</form>

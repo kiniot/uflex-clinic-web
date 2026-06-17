@@ -1,0 +1,227 @@
+@if (isConfirmationMode()) {
+  <app-auth-shell>
+    <section class="sub-checkout">
+      <article class="sub-checkout__card">
+        <img
+          class="sub-checkout__brand-mark"
+          src="/images/branding/uflex-brand-mark-original.webp"
+          alt="uFlex"
+        />
+
+        @if (paymentState() === 'success') {
+          @if (isLoadingCurrentSubscription()) {
+            <span class="sub-checkout__eyebrow">{{
+              'subscription.checkout.confirmingEyebrow' | translate
+            }}</span>
+            <h1 class="sub-checkout__title">
+              {{ 'subscription.checkout.confirmingTitle' | translate }}
+            </h1>
+            <p class="sub-checkout__desc">
+              {{ 'subscription.checkout.confirmingBody' | translate }}
+            </p>
+          } @else if (currentSubscriptionSnapshot()) {
+            <span class="sub-checkout__eyebrow sub-checkout__eyebrow--success">{{
+              'subscription.checkout.successEyebrow' | translate
+            }}</span>
+            <h1 class="sub-checkout__title">
+              {{ 'subscription.checkout.successTitle' | translate }}
+            </h1>
+            <p class="sub-checkout__desc">{{ 'subscription.checkout.successBody' | translate }}</p>
+
+            <div class="sub-checkout__summary">
+              <div>
+                <span>{{ 'subscription.checkout.summary.plan' | translate }}</span>
+                <strong>{{
+                  formatTierName(resolvedCurrentTier(), currentSubscriptionSnapshot()!.tierId)
+                }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.billing' | translate }}</span>
+                <strong>{{
+                  formatBillingPeriod(currentSubscriptionSnapshot()!.billingPeriod)
+                }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.amount' | translate }}</span>
+                <strong>{{
+                  formatMoney(
+                    currentSubscriptionSnapshot()!.amount,
+                    currentSubscriptionSnapshot()!.currency
+                  )
+                }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.status' | translate }}</span>
+                <strong>{{ formatStatus(currentSubscriptionSnapshot()!.status) }}</strong>
+              </div>
+              @if (currentSubscriptionSnapshot()!.renewsAt) {
+                <div>
+                  <span>{{ 'subscription.checkout.summary.renewsAt' | translate }}</span>
+                  <strong>{{ formatDate(currentSubscriptionSnapshot()!.renewsAt) }}</strong>
+                </div>
+              }
+            </div>
+          } @else {
+            <span class="sub-checkout__eyebrow">{{
+              'subscription.checkout.pendingEyebrow' | translate
+            }}</span>
+            <h1 class="sub-checkout__title">
+              {{ 'subscription.checkout.pendingTitle' | translate }}
+            </h1>
+            <p class="sub-checkout__desc">{{ 'subscription.checkout.pendingBody' | translate }}</p>
+          }
+
+          <div class="sub-checkout__actions">
+            <button pButton type="button" class="sub__btn" (click)="onContinueToPortal()">
+              {{ 'subscription.checkout.continueToPortal' | translate }}
+            </button>
+          </div>
+        } @else {
+          <span class="sub-checkout__eyebrow">{{
+            'subscription.checkout.cancelEyebrow' | translate
+          }}</span>
+          <h1 class="sub-checkout__title">{{ 'subscription.checkout.cancelTitle' | translate }}</h1>
+          <p class="sub-checkout__desc">{{ 'subscription.checkout.cancelBody' | translate }}</p>
+
+          @if (pendingSelection(); as selection) {
+            <div class="sub-checkout__summary">
+              <div>
+                <span>{{ 'subscription.checkout.summary.plan' | translate }}</span>
+                <strong>{{ formatTierName(pendingTier(), selection.tierId) }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.billing' | translate }}</span>
+                <strong>{{ formatBillingPeriod(selection.billingPeriod) }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.amount' | translate }}</span>
+                <strong>{{ formatMoney(selection.amount, selection.currency) }}</strong>
+              </div>
+              <div>
+                <span>{{ 'subscription.checkout.summary.kits' | translate }}</span>
+                <strong>{{ selection.requestedTotalKits }}</strong>
+              </div>
+            </div>
+          }
+
+          <div class="sub-checkout__actions sub-checkout__actions--stack">
+            <button pButton type="button" class="sub__btn" (click)="onRetryCheckout()">
+              {{ 'subscription.checkout.retry' | translate }}
+            </button>
+            <button
+              pButton
+              type="button"
+              severity="secondary"
+              [outlined]="true"
+              class="sub__btn"
+              (click)="onChangePlan()"
+            >
+              {{ 'subscription.checkout.changePlan' | translate }}
+            </button>
+          </div>
+        }
+      </article>
+    </section>
+  </app-auth-shell>
+} @else {
+  <app-page-header
+    [title]="'subscription.title' | translate"
+    [subtitle]="'subscription.subtitle' | translate"
+  />
+
+  @if (isLoadingCurrentSubscription() && !hasResolvedCurrentSubscription()) {
+    <section class="sub-grid">
+      <article class="sub-card sub-card--loading">
+        <span class="sub-card__eyebrow">{{ 'subscription.loading.eyebrow' | translate }}</span>
+        <h2 class="sub-card__title">{{ 'subscription.loading.title' | translate }}</h2>
+        <p class="sub-card__desc">{{ 'subscription.loading.body' | translate }}</p>
+      </article>
+    </section>
+  } @else if (currentSubscriptionSnapshot(); as currentSubscription) {
+    <section class="sub-grid">
+      <article class="sub-card sub-card--primary">
+        <header class="sub-card__header">
+          <div class="sub-card__header-copy">
+            <span class="sub-card__eyebrow">{{ 'subscription.active.badge' | translate }}</span>
+            <h2 class="sub-card__title">
+              {{ formatTierName(currentTier(), currentSubscription.tierId) }}
+            </h2>
+          </div>
+
+          <span class="sub-card__status">{{ formatStatus(currentSubscription.status) }}</span>
+        </header>
+
+        <div class="sub-card__price">
+          <span class="sub-card__price-value">{{
+            formatMoney(currentSubscription.amount, currentSubscription.currency)
+          }}</span>
+          <span class="sub-card__price-suffix">
+            / {{ formatBillingPeriod(currentSubscription.billingPeriod) }}
+          </span>
+        </div>
+
+        <dl class="sub-card__facts">
+          <div>
+            <dt>{{ 'subscription.active.startedAt' | translate }}</dt>
+            <dd>{{ formatDate(currentSubscription.startedAt) }}</dd>
+          </div>
+          <div>
+            <dt>{{ 'subscription.active.renewsAt' | translate }}</dt>
+            <dd>{{ formatDate(currentSubscription.renewsAt) }}</dd>
+          </div>
+          <div>
+            <dt>{{ 'subscription.active.endsAt' | translate }}</dt>
+            <dd>{{ formatDate(currentSubscription.endsAt) }}</dd>
+          </div>
+          <div>
+            <dt>{{ 'subscription.active.currency' | translate }}</dt>
+            <dd>{{ currentSubscription.currency }}</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="sub-card sub-card--supporting">
+        <header class="sub-support__header">
+          <span class="sub-card__eyebrow">{{ 'subscription.capacity.eyebrow' | translate }}</span>
+          <h2 class="sub-card__title">{{ 'subscription.capacity.title' | translate }}</h2>
+          <p class="sub-card__desc">{{ 'subscription.capacity.description' | translate }}</p>
+        </header>
+
+        @if (currentTier(); as tier) {
+          <dl class="sub-support__facts">
+            <div>
+              <dt>{{ 'subscription.capacity.maxPhysiotherapists' | translate }}</dt>
+              <dd>{{ formatLimit(tier.limits.maxPhysiotherapists) }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'subscription.capacity.maxPatients' | translate }}</dt>
+              <dd>{{ formatLimit(tier.limits.maxPatients) }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'subscription.capacity.maxKits' | translate }}</dt>
+              <dd>{{ formatLimit(tier.limits.maxIotKits) }}</dd>
+            </div>
+            <div>
+              <dt>{{ 'subscription.capacity.baseKits' | translate }}</dt>
+              <dd>{{ tier.kits.baseKits }}</dd>
+            </div>
+            <div class="sub-support__fact sub-support__fact--full">
+              <dt>{{ 'subscription.capacity.additionalKits.label' | translate }}</dt>
+              <dd>{{ formatAdditionalKits(tier) }}</dd>
+            </div>
+          </dl>
+        } @else {
+          <p class="sub-support__empty">{{ 'subscription.capacity.unavailable' | translate }}</p>
+        }
+      </article>
+    </section>
+  } @else {
+    <section class="sub-grid">
+      <article class="sub-card sub-card--empty">
+        <span class="sub-card__eyebrow">{{ 'subscription.empty.eyebrow' | translate }}</span>
+        <h2 class="sub-card__title">{{ 'subscription.empty.title' | translate }}</h2>
+        <p class="sub-card__desc">{{ 'subscription.empty.body' | translate }}</p>
+      </article>
+    </section>
+  }
+}

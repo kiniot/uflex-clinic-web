@@ -10,13 +10,11 @@ loadDotEnv('.env.local');
 const envDir = resolve(rootDir, 'src/environments');
 const prodPath = resolve(envDir, 'environment.ts');
 const devPath = resolve(envDir, 'environment.development.ts');
-const prodAliasPath = resolve(envDir, 'environment.prod.ts');
 
 mkdirSync(envDir, { recursive: true });
 
-writeFileSync(prodPath, environmentFile({ production: true }));
-writeFileSync(prodAliasPath, environmentFile({ production: true }));
-writeFileSync(devPath, environmentFile({ production: false }));
+writeFileSync(prodPath, environmentFile());
+writeFileSync(devPath, environmentFile());
 
 console.log('Generated Angular environment files.');
 
@@ -53,14 +51,9 @@ function loadDotEnv(fileName) {
   }
 }
 
-function environmentFile({ production }) {
+function environmentFile() {
   const config = {
-    production,
     apiBaseUrl: value('NG_APP_API_BASE_URL', 'http://localhost:8080/api/v1'),
-    platformProviderApiBaseUrl: value(
-      'NG_APP_PLATFORM_PROVIDER_API_BASE_URL',
-      value('NG_APP_API_BASE_URL', 'http://localhost:8080/api/v1'),
-    ),
     platformProviderSignInEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_SIGN_IN_ENDPOINT_PATH',
       '/authentication/sign-in',
@@ -71,23 +64,124 @@ function environmentFile({ production }) {
     ),
     platformProviderCreateClinicEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_CREATE_CLINIC_ENDPOINT_PATH',
-      '/api/v1/clinics',
+      '/clinics',
     ),
-    subscription: {
-      useMockApi: booleanValue('NG_APP_SUBSCRIPTION_USE_MOCK_API', true),
-      clinicId: value('NG_APP_SUBSCRIPTION_CLINIC_ID', '11111111-1111-1111-1111-111111111111'),
-      plansEndpoint: value('NG_APP_SUBSCRIPTION_PLANS_ENDPOINT', '/plans'),
-      subscriptionsEndpoint: value('NG_APP_SUBSCRIPTION_SUBSCRIPTIONS_ENDPOINT', '/subscriptions'),
-      invoicesEndpoint: value('NG_APP_SUBSCRIPTION_INVOICES_ENDPOINT', '/invoices'),
-      checkoutSessionEndpoint: value(
-        'NG_APP_SUBSCRIPTION_CHECKOUT_SESSION_ENDPOINT',
-        '/subscriptions/checkout-session',
-      ),
-    },
-    stripe: {
-      enabled: booleanValue('NG_APP_STRIPE_ENABLED', false),
-      publishableKey: value('NG_APP_STRIPE_PUBLISHABLE_KEY', 'your_api_stripe_public'),
-    },
+    platformProviderCurrentClinicEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_CURRENT_CLINIC_ENDPOINT_PATH',
+      '/clinics/me',
+    ),
+    platformProviderCurrentClinicAdminEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_CURRENT_CLINIC_ADMIN_ENDPOINT_PATH',
+      '/clinic-admins/me',
+    ),
+    platformProviderCurrentPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_CURRENT_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists/me',
+    ),
+    platformProviderPhysiotherapistsEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PHYSIOTHERAPISTS_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderRegisterPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_REGISTER_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderPhysiotherapistByIdEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PHYSIOTHERAPIST_BY_ID_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderUpdatePhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_UPDATE_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderDeletePhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_DELETE_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderSuspendPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_SUSPEND_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderReactivatePhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_REACTIVATE_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/physiotherapists',
+    ),
+    platformProviderMyPatientsEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_MY_PATIENTS_ENDPOINT_PATH',
+      '/physiotherapists/me/patients',
+    ),
+    platformProviderPatientsEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PATIENTS_ENDPOINT_PATH',
+      '/patients',
+    ),
+    platformProviderRegisterPatientByClinicAdminEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_REGISTER_PATIENT_BY_CLINIC_ADMIN_ENDPOINT_PATH',
+      '/patients/by-clinic-admin',
+    ),
+    platformProviderRegisterPatientByPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_REGISTER_PATIENT_BY_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/patients/by-physiotherapist',
+    ),
+    platformProviderPatientsByPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PATIENTS_BY_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/patients/by-physiotherapist',
+    ),
+    platformProviderPatientsByClinicEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_PATIENTS_BY_CLINIC_ENDPOINT_PATH',
+      '/patients/by-clinic',
+    ),
+    platformProviderUpdatePatientByPhysiotherapistEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_UPDATE_PATIENT_BY_PHYSIOTHERAPIST_ENDPOINT_PATH',
+      '/patients/by-physiotherapist',
+    ),
+    platformProviderUpdatePatientByClinicAdminEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_UPDATE_PATIENT_BY_CLINIC_ADMIN_ENDPOINT_PATH',
+      '/patients/by-clinic-admin',
+    ),
+    platformProviderDeletePatientEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_DELETE_PATIENT_ENDPOINT_PATH',
+      '/patients',
+    ),
+    platformProviderAssignPatientEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_ASSIGN_PATIENT_ENDPOINT_PATH',
+      '/patients',
+    ),
+    platformProviderTreatmentPlansEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_TREATMENT_PLANS_ENDPOINT_PATH',
+      '/treatment-plans',
+    ),
+    platformProviderTherapySessionsEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_THERAPY_SESSIONS_ENDPOINT_PATH',
+      '/therapy-sessions',
+    ),
+    platformProviderExercisesEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_EXERCISES_ENDPOINT_PATH',
+      '/exercises',
+    ),
+    platformProviderSubscriptionTiersEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_SUBSCRIPTION_TIERS_ENDPOINT_PATH',
+      '/subscriptions/tiers',
+    ),
+    platformProviderSubscriptionCheckoutEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_SUBSCRIPTION_CHECKOUT_ENDPOINT_PATH',
+      '/subscriptions/checkout',
+    ),
+    platformProviderCurrentSubscriptionEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_CURRENT_SUBSCRIPTION_ENDPOINT_PATH',
+      '/subscriptions/current',
+    ),
+    platformProviderDevicesEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_DEVICES_ENDPOINT_PATH',
+      '/devices',
+    ),
+    platformProviderDeviceMetricsEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_DEVICE_METRICS_ENDPOINT_PATH',
+      '/devices/metrics',
+    ),
+    platformProviderMyAssignedDeviceEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_MY_ASSIGNED_DEVICE_ENDPOINT_PATH',
+      '/devices/my-assigned',
+    ),
   };
 
   return `export const environment = ${JSON.stringify(config, null, 2)};\n`;
@@ -95,16 +189,6 @@ function environmentFile({ production }) {
 
 function value(key, fallback) {
   return process.env[key] ?? fallback;
-}
-
-function booleanValue(key, fallback) {
-  const rawValue = process.env[key];
-
-  if (rawValue === undefined) {
-    return fallback;
-  }
-
-  return ['1', 'true', 'yes', 'on'].includes(rawValue.toLowerCase());
 }
 
 function unquote(value) {

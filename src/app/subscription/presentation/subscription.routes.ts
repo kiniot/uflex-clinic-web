@@ -1,9 +1,11 @@
-import { Routes } from '@angular/router';
+import {Routes} from '@angular/router';
 
-const subscriptionPage = () =>
-  import('./pages/subscription-page/subscription-page').then((m) => m.SubscriptionPage);
+const subscriptionManagement = () =>
+  import('./views/subscription-management/subscription-management').then(m => m.SubscriptionManagement);
 
 /**
  * Routes for the Subscription bounded context.
  */
-export const subscriptionRoutes: Routes = [{ path: '', loadComponent: subscriptionPage }];
+export const subscriptionRoutes: Routes = [
+  {path: '', loadComponent: subscriptionManagement}
+];

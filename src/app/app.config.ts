@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -9,7 +9,11 @@ import { iamInterceptor } from './iam/infrastructure/iam.interceptor';
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
 import { appPreset } from './app.preset';
-import { provideSubscriptionInfrastructure } from './subscription/infrastructure/subscription-infrastructure.providers';
+import {
+  provideAppErrorCatalog,
+  globalAppErrorCatalog,
+} from './shared/application/app-error-catalog';
+import { iamAppErrorCatalog } from './iam/application/iam-error-catalog';
 
 /**
  * Application configuration for dependency injection and providers in the infrastructure layer.
@@ -22,8 +26,10 @@ export const appConfig: ApplicationConfig = {
       loader: provideTranslateHttpLoader({ prefix: './i18n/', suffix: '.json' }),
       fallbackLang: 'en',
     }),
-    provideRouter(routes),
+    provideRouter(routes, withViewTransitions()),
     MessageService,
+    provideAppErrorCatalog(globalAppErrorCatalog),
+    provideAppErrorCatalog(iamAppErrorCatalog),
     providePrimeNG({
       ripple: true,
       theme: {
@@ -35,6 +41,5 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
-    provideSubscriptionInfrastructure(),
   ],
 };

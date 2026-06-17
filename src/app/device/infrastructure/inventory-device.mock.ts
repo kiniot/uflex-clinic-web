@@ -1,29 +1,50 @@
-import {InventoryDevice} from '../domain/model/inventory-device.entity';
+export interface InventoryDevice {
+  id: string;
+  deviceId: string;
+  serialNumber: string;
+  modelName: string;
+  status: string;
+  batteryPct: number;
+  lastSyncLabel: string | null;
+  assignmentName: string | null;
+}
 
-/**
- * Mock inventory rows shown in the physiotherapist's Device Inventory
- * table. Will be replaced by GET /devices/inventory once the backend
- * exposes paginated rows.
- */
-export const MOCK_INVENTORY_DEVICES: InventoryDevice[] = [
-  new InventoryDevice({
-    id: 1,
-    deviceId: 'FX-2044-A',
-    modelName: 'Flex-Sensor Gen 2',
-    status: 'available',
-    batteryPct: 98,
-    lastSyncLabel: '14 mins ago',
-    assignmentName: null
-  }),
-  new InventoryDevice({
-    id: 2,
-    deviceId: 'FX-1988-C',
-    modelName: 'Flex-Sensor Gen 2',
-    status: 'active',
-    batteryPct: 42,
-    lastSyncLabel: 'Connected',
-    assignmentName: 'Sarah Jenkins'
-  })
-];
+export const MOCK_INVENTORY_DEVICES: InventoryDevice[] = [];
 
-export const MOCK_INVENTORY_TOTAL = 184;
+export const MOCK_INVENTORY_TOTAL = 0;
+
+export interface FleetConnectivity {
+  activeDevices: number;
+  activeDeltaPct: number;
+  availableUnits: number;
+  inServiceUnits: number;
+}
+
+export const MOCK_FLEET_CONNECTIVITY: FleetConnectivity = {
+  activeDevices: 0,
+  activeDeltaPct: 0,
+  availableUnits: 0,
+  inServiceUnits: 0
+};
+
+export interface BatteryHealth {
+  highCount: number;
+  midCount: number;
+  lowCount: number;
+}
+
+export const MOCK_BATTERY_HEALTH: BatteryHealth = {
+  highCount: 0,
+  midCount: 0,
+  lowCount: 0
+};
+
+export interface ConnectivityGateway {
+  status: string;
+  uptimeLabel: string;
+}
+
+export const MOCK_CONNECTIVITY_GATEWAY: ConnectivityGateway = {
+  status: 'online',
+  uptimeLabel: '0h'
+};

@@ -1,36 +1,33 @@
-/**
- * Calibration domain types for the Device bounded context.
- */
-
-export type CalibrationStepStatus = 'completed' | 'active' | 'pending';
-
 export interface CalibrationStep {
   id: string;
+  label: string;
   title: string;
   description: string;
-  status: CalibrationStepStatus;
-  /** 0-100, only meaningful when status === 'active'. */
-  progress?: number;
+  status: 'pending' | 'active' | 'completed';
+  progress: number | null;
 }
 
-export interface AxisReading {
-  axis: 'x' | 'y' | 'z';
-  label: string;
-  valueDeg: number;
-}
-
-export type HardwareIntegrityLevel = 'optimal' | 'warning' | 'degraded';
+export type CalibrationPhase = 'init' | 'validate' | 'calibrate' | 'finalize';
 
 export interface CalibrationSession {
   sensorName: string;
   sensorId: string;
-  pitchDeg: number;
-  yawDeg: number;
-  rollDeg: number;
+  progressPct: number;
+  currentPhase: string;
+  phases: {id: string; label: string; active: boolean}[];
   steps: CalibrationStep[];
-  hardwareIntegrity: HardwareIntegrityLevel;
+  batteryLevel: number;
+  signalStrength: number;
+  pitchDeg: number;
+  rollDeg: number;
+  yawDeg: number;
   batteryHealthPct: number;
   firmwareVersion: string;
   connectionLatencyLabel: string;
   lastSyncLabel: string;
+  hardwareIntegrity: 'operational' | 'warning' | 'critical';
 }
+
+export type CalibrationStatus = 'VALID' | 'NEEDS_CALIBRATION';
+
+export type HardwareIntegrityLevel = 'operational' | 'warning' | 'critical';

@@ -1,16 +1,16 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { MessageService } from 'primeng/api';
 import { IamStore } from '../../../application/iam.store';
 import { SignInCommand } from '../../../domain/model/sign-in.command';
 import { AuthShell } from '../../../../shared/presentation/components/auth-shell/auth-shell';
 import { BaseForm } from '../../../../shared/presentation/components/base-form/base-form';
+import { AppErrorNotifier } from '../../../../shared/application/app-error-notifier';
 
 /**
  * Component for the sign-in form view in the presentation layer of the IAM bounded context.
@@ -34,8 +34,7 @@ import { BaseForm } from '../../../../shared/presentation/components/base-form/b
 export class SignInForm extends BaseForm {
   private router = inject(Router);
   private store = inject(IamStore);
-  private messageService = inject(MessageService);
-  private translate = inject(TranslateService);
+  private appErrorNotifier = inject(AppErrorNotifier);
 
   readonly isSubmitting = signal(false);
 
@@ -67,26 +66,12 @@ export class SignInForm extends BaseForm {
     try {
       await this.store.signIn(signInCommand, this.router);
     } catch (err) {
-      this.messageService.add({
-        severity: 'error',
-        summary: this.translate.instant('signIn.notifications.errorSummary'),
-        detail: this.signInErrorMessage(err),
-        life: 4500,
+      this.appErrorNotifier.showHttpError(err, {
+        summaryKey: 'signIn.notifications.errorSummary',
+        fallbackDetailKey: 'signIn.notifications.genericError',
       });
     } finally {
       this.isSubmitting.set(false);
     }
-  }
-
-  private signInErrorMessage(err: unknown): string {
-    const status =
-      typeof err === 'object' && err !== null && 'status' in err
-        ? Number((err as { status?: unknown }).status)
-        : 0;
-    const key =
-      status === 401 || status === 403
-        ? 'signIn.notifications.invalidCredentials'
-        : 'signIn.notifications.genericError';
-    return this.translate.instant(key);
   }
 }

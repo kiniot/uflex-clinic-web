@@ -1,0 +1,44 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="!pending()"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="!pending()"
+  [style]="{ width: '420px' }"
+  [header]="titleKey() | translate: titleParams()"
+  (onHide)="onHide()"
+>
+  <div class="confirm-action" [class.confirm-action--danger]="tone() === 'danger'">
+    <div class="confirm-action__icon-wrap">
+      <span class="confirm-action__icon" aria-hidden="true">
+        <i [class]="iconClass()"></i>
+      </span>
+    </div>
+
+    <p class="confirm-action__body">
+      {{ messageKey() | translate: messageParams() }}
+    </p>
+
+    <div class="confirm-action__actions">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [disabled]="pending()"
+        [label]="cancelLabelKey() | translate"
+        (click)="visible.set(false)"
+      ></button>
+      <button
+        pButton
+        type="button"
+        [severity]="tone() === 'danger' ? 'danger' : 'primary'"
+        [icon]="pending() ? 'pi pi-spin pi-spinner' : ''"
+        [disabled]="pending()"
+        [label]="confirmLabelKey() | translate"
+        (click)="onConfirm()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -87,6 +89,7 @@
   border-radius: 14px;
   padding: 16px 18px;
   display: flex;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roadmap__patient-card,
@@ -111,6 +114,7 @@
   align-items: center;
   justify-content: center;
   font-size: 18px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roadmap__patient-icon { background: var(--p-surface-200); }
@@ -200,6 +204,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .roadmap__day-bar {
@@ -207,6 +212,7 @@
   border-radius: 999px;
   background: var(--p-surface-100);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roadmap__day-bar { background: var(--p-surface-200); }
@@ -244,6 +250,7 @@
   flex-direction: column;
   gap: 10px;
   border-bottom: 0;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roadmap__library-header {
@@ -283,6 +290,7 @@
   font-weight: 600;
   color: var(--p-text-color);
   cursor: pointer;
+  @include theme.surface;
 }
 
 .roadmap__chip:hover {
@@ -301,7 +309,20 @@
 }
 
 .roadmap__chip--active:hover {
+  background: var(--p-primary-hover-color);
+  border-color: var(--p-primary-hover-color);
+}
+
+:host-context(.app-dark) .roadmap__chip.roadmap__chip--active {
   background: var(--p-primary-color);
+  border-color: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+:host-context(.app-dark) .roadmap__chip.roadmap__chip--active:hover {
+  background: var(--p-primary-hover-color);
+  border-color: var(--p-primary-hover-color);
+  color: var(--p-primary-contrast-color);
 }
 
 .roadmap__library-list {
@@ -313,6 +334,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roadmap__library-list {
@@ -329,6 +351,7 @@
   border-radius: 10px;
   background: var(--p-surface-50);
   border: 1px solid transparent;
+  @include theme.surface;
 }
 
 .roadmap__library-card:hover {
@@ -347,6 +370,7 @@
   align-items: center;
   justify-content: center;
   font-size: 16px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roadmap__library-thumb { background: var(--p-surface-300); }
@@ -382,6 +406,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .roadmap__library-add:hover {
@@ -397,6 +422,7 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  @include theme.surface;
 }
 
 .roadmap__insight-title {
@@ -439,6 +465,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roadmap__builder {
@@ -479,6 +506,7 @@
   font-size: 12px;
   font-weight: 600;
   color: var(--p-text-color);
+  @include theme.surface;
 }
 
 .roadmap__schedule i { color: var(--p-primary-color); font-size: 12px; }
@@ -537,6 +565,7 @@
   border: 2px dashed var(--p-surface-300);
   background: var(--p-surface-50);
   text-align: center;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roadmap__builder-drop {

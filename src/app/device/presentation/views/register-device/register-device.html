@@ -1,3 +1,5 @@
+<p-toast position="top-right" />
+
 <a class="register__back" routerLink="/clinic-admin/device">
   <i class="pi pi-arrow-left" aria-hidden="true"></i>
   <span>{{ 'deviceRegister.backToInventory' | translate }}</span>
@@ -13,17 +15,26 @@
     <article class="quick-entry">
       <div class="quick-entry__placeholder" aria-hidden="true">
         <i class="pi pi-camera quick-entry__camera"></i>
-        <span class="quick-entry__placeholder-label">{{ 'deviceRegister.quickEntry.scanLabel' | translate }}</span>
+        <span class="quick-entry__placeholder-label">{{
+          'deviceRegister.quickEntry.scanLabel' | translate
+        }}</span>
       </div>
       <div class="quick-entry__body">
         <span class="quick-entry__qr" aria-hidden="true">
           <i class="pi pi-qrcode"></i>
         </span>
         <h2 class="quick-entry__title">{{ 'deviceRegister.quickEntry.title' | translate }}</h2>
-        <p class="quick-entry__description">{{ 'deviceRegister.quickEntry.description' | translate }}</p>
-        <button pButton type="button" severity="primary" [outlined]="true"
-                class="quick-entry__btn"
-                (click)="onOpenScanner()">
+        <p class="quick-entry__description">
+          {{ 'deviceRegister.quickEntry.description' | translate }}
+        </p>
+        <button
+          pButton
+          type="button"
+          severity="primary"
+          [outlined]="true"
+          class="quick-entry__btn"
+          (click)="onOpenScanner()"
+        >
           {{ 'deviceRegister.quickEntry.openScanner' | translate }}
         </button>
       </div>
@@ -38,49 +49,71 @@
       <form class="hardware__form" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="hardware__grid">
           <div class="hardware__field">
-            <label for="kitSerial">{{ 'deviceRegister.hardware.kitSerial' | translate }}</label>
-            <input pInputText
-                   id="kitSerial"
-                   type="text"
-                   formControlName="kitSerialNumber"
-                   [placeholder]="'deviceRegister.hardware.kitSerialPlaceholder' | translate"
-                   [class.ng-invalid]="isInvalidControl(form,'kitSerialNumber')"
-                   [class.ng-dirty]="isInvalidControl(form,'kitSerialNumber')"/>
+            <label for="serialNumber">{{
+              'deviceRegister.hardware.serialNumber' | translate
+            }}</label>
+            <input
+              pInputText
+              id="serialNumber"
+              type="text"
+              formControlName="serialNumber"
+              [placeholder]="'deviceRegister.hardware.serialNumberPlaceholder' | translate"
+              [class.ng-invalid]="isInvalidControl(form, 'serialNumber')"
+              [class.ng-dirty]="isInvalidControl(form, 'serialNumber')"
+            />
           </div>
 
           <div class="hardware__field">
-            <label for="batchId">{{ 'deviceRegister.hardware.batchId' | translate }}</label>
-            <input pInputText
-                   id="batchId"
-                   type="text"
-                   formControlName="batchId"
-                   [placeholder]="'deviceRegister.hardware.batchIdPlaceholder' | translate"
-                   [class.ng-invalid]="isInvalidControl(form,'batchId')"
-                   [class.ng-dirty]="isInvalidControl(form,'batchId')"/>
+            <label for="macAddress">{{ 'deviceRegister.hardware.macAddress' | translate }}</label>
+            <input
+              pInputText
+              id="macAddress"
+              type="text"
+              formControlName="macAddress"
+              [placeholder]="'deviceRegister.hardware.macAddressPlaceholder' | translate"
+              [class.ng-invalid]="isInvalidControl(form, 'macAddress')"
+              [class.ng-dirty]="isInvalidControl(form, 'macAddress')"
+            />
           </div>
 
           <div class="hardware__field">
-            <label for="hwVersion">{{ 'deviceRegister.hardware.hardwareVersion' | translate }}</label>
-            <p-select inputId="hwVersion"
-                      formControlName="hardwareVersion"
-                      [options]="hardwareVersionOptions()"
-                      optionLabel="label"
-                      optionValue="value"
-                      [placeholder]="'deviceRegister.hardware.hardwareVersionPlaceholder' | translate"
-                      [class.ng-invalid]="isInvalidControl(form,'hardwareVersion')"
-                      [class.ng-dirty]="isInvalidControl(form,'hardwareVersion')"/>
+            <label for="advertisedName">{{
+              'deviceRegister.hardware.advertisedName' | translate
+            }}</label>
+            <input
+              pInputText
+              id="advertisedName"
+              type="text"
+              formControlName="advertisedName"
+              [placeholder]="'deviceRegister.hardware.advertisedNamePlaceholder' | translate"
+            />
           </div>
 
           <div class="hardware__field">
-            <label for="fwVersion">{{ 'deviceRegister.hardware.firmwareVersion' | translate }}</label>
+            <label for="model">{{ 'deviceRegister.hardware.model' | translate }}</label>
+            <input
+              pInputText
+              id="model"
+              type="text"
+              formControlName="model"
+              [placeholder]="'deviceRegister.hardware.modelPlaceholder' | translate"
+            />
+          </div>
+
+          <div class="hardware__field">
+            <label for="fwVersion">{{
+              'deviceRegister.hardware.firmwareVersion' | translate
+            }}</label>
             <div class="hardware__firmware">
-              <input pInputText
-                     id="fwVersion"
-                     type="text"
-                     formControlName="firmwareVersion"
-                     [placeholder]="'deviceRegister.hardware.firmwareVersionPlaceholder' | translate"
-                     [class.ng-invalid]="isInvalidControl(form,'firmwareVersion')"
-                     [class.ng-dirty]="isInvalidControl(form,'firmwareVersion')"/>
+              <input
+                pInputText
+                id="fwVersion"
+                type="text"
+                formControlName="firmwareVersion"
+                [placeholder]="'deviceRegister.hardware.firmwareVersionPlaceholder' | translate"
+                [class.ng-invalid]="isInvalidControl(form, 'firmwareVersion')"
+                [class.ng-dirty]="isInvalidControl(form, 'firmwareVersion')"
+              />
               <span class="hardware__firmware-badge">
                 <i class="pi pi-check" aria-hidden="true"></i>
                 {{ 'deviceRegister.hardware.firmwareCurrent' | translate }}
@@ -90,13 +123,24 @@
         </div>
 
         <footer class="hardware__actions">
-          <button type="button" pButton severity="secondary" [outlined]="true"
-                  class="hardware__btn"
-                  (click)="onDiscard()">
+          <button
+            type="button"
+            pButton
+            severity="secondary"
+            [outlined]="true"
+            class="hardware__btn"
+            (click)="onDiscard()"
+          >
             {{ 'deviceRegister.actions.discard' | translate }}
           </button>
-          <button type="submit" pButton severity="primary"
-                  class="hardware__btn hardware__btn--primary">
+          <button
+            type="submit"
+            pButton
+            severity="primary"
+            class="hardware__btn hardware__btn--primary"
+            [loading]="isRegistering()"
+            [disabled]="isRegistering()"
+          >
             {{ 'deviceRegister.actions.complete' | translate }}
           </button>
         </footer>
@@ -105,33 +149,47 @@
   </div>
 
   <aside class="register__side">
-    <app-registration-status [steps]="steps()"/>
+    <app-registration-status [steps]="steps()" />
 
     <article class="best-practices">
       <header class="best-practices__header">
         <i class="pi pi-lightbulb best-practices__icon" aria-hidden="true"></i>
-        <h2 class="best-practices__title">{{ 'deviceRegister.bestPractices.title' | translate }}</h2>
+        <h2 class="best-practices__title">
+          {{ 'deviceRegister.bestPractices.title' | translate }}
+        </h2>
       </header>
       <ul class="best-practices__list">
         <li class="best-practices__item">
           <i class="pi pi-check-circle best-practices__bullet" aria-hidden="true"></i>
           <div>
-            <h3 class="best-practices__name">{{ 'deviceRegister.bestPractices.powerPrecheck.title' | translate }}</h3>
-            <p class="best-practices__desc">{{ 'deviceRegister.bestPractices.powerPrecheck.description' | translate }}</p>
+            <h3 class="best-practices__name">
+              {{ 'deviceRegister.bestPractices.powerPrecheck.title' | translate }}
+            </h3>
+            <p class="best-practices__desc">
+              {{ 'deviceRegister.bestPractices.powerPrecheck.description' | translate }}
+            </p>
           </div>
         </li>
         <li class="best-practices__item">
           <i class="pi pi-check-circle best-practices__bullet" aria-hidden="true"></i>
           <div>
-            <h3 class="best-practices__name">{{ 'deviceRegister.bestPractices.firmwareMatch.title' | translate }}</h3>
-            <p class="best-practices__desc">{{ 'deviceRegister.bestPractices.firmwareMatch.description' | translate }}</p>
+            <h3 class="best-practices__name">
+              {{ 'deviceRegister.bestPractices.firmwareMatch.title' | translate }}
+            </h3>
+            <p class="best-practices__desc">
+              {{ 'deviceRegister.bestPractices.firmwareMatch.description' | translate }}
+            </p>
           </div>
         </li>
         <li class="best-practices__item">
           <i class="pi pi-check-circle best-practices__bullet" aria-hidden="true"></i>
           <div>
-            <h3 class="best-practices__name">{{ 'deviceRegister.bestPractices.assetTagging.title' | translate }}</h3>
-            <p class="best-practices__desc">{{ 'deviceRegister.bestPractices.assetTagging.description' | translate }}</p>
+            <h3 class="best-practices__name">
+              {{ 'deviceRegister.bestPractices.assetTagging.title' | translate }}
+            </h3>
+            <p class="best-practices__desc">
+              {{ 'deviceRegister.bestPractices.assetTagging.description' | translate }}
+            </p>
           </div>
         </li>
       </ul>

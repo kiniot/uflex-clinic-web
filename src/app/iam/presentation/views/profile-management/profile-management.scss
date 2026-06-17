@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -45,6 +47,7 @@
   display: flex;
   align-items: flex-start;
   gap: 14px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .profile-mgmt__action-card {
@@ -66,16 +69,19 @@
 .profile-mgmt__action-icon--primary {
   background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
   color: var(--p-primary-color);
+  @include theme.surface;
 }
 
 .profile-mgmt__action-icon--danger {
   background: rgba(217, 83, 79, 0.16);
   color: #d9534f;
+  @include theme.surface;
 }
 
 .profile-mgmt__action-icon--accent {
   background: rgba(123, 187, 218, 0.18);
   color: #2f7da6;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .profile-mgmt__action-icon--accent { color: #7bbbda; }
@@ -126,6 +132,7 @@
   background: color-mix(in srgb, var(--p-primary-color) 12%, var(--p-surface-100));
   display: inline-block;
   flex: 0 0 auto;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .profile-mgmt__metric-decoration {
@@ -138,6 +145,7 @@
   border: 1px solid var(--p-surface-200);
   border-radius: 14px;
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .profile-mgmt__table-card {
@@ -151,6 +159,7 @@
   justify-content: space-between;
   padding: 12px 20px;
   border-top: 1px solid var(--p-surface-100);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .profile-mgmt__footer {
@@ -180,7 +189,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 120ms ease;
+  @include theme.surface;
 }
 
 .profile-mgmt__pager button:not(:disabled):hover {

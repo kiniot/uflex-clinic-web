@@ -36,14 +36,14 @@ export const appPreset: Preset = definePreset(Aura, {
       300: '#32393B', // Black 3
     },
     sand: {
-      50: '#F7F5ED', // White (Off-white)
-      100: '#E6E4D9', // Gray 5
-      200: '#CDCBC0', // Gray 4
-      300: '#B8B6AC',
-      400: '#8C8A81', // Gray 3
-      500: '#716F68',
-      600: '#5C5B54', // Gray 2
-      700: '#4D4C46',
+      50: '#FAF8F2',
+      100: '#F7F5ED', // White (Off-white)
+      200: '#E6E4D9', // Gray 5
+      300: '#CDCBC0', // Gray 4
+      400: '#B8B6AC',
+      500: '#8C8A81', // Gray 3
+      600: '#716F68',
+      700: '#5C5B54', // Gray 2
       800: '#3D3C37', // Gray 1
     },
     sky: { 500: '#00B4D8' }, // Info
@@ -58,6 +58,7 @@ export const appPreset: Preset = definePreset(Aura, {
     },
   },
   semantic: {
+    transitionDuration: '0.3s',
     primary: {
       50: '{petroleum.50}',
       100: '{petroleum.100}',
@@ -112,18 +113,18 @@ export const appPreset: Preset = definePreset(Aura, {
       },
       dark: {
         surface: {
-          0: '#ffffff',
-          50: '{dark.200}', // Main background color in dark mode (Black 2)
-          100: '{neutral.800}',
-          200: '{dark.300}',
-          300: '{sand.800}',
-          400: '{sand.600}',
-          500: '{sand.400}',
-          600: '{neutral.700}',
-          700: '{sand.200}',
-          800: '{neutral.600}',
-          900: '{sand.100}',
-          950: '{sand.50}', // Main text color in dark mode (Off-white)
+          0: '{sand.50}', // Highest-contrast foreground on dark surfaces
+          50: '{dark.200}', // Main application background
+          100: '{neutral.800}', // Cards / elevated panels
+          200: '{dark.300}', // Inner panels / alternative dark surfaces
+          300: '{sand.700}', // Borders on dark custom surfaces
+          400: '{sand.300}', // Generic muted tokens on dark
+          500: '{sand.700}', // Hovered form-field border / stronger dark separators
+          600: '{sand.800}', // Default form-field border / subtle dark separators
+          700: '{sand.500}',
+          800: '{sand.800}', // Checked/active control surfaces
+          900: '{neutral.800}', // Content/overlay surface
+          950: '{dark.200}', // Control/input surface
         },
         primary: {
           color: '{primary.400}',
@@ -158,6 +159,22 @@ export const appPreset: Preset = definePreset(Aura, {
       style: 'solid',
       color: '{turquoise.400}',
       offset: '2px',
+    },
+  },
+  components: {
+    button: {
+      colorScheme: {
+        light: {
+          outlined: {
+            secondary: {
+              hoverBackground: '{surface.200}',
+              activeBackground: '{surface.300}',
+              borderColor: '{surface.400}',
+              color: '{surface.700}',
+            },
+          },
+        },
+      },
     },
   },
 });

@@ -5,15 +5,16 @@ import { Router } from '@angular/router';
 import { IamApi } from '../infrastructure/iam-api';
 import { SignUpCommand } from '../domain/model/sign-up.command';
 import { ChangePasswordCommand } from '../domain/model/change-password.command';
+import { SignInResource } from '../infrastructure/sign-in-response';
+import { SignUpResource } from '../infrastructure/sign-up-response';
 
 const ROLE_TO_HOME_ROUTE: Record<string, string> = {
-  ROLE_CLINIC_ADMIN: '/clinic-admin/therapy',
+  ROLE_CLINIC_ADMIN: '/clinic-admin',
   ROLE_PHYSIOTHERAPIST: '/physiotherapist',
-  ROLE_PATIENT: '/home',
-  ROLE_USER: '/home',
 };
 
-const FALLBACK_HOME_ROUTE = '/home';
+const ROLE_PRIORITY = ['ROLE_CLINIC_ADMIN', 'ROLE_PHYSIOTHERAPIST'] as const;
+type PortalRole = (typeof ROLE_PRIORITY)[number];
 
 interface JwtPayload {
   sub?: string;
@@ -42,6 +43,12 @@ export class IamStore {
   readonly currentUserId = this.currentUserIdSignal.asReadonly();
   readonly currentRoles = this.currentRolesSignal.asReadonly();
   readonly currentTenantId = this.currentTenantIdSignal.asReadonly();
+  readonly currentEffectiveRole = computed<PortalRole | null>(() =>
+    this.resolveEffectiveRole(this.currentRolesSignal()),
+  );
+  readonly currentPortalLandingRoute = computed(() =>
+    this.portalLandingRouteForRoles(this.currentRolesSignal()),
+  );
 
   /**
    * @deprecated kept for backwards compatibility — use {@link currentEmail}.
@@ -59,27 +66,33 @@ export class IamStore {
     this.restoreSessionFromStorage();
   }
 
-  signIn(signInCommand: SignInCommand, router: Router, redirectTo?: string | null): Promise<void> {
+  signIn(
+    signInCommand: SignInCommand,
+    router: Router,
+    redirectTo?: string | null,
+  ): Promise<SignInResource> {
     return new Promise((resolve, reject) => {
       this.iamApi.signIn(signInCommand).subscribe({
         next: (signInResource) => {
-          localStorage.setItem('token', signInResource.token);
-          this.isSignedInSignal.set(true);
-          this.currentEmailSignal.set(signInResource.email);
-          this.currentUserIdSignal.set(signInResource.id);
-          this.currentRolesSignal.set(signInResource.roles ?? []);
-          this.currentTenantIdSignal.set(signInResource.tenantId ?? null);
+          this.applyAuthenticatedUser(signInResource);
           if (redirectTo === null) {
-            resolve();
+            resolve(signInResource);
             return;
           }
-          const destination = redirectTo ?? this.resolveHomeRoute(signInResource.roles ?? []);
-          router.navigate([destination]).then(() => resolve());
+          const destination =
+            redirectTo ??
+            this.portalLandingRouteForRoles(signInResource.roles ?? []) ??
+            '/forbidden';
+          router.navigate([destination]).then(() => resolve(signInResource));
         },
         error: (err) => {
           console.error('Sign-in failed:', err);
           this.clearSession();
-          router.navigate(['/iam/sign-in']).then(() => reject(err));
+          if (redirectTo === null) {
+            reject(err);
+            return;
+          }
+          router.navigate(['/sign-in']).then(() => reject(err));
         },
       });
     });
@@ -88,22 +101,26 @@ export class IamStore {
   signUp(
     signUpCommand: SignUpCommand,
     router: Router,
-    redirectTo: string | null = '/iam/sign-in',
-  ): Promise<void> {
+    redirectTo: string | null = '/sign-in',
+  ): Promise<SignUpResource> {
     return new Promise((resolve, reject) => {
       this.iamApi.signUp(signUpCommand).subscribe({
         next: (signUpResource) => {
           console.log('Sign-up successful:', signUpResource);
-          if (!redirectTo) {
-            resolve();
+          if (redirectTo === null) {
+            resolve(signUpResource);
             return;
           }
-          router.navigate([redirectTo]).then(() => resolve());
+          router.navigate([redirectTo]).then(() => resolve(signUpResource));
         },
         error: (err) => {
           console.error('Sign-up failed:', err);
           this.clearSession();
-          router.navigate(['/iam/sign-up']).then(() => reject(err));
+          if (redirectTo === null) {
+            reject(err);
+            return;
+          }
+          router.navigate(['/sign-up']).then(() => reject(err));
         },
       });
     });
@@ -112,7 +129,11 @@ export class IamStore {
   signOut(router: Router) {
     localStorage.removeItem('token');
     this.clearSession();
-    router.navigate(['/iam/sign-in']).then();
+    router.navigate(['/sign-in']).then();
+  }
+
+  resetSession() {
+    this.clearSession();
   }
 
   /**
@@ -129,6 +150,7 @@ export class IamStore {
   }
 
   private clearSession() {
+    localStorage.removeItem('token');
     this.isSignedInSignal.set(false);
     this.currentEmailSignal.set(null);
     this.currentUserIdSignal.set(null);
@@ -136,12 +158,22 @@ export class IamStore {
     this.currentTenantIdSignal.set(null);
   }
 
-  private resolveHomeRoute(roles: string[]): string {
-    for (const role of roles) {
-      const route = ROLE_TO_HOME_ROUTE[role];
-      if (route) return route;
+  hasPortalAccess(roles: string[] = this.currentRolesSignal()): boolean {
+    return this.resolveEffectiveRole(roles) !== null;
+  }
+
+  portalLandingRouteForRoles(roles: string[] = this.currentRolesSignal()): string | null {
+    const effectiveRole = this.resolveEffectiveRole(roles);
+    return effectiveRole ? ROLE_TO_HOME_ROUTE[effectiveRole] : null;
+  }
+
+  resolveEffectiveRole(roles: string[] = this.currentRolesSignal()): PortalRole | null {
+    for (const role of ROLE_PRIORITY) {
+      if (roles.includes(role)) {
+        return role;
+      }
     }
-    return FALLBACK_HOME_ROUTE;
+    return null;
   }
 
   /**
@@ -184,5 +216,14 @@ export class IamStore {
     } catch {
       return null;
     }
+  }
+
+  private applyAuthenticatedUser(signInResource: SignInResource) {
+    localStorage.setItem('token', signInResource.token);
+    this.isSignedInSignal.set(true);
+    this.currentEmailSignal.set(signInResource.email);
+    this.currentUserIdSignal.set(signInResource.id);
+    this.currentRolesSignal.set(signInResource.roles ?? []);
+    this.currentTenantIdSignal.set(signInResource.tenantId ?? null);
   }
 }

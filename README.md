@@ -1,4 +1,4 @@
-# Uflex Clinic Web
+<h1 align="center">Uflex Clinic Web</h1>
 
 <div align="center">
   <img src="https://img.shields.io/badge/Angular-21-DD0031?style=for-the-badge&logo=angular" alt="Angular 21" />

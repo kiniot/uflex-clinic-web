@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host { display: block; }
 
 .daily-schedule__scroll { overflow-x: auto; }
@@ -27,6 +29,7 @@
   white-space: normal;
   max-width: 80px;
   line-height: 1.25;
+  @include theme.border;
 }
 
 :host-context(.app-dark) .daily-schedule thead th {
@@ -36,7 +39,7 @@
 .daily-schedule__row {
   cursor: pointer;
   border-bottom: 1px solid var(--p-surface-100);
-  transition: background-color 120ms ease;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .daily-schedule__row {
@@ -73,6 +76,7 @@
   color: var(--p-text-muted-color);
   font-weight: 600;
   font-size: 11px;
+  @include theme.surface;
 }
 
 .daily-schedule__patient-name {
@@ -96,6 +100,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  @include theme.surface;
 }
 
 .daily-schedule__dot {

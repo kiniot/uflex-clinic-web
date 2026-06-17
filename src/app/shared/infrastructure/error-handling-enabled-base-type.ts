@@ -1,5 +1,6 @@
-import {HttpErrorResponse} from '@angular/common/http';
-import {Observable, throwError} from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { toAppError } from './app-error.mapper';
 
 /**
  * Abstract base class providing error handling utilities for infrastructure services.
@@ -13,15 +14,7 @@ export abstract class ErrorHandlingEnabledBaseType {
    */
   protected handleError(operation: string) {
     return (error: HttpErrorResponse): Observable<never> => {
-      let errorMessage = operation;
-      if (error.error instanceof ErrorEvent) {
-        errorMessage = `${operation}: ${error.error.message}`;
-      } else if (error.status === 404) {
-        errorMessage = `${operation}: Resource not found`;
-      } else {
-        errorMessage = `${operation}: Server returned code ${error.status}`;
-      }
-      return throwError(() => new Error(errorMessage));
+      return throwError(() => toAppError(error, operation));
     };
   }
 }

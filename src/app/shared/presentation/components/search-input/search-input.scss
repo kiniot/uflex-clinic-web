@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -14,6 +16,7 @@
   font-size: 14px;
   padding-left: 36px;
   background: var(--p-surface-50);
+  @include theme.surface;
 }
 
 :host ::ng-deep .p-iconfield .p-inputicon {

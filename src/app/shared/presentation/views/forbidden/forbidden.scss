@@ -1,0 +1,189 @@
+@use '../../../../../styles/theme-transition' as theme;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--p-primary-100) 24%, transparent) 0%,
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      color-mix(in srgb, var(--p-turquoise-100) 30%, transparent) 0%,
+      transparent 34%
+    ),
+    var(--app-surface-canvas);
+  @include theme.surface;
+}
+
+.status-shell {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 32px 20px;
+  box-sizing: border-box;
+}
+
+.status-card {
+  width: min(720px, 100%);
+  display: grid;
+  gap: 24px;
+  padding: 32px;
+  border-radius: 24px;
+  background: var(--app-surface-card);
+  border: 1px solid var(--app-surface-card-border);
+  box-shadow: 0 20px 44px color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  position: relative;
+  overflow: hidden;
+  @include theme.surface-with-shadow;
+}
+
+.status-card::after {
+  content: '';
+  position: absolute;
+  inset: auto -80px -100px auto;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--p-turquoise-200) 26%, transparent);
+  opacity: 0.8;
+  pointer-events: none;
+  @include theme.layer-fade;
+}
+
+.status-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.status-card__signal {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--p-primary-color) 88%, var(--p-primary-700)) 0%,
+    color-mix(in srgb, var(--p-primary-700) 82%, var(--p-turquoise-500)) 100%
+  );
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--p-primary-color) 20%, transparent);
+}
+
+.status-card__signal-ring {
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  border-radius: 28px;
+  border: 1px solid color-mix(in srgb, var(--p-primary-color) 16%, transparent);
+}
+
+.status-card__signal-icon {
+  font-size: 28px;
+  color: var(--p-surface-0);
+}
+
+.status-card__copy {
+  display: grid;
+  gap: 14px;
+}
+
+.status-card__eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  @include theme.surface;
+}
+
+.status-card__title {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.9rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--p-text-color);
+  @include theme.text;
+}
+
+.status-card__body,
+.status-card__note-body,
+.status-card__note-label {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  @include theme.text;
+}
+
+.status-card__body {
+  max-width: 52ch;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--p-text-muted-color);
+}
+
+.status-card__note {
+  display: grid;
+  gap: 6px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--app-surface-card-alt);
+  border: 1px solid var(--app-surface-card-border);
+  @include theme.surface;
+}
+
+.status-card__note-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-primary-color);
+}
+
+.status-card__note-body {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--p-text-color);
+}
+
+.status-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+:host ::ng-deep .status-card__primary,
+:host ::ng-deep .status-card__primary .p-button {
+  min-height: 44px;
+  padding: 0 18px;
+  border-radius: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .status-card {
+    padding: 26px 22px;
+    border-radius: 22px;
+  }
+
+  .status-card__signal {
+    width: 64px;
+    height: 64px;
+  }
+
+  .status-card__signal-ring {
+    width: 82px;
+    height: 82px;
+  }
+}

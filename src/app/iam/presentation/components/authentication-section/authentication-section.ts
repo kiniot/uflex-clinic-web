@@ -18,14 +18,14 @@ export class AuthenticationSection {
    * Navigates to the sign-in page.
    */
   performSignIn(){
-    this.router.navigate(['/iam/sign-in']).then();
+    this.router.navigate(['/sign-in']).then();
   }
 
   /**
    * Navigates to the sign-up page.
    */
   performSignUp(){
-    this.router.navigate(['/iam/sign-up']).then();
+    this.router.navigate(['/sign-up']).then();
   }
 
   /**

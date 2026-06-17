@@ -15,10 +15,12 @@
         <i class="pi pi-user-plus patients__icon" aria-hidden="true"></i>
         <h2 class="patients__title">{{ 'deviceLink.selectPatient' | translate }}</h2>
       </div>
-      <app-search-input class="patients__filter"
-                        [placeholder]="'deviceLink.filterPlaceholder' | translate"
-                        [value]="filterText()"
-                        (valueChange)="filterText.set($event)"/>
+      <app-search-input
+        class="patients__filter"
+        [placeholder]="'deviceLink.filterPlaceholder' | translate"
+        [value]="filterText()"
+        (valueChange)="filterText.set($event)"
+      />
     </header>
 
     <div class="patients__scroll">
@@ -32,13 +34,19 @@
         </thead>
         <tbody>
           @for (patient of filteredPatients(); track patient.id) {
-            <tr class="patients__row"
-                [class.patients__row--selected]="patient.id === selectedPatientId()"
-                (click)="onSelectPatient(patient)">
+            <tr
+              class="patients__row"
+              [class.patients__row--selected]="patient.id === selectedPatientId()"
+              (click)="onSelectPatient(patient)"
+            >
               <td>
                 <div class="patients__person">
-                  <p-avatar [label]="patient.avatarInitials" shape="circle" size="normal"
-                            styleClass="patients__avatar"/>
+                  <p-avatar
+                    [label]="patient.avatarInitials"
+                    shape="circle"
+                    size="normal"
+                    styleClass="patients__avatar"
+                  />
                   <div class="patients__person-text">
                     <span class="patients__name">{{ patient.name }}</span>
                     <span class="patients__condition">{{ patient.condition }}</span>
@@ -70,27 +78,37 @@
         <h2 class="kit__title">{{ 'deviceLink.assignKit.title' | translate }}</h2>
       </header>
       <span class="kit__label">{{ 'deviceLink.assignKit.available' | translate }}</span>
-      <p-select class="kit__select"
-                [options]="deviceOptions()"
-                [ngModel]="selectedDeviceId()"
-                (ngModelChange)="selectedDeviceId.set($event)"
-                optionLabel="label"
-                optionValue="value"
-                [placeholder]="'deviceLink.assignKit.placeholder' | translate"/>
+      <p-select
+        class="kit__select"
+        [options]="deviceOptions()"
+        [ngModel]="selectedDeviceId()"
+        (ngModelChange)="selectedDeviceId.set($event)"
+        optionLabel="label"
+        optionValue="value"
+        [placeholder]="'deviceLink.assignKit.placeholder' | translate"
+      />
 
       <div class="kit__calibration">
         <i class="pi pi-check-circle kit__calibration-icon" aria-hidden="true"></i>
         <div class="kit__calibration-text">
-          <strong class="kit__calibration-title">{{ 'deviceLink.assignKit.calibration.title' | translate }}</strong>
-          <span class="kit__calibration-desc">{{ 'deviceLink.assignKit.calibration.description' | translate }}</span>
+          <strong class="kit__calibration-title">{{
+            'deviceLink.assignKit.calibration.title' | translate
+          }}</strong>
+          <span class="kit__calibration-desc">{{
+            'deviceLink.assignKit.calibration.description' | translate
+          }}</span>
         </div>
       </div>
     </article>
 
     <article class="final-assignment">
       <header class="final-assignment__header">
-        <h2 class="final-assignment__title">{{ 'deviceLink.finalAssignment.title' | translate }}</h2>
-        <span class="final-assignment__badge">{{ 'deviceLink.finalAssignment.reviewBadge' | translate }}</span>
+        <h2 class="final-assignment__title">
+          {{ 'deviceLink.finalAssignment.title' | translate }}
+        </h2>
+        <span class="final-assignment__badge">{{
+          'deviceLink.finalAssignment.reviewBadge' | translate
+        }}</span>
       </header>
 
       <dl class="final-assignment__fields">
@@ -117,10 +135,14 @@
         </div>
       </dl>
 
-      <button type="button" pButton severity="primary"
-              class="final-assignment__confirm"
-              [disabled]="!canConfirm()"
-              (click)="onConfirm()">
+      <button
+        type="button"
+        pButton
+        severity="primary"
+        class="final-assignment__confirm"
+        [disabled]="!canConfirm()"
+        (click)="onConfirm()"
+      >
         {{ 'deviceLink.finalAssignment.confirm' | translate }}
       </button>
 
@@ -133,7 +155,9 @@
       <span class="hardware-view__mark" aria-hidden="true">uF</span>
       <div class="hardware-view__text">
         <strong class="hardware-view__name">uFlex</strong>
-        <span class="hardware-view__caption">{{ 'deviceLink.hardwareView.caption' | translate }}</span>
+        <span class="hardware-view__caption">{{
+          'deviceLink.hardwareView.caption' | translate
+        }}</span>
       </div>
     </article>
   </aside>

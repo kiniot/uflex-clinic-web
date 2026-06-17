@@ -1,3 +1,5 @@
+@use '../../../../../../../styles/theme-transition' as theme;
+
 :host {
   display: flex;
   flex-direction: column;
@@ -66,6 +68,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .dash__stat-card {
@@ -103,11 +106,13 @@
 .dash__stat-icon--accent {
   background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
   color: var(--p-primary-color);
+  @include theme.surface;
 }
 
 .dash__stat-icon--muted {
   background: var(--p-surface-100);
   color: var(--p-text-muted-color);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .dash__stat-icon--muted {
@@ -117,6 +122,7 @@
 .dash__stat-icon--gold {
   background: rgba(232, 159, 65, 0.18);
   color: #b16614;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .dash__stat-icon--gold { color: #e89f41; }
@@ -164,6 +170,7 @@
   border-radius: 999px;
   background: var(--p-surface-100);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .dash__stat-progress-bar { background: var(--p-surface-200); }
@@ -194,6 +201,7 @@
   background: var(--p-surface-200);
   color: var(--p-text-muted-color);
   border: 2px solid var(--p-surface-0);
+  @include theme.surface;
 }
 
 :host ::ng-deep .dash__stat-avatar:not(:first-child) {
@@ -214,6 +222,7 @@
   font-size: 10px;
   font-weight: 700;
   border: 2px solid var(--p-surface-0);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .dash__stat-avatar-pill {
@@ -249,6 +258,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .dash__schedule-card,
@@ -309,6 +319,7 @@
   display: flex;
   align-items: flex-end;
   padding: 12px 14px;
+  @include theme.surface;
 }
 
 .dash__release-image {
@@ -317,6 +328,7 @@
   background:
     radial-gradient(80% 60% at 70% 30%, rgba(123, 187, 218, 0.25), transparent 70%),
     repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 24px);
+  @include theme.surface;
 }
 
 .dash__release-caption {
@@ -337,6 +349,7 @@
   grid-template-columns: 1fr 1.4fr;
   gap: 24px;
   align-items: center;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .dash__summary-card {
@@ -402,6 +415,7 @@
   border-radius: 999px;
   background: var(--p-surface-100);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .dash__summary-stat-bar { background: var(--p-surface-200); }
@@ -434,4 +448,5 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 6px 14px rgba(52, 199, 155, 0.35);
+  @include theme.surface-with-shadow;
 }

@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host { display: block; }
 
 .users-table__scroll { overflow-x: auto; }
@@ -26,6 +28,7 @@
   background: var(--p-surface-50);
   border-top: 1px solid var(--p-surface-200);
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .users-table thead th {
@@ -36,7 +39,7 @@
 .users-table__row {
   cursor: pointer;
   border-bottom: 1px solid var(--p-surface-100);
-  transition: background-color 120ms ease;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .users-table__row {
@@ -63,6 +66,7 @@
   background: color-mix(in srgb, var(--p-primary-color) 16%, var(--p-surface-100));
   color: var(--p-primary-color);
   font-weight: 600;
+  @include theme.surface;
 }
 
 .users-table__person-text {
@@ -91,6 +95,7 @@
   border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
+  @include theme.surface;
 }
 
 .users-table__role--physio {
@@ -119,6 +124,7 @@
   border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
+  @include theme.surface;
 }
 
 .users-table__dot {
@@ -183,6 +189,7 @@
   cursor: pointer;
   padding: 4px 6px;
   border-radius: 6px;
+  @include theme.surface;
 }
 
 .users-table__action:hover {

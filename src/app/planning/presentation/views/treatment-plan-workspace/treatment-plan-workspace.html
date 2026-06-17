@@ -1,0 +1,527 @@
+<nav class="workspace__breadcrumb" aria-label="Breadcrumb">
+  <a [routerLink]="['/physiotherapist/patients']">{{
+    'treatmentPlanWorkspace.breadcrumb.patients' | translate
+  }}</a>
+  <i class="pi pi-angle-right" aria-hidden="true"></i>
+  <a [routerLink]="['/physiotherapist/patients', patientId()]">
+    {{ patient()?.fullName ?? ('treatmentPlanWorkspace.breadcrumb.patient' | translate) }}
+  </a>
+  <i class="pi pi-angle-right" aria-hidden="true"></i>
+  <span>{{
+    isCreateMode()
+      ? ('treatmentPlanWorkspace.breadcrumb.create' | translate)
+      : ('treatmentPlanWorkspace.breadcrumb.edit' | translate)
+  }}</span>
+</nav>
+
+<header class="workspace__header">
+  <div class="workspace__header-text">
+    <h1 class="workspace__title">{{ pageTitle() | translate }}</h1>
+    <p class="workspace__subtitle">
+      {{ 'treatmentPlanWorkspace.subtitle' | translate: { patient: patient()?.fullName ?? '' } }}
+    </p>
+  </div>
+
+  <div class="workspace__header-actions">
+    <a
+      pButton
+      [routerLink]="['/physiotherapist/patients', patientId()]"
+      severity="secondary"
+      [outlined]="true"
+      class="workspace__ghost-btn"
+    >
+      <i class="pi pi-arrow-left" aria-hidden="true"></i>
+      <span>{{ 'treatmentPlanWorkspace.actions.back' | translate }}</span>
+    </a>
+    @if (canShowActivateAction()) {
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        icon="pi pi-play-circle"
+        [outlined]="true"
+        class="workspace__ghost-btn"
+        [disabled]="isRunningTransition()"
+        (click)="onRequestPlanAction('activate')"
+      >
+        {{ 'treatmentPlanWorkspace.actions.activate' | translate }}
+      </button>
+    }
+    @if (canShowCompleteAction()) {
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        icon="pi pi-check-circle"
+        [outlined]="true"
+        class="workspace__ghost-btn"
+        [disabled]="isRunningTransition()"
+        (click)="onRequestPlanAction('complete')"
+      >
+        {{ 'treatmentPlanWorkspace.actions.complete' | translate }}
+      </button>
+    }
+    @if (canShowCancelAction()) {
+      <button
+        pButton
+        type="button"
+        severity="danger"
+        icon="pi pi-ban"
+        [outlined]="true"
+        class="workspace__ghost-btn workspace__ghost-btn--danger"
+        [disabled]="isRunningTransition()"
+        (click)="onRequestPlanAction('cancel')"
+      >
+        {{ 'treatmentPlanWorkspace.actions.cancel' | translate }}
+      </button>
+    }
+    @if (canShowDeleteAction()) {
+      <button
+        pButton
+        type="button"
+        severity="danger"
+        icon="pi pi-trash"
+        [outlined]="true"
+        class="workspace__ghost-btn workspace__ghost-btn--danger"
+        [disabled]="isRunningTransition()"
+        (click)="onRequestPlanAction('delete')"
+      >
+        {{ 'treatmentPlanWorkspace.actions.delete' | translate }}
+      </button>
+    }
+
+    <button
+      pButton
+      type="button"
+      severity="primary"
+      [icon]="isCreateMode() ? 'pi pi-check-circle' : 'pi pi-save'"
+      class="workspace__primary-btn"
+      [loading]="isSaving()"
+      [disabled]="isSaving()"
+      (click)="onSavePlan()"
+    >
+      <span>{{
+        isCreateMode()
+          ? ('treatmentPlanWorkspace.actions.createAndSave' | translate)
+          : ('treatmentPlanWorkspace.actions.save' | translate)
+      }}</span>
+    </button>
+  </div>
+</header>
+
+<section class="workspace__meta-card">
+  <form class="workspace__meta-form" [formGroup]="form">
+    <div class="workspace__field workspace__field--wide">
+      <label for="planName">{{ 'treatmentPlanWorkspace.fields.name' | translate }}</label>
+      <input
+        pInputText
+        id="planName"
+        type="text"
+        formControlName="name"
+        [placeholder]="'treatmentPlanWorkspace.placeholders.name' | translate"
+      />
+    </div>
+
+    <div class="workspace__field">
+      <label for="planStarts">{{ 'treatmentPlanWorkspace.fields.startsAt' | translate }}</label>
+      <input pInputText id="planStarts" type="date" formControlName="startsAt" />
+    </div>
+
+    <div class="workspace__field">
+      <label for="planEnds">{{ 'treatmentPlanWorkspace.fields.endsAt' | translate }}</label>
+      <input pInputText id="planEnds" type="date" formControlName="endsAt" />
+    </div>
+  </form>
+</section>
+
+<section class="workspace__main">
+  <article class="workspace__builder-card">
+    <header class="workspace__section-header">
+      <div>
+        <h2 class="workspace__section-title">
+          {{ 'treatmentPlanWorkspace.builder.title' | translate }}
+        </h2>
+        <p class="workspace__section-subtitle">
+          {{ 'treatmentPlanWorkspace.builder.subtitle' | translate }}
+        </p>
+      </div>
+      <button
+        type="button"
+        class="workspace__section-btn"
+        [disabled]="!canEditStructure()"
+        (click)="onAddRoutine()"
+      >
+        <i class="pi pi-plus" aria-hidden="true"></i>
+        <span>{{ 'treatmentPlanWorkspace.builder.addRoutine' | translate }}</span>
+      </button>
+    </header>
+
+    @if (isLoadingPlan() && !isCreateMode()) {
+      <div class="workspace__loading">
+        @for (row of loadingRows; track row) {
+          <span class="workspace__loading-card"></span>
+        }
+      </div>
+    } @else if (routines().length === 0) {
+      <div class="workspace__empty">
+        <span class="workspace__empty-icon" aria-hidden="true">
+          <i class="pi pi-calendar-plus"></i>
+        </span>
+        <h3 class="workspace__empty-title">
+          {{ 'treatmentPlanWorkspace.builder.emptyTitle' | translate }}
+        </h3>
+        <p class="workspace__empty-body">
+          {{ 'treatmentPlanWorkspace.builder.emptyBody' | translate }}
+        </p>
+      </div>
+    } @else {
+      <div class="workspace__routine-list">
+        @for (routine of routines(); track trackRoutine($index, routine)) {
+          <article
+            class="routine-card"
+            [class.routine-card--active]="selectedRoutineLocalKey() === routine.localKey"
+            [class.routine-card--entering]="routine.isEntering"
+            [class.routine-card--leaving]="routine.isLeaving"
+            [attr.aria-pressed]="selectedRoutineLocalKey() === routine.localKey"
+            tabindex="0"
+            (click)="onSelectRoutine(routine.localKey)"
+            (keydown.enter)="onRoutineKeySelect($event, routine.localKey)"
+            (keydown.space)="onRoutineKeySelect($event, routine.localKey)"
+          >
+            <header class="routine-card__header">
+              <div class="routine-card__title-block">
+                <button type="button" class="routine-card__anchor">
+                  <span class="routine-card__anchor-dot" aria-hidden="true"></span>
+                  <span
+                    >{{ 'treatmentPlanWorkspace.builder.routine' | translate }}
+                    {{ routine.order }}</span
+                  >
+                </button>
+                <button
+                  type="button"
+                  class="routine-card__remove"
+                  [disabled]="!canEditStructure()"
+                  (click)="onRemoveRoutineClick($event, routine.localKey)"
+                >
+                  <i class="pi pi-trash" aria-hidden="true"></i>
+                </button>
+              </div>
+            </header>
+
+            <div class="routine-card__meta">
+              <div class="workspace__field">
+                <label>{{ 'treatmentPlanWorkspace.routine.fields.name' | translate }}</label>
+                <input
+                  pInputText
+                  type="text"
+                  [ngModel]="routine.name"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="!canEditStructure()"
+                  [placeholder]="'treatmentPlanWorkspace.routine.placeholders.name' | translate"
+                  (click)="onSelectRoutine(routine.localKey)"
+                  (ngModelChange)="onRoutineFieldChange(routine.localKey, 'name', $event)"
+                />
+              </div>
+
+              <div class="workspace__field">
+                <label>{{ 'treatmentPlanWorkspace.routine.fields.order' | translate }}</label>
+                <input
+                  pInputText
+                  type="number"
+                  min="1"
+                  [ngModel]="routine.order"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="!canEditStructure()"
+                  (click)="onSelectRoutine(routine.localKey)"
+                  (ngModelChange)="onRoutineFieldChange(routine.localKey, 'order', $event)"
+                />
+                @if (routineOrderErrorKey(routine.order, routine.localKey)) {
+                  <small class="workspace__field-error">
+                    {{ routineOrderErrorKey(routine.order, routine.localKey) | translate }}
+                  </small>
+                }
+              </div>
+
+              <div class="workspace__field">
+                <label>{{ 'treatmentPlanWorkspace.routine.fields.day' | translate }}</label>
+                <p-select
+                  [ngModel]="routine.scheduleDayOfWeek"
+                  [ngModelOptions]="{ standalone: true }"
+                  [options]="dayOptions()"
+                  optionLabel="label"
+                  optionValue="value"
+                  [disabled]="!canEditStructure()"
+                  (onFocus)="onSelectRoutine(routine.localKey)"
+                  (ngModelChange)="
+                    onRoutineFieldChange(routine.localKey, 'scheduleDayOfWeek', $event)
+                  "
+                />
+              </div>
+
+              <div class="workspace__field">
+                <label>{{ 'treatmentPlanWorkspace.routine.fields.time' | translate }}</label>
+                <input
+                  pInputText
+                  type="time"
+                  [ngModel]="routine.scheduleTime"
+                  [ngModelOptions]="{ standalone: true }"
+                  [disabled]="!canEditStructure()"
+                  (click)="onSelectRoutine(routine.localKey)"
+                  (ngModelChange)="onRoutineFieldChange(routine.localKey, 'scheduleTime', $event)"
+                />
+              </div>
+            </div>
+
+            <div class="routine-card__series">
+              <header class="routine-card__series-header">
+                <h3 class="routine-card__series-title">
+                  {{ 'treatmentPlanWorkspace.series.title' | translate }}
+                </h3>
+                <span class="routine-card__series-hint">
+                  {{
+                    selectedRoutineLocalKey() === routine.localKey
+                      ? ('treatmentPlanWorkspace.series.selectionReady' | translate)
+                      : ('treatmentPlanWorkspace.series.selectHint' | translate)
+                  }}
+                </span>
+              </header>
+
+              @if (routine.exerciseSeries.length === 0) {
+                <div class="routine-card__series-empty">
+                  {{ 'treatmentPlanWorkspace.series.empty' | translate }}
+                </div>
+              } @else {
+                <div class="routine-card__series-list">
+                  @for (series of routine.exerciseSeries; track trackSeries($index, series)) {
+                    <article
+                      class="series-card"
+                      [class.series-card--entering]="series.isEntering"
+                      [class.series-card--leaving]="series.isLeaving"
+                    >
+                      <header class="series-card__header">
+                        <div class="series-card__title-block">
+                          <span class="series-card__eyebrow">
+                            {{ 'treatmentPlanWorkspace.series.itemLabel' | translate }}
+                            {{ series.order }}
+                          </span>
+                          <h4 class="series-card__title">{{ series.exerciseName }}</h4>
+                          <span class="series-card__meta">
+                            {{ bodyPartLabel(series.bodyPart) }} ·
+                            {{ movementLabel(series.movementType) }}
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          class="series-card__remove"
+                          [disabled]="!canEditStructure()"
+                          (click)="onRemoveSeriesClick($event, routine.localKey, series.localKey)"
+                        >
+                          <i class="pi pi-times" aria-hidden="true"></i>
+                        </button>
+                      </header>
+
+                      <div class="series-card__params">
+                        <div class="workspace__field">
+                          <label>{{
+                            'treatmentPlanWorkspace.series.fields.romShort' | translate
+                          }}</label>
+                          <input
+                            pInputText
+                            type="number"
+                            min="0"
+                            [ngModel]="series.rangeOfMotionDegrees"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="!canEditStructure()"
+                            (ngModelChange)="
+                              onSeriesFieldChange(
+                                routine.localKey,
+                                series.localKey,
+                                'rangeOfMotionDegrees',
+                                $event
+                              )
+                            "
+                          />
+                        </div>
+                        <div class="workspace__field">
+                          <label>{{
+                            'treatmentPlanWorkspace.series.fields.repetitions' | translate
+                          }}</label>
+                          <input
+                            pInputText
+                            type="number"
+                            min="1"
+                            [ngModel]="series.repetitions"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="!canEditStructure()"
+                            (ngModelChange)="
+                              onSeriesFieldChange(
+                                routine.localKey,
+                                series.localKey,
+                                'repetitions',
+                                $event
+                              )
+                            "
+                          />
+                        </div>
+                        <div class="workspace__field">
+                          <label>{{
+                            'treatmentPlanWorkspace.series.fields.duration' | translate
+                          }}</label>
+                          <input
+                            pInputText
+                            type="number"
+                            min="0"
+                            [ngModel]="series.durationSeconds"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="!canEditStructure()"
+                            (ngModelChange)="
+                              onSeriesFieldChange(
+                                routine.localKey,
+                                series.localKey,
+                                'durationSeconds',
+                                $event
+                              )
+                            "
+                          />
+                        </div>
+                        <div class="workspace__field">
+                          <label>{{
+                            'treatmentPlanWorkspace.series.fields.rest' | translate
+                          }}</label>
+                          <input
+                            pInputText
+                            type="number"
+                            min="0"
+                            [ngModel]="series.restDurationSeconds"
+                            [ngModelOptions]="{ standalone: true }"
+                            [disabled]="!canEditStructure()"
+                            (ngModelChange)="
+                              onSeriesFieldChange(
+                                routine.localKey,
+                                series.localKey,
+                                'restDurationSeconds',
+                                $event
+                              )
+                            "
+                          />
+                        </div>
+                      </div>
+                    </article>
+                  }
+                </div>
+              }
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </article>
+
+  <aside class="workspace__catalog-card">
+    <header class="workspace__section-header workspace__section-header--catalog">
+      <div>
+        <h2 class="workspace__section-title">
+          {{ 'treatmentPlanWorkspace.catalog.title' | translate }}
+        </h2>
+        <p class="workspace__section-subtitle">
+          {{ 'treatmentPlanWorkspace.catalog.subtitle' | translate }}
+        </p>
+      </div>
+      <span class="workspace__catalog-selection">
+        @if (selectedRoutine()) {
+          {{
+            'treatmentPlanWorkspace.catalog.selectedRoutine'
+              | translate: { order: selectedRoutine()!.order }
+          }}
+        } @else {
+          {{ 'treatmentPlanWorkspace.catalog.noRoutineSelected' | translate }}
+        }
+      </span>
+    </header>
+
+    @if (isLoadingExerciseCatalog()) {
+      <div class="workspace__catalog-loading">
+        @for (row of loadingRows; track row) {
+          <span class="workspace__catalog-loading-card"></span>
+        }
+      </div>
+    } @else if (exerciseCatalogError()) {
+      <div class="workspace__catalog-state">
+        <span class="workspace__catalog-state-icon" aria-hidden="true">
+          <i class="pi pi-exclamation-triangle"></i>
+        </span>
+        <h3 class="workspace__catalog-state-title">
+          {{ 'treatmentPlanWorkspace.catalog.errorTitle' | translate }}
+        </h3>
+        <p class="workspace__catalog-state-body">
+          {{ 'treatmentPlanWorkspace.catalog.errorBody' | translate }}
+        </p>
+        <button type="button" class="workspace__section-btn" (click)="onRetryExerciseCatalog()">
+          <i class="pi pi-refresh" aria-hidden="true"></i>
+          <span>{{ 'treatmentPlanWorkspace.catalog.retry' | translate }}</span>
+        </button>
+      </div>
+    } @else if (exerciseCatalog().length === 0) {
+      <div class="workspace__catalog-state">
+        <span class="workspace__catalog-state-icon" aria-hidden="true">
+          <i class="pi pi-folder-open"></i>
+        </span>
+        <h3 class="workspace__catalog-state-title">
+          {{ 'treatmentPlanWorkspace.catalog.emptyTitle' | translate }}
+        </h3>
+        <p class="workspace__catalog-state-body">
+          {{ 'treatmentPlanWorkspace.catalog.emptyBody' | translate }}
+        </p>
+      </div>
+    } @else {
+      <div class="workspace__catalog-list">
+        @for (exercise of exerciseCatalog(); track exercise.id) {
+          <article class="catalog-card">
+            <div class="catalog-card__media" aria-hidden="true">
+              <i class="pi pi-image"></i>
+              @if (exercise.videoUrl) {
+                <span class="catalog-card__media-tag">{{
+                  'treatmentPlanWorkspace.catalog.videoRef' | translate
+                }}</span>
+              }
+            </div>
+            <div class="catalog-card__body">
+              <header class="catalog-card__header">
+                <div>
+                  <h3 class="catalog-card__title">{{ exercise.name }}</h3>
+                  <span class="catalog-card__meta">
+                    {{ bodyPartLabel(exercise.bodyPart) }} ·
+                    {{ movementLabel(exercise.movementType) }}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  class="catalog-card__add"
+                  [disabled]="!selectedRoutine() || !canEditStructure()"
+                  (click)="onAddExerciseToRoutine(exercise)"
+                >
+                  {{ 'treatmentPlanWorkspace.catalog.add' | translate }}
+                </button>
+              </header>
+              <p class="catalog-card__description">{{ exercise.description }}</p>
+            </div>
+          </article>
+        }
+      </div>
+    }
+  </aside>
+</section>
+
+<app-confirm-action-dialog
+  [(visible)]="confirmActionVisible"
+  [titleKey]="confirmDialogTitleKey()"
+  [messageKey]="confirmDialogMessageKey()"
+  [messageParams]="{ patient: patient()?.fullName ?? '', plan: form.controls.name.value || '' }"
+  [confirmLabelKey]="confirmDialogActionLabelKey()"
+  [tone]="confirmDialogTone()"
+  [iconClass]="confirmDialogIconClass()"
+  [pending]="isRunningTransition()"
+  (confirmed)="onConfirmPlanAction()"
+  (closed)="onCloseConfirmAction()"
+/>

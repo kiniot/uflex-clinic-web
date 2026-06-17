@@ -1,0 +1,114 @@
+<div class="physios-table__scroll">
+  <table class="physios-table">
+    <thead>
+      <tr>
+        <th>{{ 'organization.physiotherapists.columns.name' | translate }}</th>
+        <th>{{ 'organization.physiotherapists.columns.specialty' | translate }}</th>
+        <th>{{ 'organization.physiotherapists.columns.contact' | translate }}</th>
+        <th>{{ 'organization.physiotherapists.columns.license' | translate }}</th>
+        <th>{{ 'organization.physiotherapists.columns.experience' | translate }}</th>
+        <th>{{ 'organization.physiotherapists.columns.status' | translate }}</th>
+        <th class="physios-table__actions-col">
+          {{ 'organization.physiotherapists.columns.actions' | translate }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (physiotherapist of physiotherapists(); track physiotherapist.id) {
+        <tr class="physios-table__row" (click)="onRowOpen(physiotherapist)">
+          <td>
+            <div class="physios-table__person">
+              <p-avatar
+                [label]="initialsFor(physiotherapist.fullName)"
+                shape="circle"
+                size="normal"
+                styleClass="physios-table__avatar"
+              />
+              <div class="physios-table__person-text">
+                <span class="physios-table__name">{{ physiotherapist.fullName }}</span>
+                <span class="physios-table__email">{{ physiotherapist.email }}</span>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="physios-table__specialty">{{
+              'organization.physiotherapists.specialties.' + physiotherapist.specialty | translate
+            }}</span>
+          </td>
+          <td class="physios-table__contact">
+            {{ physiotherapist.countryCode }} {{ physiotherapist.phoneNumber }}
+          </td>
+          <td class="physios-table__license">{{ physiotherapist.licenseNumber }}</td>
+          <td class="physios-table__experience">
+            {{
+              'organization.physiotherapists.experienceValue'
+                | translate: { years: physiotherapist.yearsOfExperience }
+            }}
+          </td>
+          <td>
+            <span
+              class="physios-table__status physios-table__status--{{
+                physiotherapist.status.toLowerCase()
+              }}"
+            >
+              <span class="physios-table__dot" aria-hidden="true"></span>
+              {{ 'organization.physiotherapists.status.' + physiotherapist.status | translate }}
+            </span>
+          </td>
+          <td class="physios-table__actions-col">
+            <div class="physios-table__actions">
+              <button
+                pButton
+                type="button"
+                severity="secondary"
+                [outlined]="true"
+                class="physios-table__action-btn"
+                [icon]="'pi pi-eye'"
+                [pTooltip]="'organization.physiotherapists.actions.viewDetails' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.physiotherapists.actions.viewDetails' | translate"
+                (click)="onRowOpen(physiotherapist); $event.stopPropagation()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                severity="primary"
+                [outlined]="true"
+                class="physios-table__action-btn"
+                [icon]="'pi pi-pen-to-square'"
+                [pTooltip]="'organization.physiotherapists.actions.edit' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.physiotherapists.actions.edit' | translate"
+                (click)="onEdit(physiotherapist); $event.stopPropagation()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                [severity]="statusActionSeverity(physiotherapist)"
+                [outlined]="true"
+                class="physios-table__action-btn"
+                [icon]="statusActionIcon(physiotherapist)"
+                [pTooltip]="statusActionKey(physiotherapist) | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="statusActionKey(physiotherapist) | translate"
+                (click)="onToggleStatus(physiotherapist); $event.stopPropagation()"
+              ></button>
+              <button
+                pButton
+                type="button"
+                severity="danger"
+                [outlined]="true"
+                class="physios-table__action-btn"
+                [icon]="'pi pi-trash'"
+                [pTooltip]="'organization.physiotherapists.actions.delete' | translate"
+                tooltipPosition="top"
+                [attr.aria-label]="'organization.physiotherapists.actions.delete' | translate"
+                (click)="onDelete(physiotherapist); $event.stopPropagation()"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

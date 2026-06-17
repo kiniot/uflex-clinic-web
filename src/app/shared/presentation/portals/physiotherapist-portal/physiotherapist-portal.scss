@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -11,32 +13,17 @@
 .portal__role-pill {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px;
-  border: 1px solid var(--p-surface-200);
+  min-height: 36px;
+  padding: 0 14px;
   border-radius: 999px;
-  background: var(--p-surface-0);
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
   font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--p-text-color);
-  cursor: pointer;
-  transition: background-color 120ms ease, border-color 120ms ease;
-}
-
-.portal__role-pill i {
-  font-size: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--p-primary-color);
-}
-
-.portal__role-pill:hover {
-  background: var(--p-surface-50);
-  border-color: var(--p-surface-300);
-}
-
-:host-context(.app-dark) .portal__role-pill {
-  background: var(--p-surface-100);
-  border-color: var(--p-surface-300);
+  @include theme.surface;
 }
 
 .portal__icon-btn {
@@ -51,6 +38,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  @include theme.surface;
 }
 
 .portal__icon-btn:hover {
@@ -60,17 +48,6 @@
 
 :host-context(.app-dark) .portal__icon-btn:hover {
   background: var(--p-surface-200);
-}
-
-.portal__icon-dot {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--p-red-500);
-  border: 2px solid var(--p-surface-0);
 }
 
 .portal__profile {
@@ -108,4 +85,5 @@
   color: var(--p-primary-color);
   font-weight: 600;
   font-size: 12px;
+  @include theme.surface;
 }

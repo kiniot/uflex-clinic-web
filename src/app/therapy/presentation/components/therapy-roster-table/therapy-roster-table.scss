@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host { display: block; }
 
 .roster__scroll { overflow-x: auto; }
@@ -23,6 +25,7 @@
   letter-spacing: 0.04em;
   color: var(--p-text-muted-color);
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .roster thead th {
@@ -31,7 +34,7 @@
 
 .roster__row {
   border-bottom: 1px solid var(--p-surface-100);
-  transition: background-color 120ms ease;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .roster__row {
@@ -58,6 +61,7 @@
   background: var(--p-surface-200);
   color: var(--p-text-muted-color);
   font-weight: 600;
+  @include theme.surface;
 }
 
 .roster__profile-text {
@@ -161,6 +165,7 @@
   color: var(--p-primary-color);
   cursor: pointer;
   border-radius: 8px;
+  @include theme.surface;
 }
 
 .roster__review:hover {

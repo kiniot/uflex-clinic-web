@@ -1,3 +1,5 @@
+@use '../../../../../styles/theme-transition' as theme;
+
 :host {
   display: block;
 }
@@ -7,6 +9,7 @@
   border: 1px solid var(--p-surface-200);
   border-radius: 12px;
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .fleet {
@@ -20,6 +23,7 @@
   justify-content: space-between;
   padding: 16px 20px;
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.border;
 }
 
 :host-context(.app-dark) .fleet__header {
@@ -34,22 +38,30 @@
   margin: 0;
 }
 
-.fleet__filter-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  border: 1px solid var(--p-surface-200);
-  background: var(--p-surface-0);
-  color: var(--p-text-muted-color);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.fleet__filters {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--p-surface-200);
+  @include theme.border;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 }
 
-.fleet__filter-btn:hover {
-  background: var(--p-surface-100);
-  color: var(--p-text-color);
+:host-context(.app-dark) .fleet__filters {
+  border-bottom-color: var(--p-surface-300);
+}
+
+:host ::ng-deep .fleet__filter-select,
+:host ::ng-deep .fleet__filter-select .p-select {
+  width: 100%;
+  min-height: 40px;
+  border-radius: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
 }
 
 .fleet__scroll {
@@ -79,6 +91,7 @@
   color: var(--p-text-muted-color);
   background: var(--p-surface-50);
   border-bottom: 1px solid var(--p-surface-200);
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .fleet__table thead th {
@@ -88,6 +101,8 @@
 
 .fleet__table tbody tr {
   border-bottom: 1px solid var(--p-surface-100);
+  cursor: pointer;
+  @include theme.border;
 }
 
 :host-context(.app-dark) .fleet__table tbody tr {
@@ -111,17 +126,24 @@
   font-weight: 600;
 }
 
+.fleet__kit-id span,
+.fleet__kit-meta {
+  display: block;
+}
+
+.fleet__kit-meta {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+}
+
 .fleet__muted {
   color: var(--p-text-muted-color);
 }
 
 .fleet__firmware {
   color: var(--p-text-muted-color);
-}
-
-.fleet__actions-col {
-  text-align: right;
-  width: 60px;
 }
 
 /* Battery */
@@ -137,6 +159,7 @@
   border-radius: 999px;
   background: var(--p-surface-200);
   overflow: hidden;
+  @include theme.surface;
 }
 
 :host-context(.app-dark) .fleet-battery__bar {
@@ -149,9 +172,15 @@
   transition: width 200ms ease;
 }
 
-.fleet-battery--high { background: #34c79b; }
-.fleet-battery--medium { background: #1f3a4d; }
-.fleet-battery--low { background: #d9534f; }
+.fleet-battery--high {
+  background: #34c79b;
+}
+.fleet-battery--medium {
+  background: #1f3a4d;
+}
+.fleet-battery--low {
+  background: #d9534f;
+}
 
 .fleet-battery__label {
   font-weight: 500;
@@ -159,13 +188,56 @@
   min-width: 36px;
 }
 
-/* Bluetooth */
-.fleet__bt {
-  font-size: 16px;
+/* Connectivity */
+.fleet__online-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
 }
 
-.fleet__bt--on { color: var(--p-primary-color); }
-.fleet__bt--off { color: var(--p-text-muted-color); opacity: 0.5; }
+.fleet__online-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.fleet__online-indicator--online {
+  background: rgba(52, 199, 155, 0.16);
+  color: #16785a;
+}
+.fleet__online-indicator--online .fleet__online-dot {
+  background: #34c79b;
+}
+
+.fleet__online-indicator--offline {
+  background: rgba(217, 83, 79, 0.16);
+  color: #b6322f;
+}
+.fleet__online-indicator--offline .fleet__online-dot {
+  background: #d9534f;
+}
+
+:host-context(.app-dark) .fleet__online-indicator--online {
+  color: #34c79b;
+}
+:host-context(.app-dark) .fleet__online-indicator--offline {
+  color: #ff8a87;
+}
+
+/* Empty state */
+.fleet__empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--p-text-muted-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+}
 
 /* Calibration */
 .fleet__cal {
@@ -175,11 +247,19 @@
   font-weight: 500;
 }
 
-.fleet__cal i { font-size: 13px; }
+.fleet__cal i {
+  font-size: 13px;
+}
 
-.fleet__cal--valid { color: #1c7e5d; }
-.fleet__cal--expired { color: #c73a3a; }
-.fleet__cal--pending { color: var(--p-text-muted-color); }
+.fleet__cal--valid {
+  color: #1c7e5d;
+}
+.fleet__cal--expired {
+  color: #c73a3a;
+}
+.fleet__cal--pending {
+  color: var(--p-text-muted-color);
+}
 
 /* Status pill */
 .fleet__status {
@@ -190,6 +270,7 @@
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  @include theme.surface;
 }
 
 .fleet__status--online {
@@ -207,20 +288,44 @@
   color: #b6322f;
 }
 
-.fleet__row-action {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  border: 0;
-  background: transparent;
-  color: var(--p-text-muted-color);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.fleet__status--AVAILABLE {
+  background: rgba(52, 199, 155, 0.18);
+  color: #16785a;
 }
 
-.fleet__row-action:hover {
-  background: var(--p-surface-100);
-  color: var(--p-text-color);
+.fleet__status--ASSIGNED {
+  background: rgba(7, 77, 97, 0.15);
+  color: #074d61;
+}
+
+.fleet__status--IN_MAINTENANCE {
+  background: rgba(255, 173, 51, 0.18);
+  color: #b38600;
+}
+
+.fleet__status--RETIRED {
+  background: var(--p-surface-200);
+  color: var(--p-text-muted-color);
+}
+
+/* Action buttons */
+.fleet__actions-col {
+  width: 120px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.fleet__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+:host ::ng-deep .fleet__action-btn,
+:host ::ng-deep .fleet__action-btn .p-button {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 10px;
 }

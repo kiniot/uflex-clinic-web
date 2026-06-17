@@ -1,5 +1,14 @@
 import { BaseResource, BaseResponse } from '../../shared/infrastructure/base-response';
 
+export interface ClinicAddressResource {
+  countryCode: string;
+  region: string;
+  city: string;
+  addressLine1: string;
+  addressLine2?: string | null;
+  postalCode?: string | null;
+}
+
 /**
  * Resource returned after a successful clinic creation.
  */
@@ -11,8 +20,7 @@ export interface ClinicResource extends BaseResource {
   email: string;
   countryCode: string;
   phoneNumber: string;
-  createdAt: string;
-  updatedAt: string;
+  address: ClinicAddressResource;
 }
 
 /**
@@ -26,6 +34,5 @@ export interface CreateClinicResponse extends BaseResponse {
   email: string;
   countryCode: string;
   phoneNumber: string;
-  createdAt: string;
-  updatedAt: string;
+  address: ClinicAddressResource;
 }
