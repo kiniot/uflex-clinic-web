@@ -1,0 +1,209 @@
+@use '../shared/therapy-dashboard.shared';
+
+.operations-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.operations-stepper__track {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.operations-stepper__step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.operations-stepper__step:not(:last-child)::after {
+  content: '';
+  flex: 1 1 auto;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--p-surface-200);
+}
+
+:host-context(.app-dark) .operations-stepper__step:not(:last-child)::after {
+  background: var(--p-surface-300);
+}
+
+.operations-stepper__step--active:not(:last-child)::after,
+.operations-stepper__step--complete:not(:last-child)::after {
+  background: var(--p-primary-color);
+}
+
+.operations-stepper__marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  border: 2px solid var(--p-surface-300);
+  background: var(--p-surface-0);
+  color: var(--p-text-muted-color);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+:host-context(.app-dark) .operations-stepper__marker {
+  background: var(--p-surface-200);
+  border-color: var(--p-surface-300);
+}
+
+.operations-stepper__step--active .operations-stepper__marker {
+  border-color: var(--p-primary-color);
+  color: var(--p-primary-color);
+  background: color-mix(in srgb, var(--p-primary-color) 12%, var(--p-surface-0));
+}
+
+.operations-stepper__step--complete .operations-stepper__marker {
+  border-color: var(--p-primary-color);
+  background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+.operations-stepper__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.operations-stepper__step--active .operations-stepper__label {
+  color: var(--p-text-color);
+  font-weight: 600;
+}
+
+.operations-stepper__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.operations-stepper__panel h3 {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  color: var(--p-text-color);
+}
+
+.operations-stepper__panel p,
+.operations-stepper__cancel label {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  color: var(--p-text-muted-color);
+}
+
+.operations-stepper__form,
+.operations-stepper__cancel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.operations-stepper__checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter', sans-serif;
+  color: var(--p-text-color);
+}
+
+.operations-stepper__checkbox input {
+  width: 16px;
+  height: 16px;
+}
+
+.operations-stepper__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.operations-stepper__cancel textarea {
+  width: 100%;
+  min-height: 96px;
+  border-radius: 10px;
+  border: 1px solid var(--p-surface-300);
+  background: var(--p-surface-0);
+  color: var(--p-text-color);
+  padding: 10px 12px;
+  font-family: 'Inter', sans-serif;
+  resize: vertical;
+}
+
+:host-context(.app-dark) .operations-stepper__cancel textarea {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+  color: var(--p-surface-0);
+}
+
+.operations-date-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 260px;
+}
+
+.operations-date-filter__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+.operations-date-filter__controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.operations-date-filter__input {
+  width: 100%;
+  min-height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--p-surface-300);
+  background: var(--p-surface-0);
+  color: var(--p-text-color);
+  padding: 0 12px;
+  font-family: 'Inter', sans-serif;
+}
+
+:host-context(.app-dark) .operations-date-filter__input {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+  color: var(--p-surface-0);
+}
+
+@media (max-width: 720px) {
+  .operations-stepper__track {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .operations-stepper__step:not(:last-child)::after {
+    display: none;
+  }
+
+  .operations-date-filter {
+    min-width: 100%;
+  }
+
+  .operations-date-filter__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
