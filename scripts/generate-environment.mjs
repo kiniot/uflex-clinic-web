@@ -150,6 +150,10 @@ function environmentFile() {
       'NG_APP_PLATFORM_PROVIDER_TREATMENT_PLANS_ENDPOINT_PATH',
       '/treatment-plans',
     ),
+    platformProviderTherapySessionsEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_THERAPY_SESSIONS_ENDPOINT_PATH',
+      '/therapy-sessions',
+    ),
     platformProviderExercisesEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_EXERCISES_ENDPOINT_PATH',
       '/exercises',
