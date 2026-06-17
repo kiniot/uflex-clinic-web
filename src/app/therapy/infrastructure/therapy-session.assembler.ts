@@ -56,6 +56,8 @@ export class TherapySessionAssembler {
       patientId: response.patientId,
       treatmentPlanId: response.treatmentPlanId,
       iotDeviceId: response.iotDeviceId,
+      snapshotDeviceId: response.snapshotDeviceId ?? null,
+      snapshotSensorsPlaced: response.snapshotSensorsPlaced ?? null,
       status: response.status ?? null,
       painLevel: response.painLevel ?? null,
       requiresClinicalReview: response.requiresClinicalReview ?? null,
@@ -85,6 +87,7 @@ export class TherapySessionAssembler {
     return {
       patientId: response.patientId,
       date: response.date,
+      resolutionStatus: response.resolutionStatus ?? null,
       routineId: response.routineId ?? null,
       totalSeries: response.totalSeries ?? 0,
       estimatedDurationMinutes: response.estimatedDurationMinutes ?? 0,
@@ -121,6 +124,8 @@ export class TherapySessionAssembler {
       sessionId: response.sessionId,
       status: response.status ?? null,
       currentSerieId: response.currentSerieId ?? null,
+      completedSeries: response.completedSeries ?? null,
+      totalSeries: response.totalSeries ?? null,
       painLevel: response.painLevel ?? null,
       requiresClinicalReview: response.requiresClinicalReview ?? null,
       seriesProgress: (response.seriesProgress ?? []).map((serieProgress) =>

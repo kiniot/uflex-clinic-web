@@ -1,11 +1,17 @@
 import { BaseResponse } from '../../shared/infrastructure/base-response';
-import { TherapySerieStatus, TherapySessionStatus } from '../domain/model/therapy-session.types';
+import {
+  DailyScheduleResolutionStatus,
+  TherapySerieStatus,
+  TherapySessionStatus,
+} from '../domain/model/therapy-session.types';
 
 export interface TherapySessionResource {
   id: string;
   patientId: string;
   treatmentPlanId: string;
   iotDeviceId: string;
+  snapshotDeviceId: string | null;
+  snapshotSensorsPlaced: boolean | null;
   status: TherapySessionStatus | null;
   painLevel: number | null;
   requiresClinicalReview: boolean | null;
@@ -18,6 +24,8 @@ export interface TherapySessionResponse extends BaseResponse {
   patientId: string;
   treatmentPlanId: string;
   iotDeviceId: string;
+  snapshotDeviceId: string | null;
+  snapshotSensorsPlaced: boolean | null;
   status: TherapySessionStatus | null;
   painLevel: number | null;
   requiresClinicalReview: boolean | null;
@@ -58,6 +66,7 @@ export interface SessionSummaryResponse extends BaseResponse {
 export interface DailyScheduleResource {
   patientId: string;
   date: string;
+  resolutionStatus: DailyScheduleResolutionStatus | null;
   routineId: string | null;
   totalSeries: number | null;
   estimatedDurationMinutes: number | null;
@@ -66,6 +75,7 @@ export interface DailyScheduleResource {
 export interface DailyScheduleResponse extends BaseResponse {
   patientId: string;
   date: string;
+  resolutionStatus: DailyScheduleResolutionStatus | null;
   routineId: string | null;
   totalSeries: number | null;
   estimatedDurationMinutes: number | null;
@@ -113,6 +123,8 @@ export interface SessionProgressResource {
   sessionId: string;
   status: TherapySessionStatus | null;
   currentSerieId: string | null;
+  completedSeries: number | null;
+  totalSeries: number | null;
   painLevel: number | null;
   requiresClinicalReview: boolean | null;
   seriesProgress: SerieProgressResource[];
@@ -122,6 +134,8 @@ export interface SessionProgressResponse extends BaseResponse {
   sessionId: string;
   status: TherapySessionStatus | null;
   currentSerieId: string | null;
+  completedSeries: number | null;
+  totalSeries: number | null;
   painLevel: number | null;
   requiresClinicalReview: boolean | null;
   seriesProgress: SerieProgressResponse[] | null;
