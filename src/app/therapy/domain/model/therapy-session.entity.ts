@@ -6,6 +6,8 @@ export class TherapySession implements BaseEntity {
   private _patientId: string;
   private _treatmentPlanId: string;
   private _iotDeviceId: string;
+  private _snapshotDeviceId: string | null;
+  private _snapshotSensorsPlaced: boolean | null;
   private _status: TherapySessionStatus | null;
   private _painLevel: number | null;
   private _requiresClinicalReview: boolean | null;
@@ -17,6 +19,8 @@ export class TherapySession implements BaseEntity {
     patientId: string;
     treatmentPlanId: string;
     iotDeviceId: string;
+    snapshotDeviceId?: string | null;
+    snapshotSensorsPlaced?: boolean | null;
     status?: TherapySessionStatus | null;
     painLevel?: number | null;
     requiresClinicalReview?: boolean | null;
@@ -27,6 +31,8 @@ export class TherapySession implements BaseEntity {
     this._patientId = data.patientId;
     this._treatmentPlanId = data.treatmentPlanId;
     this._iotDeviceId = data.iotDeviceId;
+    this._snapshotDeviceId = data.snapshotDeviceId ?? null;
+    this._snapshotSensorsPlaced = data.snapshotSensorsPlaced ?? null;
     this._status = data.status ?? null;
     this._painLevel = data.painLevel ?? null;
     this._requiresClinicalReview = data.requiresClinicalReview ?? null;
@@ -64,6 +70,22 @@ export class TherapySession implements BaseEntity {
 
   set iotDeviceId(value: string) {
     this._iotDeviceId = value;
+  }
+
+  get snapshotDeviceId(): string | null {
+    return this._snapshotDeviceId;
+  }
+
+  set snapshotDeviceId(value: string | null) {
+    this._snapshotDeviceId = value;
+  }
+
+  get snapshotSensorsPlaced(): boolean | null {
+    return this._snapshotSensorsPlaced;
+  }
+
+  set snapshotSensorsPlaced(value: boolean | null) {
+    this._snapshotSensorsPlaced = value;
   }
 
   get status(): TherapySessionStatus | null {
