@@ -1,6 +1,6 @@
 {
   "name": "uflex-clinic-web",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "prestart": "node scripts/generate-environment.mjs",
