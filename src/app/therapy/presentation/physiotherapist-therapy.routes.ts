@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
-const therapyRoster = () =>
-  import('./views/therapy-roster/therapy-roster').then((m) => m.TherapyRoster);
+const therapyOperations = () =>
+  import('./views/therapy-operations/therapy-operations').then((m) => m.TherapyOperations);
 
 /**
  * Therapy routes for the physiotherapist role. The default view is the
@@ -9,5 +9,5 @@ const therapyRoster = () =>
  * admin's exercise catalog is exposed by {@link therapyRoutes} instead.
  */
 export const physiotherapistTherapyRoutes: Routes = [
-  { path: '', loadComponent: therapyRoster, data: { roleContext: 'physiotherapist' } },
+  { path: '', loadComponent: therapyOperations },
 ];
