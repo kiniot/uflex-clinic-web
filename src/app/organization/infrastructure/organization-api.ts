@@ -5,6 +5,7 @@ import { BaseApi } from '../../shared/infrastructure/base-api';
 import { AssignPatientCommand } from '../domain/model/assign-patient.command';
 import { CreateClinicCommand } from '../domain/model/create-clinic.command';
 import { RegisterPatientCommand } from '../domain/model/register-patient.command';
+import { RegisterClinicAdminCommand } from '../domain/model/register-clinic-admin.command';
 import { RegisterPhysiotherapistCommand } from '../domain/model/register-physiotherapist.command';
 import { UpdatePatientByClinicAdminCommand } from '../domain/model/update-patient-by-clinic-admin.command';
 import { UpdatePhysiotherapistCommand } from '../domain/model/update-physiotherapist.command';
@@ -35,6 +36,7 @@ import { PhysiotherapistProfileResource } from './physiotherapist-profile-respon
 import { PhysiotherapistsApiEndpoint } from './physiotherapists-endpoint';
 import { RegisterPatientApiEndpoint } from './register-patient-endpoint';
 import { RegisterPatientByClinicAdminApiEndpoint } from './register-patient-by-clinic-admin-endpoint';
+import { RegisterClinicAdminApiEndpoint } from './register-clinic-admin-endpoint';
 import { RegisterPhysiotherapistApiEndpoint } from './register-physiotherapist-endpoint';
 import { ReactivatePhysiotherapistApiEndpoint } from './reactivate-physiotherapist-endpoint';
 import { UpdatePatientByClinicAdminApiEndpoint } from './update-patient-by-clinic-admin-endpoint';
@@ -53,6 +55,7 @@ export class OrganizationApi extends BaseApi {
   private readonly createClinicEndpoint: CreateClinicApiEndpoint;
   private readonly currentClinicEndpoint: CurrentClinicApiEndpoint;
   private readonly currentClinicAdminEndpoint: CurrentClinicAdminApiEndpoint;
+  private readonly registerClinicAdminEndpoint: RegisterClinicAdminApiEndpoint;
   private readonly currentPhysiotherapistEndpoint: CurrentPhysiotherapistApiEndpoint;
   private readonly physiotherapistsEndpoint: PhysiotherapistsApiEndpoint;
   private readonly physiotherapistByIdEndpoint: PhysiotherapistByIdApiEndpoint;
@@ -85,6 +88,10 @@ export class OrganizationApi extends BaseApi {
     this.createClinicEndpoint = new CreateClinicApiEndpoint(http, createClinicAssembler);
     this.currentClinicEndpoint = new CurrentClinicApiEndpoint(http, clinicProfileAssembler);
     this.currentClinicAdminEndpoint = new CurrentClinicAdminApiEndpoint(
+      http,
+      clinicAdminProfileAssembler,
+    );
+    this.registerClinicAdminEndpoint = new RegisterClinicAdminApiEndpoint(
       http,
       clinicAdminProfileAssembler,
     );
@@ -147,6 +154,10 @@ export class OrganizationApi extends BaseApi {
 
   getCurrentClinicAdmin(): Observable<ClinicAdminProfileResource> {
     return this.currentClinicAdminEndpoint.getCurrentClinicAdmin();
+  }
+
+  registerClinicAdmin(command: RegisterClinicAdminCommand): Observable<ClinicAdminProfileResource> {
+    return this.registerClinicAdminEndpoint.registerClinicAdmin(command);
   }
 
   getClinicPhysiotherapists(): Observable<PhysiotherapistProfileResource[]> {

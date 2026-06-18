@@ -30,3 +30,8 @@
 </app-admin-shell>
 
 <app-change-password-dialog [(visible)]="changePasswordVisible" />
+<app-clinic-admin-profile-prompt-dialog
+  [(visible)]="profilePromptVisible"
+  (complete)="openProfileSetup()"
+  (postpone)="postponeProfileSetup()"
+/>

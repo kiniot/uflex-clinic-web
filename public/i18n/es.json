@@ -761,6 +761,127 @@
         "emptyBody": "Este fisioterapeuta no tiene pacientes asignados por el momento."
       }
     },
+    "profile": {
+      "badge": {
+        "pending": "Pendiente"
+      },
+      "prompt": {
+        "title": "Completa tu perfil",
+        "body": "Agrega tus datos personales y de contacto para terminar de configurar tu perfil de administrador de clínica.",
+        "complete": "Completar ahora",
+        "defer": "Lo haré después"
+      },
+      "empty": {
+        "label": "Perfil de admin",
+        "title": "Aún no has completado tu perfil",
+        "body": "Completa tus datos personales y de contacto para que tu perfil administrativo quede listo dentro del portal.",
+        "cta": "Completar perfil"
+      },
+      "breadcrumb": {
+        "organization": "Organización",
+        "current": "Perfil de admin"
+      },
+      "title": "Perfil del administrador de clínica",
+      "subtitle": "Revisa la información de perfil vinculada al administrador que actualmente opera esta clínica.",
+      "hero": {
+        "eyebrow": "Estado del perfil",
+        "pendingTitle": "Completa tu perfil de administrador",
+        "pendingBody": "Una vez que registres esta información, el portal te reconocerá como el contacto administrativo de esta clínica.",
+        "readyBody": "Tu perfil de administrador está activo y alineado con el workspace actual de la clínica.",
+        "pendingMeta": "Perfil pendiente"
+      },
+      "summary": {
+        "eyebrow": "Resumen de completitud",
+        "title": "Lo que habilita este perfil",
+        "pending": "Configuración pendiente",
+        "ready": "Perfil completado"
+      },
+      "completion": {
+        "identity": "Datos de identidad personal usados por el registro de la clínica.",
+        "contact": "Información de contacto principal para seguimiento administrativo.",
+        "clinic": "Conexión entre tu cuenta IAM y la clínica actual."
+      },
+      "cards": {
+        "email": {
+          "title": "Correo IAM",
+          "note": "Este correo proviene de tu cuenta autenticada."
+        },
+        "status": {
+          "title": "Estado del perfil",
+          "ready": "Completado",
+          "pending": "Pendiente",
+          "note": "Este estado se actualiza automáticamente cuando se crea tu perfil."
+        },
+        "clinic": {
+          "title": "Clínica actual",
+          "note": "El perfil se creará para la clínica actualmente vinculada a tu sesión."
+        }
+      },
+      "form": {
+        "eyebrow": "Datos del administrador",
+        "pendingTitle": "Completa los datos de tu perfil",
+        "pendingBody": "Estos datos son necesarios para crear el perfil de administrador de clínica de tu sesión actual.",
+        "completedTitle": "Datos de perfil registrados",
+        "completedBody": "Estos son los datos actualmente almacenados para tu perfil de administrador de clínica.",
+        "firstName": "Nombres",
+        "lastName": "Apellidos",
+        "dni": "DNI",
+        "birthDate": "Fecha de nacimiento",
+        "gender": "Género",
+        "email": "Correo",
+        "emailHint": "Este correo se hereda de IAM y no puede cambiarse aquí.",
+        "countryCode": "Código de país",
+        "phoneNumber": "Número de teléfono",
+        "genderOptions": {
+          "MALE": "Masculino",
+          "FEMALE": "Femenino",
+          "OTHER": "Otro"
+        }
+      },
+      "side": {
+        "eyebrow": "Guía de configuración",
+        "title": "Por qué completar este perfil",
+        "body": "Esta vista centraliza la identidad administrativa que aparecerá en todo el portal clínico y en futuros registros operativos.",
+        "items": {
+          "identityTitle": "Identidad",
+          "identityBody": "Registra los datos personales con los que la clínica identifica a su administrador.",
+          "contactTitle": "Contacto",
+          "contactBody": "Mantén un teléfono y código de país listos para el seguimiento operativo.",
+          "portalTitle": "Continuidad del portal",
+          "portalBody": "Una vez completado, el portal dejará de mostrar recordatorios pendientes sobre tu perfil."
+        }
+      },
+      "loading": {
+        "eyebrow": "Cargando perfil",
+        "title": "Estamos verificando el perfil actual del administrador",
+        "body": "Estamos sincronizando el perfil del administrador vinculado a esta clínica."
+      },
+      "error": {
+        "eyebrow": "Perfil no disponible",
+        "title": "No pudimos cargar el perfil del administrador",
+        "body": "Intenta nuevamente para verificar si el perfil ya existe o todavía necesita completarse."
+      },
+      "actions": {
+        "backToOrganization": "Volver a organización",
+        "retry": "Reintentar",
+        "save": "Guardar perfil"
+      },
+      "validation": {
+        "firstNameRequired": "Los nombres son obligatorios.",
+        "lastNameRequired": "Los apellidos son obligatorios.",
+        "dniInvalid": "El DNI debe contener exactamente 8 dígitos.",
+        "birthDateRequired": "La fecha de nacimiento es obligatoria.",
+        "phoneNumberRequired": "El número de teléfono es obligatorio."
+      },
+      "notifications": {
+        "createSuccessSummary": "Perfil creado",
+        "createSuccessDetail": "Tu perfil de administrador de clínica ya está completo.",
+        "createErrorSummary": "No se pudo crear el perfil",
+        "createErrorDetail": "Revisa la información e inténtalo nuevamente.",
+        "loadErrorSummary": "No se pudo cargar el perfil",
+        "loadErrorDetail": "Inténtalo nuevamente en un momento."
+      }
+    },
     "patientDetail": {
       "actions": {
         "back": "Volver"

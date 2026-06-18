@@ -119,6 +119,33 @@
   @include theme.surface;
 }
 
+.admin-shell__nav-label {
+  min-width: 0;
+}
+
+.admin-shell__nav-badge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-surface-300) 64%, transparent);
+  color: var(--p-text-muted-color);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  @include theme.surface;
+}
+
+.admin-shell__nav-badge--warning {
+  background: color-mix(in srgb, var(--p-amber-500) 18%, transparent);
+  color: color-mix(in srgb, var(--p-amber-500) 82%, var(--p-surface-950));
+}
+
 .admin-shell__nav-item:hover {
   background: var(--p-surface-200);
   color: var(--p-text-color);
@@ -130,6 +157,11 @@
 
 .admin-shell__nav-item--active {
   background: var(--p-primary-color);
+  color: var(--p-primary-contrast-color);
+}
+
+.admin-shell__nav-item--active .admin-shell__nav-badge {
+  background: color-mix(in srgb, var(--p-primary-contrast-color) 16%, transparent);
   color: var(--p-primary-contrast-color);
 }
 
