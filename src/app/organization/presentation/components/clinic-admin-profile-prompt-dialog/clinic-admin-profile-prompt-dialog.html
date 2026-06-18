@@ -1,0 +1,36 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+  [style]="{ width: '440px' }"
+  [header]="'organization.profile.prompt.title' | translate"
+>
+  <div class="profile-prompt">
+    <div class="profile-prompt__icon" aria-hidden="true">
+      <i class="pi pi-user-edit"></i>
+    </div>
+
+    <p class="profile-prompt__body">
+      {{ 'organization.profile.prompt.body' | translate }}
+    </p>
+
+    <div class="profile-prompt__actions">
+      <button
+        pButton
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [label]="'organization.profile.prompt.defer' | translate"
+        (click)="onPostpone()"
+      ></button>
+      <button
+        pButton
+        type="button"
+        [label]="'organization.profile.prompt.complete' | translate"
+        (click)="onComplete()"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

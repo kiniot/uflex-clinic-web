@@ -49,22 +49,37 @@
 
     <div class="org-hero__side">
       <article class="org-hero__admin-card">
-        <span class="org-hero__admin-label">{{ 'organization.hero.managedBy' | translate }}</span>
-        <strong class="org-hero__admin-name">{{
-          clinicAdmin()?.fullName ?? ('organization.detail.loading' | translate)
-        }}</strong>
-        <span class="org-hero__admin-contact">
-          <i class="pi pi-envelope" aria-hidden="true"></i>
-          {{ clinicAdmin()?.email ?? '—' }}
-        </span>
-        <span class="org-hero__admin-contact">
-          <i class="pi pi-phone" aria-hidden="true"></i>
-          {{ clinicAdmin()?.countryCode }} {{ clinicAdmin()?.phoneNumber }}
-        </span>
-        <span class="org-hero__admin-contact">
-          <i class="pi pi-id-card" aria-hidden="true"></i>
-          {{ 'organization.hero.dni' | translate }}: {{ clinicAdmin()?.dni ?? '—' }}
-        </span>
+        @if (isClinicAdminProfileMissing()) {
+          <span class="org-hero__admin-label">{{
+            'organization.profile.empty.label' | translate
+          }}</span>
+          <strong class="org-hero__admin-name">{{
+            'organization.profile.empty.title' | translate
+          }}</strong>
+          <p class="org-hero__admin-empty-body">
+            {{ 'organization.profile.empty.body' | translate }}
+          </p>
+          <button pButton type="button" (click)="onCompleteClinicAdminProfile()">
+            {{ 'organization.profile.empty.cta' | translate }}
+          </button>
+        } @else {
+          <span class="org-hero__admin-label">{{ 'organization.hero.managedBy' | translate }}</span>
+          <strong class="org-hero__admin-name">{{
+            clinicAdmin()?.fullName ?? ('organization.detail.loading' | translate)
+          }}</strong>
+          <span class="org-hero__admin-contact">
+            <i class="pi pi-envelope" aria-hidden="true"></i>
+            {{ clinicAdmin()?.email ?? '—' }}
+          </span>
+          <span class="org-hero__admin-contact">
+            <i class="pi pi-phone" aria-hidden="true"></i>
+            {{ clinicAdmin()?.countryCode }} {{ clinicAdmin()?.phoneNumber }}
+          </span>
+          <span class="org-hero__admin-contact">
+            <i class="pi pi-id-card" aria-hidden="true"></i>
+            {{ 'organization.hero.dni' | translate }}: {{ clinicAdmin()?.dni ?? '—' }}
+          </span>
+        }
       </article>
     </div>
   </header>

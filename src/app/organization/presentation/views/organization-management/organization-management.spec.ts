@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { OrganizationManagement } from './organization-management';
 import { OrganizationStore } from '../../../application/organization.store';
+import { By } from '@angular/platform-browser';
 
 describe('OrganizationManagement', () => {
   const loadCurrentClinicOnce = vi.fn().mockResolvedValue(null);
@@ -67,6 +68,7 @@ describe('OrganizationManagement', () => {
               countryCode: '+51',
               phoneNumber: '999888777',
             }).asReadonly(),
+            currentClinicAdminProfileStatus: signal('ready').asReadonly(),
             physiotherapists: signal([
               {
                 id: 'physio-1',
@@ -159,5 +161,86 @@ describe('OrganizationManagement', () => {
     } as never);
 
     expect(component['selectedPatientForAssignment']()?.id).toBe('patient-2');
+  });
+
+  it('shows the pending clinic admin state and navigates to profile', async () => {
+    TestBed.resetTestingModule();
+
+    await TestBed.configureTestingModule({
+      imports: [OrganizationManagement, TranslateModule.forRoot()],
+      providers: [
+        provideRouter([]),
+        MessageService,
+        {
+          provide: OrganizationStore,
+          useValue: {
+            currentClinic: signal({
+              id: 'clinic-1',
+              legalName: 'uFlex SAC',
+              commercialName: 'uFlex Clinic',
+              ruc: '20123456789',
+              email: 'clinic@uflex.com',
+              countryCode: '+51',
+              phoneNumber: '999888777',
+              address: {
+                countryCode: 'PE',
+                region: 'Lima',
+                city: 'Lima',
+                addressLine1: 'Av. Central 123',
+                addressLine2: null,
+                postalCode: null,
+              },
+            }).asReadonly(),
+            currentClinicAdmin: signal(null).asReadonly(),
+            currentClinicAdminProfileStatus: signal('missing').asReadonly(),
+            physiotherapists: signal([]).asReadonly(),
+            patients: signal([]).asReadonly(),
+            isLoadingCurrentClinic: signal(false).asReadonly(),
+            isLoadingCurrentClinicAdmin: signal(false).asReadonly(),
+            isLoadingPhysiotherapists: signal(false).asReadonly(),
+            isLoadingPatients: signal(false).asReadonly(),
+            isAssigningPatient: signal(false).asReadonly(),
+            isUpdatingPatient: signal(false).asReadonly(),
+            isDeletingPatient: signal(false).asReadonly(),
+            isUpdatingPhysiotherapist: signal(false).asReadonly(),
+            isSuspendingPhysiotherapist: signal(false).asReadonly(),
+            isReactivatingPhysiotherapist: signal(false).asReadonly(),
+            isDeletingPhysiotherapist: signal(false).asReadonly(),
+            loadCurrentClinicOnce,
+            loadCurrentClinicAdminOnce,
+            loadClinicPhysiotherapists,
+            loadClinicPatients,
+            assignPatient,
+            updatePatientAsClinicAdmin,
+            deletePatient,
+            updatePhysiotherapist,
+            suspendPhysiotherapist,
+            reactivatePhysiotherapist,
+            deletePhysiotherapist,
+          },
+        },
+      ],
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(OrganizationManagement);
+    const component = fixture.componentInstance;
+    const navigateSpy = vi.spyOn(component['router'], 'navigate').mockResolvedValue(true);
+
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('organization.profile.empty.title');
+
+    const button = fixture.debugElement
+      .queryAll(By.css('button'))
+      .find((debugElement) =>
+        String((debugElement.nativeElement as HTMLButtonElement).textContent).includes(
+          'organization.profile.empty.cta',
+        ),
+      );
+
+    expect(button).toBeTruthy();
+
+    button!.nativeElement.click();
+    expect(navigateSpy).toHaveBeenCalledWith(['/clinic-admin/profile']);
   });
 });

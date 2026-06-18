@@ -1,5 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { OrganizationStore } from './organization.store';
 import { OrganizationApi } from '../infrastructure/organization-api';
 import { AssignPatientCommand } from '../domain/model/assign-patient.command';
@@ -20,6 +21,8 @@ describe('OrganizationStore', () => {
   const getClinicPhysiotherapistByIdSpy = vi.fn();
   const getClinicPatientsSpy = vi.fn();
   const getPatientsByPhysiotherapistIdSpy = vi.fn();
+  const getCurrentClinicAdminSpy = vi.fn();
+  const registerClinicAdminSpy = vi.fn();
   const updatePatientByClinicAdminSpy = vi.fn();
   const updatePatientSpy = vi.fn().mockImplementation((id: string, command: UpdatePatientContactCommand) =>
     of({
@@ -129,6 +132,8 @@ describe('OrganizationStore', () => {
     getClinicPhysiotherapistByIdSpy.mockClear();
     getClinicPatientsSpy.mockClear();
     getPatientsByPhysiotherapistIdSpy.mockClear();
+    getCurrentClinicAdminSpy.mockClear();
+    registerClinicAdminSpy.mockClear();
     updatePatientByClinicAdminSpy.mockClear();
     updatePatientSpy.mockClear();
     deletePatientSpy.mockClear();
@@ -163,6 +168,34 @@ describe('OrganizationStore', () => {
     );
     getClinicPatientsSpy.mockImplementation(() =>
       of(clinicPatientsState.map((patient) => ({ ...patient }))),
+    );
+    getCurrentClinicAdminSpy.mockReturnValue(
+      of({
+        id: 'admin-1',
+        firstName: 'Salim',
+        lastName: 'Ramirez',
+        dni: '74839210',
+        birthDate: '1990-01-01',
+        gender: 'MALE',
+        email: 'salim@uflex.com',
+        countryCode: '+51',
+        phoneNumber: '999888777',
+        clinicId: 'clinic-1',
+      }),
+    );
+    registerClinicAdminSpy.mockImplementation((command) =>
+      of({
+        id: 'admin-1',
+        firstName: command.firstName,
+        lastName: command.lastName,
+        dni: command.dni,
+        birthDate: command.birthDate,
+        gender: command.gender,
+        email: 'salim@uflex.com',
+        countryCode: command.countryCode,
+        phoneNumber: command.phoneNumber,
+        clinicId: 'clinic-1',
+      }),
     );
     getPatientsByPhysiotherapistIdSpy.mockImplementation((physiotherapistId: string) =>
       of(
@@ -263,19 +296,8 @@ describe('OrganizationStore', () => {
                   postalCode: null,
                 },
               }),
-            getCurrentClinicAdmin: () =>
-              of({
-                id: 'admin-1',
-                firstName: 'Salim',
-                lastName: 'Ramirez',
-                dni: '74839210',
-                birthDate: '1990-01-01',
-                gender: 'MALE',
-                email: 'salim@uflex.com',
-                countryCode: '+51',
-                phoneNumber: '999888777',
-                clinicId: 'clinic-1',
-              }),
+            getCurrentClinicAdmin: getCurrentClinicAdminSpy,
+            registerClinicAdmin: registerClinicAdminSpy,
             getClinicPhysiotherapists: getClinicPhysiotherapistsSpy,
             getClinicPhysiotherapistById: getClinicPhysiotherapistByIdSpy,
             registerPhysiotherapistAsClinicAdmin: () => of(registeredPhysiotherapistResource),
@@ -330,6 +352,41 @@ describe('OrganizationStore', () => {
 
     expect(admin?.id).toBe('admin-1');
     expect(store.currentClinicAdmin()?.fullName).toBe('Salim Ramirez');
+    expect(store.currentClinicAdminProfileStatus()).toBe('ready');
+  });
+
+  it('treats a missing clinic admin profile as a non-fatal empty state', async () => {
+    getCurrentClinicAdminSpy.mockReturnValueOnce(
+      throwError(
+        () =>
+          new HttpErrorResponse({
+            status: 404,
+            error: { code: 'NOT_FOUND', status: 404 },
+          }),
+      ),
+    );
+
+    const admin = await store.loadCurrentClinicAdminOnce({ force: true });
+
+    expect(admin).toBeNull();
+    expect(store.currentClinicAdmin()).toBeNull();
+    expect(store.currentClinicAdminProfileStatus()).toBe('missing');
+  });
+
+  it('creates the clinic admin profile and syncs the ready state', async () => {
+    const admin = await store.registerClinicAdminProfile({
+      firstName: 'Salim',
+      lastName: 'Ramirez',
+      dni: '74839210',
+      birthDate: '1990-01-01',
+      gender: 'MALE',
+      countryCode: '+51',
+      phoneNumber: '999888777',
+    } as never);
+
+    expect(registerClinicAdminSpy).toHaveBeenCalled();
+    expect(admin.fullName).toBe('Salim Ramirez');
+    expect(store.currentClinicAdminProfileStatus()).toBe('ready');
   });
 
   it('loads clinic physiotherapists for the admin flow', async () => {
