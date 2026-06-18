@@ -11,6 +11,8 @@ export interface AdminNavItem {
   label: string;
   icon: string;
   route: string;
+  badgeLabel?: string;
+  badgeTone?: 'neutral' | 'warning';
 }
 
 /**

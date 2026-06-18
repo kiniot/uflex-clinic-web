@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -13,6 +13,8 @@ import { LanguageSwitcher } from '../../components/language-switcher/language-sw
 import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
 import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
+import { OrganizationStore } from '../../../../organization/application/organization.store';
+import { ClinicAdminProfilePromptDialog } from '../../../../organization/presentation/components/clinic-admin-profile-prompt-dialog/clinic-admin-profile-prompt-dialog';
 
 const ROLE_LABELS: Record<string, string> = {
   ROLE_CLINIC_ADMIN: 'Clinic Admin',
@@ -36,18 +38,24 @@ const ROLE_LABELS: Record<string, string> = {
     LanguageSwitcher,
     ThemeSwitcher,
     ChangePasswordDialog,
+    ClinicAdminProfilePromptDialog,
   ],
   templateUrl: './clinic-admin-portal.html',
   styleUrl: './clinic-admin-portal.scss',
 })
 export class ClinicAdminPortal {
+  private static readonly profilePromptStorageKey = 'clinicAdminProfilePromptDismissed';
+
   private router = inject(Router);
   private translate = inject(TranslateService);
   protected iamStore = inject(IamStore);
+  private readonly organizationStore = inject(OrganizationStore);
 
   protected changePasswordVisible = signal<boolean>(false);
+  protected profilePromptVisible = signal<boolean>(false);
 
   protected currentEmail = this.iamStore.currentEmail;
+  protected currentClinicAdminProfileStatus = this.organizationStore.currentClinicAdminProfileStatus;
   protected currentRoleLabel = computed(() => {
     const role = this.iamStore.currentEffectiveRole();
     if (!role) return '';
@@ -64,6 +72,7 @@ export class ClinicAdminPortal {
       'clinicAdmin.nav.organization',
       'clinicAdmin.nav.subscription',
       'clinicAdmin.nav.profile',
+      'organization.profile.badge.pending',
       'clinicAdmin.nav.support',
       'clinicAdmin.nav.logout',
       'clinicAdmin.topbar.searchPlaceholder',
@@ -108,6 +117,11 @@ export class ClinicAdminPortal {
       label: this.translations()['clinicAdmin.nav.profile'] ?? '',
       icon: 'pi-user',
       route: '/clinic-admin/profile',
+      badgeLabel:
+        this.currentClinicAdminProfileStatus() === 'missing'
+          ? (this.translations()['organization.profile.badge.pending'] ?? '')
+          : undefined,
+      badgeTone: this.currentClinicAdminProfileStatus() === 'missing' ? 'warning' : 'neutral',
     },
   ]);
 
@@ -134,7 +148,42 @@ export class ClinicAdminPortal {
     () => this.translations()['topbar.changePassword'] ?? 'Change password',
   );
 
+  constructor() {
+    effect(() => {
+      void this.organizationStore.loadCurrentClinicAdminOnce();
+    });
+
+    effect(() => {
+      const status = this.currentClinicAdminProfileStatus();
+      if (status !== 'missing') {
+        this.profilePromptVisible.set(false);
+        return;
+      }
+
+      if (sessionStorage.getItem(ClinicAdminPortal.profilePromptStorageKey) === 'true') {
+        return;
+      }
+
+      if (this.router.url.startsWith('/clinic-admin/profile')) {
+        return;
+      }
+
+      this.profilePromptVisible.set(true);
+    });
+  }
+
   protected openChangePassword() {
     this.changePasswordVisible.set(true);
+  }
+
+  protected async openProfileSetup() {
+    sessionStorage.setItem(ClinicAdminPortal.profilePromptStorageKey, 'true');
+    this.profilePromptVisible.set(false);
+    await this.router.navigate(['/clinic-admin/profile']);
+  }
+
+  protected postponeProfileSetup() {
+    sessionStorage.setItem(ClinicAdminPortal.profilePromptStorageKey, 'true');
+    this.profilePromptVisible.set(false);
   }
 }

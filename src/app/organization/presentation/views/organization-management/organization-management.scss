@@ -171,6 +171,13 @@
   color: var(--p-text-muted-color);
 }
 
+.org-hero__admin-empty-body {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--p-text-muted-color);
+}
+
 .org-metrics {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
