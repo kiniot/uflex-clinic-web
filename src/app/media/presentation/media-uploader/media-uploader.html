@@ -1,0 +1,35 @@
+<div
+  class="media-uploader"
+  [ngClass]="{ 'media-uploader--dragging': isDragging() }"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+>
+  <label class="media-uploader__dropzone">
+    <input
+      type="file"
+      class="media-uploader__input"
+      [accept]="accept()"
+      [multiple]="multiple()"
+      (change)="onFileInput($event)"
+    />
+    <span class="media-uploader__icon">⬆️</span>
+    <span class="media-uploader__title">Arrastra una imagen o video aquí</span>
+    <span class="media-uploader__hint">o haz clic para seleccionar un archivo</span>
+  </label>
+
+  @if (items().length > 0) {
+    <ul class="media-uploader__list">
+      @for (item of items(); track item.file.name + item.file.size) {
+        <li class="media-uploader__item" [ngClass]="'is-' + item.status">
+          <span class="media-uploader__filename">{{ item.file.name }}</span>
+          @switch (item.status) {
+            @case ('uploading') { <span class="media-uploader__state">Subiendo…</span> }
+            @case ('done') { <span class="media-uploader__state">✓ Listo</span> }
+            @case ('error') { <span class="media-uploader__state">✕ {{ item.error }}</span> }
+          }
+        </li>
+      }
+    </ul>
+  }
+</div>
