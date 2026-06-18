@@ -15,8 +15,10 @@ const subscriptionRoutes = () =>
   import('../../../../subscription/presentation/subscription.routes').then(
     (m) => m.subscriptionRoutes,
   );
-const profileRoutes = () =>
-  import('../../../../iam/presentation/profile.routes').then((m) => m.profileRoutes);
+const clinicAdminProfile = () =>
+  import('../../../../organization/presentation/views/clinic-admin-profile/clinic-admin-profile').then(
+    (m) => m.ClinicAdminProfile,
+  );
 
 /**
  * Clinic Admin portal routes. The portal shell wraps every child view and
@@ -34,7 +36,7 @@ export const clinicAdminPortalRoutes: Routes = [
       { path: 'device', loadChildren: deviceRoutes },
       { path: 'organization', loadChildren: organizationRoutes },
       { path: 'subscription', loadChildren: subscriptionRoutes },
-      { path: 'profile', loadChildren: profileRoutes },
+      { path: 'profile', loadComponent: clinicAdminProfile },
     ],
   },
 ];

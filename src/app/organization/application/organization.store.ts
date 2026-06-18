@@ -1,5 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { computed, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { isAppError } from '../../shared/domain/model/app-error';
 import { AssignPatientCommand } from '../domain/model/assign-patient.command';
 import { ClinicAdminProfile } from '../domain/model/clinic-admin-profile.entity';
 import { ClinicAddressValue } from '../domain/model/clinic-address.value';
@@ -7,6 +9,7 @@ import { ClinicProfile } from '../domain/model/clinic-profile.entity';
 import { Clinic } from '../domain/model/clinic.entity';
 import { CreateClinicCommand } from '../domain/model/create-clinic.command';
 import { Patient } from '../domain/model/patient.entity';
+import { RegisterClinicAdminCommand } from '../domain/model/register-clinic-admin.command';
 import { PhysiotherapistProfile } from '../domain/model/physiotherapist-profile.entity';
 import { RegisterPatientCommand } from '../domain/model/register-patient.command';
 import { RegisterPhysiotherapistCommand } from '../domain/model/register-physiotherapist.command';
@@ -21,6 +24,8 @@ import { ClinicResource } from '../infrastructure/create-clinic-response';
 import { PatientResource } from '../infrastructure/patient.response';
 import { PhysiotherapistProfileResource } from '../infrastructure/physiotherapist-profile-response';
 
+export type ClinicAdminProfileStatus = 'loading' | 'missing' | 'ready' | 'error';
+
 /**
  * Application-layer store for the Organization bounded context.
  * Supports both clinic-admin and physiotherapist flows while keeping
@@ -31,6 +36,7 @@ export class OrganizationStore {
   private readonly latestCreatedClinicSignal = signal<ClinicResource | null>(null);
   private readonly currentClinicSignal = signal<ClinicProfile | null>(null);
   private readonly currentClinicAdminSignal = signal<ClinicAdminProfile | null>(null);
+  private readonly currentClinicAdminProfileStatusSignal = signal<ClinicAdminProfileStatus>('loading');
   private readonly currentPhysiotherapistSignal = signal<PhysiotherapistProfile | null>(null);
   private readonly physiotherapistsSignal = signal<PhysiotherapistProfile[]>([]);
   private readonly patientsSignal = signal<Patient[]>([]);
@@ -47,6 +53,7 @@ export class OrganizationStore {
   private readonly loadingSelectedPatientSignal = signal(false);
   private readonly loadingPatientsByPhysiotherapistSignal = signal(false);
   private readonly registeringPhysiotherapistSignal = signal(false);
+  private readonly registeringClinicAdminSignal = signal(false);
   private readonly updatingPhysiotherapistSignal = signal(false);
   private readonly suspendingPhysiotherapistSignal = signal(false);
   private readonly reactivatingPhysiotherapistSignal = signal(false);
@@ -64,6 +71,7 @@ export class OrganizationStore {
   readonly latestCreatedClinic = this.latestCreatedClinicSignal.asReadonly();
   readonly currentClinic = this.currentClinicSignal.asReadonly();
   readonly currentClinicAdmin = this.currentClinicAdminSignal.asReadonly();
+  readonly currentClinicAdminProfileStatus = this.currentClinicAdminProfileStatusSignal.asReadonly();
   readonly currentPhysiotherapist = this.currentPhysiotherapistSignal.asReadonly();
   readonly physiotherapists = this.physiotherapistsSignal.asReadonly();
   readonly patients = this.patientsSignal.asReadonly();
@@ -73,6 +81,7 @@ export class OrganizationStore {
 
   readonly isLoadingCurrentClinic = this.loadingCurrentClinicSignal.asReadonly();
   readonly isLoadingCurrentClinicAdmin = this.loadingCurrentClinicAdminSignal.asReadonly();
+  readonly isRegisteringClinicAdmin = this.registeringClinicAdminSignal.asReadonly();
   readonly isLoadingPhysiotherapists = this.loadingPhysiotherapistsSignal.asReadonly();
   readonly isLoadingPatients = this.loadingPatientsSignal.asReadonly();
   readonly isLoadingSelectedPhysiotherapist =
@@ -194,14 +203,42 @@ export class OrganizationStore {
     }
 
     this.loadingCurrentClinicAdminSignal.set(true);
+    this.currentClinicAdminProfileStatusSignal.set('loading');
     try {
       const resource = await firstValueFrom(this.organizationApi.getCurrentClinicAdmin());
       const clinicAdmin = this.mapClinicAdmin(resource);
       this.currentClinicAdminSignal.set(clinicAdmin);
+      this.currentClinicAdminProfileStatusSignal.set('ready');
+      this.currentClinicAdminResolvedSignal.set(true);
+      return clinicAdmin;
+    } catch (error) {
+      if (this.isMissingClinicAdminProfileError(error)) {
+        this.currentClinicAdminSignal.set(null);
+        this.currentClinicAdminProfileStatusSignal.set('missing');
+        this.currentClinicAdminResolvedSignal.set(true);
+        return null;
+      }
+
+      this.currentClinicAdminProfileStatusSignal.set('error');
+      throw error;
+    } finally {
+      this.loadingCurrentClinicAdminSignal.set(false);
+    }
+  }
+
+  async registerClinicAdminProfile(
+    command: RegisterClinicAdminCommand,
+  ): Promise<ClinicAdminProfile> {
+    this.registeringClinicAdminSignal.set(true);
+    try {
+      const resource = await firstValueFrom(this.organizationApi.registerClinicAdmin(command));
+      const clinicAdmin = this.mapClinicAdmin(resource);
+      this.currentClinicAdminSignal.set(clinicAdmin);
+      this.currentClinicAdminProfileStatusSignal.set('ready');
       this.currentClinicAdminResolvedSignal.set(true);
       return clinicAdmin;
     } finally {
-      this.loadingCurrentClinicAdminSignal.set(false);
+      this.registeringClinicAdminSignal.set(false);
     }
   }
 
@@ -682,6 +719,18 @@ export class OrganizationStore {
       this.currentPhysiotherapistSignal.set(physiotherapist);
     }
     return physiotherapist;
+  }
+
+  private isMissingClinicAdminProfileError(error: unknown): boolean {
+    if (error instanceof HttpErrorResponse) {
+      return error.status === 404 || error.error?.code === 'NOT_FOUND';
+    }
+
+    if (!isAppError(error)) {
+      return false;
+    }
+
+    return error.status === 404 || error.code === 'NOT_FOUND' || error.code === 'HTTP_404';
   }
 
   private async refreshAfterPhysiotherapistMutation(

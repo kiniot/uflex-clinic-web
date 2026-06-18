@@ -74,6 +74,10 @@ function environmentFile() {
       'NG_APP_PLATFORM_PROVIDER_CURRENT_CLINIC_ADMIN_ENDPOINT_PATH',
       '/clinic-admins/me',
     ),
+    platformProviderRegisterClinicAdminEndpointPath: value(
+      'NG_APP_PLATFORM_PROVIDER_REGISTER_CLINIC_ADMIN_ENDPOINT_PATH',
+      '/clinic-admins',
+    ),
     platformProviderCurrentPhysiotherapistEndpointPath: value(
       'NG_APP_PLATFORM_PROVIDER_CURRENT_PHYSIOTHERAPIST_ENDPOINT_PATH',
       '/physiotherapists/me',

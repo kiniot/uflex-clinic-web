@@ -56,6 +56,7 @@ export class OrganizationManagement {
 
   protected readonly clinic = this.store.currentClinic;
   protected readonly clinicAdmin = this.store.currentClinicAdmin;
+  protected readonly clinicAdminProfileStatus = this.store.currentClinicAdminProfileStatus;
   protected readonly physiotherapists = this.store.physiotherapists;
   protected readonly patients = this.store.patients;
   protected readonly isLoadingCurrentClinic = this.store.isLoadingCurrentClinic;
@@ -70,6 +71,9 @@ export class OrganizationManagement {
   protected readonly isReactivatingPhysiotherapist = this.store.isReactivatingPhysiotherapist;
   protected readonly isDeletingPhysiotherapist = this.store.isDeletingPhysiotherapist;
   protected readonly loadingRows = [0, 1, 2, 3];
+  protected readonly isClinicAdminProfileMissing = computed(
+    () => this.clinicAdminProfileStatus() === 'missing',
+  );
 
   protected readonly activeTab = signal<OrgTab>('physiotherapists');
 
@@ -378,6 +382,10 @@ export class OrganizationManagement {
 
   protected onRegisterPatient() {
     void this.router.navigate(['/clinic-admin/organization/patients/new']);
+  }
+
+  protected onCompleteClinicAdminProfile() {
+    void this.router.navigate(['/clinic-admin/profile']);
   }
 
   protected onEditPhysiotherapist(physiotherapist: PhysiotherapistProfile) {

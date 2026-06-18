@@ -761,6 +761,127 @@
         "emptyBody": "This physiotherapist does not have assigned patients at the moment."
       }
     },
+    "profile": {
+      "badge": {
+        "pending": "Pending"
+      },
+      "prompt": {
+        "title": "Complete your profile",
+        "body": "Add your personal and contact information to finish setting up your clinic administrator profile.",
+        "complete": "Complete now",
+        "defer": "I will do it later"
+      },
+      "empty": {
+        "label": "Admin profile",
+        "title": "You have not completed your profile yet",
+        "body": "Complete your personal and contact information so your clinic administration profile is ready inside the portal.",
+        "cta": "Complete profile"
+      },
+      "breadcrumb": {
+        "organization": "Organization",
+        "current": "Admin profile"
+      },
+      "title": "Clinic admin profile",
+      "subtitle": "Review the profile information linked to the administrator currently operating this clinic.",
+      "hero": {
+        "eyebrow": "Profile readiness",
+        "pendingTitle": "Complete your clinic admin profile",
+        "pendingBody": "Once this information is registered, the portal will recognize you as the administrative contact for this clinic.",
+        "readyBody": "Your administrator profile is active and aligned with the current clinic workspace.",
+        "pendingMeta": "Profile pending"
+      },
+      "summary": {
+        "eyebrow": "Completion overview",
+        "title": "What this profile unlocks",
+        "pending": "Profile setup pending",
+        "ready": "Profile completed"
+      },
+      "completion": {
+        "identity": "Personal identity data used by the clinic record.",
+        "contact": "Primary contact information for administrative follow-up.",
+        "clinic": "Connection between your IAM account and the current clinic."
+      },
+      "cards": {
+        "email": {
+          "title": "IAM email",
+          "note": "This address comes from your authenticated account."
+        },
+        "status": {
+          "title": "Profile status",
+          "ready": "Completed",
+          "pending": "Pending",
+          "note": "This status updates automatically when your profile is created."
+        },
+        "clinic": {
+          "title": "Current clinic",
+          "note": "The profile will be created for the clinic currently linked to your session."
+        }
+      },
+      "form": {
+        "eyebrow": "Administrator data",
+        "pendingTitle": "Fill in your profile details",
+        "pendingBody": "These details are required to create the clinic administrator profile for your current session.",
+        "completedTitle": "Registered profile details",
+        "completedBody": "These are the details currently stored for your clinic administrator profile.",
+        "firstName": "First name",
+        "lastName": "Last name",
+        "dni": "DNI",
+        "birthDate": "Birth date",
+        "gender": "Gender",
+        "email": "Email",
+        "emailHint": "This email is inherited from IAM and cannot be changed here.",
+        "countryCode": "Country code",
+        "phoneNumber": "Phone number",
+        "genderOptions": {
+          "MALE": "Male",
+          "FEMALE": "Female",
+          "OTHER": "Other"
+        }
+      },
+      "side": {
+        "eyebrow": "Configuration guide",
+        "title": "Why complete this profile",
+        "body": "This view centralizes the administrator identity that appears across the clinic portal and future operational records.",
+        "items": {
+          "identityTitle": "Identity",
+          "identityBody": "Register the personal data that the clinic uses to identify its administrator.",
+          "contactTitle": "Contact details",
+          "contactBody": "Keep a phone number and country code ready for operational follow-up.",
+          "portalTitle": "Portal continuity",
+          "portalBody": "Once completed, the portal stops showing pending reminders for your profile."
+        }
+      },
+      "loading": {
+        "eyebrow": "Loading profile",
+        "title": "Checking the current administrator profile",
+        "body": "We are synchronizing the administrator profile linked to this clinic."
+      },
+      "error": {
+        "eyebrow": "Profile unavailable",
+        "title": "We could not load the administrator profile",
+        "body": "Try again to verify whether the profile already exists or still needs to be completed."
+      },
+      "actions": {
+        "backToOrganization": "Back to organization",
+        "retry": "Retry",
+        "save": "Save profile"
+      },
+      "validation": {
+        "firstNameRequired": "First name is required.",
+        "lastNameRequired": "Last name is required.",
+        "dniInvalid": "DNI must contain exactly 8 digits.",
+        "birthDateRequired": "Birth date is required.",
+        "phoneNumberRequired": "Phone number is required."
+      },
+      "notifications": {
+        "createSuccessSummary": "Profile created",
+        "createSuccessDetail": "Your clinic administrator profile is now complete.",
+        "createErrorSummary": "Profile could not be created",
+        "createErrorDetail": "Review the information and try again.",
+        "loadErrorSummary": "Profile could not be loaded",
+        "loadErrorDetail": "Please try again in a moment."
+      }
+    },
     "patientDetail": {
       "actions": {
         "back": "Back"
