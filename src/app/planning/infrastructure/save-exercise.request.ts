@@ -3,5 +3,5 @@ export interface SaveExerciseRequest {
   description: string;
   bodyPart: 'ELBOW' | 'WRIST';
   movementType: 'PRONATION' | 'SUPINATION' | 'FLEXION' | 'EXTENSION';
-  videoUrl: string | null;
+  videoAssetId?: string | null;
 }

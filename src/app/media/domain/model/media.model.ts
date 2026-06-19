@@ -6,12 +6,15 @@
 export type MediaOwnerType =
   | 'PHYSIOTHERAPIST_RECORD'
   | 'PATIENT_EVIDENCE'
+  | 'EXERCISE_VIDEO'
   | 'PROFILE_PHOTO'
   | 'GENERIC';
 
 export type MediaKind = 'IMAGE' | 'VIDEO';
 
 export type MediaStatus = 'PENDING' | 'UPLOADED' | 'FAILED';
+
+export type MediaUploadStrategy = 'SIMPLE_PUT' | 'TUS_RESUMABLE';
 
 /** Step 1 request: ask the backend for a signed upload URL. */
 export interface CreateMediaUploadRequest {
@@ -31,6 +34,11 @@ export interface MediaUploadTicket {
   uploadUrl: string;
   token: string;
   expiresInSeconds: number;
+  preferredStrategy?: MediaUploadStrategy;
+  resumableEndpoint?: string | null;
+  resumableHeaders?: Record<string, string> | null;
+  resumableMetadata?: Record<string, string> | null;
+  resumableChunkSizeBytes?: number | null;
   status: MediaStatus;
 }
 

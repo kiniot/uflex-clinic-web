@@ -24,15 +24,17 @@ describe('OrganizationStore', () => {
   const getCurrentClinicAdminSpy = vi.fn();
   const registerClinicAdminSpy = vi.fn();
   const updatePatientByClinicAdminSpy = vi.fn();
-  const updatePatientSpy = vi.fn().mockImplementation((id: string, command: UpdatePatientContactCommand) =>
-    of({
-      ...clinicPatients[0],
-      id,
-      email: command.email,
-      countryCode: command.countryCode,
-      phoneNumber: command.phoneNumber,
-    }),
-  );
+  const updatePatientSpy = vi
+    .fn()
+    .mockImplementation((id: string, command: UpdatePatientContactCommand) =>
+      of({
+        ...clinicPatients[0],
+        id,
+        email: command.email,
+        countryCode: command.countryCode,
+        phoneNumber: command.phoneNumber,
+      }),
+    );
   const deletePatientSpy = vi.fn().mockReturnValue(of(void 0));
   const clinicPatients = [
     {
@@ -97,7 +99,7 @@ describe('OrganizationStore', () => {
     phoneNumber: '987654321',
     licenseNumber: 'CPT12345',
     professionalSummary: 'General physiotherapist',
-    photoUrl: '',
+    photoUrl: '' as string | null,
     yearsOfExperience: 4,
     hireDate: '2026-06-01',
     status: 'ACTIVE',
@@ -115,7 +117,7 @@ describe('OrganizationStore', () => {
       phoneNumber: '958273817',
       licenseNumber: 'CPT12345',
       professionalSummary: 'Neuro specialist',
-      photoUrl: '',
+      photoUrl: '' as string | null,
       yearsOfExperience: 7,
       hireDate: '2025-01-01',
       status: 'ACTIVE',
@@ -150,7 +152,7 @@ describe('OrganizationStore', () => {
         phoneNumber: '958273817',
         licenseNumber: 'CPT12345',
         professionalSummary: 'Neuro specialist',
-        photoUrl: '',
+        photoUrl: '' as string | null,
         yearsOfExperience: 7,
         hireDate: '2025-01-01',
         status: 'ACTIVE',
@@ -219,7 +221,12 @@ describe('OrganizationStore', () => {
           phoneNumber: command.phoneNumber,
           licenseNumber: command.licenseNumber,
           professionalSummary: command.professionalSummary,
-          photoUrl: command.photoUrl,
+          photoUrl:
+            command.photoAssetId === undefined
+              ? current.photoUrl
+              : command.photoAssetId === null
+                ? null
+                : 'https://example.com/photo-updated.jpg',
           yearsOfExperience: command.yearsOfExperience,
         };
         clinicPhysiotherapistsState[index] = updated;
@@ -423,7 +430,7 @@ describe('OrganizationStore', () => {
         phoneNumber: '987654321',
         licenseNumber: 'CPT12345',
         professionalSummary: 'General physiotherapist',
-        photoUrl: '',
+        photoAssetId: undefined,
         yearsOfExperience: 4,
       }),
     );
@@ -446,7 +453,7 @@ describe('OrganizationStore', () => {
         phoneNumber: '999888777',
         licenseNumber: 'CPT99999',
         professionalSummary: 'Updated summary',
-        photoUrl: 'https://example.com/photo.jpg',
+        photoAssetId: 'asset-updated',
         yearsOfExperience: 11,
       }),
     );

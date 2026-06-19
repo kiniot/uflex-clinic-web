@@ -20,9 +20,13 @@
   text-decoration: none;
 }
 
-.register-pt__breadcrumb a:hover { color: var(--p-text-color); }
+.register-pt__breadcrumb a:hover {
+  color: var(--p-text-color);
+}
 
-.register-pt__breadcrumb i { font-size: 10px; }
+.register-pt__breadcrumb i {
+  font-size: 10px;
+}
 
 .register-pt__breadcrumb-current {
   color: var(--p-primary-color);
@@ -83,7 +87,9 @@
   font-weight: 600;
 }
 
-.register-pt__form { width: 100%; }
+.register-pt__form {
+  width: 100%;
+}
 
 .register-pt__grid {
   display: grid;
@@ -93,7 +99,9 @@
 }
 
 @media (max-width: 1080px) {
-  .register-pt__grid { grid-template-columns: 1fr; }
+  .register-pt__grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .register-pt__main,
@@ -143,10 +151,14 @@
   gap: 16px;
 }
 
-.register-pt__row--2 { grid-template-columns: 1fr 1fr; }
+.register-pt__row--2 {
+  grid-template-columns: 1fr 1fr;
+}
 
 @media (max-width: 640px) {
-  .register-pt__row--2 { grid-template-columns: 1fr; }
+  .register-pt__row--2 {
+    grid-template-columns: 1fr;
+  }
 }
 
 .register-pt__field {
@@ -217,6 +229,7 @@
 
 /* Photo upload */
 .register-pt__photo {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -229,12 +242,54 @@
   border-radius: 50%;
   background: var(--p-surface-50);
   cursor: pointer;
+  overflow: hidden;
   @include theme.surface;
+}
+
+.register-pt__photo-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+
+.register-pt__photo-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.register-pt__photo-overlay {
+  position: absolute;
+  inset: auto 12px 12px 12px;
+  display: flex;
+  justify-content: center;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-primary-color) 78%, transparent);
+  color: var(--p-primary-contrast-color);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  @include theme.interactive-surface;
+}
+
+.register-pt__photo-overlay-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .register-pt__photo:hover {
   border-color: var(--p-primary-color);
   background: color-mix(in srgb, var(--p-primary-color) 5%, var(--p-surface-50));
+}
+
+.register-pt__photo:hover .register-pt__photo-overlay,
+.register-pt__photo:focus-within .register-pt__photo-overlay {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 :host-context(.app-dark) .register-pt__photo {
@@ -269,6 +324,76 @@
   text-align: center;
   margin: 6px 0 0;
   line-height: 1.4;
+}
+
+.register-pt__photo-actions {
+  min-height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Loading state inside the circle */
+.register-pt__photo-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.register-pt__photo-loading-ring {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  font-size: 1.1rem;
+  color: var(--p-primary-color);
+}
+
+.register-pt__photo-loading-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--p-primary-color);
+  text-align: center;
+}
+
+/* MediaUploader inside circle: transparent click area only, no built-in UI */
+:host ::ng-deep .register-pt__photo-uploader {
+  position: absolute;
+  inset: 0;
+}
+
+:host ::ng-deep .register-pt__photo-uploader .media-uploader {
+  height: 100%;
+}
+
+:host ::ng-deep .register-pt__photo-uploader .media-uploader__dropzone {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+
+  &:hover {
+    background: transparent;
+  }
+}
+
+:host ::ng-deep .register-pt__photo-uploader .media-uploader__icon,
+:host ::ng-deep .register-pt__photo-uploader .media-uploader__title,
+:host ::ng-deep .register-pt__photo-uploader .media-uploader__hint {
+  display: none;
+}
+
+/* Hide the built-in progress/error states — the parent circle shows its own */
+:host ::ng-deep .register-pt__photo-uploader .media-uploader__progress,
+:host ::ng-deep .register-pt__photo-uploader .media-uploader__error {
+  display: none;
 }
 
 /* Quick Tip */
@@ -366,9 +491,15 @@
   background: linear-gradient(180deg, rgba(52, 199, 155, 0.4), rgba(52, 199, 155, 0.05));
 }
 
-.register-pt__enrollments-bars span:nth-child(1) { height: 60%; }
-.register-pt__enrollments-bars span:nth-child(2) { height: 90%; }
-.register-pt__enrollments-bars span:nth-child(3) { height: 75%; }
+.register-pt__enrollments-bars span:nth-child(1) {
+  height: 60%;
+}
+.register-pt__enrollments-bars span:nth-child(2) {
+  height: 90%;
+}
+.register-pt__enrollments-bars span:nth-child(3) {
+  height: 75%;
+}
 
 .register-pt__enrollments-pills {
   display: inline-flex;
@@ -406,7 +537,9 @@
   display: inline-block;
 }
 
-.register-pt__pill i { font-size: 10px; }
+.register-pt__pill i {
+  font-size: 10px;
+}
 
 .register-pt__enrollments-caption {
   font-family: 'Inter', sans-serif;

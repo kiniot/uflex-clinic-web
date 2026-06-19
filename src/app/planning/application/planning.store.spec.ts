@@ -107,7 +107,7 @@ describe('PlanningStore', () => {
       description: 'Controlled wrist extension exercise.',
       bodyPart: 'WRIST',
       movementType: 'EXTENSION',
-      videoUrl: null,
+      videoAssetId: undefined,
     } as any);
 
     expect(exercise.id).toBe('exercise-3');
@@ -123,7 +123,7 @@ describe('PlanningStore', () => {
       description: 'Updated wrist supination exercise.',
       bodyPart: 'WRIST',
       movementType: 'SUPINATION',
-      videoUrl: 'https://cdn.uflex.app/exercises/wrist-supination-v2.mp4',
+      videoAssetId: 'asset-video-2',
     } as any);
 
     expect(updated.name).toBe('Wrist supination progression');

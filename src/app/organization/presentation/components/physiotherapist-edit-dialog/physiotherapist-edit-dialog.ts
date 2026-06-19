@@ -1,12 +1,15 @@
-import { Component, computed, effect, inject, input, model, output } from '@angular/core';
+import { Component, computed, effect, inject, input, model, output, signal, viewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 import { DialogModule } from 'primeng/dialog';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
+import { MediaAsset } from '../../../../media/domain/model/media.model';
+import { MediaUploader } from '../../../../media/presentation/media-uploader/media-uploader';
 import { BaseForm } from '../../../../shared/presentation/components/base-form/base-form';
 import {
   buildCountryPhoneOptions,
@@ -31,6 +34,8 @@ interface SelectOption<T> {
     InputTextModule,
     SelectModule,
     TextareaModule,
+    MediaUploader,
+    TooltipModule,
   ],
   templateUrl: './physiotherapist-edit-dialog.html',
   styleUrl: './physiotherapist-edit-dialog.scss',
@@ -39,6 +44,8 @@ export class PhysiotherapistEditDialog extends BaseForm {
   private readonly translate = inject(TranslateService);
   private initializedPhysiotherapistId: string | null = null;
   private wasVisible = false;
+
+  private readonly mediaUploaderRef = viewChild<MediaUploader>('mediaUploader');
 
   visible = model.required<boolean>();
   physiotherapist = input<PhysiotherapistProfile | null>(null);
@@ -68,6 +75,9 @@ export class PhysiotherapistEditDialog extends BaseForm {
   protected readonly countryPhoneOptions = computed<CountryPhoneOption[]>(() =>
     buildCountryPhoneOptions(this.translate),
   );
+  protected readonly photoPreviewUrl = signal<string | null>(null);
+  protected readonly photoAssetIdChange = signal<string | null | undefined>(undefined);
+  protected readonly isPhotoUploading = signal(false);
 
   protected readonly form = new FormGroup({
     fullName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -80,7 +90,6 @@ export class PhysiotherapistEditDialog extends BaseForm {
     phoneNumber: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     licenseNumber: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
     professionalSummary: new FormControl('', { nonNullable: true }),
-    photoUrl: new FormControl('', { nonNullable: true }),
     yearsOfExperience: new FormControl<number | null>(null, {
       validators: [Validators.required, Validators.min(0)],
     }),
@@ -104,6 +113,9 @@ export class PhysiotherapistEditDialog extends BaseForm {
 
       this.wasVisible = true;
       this.initializedPhysiotherapistId = physiotherapist.id;
+      this.photoPreviewUrl.set(physiotherapist.photoUrl);
+      this.photoAssetIdChange.set(undefined);
+      this.isPhotoUploading.set(false);
 
       this.form.reset(
         {
@@ -114,7 +126,6 @@ export class PhysiotherapistEditDialog extends BaseForm {
           phoneNumber: physiotherapist.phoneNumber,
           licenseNumber: physiotherapist.licenseNumber,
           professionalSummary: physiotherapist.professionalSummary ?? '',
-          photoUrl: physiotherapist.photoUrl ?? '',
           yearsOfExperience: physiotherapist.yearsOfExperience,
         },
         { emitEvent: false },
@@ -135,8 +146,26 @@ export class PhysiotherapistEditDialog extends BaseForm {
     }
   }
 
+  protected onPhotoUploaded(asset: MediaAsset): void {
+    this.photoAssetIdChange.set(asset.id);
+    this.photoPreviewUrl.set(asset.downloadUrl);
+  }
+
+  protected onPhotoUploadingChange(isUploading: boolean): void {
+    this.isPhotoUploading.set(isUploading);
+  }
+
+  protected onReplacePhoto(): void {
+    this.mediaUploaderRef()?.triggerPicker();
+  }
+
+  protected onRemovePhoto(): void {
+    this.photoAssetIdChange.set(null);
+    this.photoPreviewUrl.set(null);
+  }
+
   protected onSave(): void {
-    if (this.pending()) return;
+    if (this.pending() || this.isPhotoUploading()) return;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -152,7 +181,7 @@ export class PhysiotherapistEditDialog extends BaseForm {
         phoneNumber: value.phoneNumber.trim(),
         licenseNumber: value.licenseNumber.trim(),
         professionalSummary: value.professionalSummary.trim(),
-        photoUrl: value.photoUrl.trim(),
+        photoAssetId: this.photoAssetIdChange(),
         yearsOfExperience: value.yearsOfExperience ?? 0,
       }),
     );

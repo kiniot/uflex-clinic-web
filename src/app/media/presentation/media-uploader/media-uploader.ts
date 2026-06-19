@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, ElementRef, computed, inject, input, output, signal, viewChild } from '@angular/core';
 import { MediaApi } from '../../infrastructure/media-api';
 import { MediaAsset, MediaOwnerType } from '../../domain/model/media.model';
 
@@ -10,41 +10,36 @@ interface UploadItem {
   error?: string;
 }
 
-/**
- * Reusable drag & drop uploader for images and videos. Replaces the old
- * "paste an URL" inputs: drop a file (or click to browse) and it is uploaded to
- * Supabase Storage through the backend signed-URL flow.
- *
- * Usage:
- *   <app-media-uploader
- *     [ownerType]="'PHYSIOTHERAPIST_RECORD'"
- *     [ownerId]="recordId"
- *     (uploaded)="onUploaded($event)" />
- */
 @Component({
   selector: 'app-media-uploader',
   standalone: true,
   imports: [NgClass],
   templateUrl: './media-uploader.html',
-  styleUrl: './media-uploader.css',
+  styleUrl: './media-uploader.scss',
 })
 export class MediaUploader {
   private readonly mediaApi = inject(MediaApi);
 
-  /** What the uploaded media is attached to. */
   readonly ownerType = input.required<MediaOwnerType>();
-  /** Id of the owner entity (optional for GENERIC owners). */
   readonly ownerId = input<string | null>(null);
-  /** Accepted file types for the file picker. */
   readonly accept = input<string>('image/*,video/*');
-  /** Allow selecting/dropping more than one file. */
   readonly multiple = input<boolean>(true);
+  readonly titleText = input<string>('Arrastra un archivo aquí');
+  readonly hintText = input<string>('o haz clic para seleccionar un archivo');
+  readonly iconClass = input<string>('pi pi-cloud-upload');
 
-  /** Emitted once per file successfully uploaded and confirmed. */
   readonly uploaded = output<MediaAsset>();
+  readonly uploadingChange = output<boolean>();
 
   protected readonly isDragging = signal(false);
   protected readonly items = signal<UploadItem[]>([]);
+
+  private readonly fileInputEl = viewChild<ElementRef<HTMLInputElement>>('fileInput');
+
+  /** In single-file mode, the active (most recent) upload item. */
+  protected readonly activeItem = computed(() =>
+    !this.multiple() ? (this.items()[0] ?? null) : null,
+  );
 
   protected onDragOver(event: DragEvent): void {
     event.preventDefault();
@@ -61,24 +56,38 @@ export class MediaUploader {
     this.isDragging.set(false);
     const files = event.dataTransfer?.files;
     if (files) {
-      this.handleFiles(files);
+      this.upload(files);
     }
   }
 
   protected onFileInput(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files) {
-      this.handleFiles(input.files);
+      this.upload(input.files);
     }
     input.value = '';
   }
 
-  private handleFiles(fileList: FileList): void {
+  /** Programmatically open the file picker (for external "Replace" buttons). */
+  triggerPicker(): void {
+    this.fileInputEl()?.nativeElement.click();
+  }
+
+  /** Accept a drop forwarded from a parent element (for replace-over-preview scenarios). */
+  handleDroppedFiles(files: FileList): void {
+    this.upload(files);
+  }
+
+  private upload(fileList: FileList): void {
     const files = Array.from(fileList);
     const toUpload = this.multiple() ? files : files.slice(0, 1);
+    if (!this.multiple()) {
+      this.items.set([]);
+    }
     for (const file of toUpload) {
       const item: UploadItem = { file, status: 'uploading' };
       this.items.update((current) => [...current, item]);
+      this.emitUploadingState();
       this.mediaApi.upload(file, this.ownerType(), this.ownerId()).subscribe({
         next: (asset) => {
           this.patchItem(item, { status: 'done', asset });
@@ -95,5 +104,10 @@ export class MediaUploader {
     this.items.update((current) =>
       current.map((item) => (item === target ? { ...item, ...patch } : item)),
     );
+    this.emitUploadingState();
+  }
+
+  private emitUploadingState(): void {
+    this.uploadingChange.emit(this.items().some((item) => item.status === 'uploading'));
   }
 }

@@ -6,6 +6,6 @@ export interface UpdatePhysiotherapistRequest {
   phoneNumber: string;
   licenseNumber: string;
   professionalSummary: string;
-  photoUrl: string;
+  photoAssetId?: string | null;
   yearsOfExperience: number;
 }

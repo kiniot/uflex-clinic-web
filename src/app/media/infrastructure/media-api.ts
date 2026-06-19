@@ -2,6 +2,7 @@ import { HttpBackend, HttpClient, HttpErrorResponse } from '@angular/common/http
 import { inject, Injectable } from '@angular/core';
 import { Observable, switchMap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Upload } from 'tus-js-client';
 import { environment } from '../../../environments/environment';
 import { toAppError } from '../../shared/infrastructure/app-error.mapper';
 import {
@@ -9,6 +10,7 @@ import {
   MediaAsset,
   MediaKind,
   MediaOwnerType,
+  MediaUploadStrategy,
   MediaUploadTicket,
 } from '../domain/model/media.model';
 
@@ -48,6 +50,42 @@ export class MediaApi {
       .pipe(catchError(this.handleError('Failed to upload file to storage')));
   }
 
+  /** Step 2b: upload large files via Supabase's TUS resumable endpoint. */
+  uploadToStorageResumable(ticket: MediaUploadTicket, file: File): Observable<void> {
+    return new Observable<void>((subscriber) => {
+      if (!ticket.resumableEndpoint) {
+        subscriber.error(new Error('Missing resumable upload endpoint'));
+        return;
+      }
+
+      const headers = this.normalizeResumableHeaders(ticket.resumableHeaders ?? {});
+      const upload = new Upload(file, {
+        endpoint: ticket.resumableEndpoint,
+        headers,
+        metadata: ticket.resumableMetadata ?? {
+          bucketName: ticket.bucket,
+          objectName: ticket.objectPath,
+          contentType: file.type || 'application/octet-stream',
+        },
+        chunkSize: ticket.resumableChunkSizeBytes ?? undefined,
+        uploadDataDuringCreation: true,
+        removeFingerprintOnSuccess: true,
+        retryDelays: [0, 1000, 3000, 5000],
+        onError: (error) => subscriber.error(error),
+        onSuccess: () => {
+          subscriber.next();
+          subscriber.complete();
+        },
+      });
+
+      upload.start();
+
+      return () => {
+        void upload.abort();
+      };
+    }).pipe(catchError(this.handleTusError('Failed to upload file to storage')));
+  }
+
   /** Step 3: confirm the upload so the asset becomes UPLOADED. */
   confirmUpload(mediaAssetId: string, sizeBytes?: number): Observable<MediaAsset> {
     return this.http
@@ -68,7 +106,7 @@ export class MediaApi {
     };
     return this.createUpload(request).pipe(
       switchMap((ticket) =>
-        this.uploadToStorage(ticket, file).pipe(
+        this.runUploadStrategy(ticket, file).pipe(
           switchMap(() => this.confirmUpload(ticket.mediaAssetId, file.size)),
         ),
       ),
@@ -101,5 +139,32 @@ export class MediaApi {
   private handleError(operation: string) {
     return (error: HttpErrorResponse): Observable<never> =>
       throwError(() => toAppError(error, operation));
+  }
+
+  private runUploadStrategy(ticket: MediaUploadTicket, file: File): Observable<unknown> {
+    return this.resolveStrategy(ticket) === 'TUS_RESUMABLE'
+      ? this.uploadToStorageResumable(ticket, file)
+      : this.uploadToStorage(ticket, file);
+  }
+
+  private resolveStrategy(ticket: MediaUploadTicket): MediaUploadStrategy {
+    return ticket.preferredStrategy ?? 'SIMPLE_PUT';
+  }
+
+  /** Supabase expects x-signature as a raw compact JWS — strip any accidental "Bearer " prefix. */
+  private normalizeResumableHeaders(headers: Record<string, string>): Record<string, string> {
+    const result = { ...headers };
+    if (result['x-signature']?.startsWith('Bearer ')) {
+      result['x-signature'] = result['x-signature'].slice(7);
+    }
+    return result;
+  }
+
+  private handleTusError(operation: string) {
+    return (error: unknown): Observable<never> => {
+      const description =
+        error instanceof Error && error.message ? `${operation}: ${error.message}` : operation;
+      return throwError(() => new Error(description));
+    };
   }
 }

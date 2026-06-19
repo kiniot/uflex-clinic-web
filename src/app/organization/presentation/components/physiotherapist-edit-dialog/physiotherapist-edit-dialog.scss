@@ -29,12 +29,77 @@
   color: var(--p-text-color);
 }
 
+
 :host ::ng-deep .physio-edit-dialog__field .p-inputtext,
 :host ::ng-deep .physio-edit-dialog__field .p-select,
 :host ::ng-deep .physio-edit-dialog__field .p-inputnumber,
 :host ::ng-deep .physio-edit-dialog__field .p-inputnumber-input,
 :host ::ng-deep .physio-edit-dialog__field .p-textarea {
   width: 100%;
+}
+
+.physio-edit-dialog__media {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.physio-edit-dialog__media-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.physio-edit-dialog__photo-btns {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Photo preview with optional uploading badge */
+.physio-edit-dialog__photo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.physio-edit-dialog__photo-preview {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--p-surface-300);
+  flex-shrink: 0;
+}
+
+.physio-edit-dialog__photo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: var(--app-surface-card-alt);
+  border: 1px solid var(--app-surface-card-border);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--p-text-muted-color);
+
+  i {
+    color: var(--p-primary-color);
+    font-size: 0.8rem;
+  }
+}
+
+/* Hide the uploader when a photo is already set */
+:host ::ng-deep .physio-edit-dialog__uploader.is-hidden {
+  display: none;
 }
 
 .physio-edit-dialog__actions {
