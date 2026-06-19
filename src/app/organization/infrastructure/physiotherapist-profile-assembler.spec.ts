@@ -39,7 +39,7 @@ describe('PhysiotherapistProfileAssembler', () => {
         phoneNumber: '987654321',
         licenseNumber: 'CPT12345',
         professionalSummary: 'Experienced physiotherapist',
-        photoUrl: 'https://example.com/photo.jpg',
+        photoAssetId: 'asset-1',
         yearsOfExperience: 10,
       }),
     );
@@ -47,5 +47,6 @@ describe('PhysiotherapistProfileAssembler', () => {
     expect(request.countryCode).toBe('+51');
     expect(request.phoneNumber).toBe('987654321');
     expect(request.yearsOfExperience).toBe(10);
+    expect(request.photoAssetId).toBe('asset-1');
   });
 });

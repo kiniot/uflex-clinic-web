@@ -18,4 +18,18 @@ describe('ExerciseCatalogItemAssembler', () => {
     expect(resource.movementType).toBe('SUPINATION');
     expect(resource.videoUrl).toContain('wrist-supination');
   });
+
+  it('maps update commands omitting videoAssetId when the media should be preserved', () => {
+    const assembler = new ExerciseCatalogItemAssembler();
+
+    const request = assembler.toRequestFromUpdateCommand({
+      name: 'Wrist supination',
+      description: 'Controlled wrist supination exercise focused on forearm rotation.',
+      bodyPart: 'WRIST',
+      movementType: 'SUPINATION',
+      videoAssetId: undefined,
+    } as any);
+
+    expect('videoAssetId' in request).toBe(false);
+  });
 });

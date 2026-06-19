@@ -11,7 +11,7 @@ export class RegisterPhysiotherapistCommand {
   private _phoneNumber: string;
   private _licenseNumber: string;
   private _professionalSummary: string;
-  private _photoUrl: string;
+  private _photoAssetId?: string | null;
   private _yearsOfExperience: number;
 
   constructor(data: {
@@ -22,7 +22,7 @@ export class RegisterPhysiotherapistCommand {
     phoneNumber: string;
     licenseNumber: string;
     professionalSummary: string;
-    photoUrl: string;
+    photoAssetId?: string | null;
     yearsOfExperience: number;
   }) {
     this._fullName = data.fullName;
@@ -32,7 +32,7 @@ export class RegisterPhysiotherapistCommand {
     this._phoneNumber = data.phoneNumber;
     this._licenseNumber = data.licenseNumber;
     this._professionalSummary = data.professionalSummary;
-    this._photoUrl = data.photoUrl;
+    this._photoAssetId = data.photoAssetId;
     this._yearsOfExperience = data.yearsOfExperience;
   }
 
@@ -57,8 +57,8 @@ export class RegisterPhysiotherapistCommand {
   get professionalSummary(): string {
     return this._professionalSummary;
   }
-  get photoUrl(): string {
-    return this._photoUrl;
+  get photoAssetId(): string | null | undefined {
+    return this._photoAssetId;
   }
   get yearsOfExperience(): number {
     return this._yearsOfExperience;

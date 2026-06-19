@@ -141,13 +141,30 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
+  height: 100%;
 }
 
 .org-hero__admin-card {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 18px;
   padding: 20px;
+  flex: 1 1 auto;
+  min-height: 100%;
+}
+
+.org-hero__admin-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.org-hero__admin-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: auto;
 }
 
 .org-hero__admin-label {
@@ -159,7 +176,11 @@
 }
 
 .org-hero__admin-name {
-  font-size: 18px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
   color: var(--p-text-color);
 }
 

@@ -3,7 +3,7 @@ interface CreateExerciseCommandProps {
   description: string;
   bodyPart: 'ELBOW' | 'WRIST';
   movementType: 'PRONATION' | 'SUPINATION' | 'FLEXION' | 'EXTENSION';
-  videoUrl: string | null;
+  videoAssetId?: string | null;
 }
 
 export class CreateExerciseCommand {
@@ -11,14 +11,14 @@ export class CreateExerciseCommand {
   private _description: string;
   private _bodyPart: 'ELBOW' | 'WRIST';
   private _movementType: 'PRONATION' | 'SUPINATION' | 'FLEXION' | 'EXTENSION';
-  private _videoUrl: string | null;
+  private _videoAssetId?: string | null;
 
   constructor(props: CreateExerciseCommandProps) {
     this._name = props.name;
     this._description = props.description;
     this._bodyPart = props.bodyPart;
     this._movementType = props.movementType;
-    this._videoUrl = props.videoUrl;
+    this._videoAssetId = props.videoAssetId;
   }
 
   get name(): string {
@@ -49,10 +49,10 @@ export class CreateExerciseCommand {
     this._movementType = value;
   }
 
-  get videoUrl(): string | null {
-    return this._videoUrl;
+  get videoAssetId(): string | null | undefined {
+    return this._videoAssetId;
   }
-  set videoUrl(value: string | null) {
-    this._videoUrl = value;
+  set videoAssetId(value: string | null | undefined) {
+    this._videoAssetId = value;
   }
 }

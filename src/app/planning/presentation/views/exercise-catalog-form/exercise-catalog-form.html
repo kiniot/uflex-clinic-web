@@ -70,51 +70,112 @@
           [class.ng-dirty]="isInvalidControl(form, 'description')"
         ></textarea>
       </div>
-
-      <div class="exercise-form__field">
-        <label for="exerciseVideoUrl">{{ 'exerciseCatalogAdmin.form.videoUrl' | translate }}</label>
-        <input
-          pInputText
-          id="exerciseVideoUrl"
-          type="url"
-          formControlName="videoUrl"
-          [placeholder]="'exerciseCatalogAdmin.form.videoUrlPlaceholder' | translate"
-        />
-        <small class="exercise-form__hint">
-          {{ 'exerciseCatalogAdmin.form.videoUrlHint' | translate }}
-        </small>
-      </div>
     </div>
 
     <aside class="exercise-form__media-card">
-      <h2 class="exercise-form__media-title">
-        {{ 'exerciseCatalogAdmin.form.videoSectionTitle' | translate }}
-      </h2>
+      <div class="exercise-form__media-heading">
+        <h2 class="exercise-form__media-title">
+          {{ 'exerciseCatalogAdmin.form.videoSectionTitle' | translate }}
+        </h2>
+        @if (videoPreviewUrl()) {
+          <div class="exercise-form__media-actions">
+            <button
+              type="button"
+              pButton
+              [rounded]="true"
+              [text]="true"
+              severity="secondary"
+              size="small"
+              [pTooltip]="'exerciseCatalogAdmin.form.replaceVideo' | translate"
+              tooltipPosition="top"
+              [disabled]="isSavingExercise() || isVideoUploading()"
+              (click)="onReplaceVideo()"
+            >
+              <i class="pi pi-refresh"></i>
+            </button>
+            <button
+              type="button"
+              pButton
+              [rounded]="true"
+              [text]="true"
+              severity="secondary"
+              size="small"
+              [pTooltip]="'exerciseCatalogAdmin.form.removeVideo' | translate"
+              tooltipPosition="top"
+              [disabled]="isSavingExercise() || isVideoUploading()"
+              (click)="onRemoveVideo()"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        }
+      </div>
       <p class="exercise-form__media-body">
         {{ 'exerciseCatalogAdmin.form.videoSectionBody' | translate }}
       </p>
 
-      <label class="exercise-form__upload">
-        <input type="file" accept=".mp4,.mov,.webm" hidden (change)="onVideoPicked($event)" />
-        <i class="pi pi-cloud-upload exercise-form__upload-icon" aria-hidden="true"></i>
-        <span class="exercise-form__upload-hint">
-          @if (selectedVideoFileName()) {
-            {{ selectedVideoFileName() }}
-          } @else {
-            {{ 'exerciseCatalogAdmin.form.uploadHint' | translate }}
+      <div
+        class="exercise-form__video-shell"
+        [class.has-video]="hasVideo()"
+        [class.is-dragging]="isShellDragging()"
+        (dragover)="onShellDragOver($event)"
+        (dragleave)="onShellDragLeave($event)"
+        (drop)="onShellDrop($event)"
+      >
+        @if (videoPreviewUrl(); as videoUrl) {
+          <video
+            class="exercise-form__video-preview"
+            [src]="videoUrl"
+            controls
+            preload="metadata"
+          ></video>
+
+          @if (isVideoUploading()) {
+            <div class="exercise-form__upload-badge">
+              <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+              <span>{{ 'exerciseCatalogAdmin.form.uploadingVideo' | translate }}</span>
+            </div>
           }
-        </span>
-        <span class="exercise-form__upload-meta">
-          {{ 'exerciseCatalogAdmin.form.uploadMeta' | translate }}
-        </span>
-      </label>
+
+          @if (isShellDragging()) {
+            <div class="exercise-form__drop-overlay">
+              <i class="pi pi-cloud-upload exercise-form__drop-icon" aria-hidden="true"></i>
+              <span class="exercise-form__drop-label">
+                {{ 'exerciseCatalogAdmin.form.dropToReplace' | translate }}
+              </span>
+            </div>
+          }
+        }
+
+        <!-- Always in DOM so triggerPicker() and handleDroppedFiles() work; hidden via CSS when video is present -->
+        <app-media-uploader
+          #mediaUploader
+          class="exercise-form__media-uploader"
+          [class.is-hidden]="hasVideo()"
+          [ownerType]="uploadOwnerType()"
+          [ownerId]="isEditMode() ? exerciseId() : null"
+          [accept]="'video/*'"
+          [multiple]="false"
+          [titleText]="'exerciseCatalogAdmin.form.uploadVideo' | translate"
+          [hintText]="'exerciseCatalogAdmin.form.uploadVideoHint' | translate"
+          [iconClass]="'pi pi-video'"
+          (uploaded)="onVideoUploaded($event)"
+          (uploadingChange)="onVideoUploadingChange($event)"
+        />
+      </div>
     </aside>
 
     <footer class="exercise-form__actions">
       <button type="button" pButton severity="secondary" [outlined]="true" (click)="onCancel()">
         {{ 'exerciseCatalogAdmin.actions.cancel' | translate }}
       </button>
-      <button type="submit" pButton severity="primary" [loading]="isSavingExercise()">
+      <button
+        type="submit"
+        pButton
+        severity="primary"
+        [loading]="isSavingExercise()"
+        [disabled]="isSavingExercise() || isVideoUploading()"
+      >
         {{
           (isEditMode()
             ? 'exerciseCatalogAdmin.actions.save'

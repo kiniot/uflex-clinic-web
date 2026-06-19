@@ -52,11 +52,7 @@
   color: var(--p-text-muted-color);
 }
 
-.exercise-form__hint {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--p-text-muted-color);
-}
+/* ── Media card (right column) ───────────────────────────────── */
 
 .exercise-form__media-card {
   display: flex;
@@ -70,6 +66,13 @@
   @include theme.surface;
 }
 
+.exercise-form__media-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
 .exercise-form__media-title {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 18px;
@@ -78,50 +81,121 @@
   margin: 0;
 }
 
+.exercise-form__media-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
 .exercise-form__media-body {
   font-family: 'Inter', sans-serif;
   font-size: 13px;
-  color: var(--p-text-muted-color);
+  color: var(--app-text-muted-on-card);
   margin: 0;
+  line-height: 1.5;
 }
 
-.exercise-form__upload {
+/* ── Video shell ─────────────────────────────────────────────── */
+
+.exercise-form__video-shell {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at top,
+      color-mix(in srgb, var(--p-primary-color) 7%, transparent),
+      transparent 58%
+    ),
+    var(--app-surface-card);
+  border: 1px solid var(--app-surface-card-border);
+  @include theme.surface-with-shadow;
+}
+
+.exercise-form__video-preview {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  background: var(--p-surface-900);
+}
+
+/* ── MediaUploader inline (no video state) ───────────────────── */
+
+:host ::ng-deep .exercise-form__media-uploader .media-uploader__dropzone {
+  border-radius: 18px;
+  min-height: 200px;
+  border-color: transparent;
+  background: transparent;
+}
+
+:host ::ng-deep .exercise-form__media-uploader .media-uploader__progress {
+  min-height: 200px;
+}
+
+:host ::ng-deep .exercise-form__media-uploader.is-hidden {
+  display: none;
+}
+
+/* ── Upload badge (shown when replacing while video is visible) ── */
+
+.exercise-form__upload-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--p-surface-0) 88%, transparent);
+  border: 1px solid var(--app-surface-card-border);
+  backdrop-filter: blur(12px);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--p-text-color);
+  pointer-events: none;
+  @include theme.surface;
+
+  i {
+    color: var(--p-primary-color);
+    font-size: 0.85rem;
+  }
+}
+
+/* ── Drag-to-replace overlay ─────────────────────────────────── */
+
+.exercise-form__drop-overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-height: 220px;
-  border: 1px dashed var(--app-surface-control-border);
-  border-radius: 14px;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--p-primary-50) 72%, transparent),
-    color-mix(in srgb, var(--p-surface-0) 86%, transparent)
-  );
-  text-align: center;
-  padding: 20px;
-  cursor: pointer;
+  gap: 0.75rem;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--p-primary-color) 10%, var(--p-surface-0) 80%);
+  border: 2px dashed var(--p-primary-color);
+  backdrop-filter: blur(4px);
+  pointer-events: none;
   @include theme.surface;
 }
 
-.exercise-form__upload-icon {
-  font-size: 26px;
+.exercise-form__drop-icon {
+  font-size: 2rem;
   color: var(--p-primary-color);
 }
 
-.exercise-form__upload-hint {
+.exercise-form__drop-label {
   font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 16px;
+  font-size: 0.95rem;
   font-weight: 700;
-  color: var(--p-text-color);
+  color: var(--p-primary-color);
 }
 
-.exercise-form__upload-meta {
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  color: var(--p-text-muted-color);
-}
+/* ── Actions footer ──────────────────────────────────────────── */
 
 .exercise-form__actions {
   grid-column: 1 / -1;
@@ -129,6 +203,8 @@
   justify-content: flex-end;
   gap: 12px;
 }
+
+/* ── Responsive ──────────────────────────────────────────────── */
 
 @media (max-width: 960px) {
   .exercise-form__layout {

@@ -109,19 +109,6 @@
         }}</label>
         <p-inputnumber inputId="physio-edit-years" formControlName="yearsOfExperience" [min]="0" />
       </div>
-
-      <div class="physio-edit-dialog__field">
-        <label for="physio-edit-photo-url">{{
-          'registerPhysiotherapist.photo.urlLabel' | translate
-        }}</label>
-        <input
-          id="physio-edit-photo-url"
-          pInputText
-          type="url"
-          formControlName="photoUrl"
-          [placeholder]="'registerPhysiotherapist.photo.urlPlaceholder' | translate"
-        />
-      </div>
     </div>
 
     <div class="physio-edit-dialog__field">
@@ -137,18 +124,93 @@
       ></textarea>
     </div>
 
+    <div class="physio-edit-dialog__media">
+      <div class="physio-edit-dialog__media-header">
+        <span>{{ 'registerPhysiotherapist.photo.title' | translate }}</span>
+        @if (photoPreviewUrl()) {
+          <div class="physio-edit-dialog__photo-btns">
+            <button
+              pButton
+              type="button"
+              [rounded]="true"
+              [text]="true"
+              severity="secondary"
+              size="small"
+              [pTooltip]="'registerPhysiotherapist.photo.replace' | translate"
+              tooltipPosition="top"
+              [disabled]="pending() || isPhotoUploading()"
+              (click)="onReplacePhoto()"
+            >
+              <i class="pi pi-refresh"></i>
+            </button>
+            <button
+              pButton
+              type="button"
+              [rounded]="true"
+              [text]="true"
+              severity="secondary"
+              size="small"
+              [pTooltip]="'registerPhysiotherapist.photo.remove' | translate"
+              tooltipPosition="top"
+              [disabled]="pending() || isPhotoUploading()"
+              (click)="onRemovePhoto()"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </div>
+        }
+      </div>
+
+      @if (photoPreviewUrl(); as photoUrl) {
+        <div class="physio-edit-dialog__photo-wrap">
+          <img
+            class="physio-edit-dialog__photo-preview"
+            [src]="photoUrl"
+            [alt]="'registerPhysiotherapist.photo.previewAlt' | translate"
+          />
+          @if (isPhotoUploading()) {
+            <div class="physio-edit-dialog__photo-badge">
+              <i class="pi pi-spin pi-spinner" aria-hidden="true"></i>
+              <span>{{ 'registerPhysiotherapist.photo.uploading' | translate }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      <app-media-uploader
+        #mediaUploader
+        class="physio-edit-dialog__uploader"
+        [class.is-hidden]="photoPreviewUrl() !== null"
+        [ownerType]="'PROFILE_PHOTO'"
+        [ownerId]="physiotherapist()?.id ?? null"
+        [accept]="'image/*'"
+        [multiple]="false"
+        [titleText]="'registerPhysiotherapist.photo.upload' | translate"
+        [hintText]="'registerPhysiotherapist.photo.uploadHint' | translate"
+        [iconClass]="'pi pi-image'"
+        (uploaded)="onPhotoUploaded($event)"
+        (uploadingChange)="onPhotoUploadingChange($event)"
+      />
+    </div>
+
     <div class="physio-edit-dialog__actions">
       <button
         pButton
         type="button"
         severity="secondary"
         [outlined]="true"
-        [disabled]="pending()"
+        [disabled]="pending() || isPhotoUploading()"
         (click)="onVisibleChange(false)"
       >
         {{ 'physiotherapistEditDialog.actions.cancel' | translate }}
       </button>
-      <button pButton type="submit" severity="primary" [loading]="pending()" [disabled]="pending()">
+      <button
+        pButton
+        type="submit"
+        severity="primary"
+        [loading]="pending()"
+        [disabled]="pending() || isPhotoUploading()"
+      >
         {{ 'physiotherapistEditDialog.actions.save' | translate }}
       </button>
     </div>
