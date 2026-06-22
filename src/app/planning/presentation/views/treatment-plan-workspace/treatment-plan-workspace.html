@@ -156,7 +156,7 @@
       </button>
     </header>
 
-    @if (isLoadingPlan() && !isCreateMode()) {
+    @if (showRoutinesLoading()) {
       <div class="workspace__loading">
         @for (row of loadingRows; track row) {
           <span class="workspace__loading-card"></span>
@@ -304,21 +304,49 @@
                             {{ 'treatmentPlanWorkspace.series.itemLabel' | translate }}
                             {{ series.order }}
                           </span>
-                          <h4 class="series-card__title">{{ series.exerciseName }}</h4>
-                          <span class="series-card__meta">
-                            {{ bodyPartLabel(series.bodyPart) }} ·
-                            {{ movementLabel(series.movementType) }}
-                          </span>
+                          <h4 class="series-card__title">
+                            {{
+                              series.exerciseName ||
+                                ('treatmentPlanWorkspace.series.unavailableTitle' | translate)
+                            }}
+                          </h4>
+                          @if (series.bodyPart || series.movementType) {
+                            <span class="series-card__meta">
+                              {{ bodyPartLabel(series.bodyPart) }} ·
+                              {{ movementLabel(series.movementType) }}
+                            </span>
+                          } @else {
+                            <span class="series-card__meta series-card__meta--unavailable">
+                              {{ 'treatmentPlanWorkspace.series.unavailableMeta' | translate }}
+                            </span>
+                          }
                         </div>
 
-                        <button
-                          type="button"
-                          class="series-card__remove"
-                          [disabled]="!canEditStructure()"
-                          (click)="onRemoveSeriesClick($event, routine.localKey, series.localKey)"
-                        >
-                          <i class="pi pi-times" aria-hidden="true"></i>
-                        </button>
+                        <div class="series-card__actions">
+                          @if (series.videoUrl) {
+                            <button
+                              type="button"
+                              class="series-card__video-btn"
+                              (click)="onPreviewSeriesVideo(series, $event)"
+                              [attr.aria-label]="
+                                'treatmentPlanWorkspace.series.watchVideoAria'
+                                  | translate: { name: series.exerciseName }
+                              "
+                              [pTooltip]="'treatmentPlanWorkspace.series.watchVideo' | translate"
+                              tooltipPosition="top"
+                            >
+                              <i class="pi pi-play-circle" aria-hidden="true"></i>
+                            </button>
+                          }
+                          <button
+                            type="button"
+                            class="series-card__remove"
+                            [disabled]="!canEditStructure()"
+                            (click)="onRemoveSeriesClick($event, routine.localKey, series.localKey)"
+                          >
+                            <i class="pi pi-times" aria-hidden="true"></i>
+                          </button>
+                        </div>
                       </header>
 
                       <div class="series-card__params">
@@ -440,7 +468,7 @@
       </span>
     </header>
 
-    @if (isLoadingExerciseCatalog()) {
+    @if (showCatalogLoading()) {
       <div class="workspace__catalog-loading">
         @for (row of loadingRows; track row) {
           <span class="workspace__catalog-loading-card"></span>
@@ -478,14 +506,36 @@
       <div class="workspace__catalog-list">
         @for (exercise of exerciseCatalog(); track exercise.id) {
           <article class="catalog-card">
-            <div class="catalog-card__media" aria-hidden="true">
-              <i class="pi pi-image"></i>
-              @if (exercise.videoUrl) {
+            @if (exercise.videoUrl) {
+              <button
+                type="button"
+                class="catalog-card__media catalog-card__media--playable"
+                (click)="onPreviewVideo(exercise, $event)"
+                [attr.aria-label]="
+                  'treatmentPlanWorkspace.catalog.watchVideoAria'
+                    | translate: { name: exercise.name }
+                "
+              >
+                <video
+                  class="catalog-card__media-thumb"
+                  [src]="exercise.videoUrl + '#t=0.1'"
+                  preload="metadata"
+                  muted
+                  playsinline
+                  aria-hidden="true"
+                ></video>
+                <span class="catalog-card__media-play" aria-hidden="true">
+                  <i class="pi pi-play"></i>
+                </span>
                 <span class="catalog-card__media-tag">{{
-                  'treatmentPlanWorkspace.catalog.videoRef' | translate
+                  'treatmentPlanWorkspace.catalog.watchVideo' | translate
                 }}</span>
-              }
-            </div>
+              </button>
+            } @else {
+              <div class="catalog-card__media" aria-hidden="true">
+                <i class="pi pi-image"></i>
+              </div>
+            }
             <div class="catalog-card__body">
               <header class="catalog-card__header">
                 <div>
@@ -525,3 +575,34 @@
   (confirmed)="onConfirmPlanAction()"
   (closed)="onCloseConfirmAction()"
 />
+
+<p-dialog
+  [visible]="isVideoPreviewVisible()"
+  (visibleChange)="!$event ? onCloseVideoPreview() : null"
+  [modal]="true"
+  [dismissableMask]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{ width: '40rem', maxWidth: '92vw' }"
+  [header]="videoPreview()?.title || ('treatmentPlanWorkspace.catalog.watchVideo' | translate)"
+>
+  @if (videoPreview(); as preview) {
+    <div class="workspace__video-preview">
+      @if (preview.bodyPart || preview.movementType) {
+        <p class="workspace__video-preview-meta">
+          {{ bodyPartLabel(preview.bodyPart) }} · {{ movementLabel(preview.movementType) }}
+        </p>
+      }
+      <video
+        class="workspace__video-preview-player"
+        [src]="preview.videoUrl"
+        controls
+        autoplay
+        preload="metadata"
+      ></video>
+      @if (preview.description) {
+        <p class="workspace__video-preview-description">{{ preview.description }}</p>
+      }
+    </div>
+  }
+</p-dialog>

@@ -2019,7 +2019,11 @@
         "repetitions": "Repeticiones",
         "duration": "Duración (seg)",
         "rest": "Descanso (seg)"
-      }
+      },
+      "unavailableTitle": "Ejercicio no disponible",
+      "unavailableMeta": "Este ejercicio fue eliminado del catálogo",
+      "watchVideo": "Ver video",
+      "watchVideoAria": "Ver video de {{name}}"
     },
     "confirm": {
       "activateTitle": "Activar plan",
@@ -2033,7 +2037,7 @@
     },
     "catalog": {
       "title": "Catálogo de ejercicios",
-      "subtitle": "Elige ejercicios creados por la clínica y agrégalos a la rutina seleccionada. Las referencias de video se muestran solo como metadato por ahora.",
+      "subtitle": "Elige ejercicios creados por la clínica y agrégalos a la rutina seleccionada. Los ejercicios con video se pueden previsualizar aquí.",
       "selectedRoutine": "Rutina {{order}} seleccionada",
       "noRoutineSelected": "Selecciona primero una rutina",
       "emptyTitle": "No hay ejercicios disponibles",
@@ -2041,8 +2045,9 @@
       "errorTitle": "No pudimos cargar el catálogo",
       "errorBody": "La rutina sigue disponible, pero necesitamos recuperar la lista de ejercicios de la clínica para poder crear series.",
       "retry": "Reintentar carga",
-      "videoRef": "Referencia de video",
-      "add": "Agregar a la rutina"
+      "add": "Agregar a la rutina",
+      "watchVideo": "Ver video",
+      "watchVideoAria": "Ver video de {{name}}"
     },
     "notifications": {
       "catalogLoadErrorSummary": "No se pudo cargar el catálogo",
