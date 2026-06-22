@@ -3,28 +3,16 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
-import { MessageService } from 'primeng/api';
 import { DeviceStore } from '../../../application/device.store';
 import { OrganizationStore } from '../../../../organization/application/organization.store';
 import { Device } from '../../../domain/model/device.entity';
-import { ConfirmActionDialog } from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
 
 type InventoryTab = 'available' | 'myDevices';
 
 @Component({
   selector: 'app-device-inventory',
-  imports: [
-    DatePipe,
-    DecimalPipe,
-    TranslatePipe,
-    ButtonModule,
-    ToastModule,
-    TooltipModule,
-    ConfirmActionDialog,
-  ],
-  providers: [MessageService],
+  imports: [DatePipe, DecimalPipe, TranslatePipe, ButtonModule, TooltipModule],
   templateUrl: './device-inventory.html',
   styleUrl: './device-inventory.scss',
 })
@@ -33,7 +21,6 @@ export class DeviceInventory {
   private readonly orgStore = inject(OrganizationStore);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly messageService = inject(MessageService);
 
   protected readonly devices = this.store.devices;
 
@@ -95,16 +82,6 @@ export class DeviceInventory {
     () => this.myPatientDevices().filter((d) => d.batteryLevel < 20).length,
   );
 
-  /* Confirm dialog state */
-  protected readonly confirmDialogVisible = signal(false);
-  protected readonly confirmDialogTitleKey = signal('');
-  protected readonly confirmDialogMessageKey = signal('');
-  protected readonly confirmDialogIconClass = signal('pi pi-question-circle');
-  protected readonly confirmDialogTone = signal<'primary' | 'danger'>('primary');
-  protected readonly confirmDialogActionLabelKey = signal('');
-  protected readonly confirmDialogPending = signal(false);
-  protected readonly selectedDeviceForAction = signal<Device | null>(null);
-
   constructor() {
     void this.orgStore.loadMyPatients();
   }
@@ -117,41 +94,5 @@ export class DeviceInventory {
 
   protected onViewDetails(device: Device) {
     this.router.navigate(['details', device.id], { relativeTo: this.route });
-  }
-
-  protected onOpenDeleteConfirm(device: Device) {
-    this.selectedDeviceForAction.set(device);
-    this.confirmDialogTitleKey.set('deviceManagement.deleteConfirm.title');
-    this.confirmDialogMessageKey.set('deviceManagement.deleteConfirm.body');
-    this.confirmDialogIconClass.set('pi pi-trash');
-    this.confirmDialogTone.set('danger');
-    this.confirmDialogActionLabelKey.set('deviceManagement.actions.deleteDevice');
-    this.confirmDialogVisible.set(true);
-  }
-
-  protected onConfirmAction() {
-    const device = this.selectedDeviceForAction();
-    if (!device) return;
-
-    this.confirmDialogPending.set(true);
-    this.store.deleteDevice(device.id).subscribe({
-      next: () => {
-        this.confirmDialogPending.set(false);
-        this.confirmDialogVisible.set(false);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Dispositivo eliminado',
-          detail: `Dispositivo ${device.serialNumber} eliminado`,
-        });
-      },
-      error: () => {
-        this.confirmDialogPending.set(false);
-        this.confirmDialogVisible.set(false);
-      },
-    });
-  }
-
-  protected onCloseDialog() {
-    this.confirmDialogVisible.set(false);
   }
 }

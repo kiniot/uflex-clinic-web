@@ -318,7 +318,10 @@
       "lowBatteryKits": "Batería baja",
       "lowBatteryKitsNote": "Requieren carga",
       "offlineKits": "Desconectados",
-      "offlineKitsNote": "Sin conexión"
+      "offlineKitsNote": "Sin conexión",
+      "pendingKits": "Kits pendientes",
+      "requestedKits": "{{count}} contratados",
+      "pendingKitsNote": "Pendientes de envío"
     },
     "fleetStatus": "Estado de la flota",
     "columns": {

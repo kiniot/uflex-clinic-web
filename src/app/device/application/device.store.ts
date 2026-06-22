@@ -1,14 +1,12 @@
 import { computed, Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, catchError, firstValueFrom } from 'rxjs';
+import { Observable, tap, catchError } from 'rxjs';
 import { Device } from '../domain/model/device.entity';
 import { DeviceApiEndpoint } from '../infrastructure/device-endpoint';
-import { RegisterDeviceCommand } from '../domain/model/register-device.command';
 import { UpdateDeviceStatusCommand } from '../domain/model/update-device-status.command';
 import { CalibrationCommand } from '../domain/model/calibration.command';
 import { AssignDeviceCommand } from '../domain/model/assign-device.command';
 import { UpdateTelemetryCommand } from '../domain/model/update-telemetry.command';
-import { RegisterDeviceApiEndpoint } from '../infrastructure/register-device-endpoint';
 import { DeviceStatusApiEndpoint } from '../infrastructure/device-status-endpoint';
 import { DeviceCalibrationApiEndpoint } from '../infrastructure/device-calibration-endpoint';
 import { DeviceAssignmentApiEndpoint } from '../infrastructure/device-assignment-endpoint';
@@ -22,7 +20,6 @@ import { DeviceStatus } from '../domain/model/device.types';
 export class DeviceStore {
   private readonly http = inject(HttpClient);
   private readonly deviceApi = new DeviceApiEndpoint(this.http);
-  private readonly registerDeviceApi = new RegisterDeviceApiEndpoint(this.http);
   private readonly deviceStatusApi = new DeviceStatusApiEndpoint(this.http);
   private readonly deviceCalibrationApi = new DeviceCalibrationApiEndpoint(this.http);
   private readonly deviceAssignmentApi = new DeviceAssignmentApiEndpoint(this.http);
@@ -38,6 +35,8 @@ export class DeviceStore {
     inMaintenance: 0,
     lowBattery: 0,
     offline: 0,
+    requestedKits: 0,
+    pendingKits: 0,
   });
   private readonly isLoadingSignal = signal<boolean>(false);
   private readonly errorSignal = signal<string | null>(null);
@@ -95,23 +94,6 @@ export class DeviceStore {
         this.isLoadingSignal.set(false);
       },
     });
-  }
-
-  async registerDevice(command: RegisterDeviceCommand): Promise<Device> {
-    this.isLoadingSignal.set(true);
-    this.errorSignal.set(null);
-    try {
-      const device = await firstValueFrom(this.registerDeviceApi.execute(command));
-      this.devicesSignal.update((devices) => [...devices, device]);
-      this.recomputeFleetMetrics();
-      return device;
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Failed to register device';
-      this.errorSignal.set(message);
-      throw err;
-    } finally {
-      this.isLoadingSignal.set(false);
-    }
   }
 
   updateDeviceStatus(deviceId: string, status: DeviceStatus): Observable<Device> {
@@ -189,19 +171,6 @@ export class DeviceStore {
     );
   }
 
-  deleteDevice(deviceId: string): Observable<void> {
-    return this.deviceApi.delete(deviceId).pipe(
-      tap(() => {
-        this.devicesSignal.update((devices) => devices.filter((d) => d.id !== deviceId));
-        this.recomputeFleetMetrics();
-      }),
-      catchError((err: Error) => {
-        this.errorSignal.set(err.message);
-        throw err;
-      }),
-    );
-  }
-
   updateTelemetry(deviceId: string, batteryLevel: number): Observable<void> {
     const command: UpdateTelemetryCommand = { deviceId, batteryLevel };
     return this.deviceTelemetryApi.update(command).pipe(
@@ -263,6 +232,9 @@ export class DeviceStore {
 
   private recomputeFleetMetrics(): void {
     const devices = this.devices();
+    // requestedKits/pendingKits are derived server-side from the subscription, so we
+    // preserve the last server-provided values when recomputing locally.
+    const prev = this.fleetMetricsSignal();
     const metrics: FleetMetrics = {
       total: devices.length,
       available: devices.filter((d) => d.status === 'AVAILABLE').length,
@@ -270,6 +242,8 @@ export class DeviceStore {
       inMaintenance: devices.filter((d) => d.status === 'IN_MAINTENANCE').length,
       lowBattery: devices.filter((d) => d.batteryLevel < 20).length,
       offline: devices.filter((d) => d.offline).length,
+      requestedKits: prev.requestedKits,
+      pendingKits: prev.pendingKits,
     };
     this.fleetMetricsSignal.set(metrics);
   }

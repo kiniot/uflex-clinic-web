@@ -318,7 +318,10 @@
       "lowBatteryKits": "Low Battery",
       "lowBatteryKitsNote": "Needs charge",
       "offlineKits": "Offline",
-      "offlineKitsNote": "Disconnected"
+      "offlineKitsNote": "Disconnected",
+      "pendingKits": "Pending Kits",
+      "requestedKits": "{{count}} contracted",
+      "pendingKitsNote": "Pending shipment"
     },
     "fleetStatus": "Fleet Status",
     "columns": {
