@@ -1325,7 +1325,8 @@
   },
   "topbar": {
     "settings": "Configuración",
-    "changePassword": "Cambiar contraseña"
+    "changePassword": "Cambiar contraseña",
+    "menu": "Abrir menú"
   },
   "physiotherapist": {
     "brand": {
