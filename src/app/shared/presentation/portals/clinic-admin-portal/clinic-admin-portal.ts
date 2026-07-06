@@ -78,6 +78,7 @@ export class ClinicAdminPortal {
       'clinicAdmin.topbar.searchPlaceholder',
       'clinicAdmin.topbar.rolePill',
       'topbar.changePassword',
+      'topbar.menu',
     ]),
     { initialValue: {} as Record<string, string> },
   );
@@ -147,6 +148,7 @@ export class ClinicAdminPortal {
   protected changePasswordTooltip = computed(
     () => this.translations()['topbar.changePassword'] ?? 'Change password',
   );
+  protected menuToggleLabel = computed(() => this.translations()['topbar.menu'] ?? 'Menu');
 
   constructor() {
     effect(() => {
