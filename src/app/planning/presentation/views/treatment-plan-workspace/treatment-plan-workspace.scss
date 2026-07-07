@@ -448,6 +448,32 @@
   color: var(--p-red-500);
 }
 
+.series-card__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.series-card__video-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--p-text-muted-color);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  @include theme.surface;
+}
+
+.series-card__video-btn:hover {
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+  color: var(--p-primary-color);
+}
+
 .routine-card__meta {
   display: grid;
   grid-template-columns: 2fr 0.8fr 1fr 1fr;
@@ -575,6 +601,11 @@
   color: var(--p-text-muted-color);
 }
 
+.series-card__meta--unavailable {
+  font-style: italic;
+  color: var(--p-text-muted-color);
+}
+
 .series-card__params {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -644,6 +675,90 @@
 
 :host-context(.app-dark) .catalog-card__media-tag {
   background: color-mix(in srgb, var(--p-surface-0) 18%, var(--p-surface-200));
+}
+
+.catalog-card__media--playable {
+  position: relative;
+  width: 100%;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  min-height: 120px;
+  overflow: hidden;
+}
+
+.catalog-card__media--playable:focus-visible {
+  outline: 2px solid var(--p-primary-color);
+  outline-offset: -2px;
+}
+
+.catalog-card__media-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--p-surface-900);
+}
+
+.catalog-card__media-play {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-surface-0) 86%, transparent);
+  color: var(--p-primary-color);
+  font-size: 18px;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--p-surface-900) 26%, transparent);
+  transition:
+    transform 0.16s ease,
+    background 0.16s ease;
+}
+
+.catalog-card__media--playable:hover .catalog-card__media-play {
+  transform: scale(1.06);
+  background: var(--p-surface-0);
+}
+
+.catalog-card__media--playable .catalog-card__media-tag {
+  position: relative;
+  z-index: 1;
+  margin-top: 8px;
+}
+
+.workspace__video-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.workspace__video-preview-meta {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+}
+
+.workspace__video-preview-player {
+  width: 100%;
+  border-radius: 12px;
+  background: var(--p-surface-900);
+  aspect-ratio: 16 / 9;
+}
+
+.workspace__video-preview-description {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--p-text-color);
 }
 
 .catalog-card__body {

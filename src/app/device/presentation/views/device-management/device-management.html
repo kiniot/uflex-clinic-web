@@ -95,36 +95,30 @@
       }}</span>
     </div>
   </app-stat-card>
+
+  <app-stat-card [title]="'deviceManagement.stats.pendingKits' | translate">
+    <div class="device__stat-content">
+      <div class="device__stat-row">
+        <i
+          class="pi pi-truck device__stat-icon device__stat-icon--info"
+          aria-hidden="true"
+        ></i>
+        <span class="device__stat-number device__stat-number--info">{{
+          fleetMetrics().pendingKits
+        }}</span>
+      </div>
+      <span class="device__stat-badge">{{
+        'deviceManagement.stats.requestedKits' | translate: { count: fleetMetrics().requestedKits }
+      }}</span>
+      <span class="device__stat-note">{{
+        'deviceManagement.stats.pendingKitsNote' | translate
+      }}</span>
+    </div>
+  </app-stat-card>
 </section>
 
 <app-fleet-table
   [devices]="devices()"
   (viewDetails)="onViewDetails($event)"
   (rowOpen)="onViewDetails($event)"
-  (deleteDevice)="onDeleteDevice($event)"
->
-  <button
-    fleetHeaderAction
-    pButton
-    type="button"
-    severity="primary"
-    class="device__action-btn"
-    routerLink="register"
-  >
-    <i class="pi pi-plus" aria-hidden="true"></i>
-    <span>{{ 'deviceManagement.actions.registerDevice' | translate }}</span>
-  </button>
-</app-fleet-table>
-
-<app-confirm-action-dialog
-  [visible]="confirmDialogVisible()"
-  [titleKey]="confirmDialogTitleKey()"
-  [messageKey]="confirmDialogMessageKey()"
-  [confirmLabelKey]="confirmDialogActionLabelKey()"
-  [iconClass]="confirmDialogIconClass()"
-  [tone]="confirmDialogTone()"
-  [pending]="pendingAction()"
-  (visibleChange)="!$event ? onCloseDialog() : null"
-  (closed)="onCloseDialog()"
-  (confirmed)="onConfirmAction()"
 />
