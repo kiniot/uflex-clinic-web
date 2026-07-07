@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SearchInput } from '../search-input/search-input';
 
@@ -54,8 +54,21 @@ export class AdminShell {
   bottomItems = input<AdminBottomItem[]>([]);
   searchPlaceholder = input<string>('');
   searchValue = input<string>('');
+  /** Accessible label for the mobile nav toggle; optional so existing callers stay valid. */
+  menuToggleLabel = input<string>('Menu');
 
   readonly searchValueChange = output<string>();
+
+  /** Whether the off-canvas sidebar is open on small viewports. Ignored on desktop. */
+  protected readonly mobileNavOpen = signal(false);
+
+  protected toggleMobileNav() {
+    this.mobileNavOpen.update((open) => !open);
+  }
+
+  protected closeMobileNav() {
+    this.mobileNavOpen.set(false);
+  }
 
   protected onSearch(next: string) {
     this.searchValueChange.emit(next);

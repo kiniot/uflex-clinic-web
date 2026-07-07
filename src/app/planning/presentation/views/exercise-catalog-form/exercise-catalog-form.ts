@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,6 +8,9 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
+import { TooltipModule } from 'primeng/tooltip';
+import { MediaAsset, MediaOwnerType } from '../../../../media/domain/model/media.model';
+import { MediaUploader } from '../../../../media/presentation/media-uploader/media-uploader';
 import { PlanningStore } from '../../../application/planning.store';
 import { CreateExerciseCommand } from '../../../domain/model/create-exercise.command';
 import { UpdateExerciseCommand } from '../../../domain/model/update-exercise.command';
@@ -29,6 +32,8 @@ interface SelectOption<T> {
     SelectModule,
     TextareaModule,
     PageHeader,
+    MediaUploader,
+    TooltipModule,
   ],
   templateUrl: './exercise-catalog-form.html',
   styleUrl: './exercise-catalog-form.scss',
@@ -39,6 +44,8 @@ export class ExerciseCatalogForm extends BaseForm implements OnInit {
   private readonly router = inject(Router);
   private readonly messageService = inject(MessageService);
   private readonly translate = inject(TranslateService);
+
+  private readonly mediaUploaderRef = viewChild<MediaUploader>('mediaUploader');
 
   private readonly translations = toSignal(
     this.translate.stream([
@@ -54,9 +61,16 @@ export class ExerciseCatalogForm extends BaseForm implements OnInit {
 
   protected readonly isLoadingExercise = this.planningStore.isLoadingSelectedExerciseCatalogItem;
   protected readonly isSavingExercise = this.planningStore.isSavingExercise;
-  protected readonly selectedVideoFileName = signal<string | null>(null);
   protected readonly exerciseId = signal<string | null>(null);
+  protected readonly videoPreviewUrl = signal<string | null>(null);
+  protected readonly videoAssetIdChange = signal<string | null | undefined>(undefined);
+  protected readonly isVideoUploading = signal(false);
+  protected readonly isShellDragging = signal(false);
   protected readonly isEditMode = computed(() => this.exerciseId() !== null);
+  protected readonly uploadOwnerType = computed<MediaOwnerType>(() =>
+    this.isEditMode() ? 'EXERCISE_VIDEO' : 'GENERIC',
+  );
+  protected readonly hasVideo = computed(() => this.videoPreviewUrl() !== null);
 
   protected readonly bodyPartOptions = computed<SelectOption<'ELBOW' | 'WRIST'>[]>(() => [
     {
@@ -100,7 +114,6 @@ export class ExerciseCatalogForm extends BaseForm implements OnInit {
       { validators: [Validators.required] },
     ),
     description: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
-    videoUrl: new FormControl('', { nonNullable: true }),
   });
 
   ngOnInit(): void {
@@ -113,6 +126,9 @@ export class ExerciseCatalogForm extends BaseForm implements OnInit {
 
     if (!exerciseId) {
       this.planningStore.clearSelectedExerciseCatalogItem();
+      this.videoPreviewUrl.set(null);
+      this.videoAssetIdChange.set(undefined);
+      this.isVideoUploading.set(false);
       return;
     }
 
@@ -126,13 +142,53 @@ export class ExerciseCatalogForm extends BaseForm implements OnInit {
       bodyPart: exercise.bodyPart as 'ELBOW' | 'WRIST',
       movementType: exercise.movementType as 'PRONATION' | 'SUPINATION' | 'FLEXION' | 'EXTENSION',
       description: exercise.description,
-      videoUrl: exercise.videoUrl ?? '',
     });
+    this.videoPreviewUrl.set(exercise.videoUrl);
+    this.videoAssetIdChange.set(undefined);
+    this.isVideoUploading.set(false);
   }
 
-  protected onVideoPicked(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0] ?? null;
-    this.selectedVideoFileName.set(file?.name ?? null);
+  protected onVideoUploaded(asset: MediaAsset): void {
+    this.videoAssetIdChange.set(asset.id);
+    this.videoPreviewUrl.set(asset.downloadUrl);
+  }
+
+  protected onVideoUploadingChange(isUploading: boolean): void {
+    this.isVideoUploading.set(isUploading);
+  }
+
+  protected onRemoveVideo(): void {
+    this.videoAssetIdChange.set(null);
+    this.videoPreviewUrl.set(null);
+  }
+
+  protected onReplaceVideo(): void {
+    this.mediaUploaderRef()?.triggerPicker();
+  }
+
+  protected onShellDragOver(event: DragEvent): void {
+    event.preventDefault();
+    if (this.hasVideo()) {
+      this.isShellDragging.set(true);
+    }
+  }
+
+  protected onShellDragLeave(event: DragEvent): void {
+    event.preventDefault();
+    const shell = event.currentTarget as HTMLElement;
+    if (!shell.contains(event.relatedTarget as Node)) {
+      this.isShellDragging.set(false);
+    }
+  }
+
+  protected onShellDrop(event: DragEvent): void {
+    event.preventDefault();
+    this.isShellDragging.set(false);
+    if (!this.hasVideo()) return;
+    const files = event.dataTransfer?.files;
+    if (files) {
+      this.mediaUploaderRef()?.handleDroppedFiles(files);
+    }
   }
 
   protected onCancel() {
@@ -141,12 +197,11 @@ export class ExerciseCatalogForm extends BaseForm implements OnInit {
 
   protected async onSubmit() {
     this.form.markAllAsTouched();
-    if (this.form.invalid) {
+    if (this.form.invalid || this.isVideoUploading()) {
       return;
     }
 
     const value = this.form.getRawValue();
-    const normalizedVideoUrl = value.videoUrl.trim() ? value.videoUrl.trim() : null;
 
     try {
       if (this.isEditMode() && this.exerciseId()) {
@@ -157,7 +212,7 @@ export class ExerciseCatalogForm extends BaseForm implements OnInit {
             description: value.description.trim(),
             bodyPart: value.bodyPart!,
             movementType: value.movementType!,
-            videoUrl: normalizedVideoUrl,
+            videoAssetId: this.videoAssetIdChange(),
           }),
         );
         this.messageService.add({
@@ -175,7 +230,7 @@ export class ExerciseCatalogForm extends BaseForm implements OnInit {
             description: value.description.trim(),
             bodyPart: value.bodyPart!,
             movementType: value.movementType!,
-            videoUrl: normalizedVideoUrl,
+            videoAssetId: this.videoAssetIdChange() ?? undefined,
           }),
         );
         this.messageService.add({

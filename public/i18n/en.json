@@ -146,7 +146,7 @@
     "form": {
       "createTitle": "Create Exercise",
       "editTitle": "Edit Exercise",
-      "subtitle": "Register the exercise metadata now. Video upload will be enabled once the backend supports attachments.",
+      "subtitle": "Register the exercise metadata and attach a clinical video when available.",
       "name": "Exercise name",
       "namePlaceholder": "e.g. Wrist supination",
       "bodyPart": "Target body part",
@@ -155,13 +155,14 @@
       "movementTypePlaceholder": "Select movement type",
       "description": "Therapeutic description",
       "descriptionPlaceholder": "Describe the therapeutic intent and how the exercise should be performed...",
-      "videoUrl": "Video URL (optional)",
-      "videoUrlPlaceholder": "https://cdn.uflex.app/exercises/example.mp4",
-      "videoUrlHint": "Leave this empty for now if the video is not published yet.",
-      "videoSectionTitle": "Video placeholder",
-      "videoSectionBody": "The final product will support attaching a video here. For now this area is only a visual placeholder.",
-      "uploadHint": "Drag or upload a video here",
-      "uploadMeta": "Upload is not active yet. The selected file is not sent to the backend."
+      "videoSectionTitle": "Exercise video",
+      "videoSectionBody": "Upload a clinical video to support the guided execution of this exercise.",
+      "uploadVideo": "Upload clinical video",
+      "uploadVideoHint": "Drag the video here or click to select it.",
+      "replaceVideo": "Replace video",
+      "removeVideo": "Remove video",
+      "uploadingVideo": "Uploading video…",
+      "dropToReplace": "Drop to replace the video"
     },
     "deleteConfirm": {
       "title": "Delete exercise",
@@ -317,7 +318,10 @@
       "lowBatteryKits": "Low Battery",
       "lowBatteryKitsNote": "Needs charge",
       "offlineKits": "Offline",
-      "offlineKitsNote": "Disconnected"
+      "offlineKitsNote": "Disconnected",
+      "pendingKits": "Pending Kits",
+      "requestedKits": "{{count}} contracted",
+      "pendingKitsNote": "Pending shipment"
     },
     "fleetStatus": "Fleet Status",
     "columns": {
@@ -1018,10 +1022,14 @@
     },
     "photo": {
       "title": "Profile Photo",
-      "upload": "Profile image URL",
-      "urlLabel": "Photo URL",
-      "urlPlaceholder": "https://example.com/photos/pepe.jpg",
-      "formats": "Use a stable image URL that can be displayed in the clinician directory."
+      "upload": "Upload a clear photo of the physiotherapist",
+      "formats": "Accepts JPG, PNG, or WebP images. The photo will appear in the clinic directory.",
+      "previewAlt": "Physiotherapist photo preview",
+      "change": "Change photo",
+      "remove": "Remove photo",
+      "uploading": "Uploading photo…",
+      "replace": "Replace photo",
+      "uploadHint": "Drag an image here or click to select it."
     },
     "quickTip": {
       "title": "Quick Tip",
@@ -1325,7 +1333,8 @@
   },
   "topbar": {
     "settings": "Settings",
-    "changePassword": "Change password"
+    "changePassword": "Change password",
+    "menu": "Open menu"
   },
   "physiotherapist": {
     "brand": {
@@ -2014,7 +2023,11 @@
         "repetitions": "Repetitions",
         "duration": "Duration (sec)",
         "rest": "Rest (sec)"
-      }
+      },
+      "unavailableTitle": "Exercise unavailable",
+      "unavailableMeta": "This exercise was removed from the catalog",
+      "watchVideo": "Watch video",
+      "watchVideoAria": "Watch {{name}} video"
     },
     "confirm": {
       "activateTitle": "Activate plan",
@@ -2028,7 +2041,7 @@
     },
     "catalog": {
       "title": "Exercise catalog",
-      "subtitle": "Choose exercises created by the clinic and add them to the selected routine. Video references are shown only as metadata for now.",
+      "subtitle": "Choose exercises created by the clinic and add them to the selected routine. Exercises with a video can be previewed here.",
       "selectedRoutine": "Routine {{order}} selected",
       "noRoutineSelected": "Select a routine first",
       "emptyTitle": "No exercises available",
@@ -2036,8 +2049,9 @@
       "errorTitle": "We could not load the catalog",
       "errorBody": "The routine builder is still available, but we need the clinic exercise list before exercise series can be added.",
       "retry": "Retry load",
-      "videoRef": "Video reference",
-      "add": "Add to routine"
+      "add": "Add to routine",
+      "watchVideo": "Watch video",
+      "watchVideoAria": "Watch {{name}} video"
     },
     "notifications": {
       "catalogLoadErrorSummary": "Exercise catalog unavailable",

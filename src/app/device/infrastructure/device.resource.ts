@@ -1,4 +1,5 @@
 import { BaseResource } from '../../shared/infrastructure/base-response';
+import { CalibrationStatus, DeviceStatus } from '../domain/model/device.types';
 
 export interface DeviceResource extends BaseResource {
   serialNumber: string;
@@ -7,8 +8,8 @@ export interface DeviceResource extends BaseResource {
   batteryLevel: number;
   model: string;
   advertisedName: string | null;
-  calibrationStatus: 'VALID' | 'NEEDS_CALIBRATION';
-  status: 'AVAILABLE' | 'ASSIGNED' | 'IN_MAINTENANCE' | 'RETIRED';
+  calibrationStatus: CalibrationStatus;
+  status: DeviceStatus;
   lastSeenAt: string | null;
   clinicId: string;
   currentPatientId: string | null;

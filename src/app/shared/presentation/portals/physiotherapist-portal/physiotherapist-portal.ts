@@ -76,6 +76,7 @@ export class PhysiotherapistPortal {
       'physiotherapist.topbar.searchPlaceholder',
       'physiotherapist.topbar.rolePill',
       'topbar.changePassword',
+      'topbar.menu',
     ]),
     { initialValue: {} as Record<string, string> },
   );
@@ -135,6 +136,7 @@ export class PhysiotherapistPortal {
   protected changePasswordTooltip = computed(
     () => this.translations()['topbar.changePassword'] ?? 'Change password',
   );
+  protected menuToggleLabel = computed(() => this.translations()['topbar.menu'] ?? 'Menu');
 
   protected openChangePassword() {
     this.changePasswordVisible.set(true);

@@ -56,8 +56,8 @@ export class PhysiotherapistProfileAssembler {
       phoneNumber: command.phoneNumber,
       licenseNumber: command.licenseNumber,
       professionalSummary: command.professionalSummary,
-      photoUrl: command.photoUrl,
       yearsOfExperience: command.yearsOfExperience,
+      ...(command.photoAssetId !== undefined ? { photoAssetId: command.photoAssetId } : {}),
     } as RegisterPhysiotherapistRequest;
   }
 
@@ -70,8 +70,8 @@ export class PhysiotherapistProfileAssembler {
       phoneNumber: command.phoneNumber,
       licenseNumber: command.licenseNumber,
       professionalSummary: command.professionalSummary,
-      photoUrl: command.photoUrl,
       yearsOfExperience: command.yearsOfExperience,
+      ...(command.photoAssetId !== undefined ? { photoAssetId: command.photoAssetId } : {}),
     } as UpdatePhysiotherapistRequest;
   }
 }

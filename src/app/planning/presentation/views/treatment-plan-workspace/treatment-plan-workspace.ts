@@ -6,8 +6,10 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { TooltipModule } from 'primeng/tooltip';
 import { OrganizationStore } from '../../../../organization/application/organization.store';
 import { ConfirmActionDialog } from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
 import { AddRoutineCommand } from '../../../domain/model/add-routine.command';
@@ -26,6 +28,14 @@ import { PlanningStore } from '../../../application/planning.store';
 interface SelectOption<T> {
   label: string;
   value: T;
+}
+
+interface VideoPreview {
+  title: string;
+  bodyPart: string;
+  movementType: string;
+  videoUrl: string;
+  description?: string | null;
 }
 
 interface ExerciseSeriesDraft {
@@ -78,8 +88,10 @@ const SERIES_LEAVE_DURATION_MS = 180;
     RouterLink,
     TranslatePipe,
     ButtonModule,
+    DialogModule,
     InputTextModule,
     SelectModule,
+    TooltipModule,
     ConfirmActionDialog,
   ],
   templateUrl: './treatment-plan-workspace.html',
@@ -127,6 +139,8 @@ export class TreatmentPlanWorkspace {
   private readonly runningTransitionSignal = signal(false);
   private readonly pendingPlanActionSignal = signal<PendingPlanAction | null>(null);
   private readonly confirmActionVisibleSignal = signal(false);
+  private readonly videoPreviewSignal = signal<VideoPreview | null>(null);
+  private readonly hydratingSignal = signal(true);
   private lastCatalogErrorMessage: string | null = null;
 
   protected readonly patient = this.organizationStore.selectedPatient;
@@ -140,7 +154,18 @@ export class TreatmentPlanWorkspace {
   protected readonly isSaving = this.savingSignal.asReadonly();
   protected readonly isRunningTransition = this.runningTransitionSignal.asReadonly();
   protected readonly confirmActionVisible = this.confirmActionVisibleSignal;
+  protected readonly videoPreview = this.videoPreviewSignal.asReadonly();
+  protected readonly isVideoPreviewVisible = computed(() => this.videoPreviewSignal() !== null);
+  protected readonly isHydrating = this.hydratingSignal.asReadonly();
   protected readonly loadingRows = [0, 1, 2];
+  protected readonly showRoutinesLoading = computed(
+    () => !this.isCreateMode() && (this.isHydrating() || this.isLoadingPlan()),
+  );
+  protected readonly showCatalogLoading = computed(
+    () =>
+      this.isLoadingExerciseCatalog() ||
+      (this.isHydrating() && this.exerciseCatalog().length === 0),
+  );
 
   protected readonly dayOptions = computed<SelectOption<TreatmentPlanDayOfWeek>[]>(() => [
     {
@@ -517,6 +542,33 @@ export class TreatmentPlanWorkspace {
     void this.planningStore.loadExerciseCatalog();
   }
 
+  protected onPreviewVideo(exercise: ExerciseCatalogItem, event?: Event) {
+    event?.stopPropagation();
+    if (!exercise.videoUrl) return;
+    this.videoPreviewSignal.set({
+      title: exercise.name,
+      bodyPart: exercise.bodyPart,
+      movementType: exercise.movementType,
+      videoUrl: exercise.videoUrl,
+      description: exercise.description,
+    });
+  }
+
+  protected onPreviewSeriesVideo(series: ExerciseSeriesDraft, event?: Event) {
+    event?.stopPropagation();
+    if (!series.videoUrl) return;
+    this.videoPreviewSignal.set({
+      title: series.exerciseName,
+      bodyPart: series.bodyPart,
+      movementType: series.movementType,
+      videoUrl: series.videoUrl,
+    });
+  }
+
+  protected onCloseVideoPreview() {
+    this.videoPreviewSignal.set(null);
+  }
+
   protected onSavePlan() {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
@@ -637,31 +689,36 @@ export class TreatmentPlanWorkspace {
   }
 
   private async loadWorkspace(patientId: string, planId: string): Promise<void> {
-    await Promise.all([
-      this.organizationStore.loadCurrentClinicOnce(),
-      this.organizationStore.loadCurrentPhysiotherapistOnce(),
-      this.organizationStore.loadPatientById(patientId),
-      this.planningStore.loadExerciseCatalog(),
-    ]);
+    this.hydratingSignal.set(true);
+    try {
+      await Promise.all([
+        this.organizationStore.loadCurrentClinicOnce(),
+        this.organizationStore.loadCurrentPhysiotherapistOnce(),
+        this.organizationStore.loadPatientById(patientId),
+        this.planningStore.loadExerciseCatalog(),
+      ]);
 
-    if (planId === 'new') {
-      this.originalPlanSignal.set(null);
-      this.form.reset(
-        {
-          name: '',
-          startsAt: '',
-          endsAt: '',
-        },
-        { emitEvent: false },
-      );
-      this.routineDraftsSignal.set([]);
-      this.selectedRoutineLocalKeySignal.set(null);
-      return;
+      if (planId === 'new') {
+        this.originalPlanSignal.set(null);
+        this.form.reset(
+          {
+            name: '',
+            startsAt: '',
+            endsAt: '',
+          },
+          { emitEvent: false },
+        );
+        this.routineDraftsSignal.set([]);
+        this.selectedRoutineLocalKeySignal.set(null);
+        return;
+      }
+
+      const plan = await this.planningStore.loadTreatmentPlan(patientId, planId);
+      this.originalPlanSignal.set(plan);
+      this.patchDraftFromPlan(plan);
+    } finally {
+      this.hydratingSignal.set(false);
     }
-
-    const plan = await this.planningStore.loadTreatmentPlan(patientId, planId);
-    this.originalPlanSignal.set(plan);
-    this.patchDraftFromPlan(plan);
   }
 
   private patchDraftFromPlan(plan: TreatmentPlan | null): void {
@@ -703,7 +760,7 @@ export class TreatmentPlanWorkspace {
             localKey: this.seriesLocalKey++,
             order: series.order,
             exerciseId: series.exerciseId,
-            exerciseName: exercise?.name ?? series.exerciseId,
+            exerciseName: exercise?.name ?? '',
             bodyPart: exercise?.bodyPart ?? '',
             movementType: exercise?.movementType ?? '',
             videoUrl: exercise?.videoUrl ?? null,

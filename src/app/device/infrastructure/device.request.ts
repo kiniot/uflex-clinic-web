@@ -1,13 +1,7 @@
-export interface RegisterDeviceRequest {
-  serialNumber: string;
-  macAddress: string;
-  firmwareVersion?: string;
-  model?: string;
-  advertisedName?: string;
-}
+import { DeviceStatus } from '../domain/model/device.types';
 
 export interface UpdateDeviceStatusRequest {
-  status: 'AVAILABLE' | 'ASSIGNED' | 'IN_MAINTENANCE' | 'RETIRED';
+  status: DeviceStatus;
 }
 
 export interface CalibrationActionRequest {

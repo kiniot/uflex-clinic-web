@@ -24,7 +24,6 @@ export class FleetTable {
   devices = input.required<Device[]>();
 
   readonly viewDetails = output<Device>();
-  readonly deleteDevice = output<Device>();
   readonly rowOpen = output<Device>();
 
   protected readonly connectivityFilter = signal<'all' | 'online' | 'offline'>('all');
@@ -94,11 +93,6 @@ export class FleetTable {
   protected onViewDetails(device: Device, event: Event) {
     event.stopPropagation();
     this.viewDetails.emit(device);
-  }
-
-  protected onDeleteDevice(device: Device, event: Event) {
-    event.stopPropagation();
-    this.deleteDevice.emit(device);
   }
 
   protected onRowClick(device: Device) {

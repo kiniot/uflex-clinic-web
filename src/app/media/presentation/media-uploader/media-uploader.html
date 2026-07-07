@@ -1,0 +1,69 @@
+<div
+  class="media-uploader"
+  [ngClass]="{ 'media-uploader--dragging': isDragging() }"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)"
+>
+  @if (activeItem()?.status === 'uploading') {
+    <div class="media-uploader__progress">
+      <div class="media-uploader__progress-ring">
+        <i class="pi pi-spin pi-spinner media-uploader__spinner" aria-hidden="true"></i>
+      </div>
+      <span class="media-uploader__progress-name">{{ activeItem()!.file.name }}</span>
+      <span class="media-uploader__progress-label">Subiendo archivo…</span>
+      <div class="media-uploader__progress-track">
+        <div class="media-uploader__progress-fill"></div>
+      </div>
+    </div>
+  } @else {
+    <label class="media-uploader__dropzone">
+      <input
+        #fileInput
+        type="file"
+        class="media-uploader__input"
+        [accept]="accept()"
+        [multiple]="multiple()"
+        (change)="onFileInput($event)"
+      />
+      @if (activeItem()?.status === 'error') {
+        <div class="media-uploader__error">
+          <i class="pi pi-exclamation-circle media-uploader__error-icon" aria-hidden="true"></i>
+          <span class="media-uploader__error-title">Error al subir el archivo</span>
+          <span class="media-uploader__error-hint">Haz clic para intentarlo de nuevo</span>
+        </div>
+      } @else {
+        @if (iconClass()) {
+          <i class="media-uploader__icon" [class]="iconClass()" aria-hidden="true"></i>
+        }
+        @if (titleText()) {
+          <span class="media-uploader__title">{{ titleText() }}</span>
+        }
+        @if (hintText()) {
+          <span class="media-uploader__hint">{{ hintText() }}</span>
+        }
+      }
+    </label>
+
+    @if (multiple() && items().length > 0) {
+      <ul class="media-uploader__list">
+        @for (item of items(); track item.file.name + item.file.size) {
+          <li class="media-uploader__item" [ngClass]="'is-' + item.status">
+            <span class="media-uploader__filename">{{ item.file.name }}</span>
+            @switch (item.status) {
+              @case ('uploading') {
+                <i class="pi pi-spin pi-spinner media-uploader__item-icon" aria-hidden="true"></i>
+              }
+              @case ('done') {
+                <i class="pi pi-check media-uploader__item-icon" aria-hidden="true"></i>
+              }
+              @case ('error') {
+                <span class="media-uploader__state">✕ {{ item.error }}</span>
+              }
+            }
+          </li>
+        }
+      </ul>
+    }
+  }
+</div>

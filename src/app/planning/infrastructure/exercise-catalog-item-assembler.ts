@@ -36,7 +36,7 @@ export class ExerciseCatalogItemAssembler {
       description: command.description,
       bodyPart: command.bodyPart,
       movementType: command.movementType,
-      videoUrl: command.videoUrl,
+      ...(command.videoAssetId !== undefined ? { videoAssetId: command.videoAssetId } : {}),
     } as SaveExerciseRequest;
   }
 
@@ -46,7 +46,7 @@ export class ExerciseCatalogItemAssembler {
       description: command.description,
       bodyPart: command.bodyPart,
       movementType: command.movementType,
-      videoUrl: command.videoUrl,
+      ...(command.videoAssetId !== undefined ? { videoAssetId: command.videoAssetId } : {}),
     } as SaveExerciseRequest;
   }
 }

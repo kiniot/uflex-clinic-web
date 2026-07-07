@@ -63,22 +63,26 @@
             {{ 'organization.profile.empty.cta' | translate }}
           </button>
         } @else {
-          <span class="org-hero__admin-label">{{ 'organization.hero.managedBy' | translate }}</span>
-          <strong class="org-hero__admin-name">{{
-            clinicAdmin()?.fullName ?? ('organization.detail.loading' | translate)
-          }}</strong>
-          <span class="org-hero__admin-contact">
-            <i class="pi pi-envelope" aria-hidden="true"></i>
-            {{ clinicAdmin()?.email ?? '—' }}
-          </span>
-          <span class="org-hero__admin-contact">
-            <i class="pi pi-phone" aria-hidden="true"></i>
-            {{ clinicAdmin()?.countryCode }} {{ clinicAdmin()?.phoneNumber }}
-          </span>
-          <span class="org-hero__admin-contact">
-            <i class="pi pi-id-card" aria-hidden="true"></i>
-            {{ 'organization.hero.dni' | translate }}: {{ clinicAdmin()?.dni ?? '—' }}
-          </span>
+          <div class="org-hero__admin-head">
+            <span class="org-hero__admin-label">{{ 'organization.hero.managedBy' | translate }}</span>
+            <strong class="org-hero__admin-name">{{
+              clinicAdmin()?.fullName ?? ('organization.detail.loading' | translate)
+            }}</strong>
+          </div>
+          <div class="org-hero__admin-details">
+            <span class="org-hero__admin-contact">
+              <i class="pi pi-envelope" aria-hidden="true"></i>
+              {{ clinicAdmin()?.email ?? '—' }}
+            </span>
+            <span class="org-hero__admin-contact">
+              <i class="pi pi-phone" aria-hidden="true"></i>
+              {{ clinicAdmin()?.countryCode }} {{ clinicAdmin()?.phoneNumber }}
+            </span>
+            <span class="org-hero__admin-contact">
+              <i class="pi pi-id-card" aria-hidden="true"></i>
+              {{ 'organization.hero.dni' | translate }}: {{ clinicAdmin()?.dni ?? '—' }}
+            </span>
+          </div>
         }
       </article>
     </div>

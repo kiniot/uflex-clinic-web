@@ -146,7 +146,7 @@
     "form": {
       "createTitle": "Crear ejercicio",
       "editTitle": "Editar ejercicio",
-      "subtitle": "Registra ahora la metadata del ejercicio. La carga de video estará disponible cuando el backend soporte adjuntos.",
+      "subtitle": "Registra la metadata del ejercicio y adjunta un video clínico cuando esté disponible.",
       "name": "Nombre del ejercicio",
       "namePlaceholder": "ej. Supinación de muñeca",
       "bodyPart": "Parte del cuerpo objetivo",
@@ -155,13 +155,14 @@
       "movementTypePlaceholder": "Selecciona movimiento",
       "description": "Descripción terapéutica",
       "descriptionPlaceholder": "Describe la intención terapéutica y cómo debe realizarse el ejercicio...",
-      "videoUrl": "URL del video (opcional)",
-      "videoUrlPlaceholder": "https://cdn.uflex.app/exercises/example.mp4",
-      "videoUrlHint": "Déjalo vacío por ahora si el video todavía no está publicado.",
-      "videoSectionTitle": "Placeholder de video",
-      "videoSectionBody": "El producto final permitirá adjuntar un video aquí. Por ahora esta área es solo un placeholder visual.",
-      "uploadHint": "Arrastra o sube un video aquí",
-      "uploadMeta": "La carga aún no está activa. El archivo seleccionado no se envía al backend."
+      "videoSectionTitle": "Video del ejercicio",
+      "videoSectionBody": "Sube un video clínico para acompañar la ejecución guiada del ejercicio.",
+      "uploadVideo": "Subir video clínico",
+      "uploadVideoHint": "Arrastra el video aquí o haz clic para seleccionarlo.",
+      "replaceVideo": "Reemplazar video",
+      "removeVideo": "Quitar video",
+      "uploadingVideo": "Subiendo video…",
+      "dropToReplace": "Suelta para reemplazar el video"
     },
     "deleteConfirm": {
       "title": "Eliminar ejercicio",
@@ -317,7 +318,10 @@
       "lowBatteryKits": "Batería baja",
       "lowBatteryKitsNote": "Requieren carga",
       "offlineKits": "Desconectados",
-      "offlineKitsNote": "Sin conexión"
+      "offlineKitsNote": "Sin conexión",
+      "pendingKits": "Kits pendientes",
+      "requestedKits": "{{count}} contratados",
+      "pendingKitsNote": "Pendientes de envío"
     },
     "fleetStatus": "Estado de la flota",
     "columns": {
@@ -1018,10 +1022,14 @@
     },
     "photo": {
       "title": "Foto de perfil",
-      "upload": "URL de la imagen de perfil",
-      "urlLabel": "URL de la foto",
-      "urlPlaceholder": "https://example.com/photos/pepe.jpg",
-      "formats": "Usa una URL de imagen estable que pueda mostrarse en el directorio clínico."
+      "upload": "Sube una foto clara del fisioterapeuta",
+      "formats": "Acepta imágenes JPG, PNG o WebP. La foto se mostrará en el directorio clínico.",
+      "previewAlt": "Vista previa de la foto del fisioterapeuta",
+      "change": "Cambiar foto",
+      "remove": "Quitar foto",
+      "uploading": "Subiendo foto…",
+      "replace": "Reemplazar foto",
+      "uploadHint": "Arrastra una imagen aquí o haz clic para seleccionarla."
     },
     "quickTip": {
       "title": "Consejo rápido",
@@ -1325,7 +1333,8 @@
   },
   "topbar": {
     "settings": "Configuración",
-    "changePassword": "Cambiar contraseña"
+    "changePassword": "Cambiar contraseña",
+    "menu": "Abrir menú"
   },
   "physiotherapist": {
     "brand": {
@@ -2014,7 +2023,11 @@
         "repetitions": "Repeticiones",
         "duration": "Duración (seg)",
         "rest": "Descanso (seg)"
-      }
+      },
+      "unavailableTitle": "Ejercicio no disponible",
+      "unavailableMeta": "Este ejercicio fue eliminado del catálogo",
+      "watchVideo": "Ver video",
+      "watchVideoAria": "Ver video de {{name}}"
     },
     "confirm": {
       "activateTitle": "Activar plan",
@@ -2028,7 +2041,7 @@
     },
     "catalog": {
       "title": "Catálogo de ejercicios",
-      "subtitle": "Elige ejercicios creados por la clínica y agrégalos a la rutina seleccionada. Las referencias de video se muestran solo como metadato por ahora.",
+      "subtitle": "Elige ejercicios creados por la clínica y agrégalos a la rutina seleccionada. Los ejercicios con video se pueden previsualizar aquí.",
       "selectedRoutine": "Rutina {{order}} seleccionada",
       "noRoutineSelected": "Selecciona primero una rutina",
       "emptyTitle": "No hay ejercicios disponibles",
@@ -2036,8 +2049,9 @@
       "errorTitle": "No pudimos cargar el catálogo",
       "errorBody": "La rutina sigue disponible, pero necesitamos recuperar la lista de ejercicios de la clínica para poder crear series.",
       "retry": "Reintentar carga",
-      "videoRef": "Referencia de video",
-      "add": "Agregar a la rutina"
+      "add": "Agregar a la rutina",
+      "watchVideo": "Ver video",
+      "watchVideoAria": "Ver video de {{name}}"
     },
     "notifications": {
       "catalogLoadErrorSummary": "No se pudo cargar el catálogo",
