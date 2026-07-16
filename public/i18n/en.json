@@ -1551,6 +1551,15 @@
           "TrunkCompensation": "Trunk compensation",
           "null": "Unknown"
         }
+      },
+      "chart": {
+        "romTitle": "Range of motion over time",
+        "romHint": "Average ROM achieved in each session, oldest to most recent.",
+        "romSeries": "Average ROM",
+        "achievedRom": "Achieved ROM",
+        "targetRom": "Target",
+        "repsAria": "Achieved ROM per repetition against the serie's target",
+        "loading": "Loading chart..."
       }
     }
   },

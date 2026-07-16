@@ -154,6 +154,34 @@
         </app-stat-card>
       </section>
 
+      @if (hasRomTrend()) {
+        <article class="therapy-card">
+          <header class="therapy-card__header">
+            <div>
+              <h2 class="therapy-card__title">
+                {{ 'therapySessions.tracking.chart.romTitle' | translate }}
+              </h2>
+              <p class="therapy-card__hint">
+                {{ 'therapySessions.tracking.chart.romHint' | translate }}
+              </p>
+            </div>
+          </header>
+          @defer {
+            <app-therapy-chart
+              type="line"
+              [labels]="romTrendLabels()"
+              [series]="romTrendSeries()"
+              yAxisSuffix="°"
+              [ariaLabel]="'therapySessions.tracking.chart.romTitle' | translate"
+            />
+          } @placeholder {
+            <div class="therapy-card__empty">
+              {{ 'therapySessions.tracking.chart.loading' | translate }}
+            </div>
+          }
+        </article>
+      }
+
       <article class="therapy-card">
         <header class="therapy-card__header">
           <h2 class="therapy-card__title">

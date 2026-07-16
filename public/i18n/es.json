@@ -1551,6 +1551,15 @@
           "TrunkCompensation": "Compensación de tronco",
           "null": "Desconocida"
         }
+      },
+      "chart": {
+        "romTitle": "Evolución del rango de movimiento",
+        "romHint": "ROM promedio alcanzado en cada sesión, de la más antigua a la más reciente.",
+        "romSeries": "ROM promedio",
+        "achievedRom": "ROM alcanzado",
+        "targetRom": "Objetivo",
+        "repsAria": "ROM alcanzado por repetición frente al objetivo de la serie",
+        "loading": "Cargando gráfica..."
       }
     }
   },

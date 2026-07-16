@@ -67,6 +67,15 @@
           {{ 'therapySessions.tracking.detail.noRepetitions' | translate }}
         </p>
       } @else {
+        @defer {
+          <app-therapy-chart
+            type="line"
+            [labels]="repetitionLabels(serie)"
+            [series]="repetitionSeries(serie)"
+            yAxisSuffix="°"
+            [ariaLabel]="'therapySessions.tracking.chart.repsAria' | translate"
+          />
+        }
         <ol class="rep-list">
           @for (repetition of serie.repetitions; track repetition.repetitionId; let repIndex = $index) {
             <li class="rep-list__item" [attr.data-classification]="repetition.classification">

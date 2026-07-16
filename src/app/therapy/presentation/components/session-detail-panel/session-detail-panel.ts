@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, input, output } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { Component, inject, input, output } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { ExerciseCatalogItem } from '../../../../planning/domain/model/exercise-catalog-item.entity';
 import {
@@ -8,6 +8,7 @@ import {
   SerieExecutionResource,
   TherapySessionDetailResource,
 } from '../../../infrastructure/therapy-session.response';
+import { TherapyChart, TherapyChartSeries } from '../therapy-chart/therapy-chart';
 
 /**
  * One session, series by series, down to each repetition the edge detected.
@@ -18,7 +19,7 @@ import {
  */
 @Component({
   selector: 'app-session-detail-panel',
-  imports: [TranslatePipe, DatePipe, ButtonModule],
+  imports: [TranslatePipe, DatePipe, ButtonModule, TherapyChart],
   templateUrl: './session-detail-panel.html',
   styleUrl: './session-detail-panel.scss',
 })
@@ -26,6 +27,36 @@ export class SessionDetailPanel {
   readonly detail = input.required<TherapySessionDetailResource>();
   readonly exerciseCatalog = input.required<ExerciseCatalogItem[]>();
   readonly close = output<void>();
+
+  private readonly translateService = inject(TranslateService);
+
+  /**
+   * X axis is the repetition index, not time: `recordedAt` is a zoneless LocalDateTime from the
+   * edge while the session's own timestamps are Instants, so a shared time axis would drift
+   * silently. Cadence is not the question here anyway — the shape of the effort is.
+   */
+  protected repetitionLabels(serie: SerieExecutionResource): string[] {
+    return serie.repetitions.map((_, index) => `${index + 1}`);
+  }
+
+  protected repetitionSeries(serie: SerieExecutionResource): TherapyChartSeries[] {
+    const series: TherapyChartSeries[] = [
+      {
+        label: this.translateService.instant('therapySessions.tracking.chart.achievedRom'),
+        values: serie.repetitions.map((repetition) => repetition.achievedRom),
+        colorToken: '--p-primary-500',
+      },
+    ];
+    if (serie.targetRom !== null) {
+      series.push({
+        label: this.translateService.instant('therapySessions.tracking.chart.targetRom'),
+        values: serie.repetitions.map(() => serie.targetRom),
+        colorToken: '--p-text-muted-color',
+        dashed: true,
+      });
+    }
+    return series;
+  }
 
   protected serieTitle(serie: SerieExecutionResource, index: number): string {
     const exercise = this.exerciseCatalog().find((item) => item.id === serie.exerciseId);

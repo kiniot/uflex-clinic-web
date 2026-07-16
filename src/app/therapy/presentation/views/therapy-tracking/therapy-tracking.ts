@@ -1,10 +1,11 @@
-import { Component, computed, OnInit } from '@angular/core';
-import { TranslatePipe } from '@ngx-translate/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { StatCard } from '../../../../shared/presentation/components/stat-card/stat-card';
 import { TherapySessionHistoryItemResource } from '../../../infrastructure/therapy-session.response';
 import { SessionDetailPanel } from '../../components/session-detail-panel/session-detail-panel';
 import { SessionHistoryTable } from '../../components/session-history-table/session-history-table';
+import { TherapyChart, TherapyChartSeries } from '../../components/therapy-chart/therapy-chart';
 import { TherapyDashboardBase, TherapyRoleContext } from '../shared/therapy-dashboard.base';
 
 /**
@@ -22,12 +23,21 @@ import { TherapyDashboardBase, TherapyRoleContext } from '../shared/therapy-dash
  */
 @Component({
   selector: 'app-therapy-tracking',
-  imports: [TranslatePipe, ButtonModule, StatCard, SessionHistoryTable, SessionDetailPanel],
+  imports: [
+    TranslatePipe,
+    ButtonModule,
+    StatCard,
+    SessionHistoryTable,
+    SessionDetailPanel,
+    TherapyChart,
+  ],
   templateUrl: './therapy-tracking.html',
   styleUrl: './therapy-tracking.scss',
 })
 export class TherapyTracking extends TherapyDashboardBase implements OnInit {
   protected readonly roleContext: TherapyRoleContext = 'physiotherapist';
+
+  private readonly translateService = inject(TranslateService);
 
   protected readonly sessionHistory = this.therapySessionStore.sessionHistory;
   protected readonly isLoadingHistory = this.therapySessionStore.isLoadingHistory;
@@ -51,13 +61,39 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
 
   /** Mean of the per-session means; sessions without repetitions carry no ROM and are skipped. */
   protected readonly averageRomLabel = computed(() => {
-    const values = this.sessionHistory()
-      .map((session) => session.averageAchievedRom)
-      .filter((rom): rom is number => rom !== null);
+    const values = this.romTrendSessions().map((session) => session.averageAchievedRom!);
     if (!values.length) return '—';
     const mean = values.reduce((total, rom) => total + rom, 0) / values.length;
     return `${mean.toFixed(1)}°`;
   });
+
+  /**
+   * Sessions that actually measured something, oldest first. A session with no repetitions has no
+   * ROM to plot, and the history arrives newest-first, which would draw the trend backwards.
+   */
+  private readonly romTrendSessions = computed(() =>
+    this.sessionHistory()
+      .filter((session) => session.averageAchievedRom !== null)
+      .slice()
+      .reverse(),
+  );
+
+  protected readonly hasRomTrend = computed(() => this.romTrendSessions().length > 1);
+
+  protected readonly romTrendLabels = computed(() =>
+    this.romTrendSessions().map((session) =>
+      session.startedAt ? this.shortDate(session.startedAt) : '—',
+    ),
+  );
+
+  protected readonly romTrendSeries = computed<TherapyChartSeries[]>(() => [
+    {
+      label: this.translateService.instant('therapySessions.tracking.chart.romSeries'),
+      values: this.romTrendSessions().map((session) => session.averageAchievedRom),
+      colorToken: '--p-primary-500',
+      fill: true,
+    },
+  ]);
 
   async ngOnInit(): Promise<void> {
     await this.initializeDashboard();
@@ -84,5 +120,12 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
     pick: (session: TherapySessionHistoryItemResource) => number | null,
   ): number {
     return this.sessionHistory().reduce((total, session) => total + (pick(session) ?? 0), 0);
+  }
+
+  private shortDate(isoDate: string): string {
+    return new Date(isoDate).toLocaleDateString(this.translateService.currentLang ?? 'es', {
+      day: '2-digit',
+      month: 'short',
+    });
   }
 }
