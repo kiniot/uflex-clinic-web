@@ -1,6 +1,16 @@
+import {
+  ExerciseBodyPart,
+  ExerciseMovementType,
+} from '../../../planning/domain/model/exercise-catalog-item.types';
+
 export type TherapySessionStatus = 'Pending' | 'Ready' | 'InProgress' | 'Completed' | 'Cancelled';
 
-export type TherapySerieStatus = 'Pending' | 'Started' | 'Validated';
+export type TherapySerieStatus = 'Pending' | 'Started' | 'Completed' | 'Failed';
+
+/** Quality verdict the edge assigns to each repetition; the backend stores it verbatim. */
+export type RepetitionClassification = 'Good' | 'Incomplete' | 'Unsafe';
+
+export type CompensatoryMovementType = 'ShoulderCompensation' | 'TrunkCompensation';
 
 export type DailyScheduleResolutionStatus =
   | 'FOUND'
@@ -20,8 +30,9 @@ export interface SerieDetails {
   serieId: string;
   exerciseId: string | null;
   targetRepetitions: number | null;
-  minAngle: number | null;
-  maxAngle: number | null;
+  targetRom: number | null;
+  movementType: ExerciseMovementType | null;
+  bodyPart: ExerciseBodyPart | null;
   durationSeconds: number | null;
   restDurationSeconds: number | null;
   status: TherapySerieStatus | null;
@@ -51,12 +62,17 @@ export interface SessionSummary {
   patientId: string;
   totalSeries: number | null;
   completedSeries: number | null;
+  totalRepetitions: number | null;
+  goodRepetitions: number | null;
+  incompleteRepetitions: number | null;
+  unsafeRepetitions: number | null;
+  averageAchievedRom: number | null;
   painLevel: number | null;
   painReportsCount: number | null;
   highPainReportsCount: number | null;
   maxReportedPainLevel: number | null;
   requiresClinicalReview: boolean | null;
-  anomaliesDetected: number | null;
+  compensatoryMovementsDetected: number | null;
   startedAt: string | null;
   finalizedAt: string | null;
 }

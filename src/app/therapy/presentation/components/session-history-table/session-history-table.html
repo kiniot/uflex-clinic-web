@@ -1,0 +1,57 @@
+<div class="session-history">
+  <table class="session-history__table">
+    <thead>
+      <tr>
+        <th scope="col">{{ 'therapySessions.tracking.table.date' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.status' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.series' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.quality' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.rom' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.pain' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.compensations' | translate }}</th>
+        <th scope="col"><span class="visually-hidden">{{ 'therapySessions.tracking.table.review' | translate }}</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (session of sessions(); track session.sessionId) {
+        <tr
+          class="session-history__row"
+          [class.session-history__row--selected]="session.sessionId === selectedSessionId()"
+          [attr.aria-selected]="session.sessionId === selectedSessionId()"
+          tabindex="0"
+          role="button"
+          (click)="selectSession.emit(session)"
+          (keydown.enter)="selectSession.emit(session)"
+          (keydown.space)="selectSession.emit(session)"
+        >
+          <td>
+            @if (session.startedAt) {
+              {{ session.startedAt | date: 'dd MMM, HH:mm' }}
+            } @else {
+              <span class="session-history__muted">
+                {{ 'therapySessions.tracking.table.neverStarted' | translate }}
+              </span>
+            }
+          </td>
+          <td>
+            <span class="session-history__status" [attr.data-status]="session.status">
+              {{ sessionStatusKey(session) | translate }}
+            </span>
+          </td>
+          <td>{{ seriesLabel(session) }}</td>
+          <td>{{ qualityLabel(session) }}</td>
+          <td>{{ romLabel(session) }}</td>
+          <td>{{ session.maxReportedPainLevel ?? '—' }}</td>
+          <td>{{ session.compensatoryMovementsDetected ?? 0 }}</td>
+          <td>
+            @if (session.requiresClinicalReview) {
+              <span class="session-history__flag">
+                {{ 'therapySessions.tracking.table.reviewFlag' | translate }}
+              </span>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>

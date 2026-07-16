@@ -1,0 +1,205 @@
+<header class="therapy-page__header">
+  <div class="therapy-page__header-text">
+    <span class="therapy-page__eyebrow">{{ 'therapySessions.eyebrow' | translate }}</span>
+    <h1 class="therapy-page__title">{{ 'therapySessions.tracking.title' | translate }}</h1>
+    <p class="therapy-page__subtitle">{{ 'therapySessions.tracking.subtitle' | translate }}</p>
+  </div>
+  <button
+    pButton
+    type="button"
+    severity="secondary"
+    class="therapy-refresh"
+    (click)="onRefreshPatientContext()"
+  >
+    <span>{{ 'therapySessions.refresh' | translate }}</span>
+  </button>
+</header>
+
+<section class="therapy-layout tracking-layout">
+  <article class="therapy-card">
+    <header class="therapy-card__header">
+      <h2 class="therapy-card__title">{{ 'therapySessions.patientListTitle' | translate }}</h2>
+      <span class="therapy-card__counter">
+        {{ 'therapySessions.patientListCount' | translate: { count: patients().length } }}
+      </span>
+    </header>
+
+    @if (isLoadingPatients()) {
+      <div class="therapy-card__empty">{{ 'therapySessions.loadingPatients' | translate }}</div>
+    } @else if (!patients().length) {
+      <div class="therapy-card__empty">
+        <strong>{{ 'therapySessions.noPatientsTitle' | translate }}</strong>
+        <span>{{ 'therapySessions.noPatientsBody' | translate }}</span>
+      </div>
+    } @else {
+      <div class="therapy-patient-list">
+        @for (patient of patients(); track patient.id) {
+          <button
+            type="button"
+            class="therapy-patient-item"
+            [class.therapy-patient-item--active]="hasSelectedPatient(patient.id)"
+            (click)="onSelectPatient(patient)"
+          >
+            <span class="therapy-patient-item__avatar">{{ initials(patient) }}</span>
+            <span class="therapy-patient-item__copy">
+              <strong>{{ patientDisplayName(patient) }}</strong>
+              <span>{{ patient.medicalCondition }}</span>
+              <small>{{ 'patientsList.status.' + patient.status | translate }}</small>
+            </span>
+          </button>
+        }
+      </div>
+    }
+  </article>
+
+  <section class="therapy-detail">
+    @if (!selectedPatient()) {
+      <article class="therapy-card">
+        <div class="therapy-card__empty">
+          <strong>{{ 'therapySessions.noSelection' | translate }}</strong>
+          <span>{{ 'therapySessions.selectPatientHint' | translate }}</span>
+        </div>
+      </article>
+    } @else {
+      <article class="therapy-card therapy-card--accent">
+        <header class="therapy-card__header">
+          <div>
+            <h2 class="therapy-card__title">{{ patientDisplayName(selectedPatient()!) }}</h2>
+            <p class="therapy-card__hint">
+              {{ 'therapySessions.tracking.patientHint' | translate }}
+            </p>
+          </div>
+          <button
+            pButton
+            type="button"
+            severity="secondary"
+            class="therapy-action"
+            (click)="onOpenPatient()"
+          >
+            <span>{{ openPatientLabelKey() | translate }}</span>
+          </button>
+        </header>
+      </article>
+
+      @if (contextError()) {
+        <div class="therapy-card__error">{{ 'therapySessions.contextError' | translate }}</div>
+      }
+
+      @if (hasActiveSession()) {
+        <article class="tracking-live">
+          <span class="tracking-live__pulse" aria-hidden="true"></span>
+          <div class="tracking-live__copy">
+            <strong>{{ 'therapySessions.tracking.liveTitle' | translate }}</strong>
+            <span>
+              {{
+                'therapySessions.tracking.liveBody'
+                  | translate
+                    : {
+                        serie: currentSerieLabel(),
+                        completed: progressCompletedSeries(),
+                        total: progressTotalSeries(),
+                      }
+              }}
+            </span>
+          </div>
+          @if (requiresClinicalReview()) {
+            <span class="tracking-live__flag">{{
+              'therapySessions.clinicalReviewRequired' | translate
+            }}</span>
+          }
+        </article>
+      }
+
+      <section class="therapy-page__stats therapy-page__stats--four">
+        <app-stat-card [title]="'therapySessions.tracking.kpi.sessions' | translate">
+          <div class="tracking-stat">
+            <span class="tracking-stat__value">{{ totalSessions() }}</span>
+            <span class="tracking-stat__hint">
+              {{
+                'therapySessions.tracking.kpi.sessionsSub'
+                  | translate: { completed: completedSessions() }
+              }}
+            </span>
+          </div>
+        </app-stat-card>
+
+        <app-stat-card [title]="'therapySessions.tracking.kpi.repetitions' | translate">
+          <div class="tracking-stat">
+            <span class="tracking-stat__value">{{ totalRepetitions() }}</span>
+            <span class="tracking-stat__hint">
+              {{
+                'therapySessions.tracking.kpi.repetitionsSub'
+                  | translate: { good: goodRepetitions() }
+              }}
+            </span>
+          </div>
+        </app-stat-card>
+
+        <app-stat-card [title]="'therapySessions.tracking.kpi.averageRom' | translate">
+          <div class="tracking-stat">
+            <span class="tracking-stat__value">{{ averageRomLabel() }}</span>
+            <span class="tracking-stat__hint">{{
+              'therapySessions.tracking.kpi.averageRomSub' | translate
+            }}</span>
+          </div>
+        </app-stat-card>
+
+        <app-stat-card [title]="'therapySessions.tracking.kpi.review' | translate">
+          <div class="tracking-stat">
+            <span class="tracking-stat__value">{{ sessionsRequiringReviewCount() }}</span>
+            <span class="tracking-stat__hint">{{
+              'therapySessions.tracking.kpi.reviewSub' | translate
+            }}</span>
+          </div>
+        </app-stat-card>
+      </section>
+
+      <article class="therapy-card">
+        <header class="therapy-card__header">
+          <h2 class="therapy-card__title">
+            {{ 'therapySessions.tracking.historyTitle' | translate }}
+          </h2>
+          <span class="therapy-card__counter">
+            {{
+              'therapySessions.tracking.historyCount'
+                | translate: { count: sessionHistory().length }
+            }}
+          </span>
+        </header>
+
+        @if (isLoadingHistory()) {
+          <div class="therapy-card__empty">
+            {{ 'therapySessions.tracking.loadingHistory' | translate }}
+          </div>
+        } @else if (!sessionHistory().length) {
+          <div class="therapy-card__empty">
+            <strong>{{ 'therapySessions.tracking.noHistoryTitle' | translate }}</strong>
+            <span>{{ 'therapySessions.tracking.noHistoryBody' | translate }}</span>
+          </div>
+        } @else {
+          <app-session-history-table
+            [sessions]="sessionHistory()"
+            [selectedSessionId]="selectedSessionId()"
+            (selectSession)="onSelectSession($event)"
+          />
+        }
+      </article>
+
+      @if (isLoadingDetail()) {
+        <article class="therapy-card">
+          <div class="therapy-card__empty">
+            {{ 'therapySessions.tracking.detail.loading' | translate }}
+          </div>
+        </article>
+      } @else if (selectedSessionDetail(); as detail) {
+        <article class="therapy-card">
+          <app-session-detail-panel
+            [detail]="detail"
+            [exerciseCatalog]="exerciseCatalog()"
+            (close)="onCloseSession()"
+          />
+        </article>
+      }
+    }
+  </section>
+</section>

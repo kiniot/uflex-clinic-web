@@ -34,6 +34,7 @@ export abstract class TherapyDashboardBase {
     () => this.patients().find((patient) => patient.id === this.selectedPatientId()) ?? null,
   );
   protected readonly activeSession = this.therapySessionStore.activeSession;
+  protected readonly hasActiveSession = this.therapySessionStore.hasActiveSession;
   protected readonly dailySchedule = this.therapySessionStore.dailySchedule;
   protected readonly sessionProgress = this.therapySessionStore.sessionProgress;
   protected readonly isLoadingPatients = this.organizationStore.isLoadingPatients;
@@ -66,12 +67,10 @@ export abstract class TherapyDashboardBase {
     () => this.roleContext === 'admin' || this.currentRoleLabel().includes('ROLE_CLINIC_ADMIN'),
   );
   protected readonly titleKey = computed(() =>
-    this.isAdminPortal() ? 'therapySessions.adminTitle' : 'therapySessions.physiotherapistTitle',
+    this.isAdminPortal() ? 'therapySessions.adminTitle' : 'therapySessions.tracking.title',
   );
   protected readonly subtitleKey = computed(() =>
-    this.isAdminPortal()
-      ? 'therapySessions.adminSubtitle'
-      : 'therapySessions.physiotherapistSubtitle',
+    this.isAdminPortal() ? 'therapySessions.adminSubtitle' : 'therapySessions.tracking.subtitle',
   );
   protected readonly openPatientLabelKey = computed(() =>
     this.isAdminPortal()
@@ -152,8 +151,8 @@ export abstract class TherapyDashboardBase {
   protected readonly hardwareStatusLabelKey = computed(() => {
     const session = this.activeSession();
     if (!session) return 'therapySessions.hardwareUnavailable';
-    if (session.snapshotSensorsPlaced === true) return 'therapySessions.hardwareReady';
-    if (session.snapshotSensorsPlaced === false) return 'therapySessions.hardwareNotReady';
+    if (session.sensorsPlaced === true) return 'therapySessions.hardwareReady';
+    if (session.sensorsPlaced === false) return 'therapySessions.hardwareNotReady';
     if (this.assignedPatientDevice()) return 'therapySessions.hardwareDeviceLinked';
     return 'therapySessions.hardwarePending';
   });
@@ -163,7 +162,15 @@ export abstract class TherapyDashboardBase {
       return this.deviceDisplayLabel(assignedDevice);
     }
 
-    return this.activeSession() ? 'therapySessions.hardwareDeviceLinked' : 'therapySessions.hardwareUnavailable';
+    return this.activeSession()
+      ? 'therapySessions.hardwareDeviceLinked'
+      : 'therapySessions.hardwareUnavailable';
+  });
+  protected readonly activeSessionDeviceLabel = computed(() => {
+    const session = this.activeSession();
+    if (!session) return 'therapySessions.hardwareUnavailable';
+    const device = this.deviceForSerial(session.iotDeviceId);
+    return device ? this.deviceDisplayLabel(device) : session.iotDeviceId;
   });
   protected readonly responsibleSpecialistLabel = computed(() => {
     const physiotherapist = this.currentPhysiotherapist();
@@ -290,6 +297,15 @@ export abstract class TherapyDashboardBase {
       device.model ??
       'therapySessions.hardwareDeviceLinked'
     );
+  }
+
+  /**
+   * A session's `iotDeviceId` is the kit serial (the cross-service identity), not the backend
+   * Device UUID — matching it against `device.id` never hits.
+   */
+  protected deviceForSerial(serial: string | null): Device | null {
+    if (!serial) return null;
+    return this.deviceStore.devices().find((device) => device.serialNumber === serial) ?? null;
   }
 
   protected activeSessionCardDeviceLabel(): string {

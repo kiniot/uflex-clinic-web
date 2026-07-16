@@ -1382,58 +1382,10 @@
       "discharged": "Discharged"
     }
   },
-  "therapyRoster": {
-    "eyebrow": "Active Caseload",
-    "title": "Therapy Management",
-    "subtitle": "Oversee patient recovery tracks and monitor real-time IoT device metrics.",
-    "registerPatient": "Register New Patient",
-    "kpi": {
-      "throughput": "Clinic Throughput",
-      "throughputSub": "Recovery velocity this month",
-      "throughputBadge": "Clinic Portal",
-      "active": "Active",
-      "devicesSub": "IoT Devices Linked",
-      "reviews": "Reviews",
-      "reviewsSub": "Pending assessment",
-      "actionRequired": "Action Required"
-    },
-    "roster": "Patient Roster",
-    "tabs": {
-      "all": "All",
-      "connected": "Connected"
-    },
-    "columns": {
-      "profile": "Patient Profile",
-      "injury": "Injury Context",
-      "lastSession": "Last Session",
-      "iotStatus": "IoT Status",
-      "action": "Action"
-    },
-    "iot": {
-      "connected": "Connected",
-      "offline": "Offline"
-    },
-    "mrn": "ID:",
-    "review": "Review Therapy",
-    "showingCount": "Showing {{visible}} of {{total}} active patients",
-    "previous": "Previous",
-    "next": "Next",
-    "promo": {
-      "title": "Advanced IoT Integration for Post-Op Care",
-      "body": "Sync wearable orthopedic sensors to track range-of-motion in real-time during remote therapy sessions.",
-      "cta": "Explore Sensor Kits"
-    },
-    "template": {
-      "title": "Create New Template",
-      "body": "Save time by building reusable therapy protocols for common injury types."
-    }
-  },
   "therapySessions": {
     "eyebrow": "Therapy Sessions",
     "adminTitle": "Clinic Session Oversight",
     "adminSubtitle": "Review patient schedules, active sessions, and live execution data across the clinic.",
-    "physiotherapistTitle": "Session Execution Hub",
-    "physiotherapistSubtitle": "Select a patient from your caseload and review the scheduled routine, active session, and live progress.",
     "refresh": "Refresh",
     "kpi": {
       "totalPatients": "Patients in scope",
@@ -1466,8 +1418,6 @@
     "selectPatientHint": "Select a patient to inspect their therapy context.",
     "openAdminPatient": "Open patient profile",
     "openPhysiotherapistPatient": "Open patient workspace",
-    "startSessionAction": "Start session",
-    "openPreparationWorkspace": "Open clinical preparation",
     "contextError": "We could not load the latest therapy session context for this patient.",
     "scheduleTitle": "Therapy schedule",
     "schedulePickerHint": "Review the patient's therapy schedule for a specific date.",
@@ -1530,69 +1480,6 @@
     "noSeriesProgress": "No series progress has been reported yet.",
     "noProgress": "No live execution progress is available yet.",
     "today": "Today",
-    "operations": {
-      "preparationTitle": "Session preparation",
-      "treatmentPlan": "Active treatment plan",
-      "routine": "Routine for the day",
-      "device": "Assigned device",
-      "prepareAction": "Prepare session",
-      "hardwareTitle": "Hardware confirmation",
-      "hardwareBody": "Confirm the linked device and whether sensors are already placed on the patient.",
-      "sensorsPlaced": "Sensors placed",
-      "confirmHardwareAction": "Confirm hardware",
-      "closureTitle": "Closure and contingency",
-      "closureBody": "Finalize the session once it ends or cancel it if execution must stop.",
-      "finalizeAction": "Finalize session",
-      "cancelReason": "Cancellation reason",
-      "cancelAction": "Cancel session",
-      "stepper": {
-        "ariaLabel": "Therapy session operational flow",
-        "step1Title": "Preparation",
-        "step2Title": "Hardware",
-        "step3Title": "Execution",
-        "step4Title": "Closure",
-        "valueUnassigned": "Unassigned",
-        "executionTitle": "Session execution",
-        "executionReadyHint": "Hardware confirmed. Start the session when the patient is ready.",
-        "closedCompletedTitle": "Session finalized",
-        "closedCompletedBody": "The session was completed successfully.",
-        "closedCancelledTitle": "Session cancelled",
-        "closedCancelledBody": "The session was cancelled."
-      }
-    },
-    "validation": {
-      "treatmentPlanRequired": "An active treatment plan is required to prepare the session.",
-      "deviceRequired": "An assigned device is required.",
-      "routineRequired": "A resolved routine is required for the selected date.",
-      "cancelReasonRequired": "A cancellation reason is required."
-    },
-    "preparationReady": "The session can be prepared with the currently assigned plan, routine, and device.",
-    "preparationBlockedActiveSession": "There is already an active or prepared session for this patient.",
-    "preparationMissingPlan": "There is no active or scheduled treatment plan for this patient.",
-    "preparationMissingDevice": "There is no device linked to this patient.",
-    "preparationMissingRoutine": "There is no valid routine for the selected date.",
-    "notifications": {
-      "prepareSuccessSummary": "Therapy",
-      "prepareSuccessDetail": "The session was prepared successfully.",
-      "prepareErrorSummary": "Therapy",
-      "prepareErrorDetail": "The therapy session could not be prepared.",
-      "hardwareSuccessSummary": "Therapy",
-      "hardwareSuccessDetail": "The session hardware was confirmed successfully.",
-      "hardwareErrorSummary": "Therapy",
-      "hardwareErrorDetail": "The session hardware could not be confirmed.",
-      "startSuccessSummary": "Therapy",
-      "startSuccessDetail": "The therapy session started successfully.",
-      "startErrorSummary": "Therapy",
-      "startErrorDetail": "Failed to start the therapy session.",
-      "finalizeSuccessSummary": "Therapy",
-      "finalizeSuccessDetail": "The therapy session was finalized successfully.",
-      "finalizeErrorSummary": "Therapy",
-      "finalizeErrorDetail": "Failed to finalize the therapy session.",
-      "cancelSuccessSummary": "Therapy",
-      "cancelSuccessDetail": "The therapy session was canceled successfully.",
-      "cancelErrorSummary": "Therapy",
-      "cancelErrorDetail": "Failed to cancel the therapy session."
-    },
     "statuses": {
       "session": {
         "Pending": "Pending",
@@ -1605,8 +1492,65 @@
       "serie": {
         "Pending": "Pending",
         "Started": "Started",
-        "Validated": "Validated",
+        "Completed": "Completed",
+        "Failed": "Failed",
         "Unknown": "Unknown"
+      }
+    },
+    "tracking": {
+      "title": "Therapy tracking",
+      "subtitle": "Pick a patient and review how their therapy is going: session history, repetition quality and range of motion achieved.",
+      "patientHint": "Overview of this patient's therapy.",
+      "liveTitle": "Session running now",
+      "liveBody": "{{serie}} · {{completed}} of {{total}} series completed",
+      "kpi": {
+        "sessions": "Sessions",
+        "sessionsSub": "{{completed}} completed",
+        "repetitions": "Repetitions",
+        "repetitionsSub": "{{good}} good",
+        "averageRom": "Average ROM",
+        "averageRomSub": "Mean across sessions with repetitions",
+        "review": "Need review",
+        "reviewSub": "Sessions flagged by reported pain"
+      },
+      "historyTitle": "Session history",
+      "historyCount": "{{count}} sessions",
+      "loadingHistory": "Loading history...",
+      "noHistoryTitle": "No sessions recorded",
+      "noHistoryBody": "This patient has not run any therapy session yet.",
+      "table": {
+        "date": "Date",
+        "status": "Status",
+        "series": "Series",
+        "quality": "Good",
+        "rom": "Avg. ROM",
+        "pain": "Max pain",
+        "compensations": "Compensations",
+        "review": "Review",
+        "reviewFlag": "Review",
+        "neverStarted": "Never started"
+      },
+      "detail": {
+        "eyebrow": "Session detail",
+        "close": "Close",
+        "loading": "Loading detail...",
+        "reviewAlert": "This session needs clinical review. Highest reported pain: {{max}}/10.",
+        "noSeries": "This session never recorded any series.",
+        "noRepetitions": "No repetitions recorded in this serie.",
+        "target": "Target {{rom}} · {{reps}} reps",
+        "peak": "peak {{angle}}",
+        "compensationsTitle": "Compensatory movements",
+        "classification": {
+          "Good": "Good",
+          "Incomplete": "Incomplete",
+          "Unsafe": "Unsafe",
+          "null": "—"
+        },
+        "compensation": {
+          "ShoulderCompensation": "Shoulder compensation",
+          "TrunkCompensation": "Trunk compensation",
+          "null": "Unknown"
+        }
       }
     }
   },

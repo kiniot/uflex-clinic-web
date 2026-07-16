@@ -58,11 +58,7 @@ export class TherapySupervision extends TherapyDashboardBase implements OnInit {
   }
 
   protected sessionFeedDeviceLabel(session: TherapySessionResource): string {
-    const device =
-      this.deviceStore.devices().find((item) => item.id === session.snapshotDeviceId) ??
-      this.deviceStore.devices().find((item) => item.id === session.iotDeviceId) ??
-      null;
-
+    const device = this.deviceForSerial(session.iotDeviceId);
     return device ? this.deviceDisplayLabel(device) : 'therapySessions.hardwareDeviceLinked';
   }
 

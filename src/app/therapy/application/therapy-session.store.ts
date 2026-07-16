@@ -1,9 +1,12 @@
 import { computed, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { isAppError } from '../../shared/domain/model/app-error';
 import { TherapyApi } from '../infrastructure/therapy-api';
 import {
   DailyScheduleResource,
   SessionProgressResource,
+  TherapySessionDetailResource,
+  TherapySessionHistoryItemResource,
   TherapySessionResource,
 } from '../infrastructure/therapy-session.response';
 
@@ -13,14 +16,24 @@ export class TherapySessionStore {
   private readonly activeSessionSignal = signal<TherapySessionResource | null>(null);
   private readonly dailyScheduleSignal = signal<DailyScheduleResource | null>(null);
   private readonly sessionProgressSignal = signal<SessionProgressResource | null>(null);
+  private readonly sessionHistorySignal = signal<TherapySessionHistoryItemResource[]>([]);
+  private readonly selectedSessionIdSignal = signal<string | null>(null);
+  private readonly selectedSessionDetailSignal = signal<TherapySessionDetailResource | null>(null);
   private readonly loadingPatientContextSignal = signal(false);
+  private readonly loadingHistorySignal = signal(false);
+  private readonly loadingDetailSignal = signal(false);
   private readonly contextErrorSignal = signal<string | null>(null);
 
   readonly selectedPatientId = this.selectedPatientIdSignal.asReadonly();
   readonly activeSession = this.activeSessionSignal.asReadonly();
   readonly dailySchedule = this.dailyScheduleSignal.asReadonly();
   readonly sessionProgress = this.sessionProgressSignal.asReadonly();
+  readonly sessionHistory = this.sessionHistorySignal.asReadonly();
+  readonly selectedSessionId = this.selectedSessionIdSignal.asReadonly();
+  readonly selectedSessionDetail = this.selectedSessionDetailSignal.asReadonly();
   readonly isLoadingPatientContext = this.loadingPatientContextSignal.asReadonly();
+  readonly isLoadingHistory = this.loadingHistorySignal.asReadonly();
+  readonly isLoadingDetail = this.loadingDetailSignal.asReadonly();
   readonly contextError = this.contextErrorSignal.asReadonly();
 
   readonly hasActiveSession = computed(() => this.activeSession() !== null);
@@ -29,6 +42,11 @@ export class TherapySessionStore {
   constructor(private readonly therapyApi: TherapyApi) {}
 
   async loadPatientContext(patientId: string, date?: string): Promise<void> {
+    if (this.selectedPatientIdSignal() !== patientId) {
+      // The open session belongs to the previous patient.
+      this.clearSelectedSession();
+      this.sessionHistorySignal.set([]);
+    }
     this.selectedPatientIdSignal.set(patientId);
     this.loadingPatientContextSignal.set(true);
     this.contextErrorSignal.set(null);
@@ -68,11 +86,65 @@ export class TherapySessionStore {
     }
   }
 
+  /**
+   * Loads a patient's session history.
+   *
+   * <p>Guarded against a stale response overwriting a newer selection: switching patients fires a
+   * second load, and the first can still land afterwards.
+   */
+  async loadSessionHistory(patientId: string, treatmentPlanId?: string): Promise<void> {
+    this.loadingHistorySignal.set(true);
+    try {
+      const history = await firstValueFrom(
+        this.therapyApi.getHistoryByPatient(patientId, treatmentPlanId),
+      );
+      if (this.selectedPatientIdSignal() !== patientId) return;
+      this.sessionHistorySignal.set(history);
+    } catch {
+      if (this.selectedPatientIdSignal() !== patientId) return;
+      this.sessionHistorySignal.set([]);
+      this.contextErrorSignal.set('Failed to load therapy session history');
+    } finally {
+      if (this.selectedPatientIdSignal() === patientId) {
+        this.loadingHistorySignal.set(false);
+      }
+    }
+  }
+
+  /**
+   * Loads the full detail of one session. Guarded the same way as the history: a slow response for
+   * a previously selected session must not replace the one the clinician is looking at now.
+   */
+  async selectSession(sessionId: string): Promise<void> {
+    this.selectedSessionIdSignal.set(sessionId);
+    this.loadingDetailSignal.set(true);
+    try {
+      const detail = await firstValueFrom(this.therapyApi.getDetail(sessionId));
+      if (this.selectedSessionIdSignal() !== sessionId) return;
+      this.selectedSessionDetailSignal.set(detail);
+    } catch {
+      if (this.selectedSessionIdSignal() !== sessionId) return;
+      this.selectedSessionDetailSignal.set(null);
+      this.contextErrorSignal.set('Failed to load therapy session detail');
+    } finally {
+      if (this.selectedSessionIdSignal() === sessionId) {
+        this.loadingDetailSignal.set(false);
+      }
+    }
+  }
+
+  clearSelectedSession() {
+    this.selectedSessionIdSignal.set(null);
+    this.selectedSessionDetailSignal.set(null);
+  }
+
   clearSelection() {
     this.selectedPatientIdSignal.set(null);
     this.activeSessionSignal.set(null);
     this.dailyScheduleSignal.set(null);
     this.sessionProgressSignal.set(null);
+    this.sessionHistorySignal.set([]);
+    this.clearSelectedSession();
     this.contextErrorSignal.set(null);
   }
 
@@ -97,6 +169,6 @@ export class TherapySessionStore {
   }
 
   private isNotFound(error: unknown): boolean {
-    return error instanceof Error && error.message.includes('Resource not found');
+    return isAppError(error) && error.status === 404;
   }
 }

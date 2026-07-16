@@ -1,0 +1,100 @@
+.session-history {
+  // The table must scroll inside its own box; the page never scrolls sideways.
+  overflow-x: auto;
+}
+
+.session-history__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  white-space: nowrap;
+
+  th {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-text-muted-color);
+    border-bottom: 1px solid var(--p-surface-200);
+  }
+
+  td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--p-surface-100);
+    color: var(--p-text-color);
+  }
+}
+
+:host-context(.app-dark) .session-history__table {
+  th {
+    border-bottom-color: var(--p-surface-300);
+  }
+
+  td {
+    border-bottom-color: var(--p-surface-200);
+  }
+}
+
+.session-history__row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--p-surface-100);
+  }
+
+  &--selected {
+    background: color-mix(in srgb, var(--p-primary-color) 10%, transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-primary-color);
+    outline-offset: -2px;
+  }
+}
+
+:host-context(.app-dark) .session-history__row:hover,
+:host-context(.app-dark) .session-history__row:focus-visible {
+  background: var(--p-surface-200);
+}
+
+.session-history__muted {
+  color: var(--p-text-muted-color);
+}
+
+.session-history__status {
+  font-size: 0.78rem;
+
+  &[data-status='Completed'] {
+    color: var(--p-green-500);
+  }
+
+  &[data-status='Cancelled'] {
+    color: var(--p-text-muted-color);
+  }
+
+  &[data-status='InProgress'] {
+    color: var(--p-primary-color);
+  }
+}
+
+.session-history__flag {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--p-red-600);
+  background: color-mix(in srgb, var(--p-red-500) 14%, transparent);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
