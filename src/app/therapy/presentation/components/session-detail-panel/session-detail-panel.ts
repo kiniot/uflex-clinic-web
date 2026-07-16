@@ -1,7 +1,6 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { ButtonModule } from 'primeng/button';
 import { ExerciseCatalogItem } from '../../../../planning/domain/model/exercise-catalog-item.entity';
 import {
   CompletedRepetitionResource,
@@ -19,14 +18,13 @@ import { TherapyChart, TherapyChartSeries } from '../therapy-chart/therapy-chart
  */
 @Component({
   selector: 'app-session-detail-panel',
-  imports: [TranslatePipe, DatePipe, ButtonModule, TherapyChart],
+  imports: [TranslatePipe, DatePipe, TherapyChart],
   templateUrl: './session-detail-panel.html',
   styleUrl: './session-detail-panel.scss',
 })
 export class SessionDetailPanel {
   readonly detail = input.required<TherapySessionDetailResource>();
   readonly exerciseCatalog = input.required<ExerciseCatalogItem[]>();
-  readonly close = output<void>();
 
   private readonly translateService = inject(TranslateService);
 

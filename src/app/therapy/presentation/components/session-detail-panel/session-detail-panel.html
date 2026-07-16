@@ -1,9 +1,6 @@
 <article class="session-detail">
   <header class="session-detail__header">
     <div>
-      <span class="session-detail__eyebrow">
-        {{ 'therapySessions.tracking.detail.eyebrow' | translate }}
-      </span>
       <h3 class="session-detail__title">
         @if (detail().startedAt) {
           {{ detail().startedAt | date: 'dd MMMM yyyy, HH:mm' }}
@@ -18,9 +15,16 @@
         }
       </p>
     </div>
-    <button pButton type="button" severity="secondary" size="small" (click)="close.emit()">
-      <span>{{ 'therapySessions.tracking.detail.close' | translate }}</span>
-    </button>
+    <dl class="session-detail__totals">
+      <div>
+        <dt>{{ 'therapySessions.tracking.table.quality' | translate }}</dt>
+        <dd>{{ detail().goodRepetitions ?? 0 }} / {{ detail().totalRepetitions ?? 0 }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'therapySessions.tracking.table.rom' | translate }}</dt>
+        <dd>{{ romLabel(detail().averageAchievedRom) }}</dd>
+      </div>
+    </dl>
   </header>
 
   @if (detail().requiresClinicalReview) {

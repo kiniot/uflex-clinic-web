@@ -1,0 +1,9 @@
+<dl class="kpis">
+  @for (kpi of kpis(); track kpi.labelKey) {
+    <div class="kpis__item" [attr.data-tone]="kpi.tone">
+      <dt class="kpis__label">{{ kpi.labelKey | translate }}</dt>
+      <dd class="kpis__value">{{ kpi.value }}</dd>
+      <p class="kpis__hint">{{ kpi.hint }}</p>
+    </div>
+  }
+</dl>

@@ -16,43 +16,15 @@
 </header>
 
 <section class="therapy-layout tracking-layout">
-  <article class="therapy-card">
-    <header class="therapy-card__header">
-      <h2 class="therapy-card__title">{{ 'therapySessions.patientListTitle' | translate }}</h2>
-      <span class="therapy-card__counter">
-        {{ 'therapySessions.patientListCount' | translate: { count: patients().length } }}
-      </span>
-    </header>
+  <app-patient-roster
+    [patients]="patients()"
+    [selectedPatientId]="selectedPatientId()"
+    [isLoading]="isLoadingPatients()"
+    [patientIdInSession]="patientIdInSession()"
+    (selectPatient)="onSelectPatient($event)"
+  />
 
-    @if (isLoadingPatients()) {
-      <div class="therapy-card__empty">{{ 'therapySessions.loadingPatients' | translate }}</div>
-    } @else if (!patients().length) {
-      <div class="therapy-card__empty">
-        <strong>{{ 'therapySessions.noPatientsTitle' | translate }}</strong>
-        <span>{{ 'therapySessions.noPatientsBody' | translate }}</span>
-      </div>
-    } @else {
-      <div class="therapy-patient-list">
-        @for (patient of patients(); track patient.id) {
-          <button
-            type="button"
-            class="therapy-patient-item"
-            [class.therapy-patient-item--active]="hasSelectedPatient(patient.id)"
-            (click)="onSelectPatient(patient)"
-          >
-            <span class="therapy-patient-item__avatar">{{ initials(patient) }}</span>
-            <span class="therapy-patient-item__copy">
-              <strong>{{ patientDisplayName(patient) }}</strong>
-              <span>{{ patient.medicalCondition }}</span>
-              <small>{{ 'patientsList.status.' + patient.status | translate }}</small>
-            </span>
-          </button>
-        }
-      </div>
-    }
-  </article>
-
-  <section class="therapy-detail">
+  <section class="tracking-panel">
     @if (!selectedPatient()) {
       <article class="therapy-card">
         <div class="therapy-card__empty">
@@ -61,173 +33,123 @@
         </div>
       </article>
     } @else {
-      <article class="therapy-card therapy-card--accent">
-        <header class="therapy-card__header">
-          <div>
-            <h2 class="therapy-card__title">{{ patientDisplayName(selectedPatient()!) }}</h2>
-            <p class="therapy-card__hint">
-              {{ 'therapySessions.tracking.patientHint' | translate }}
-            </p>
-          </div>
-          <button
-            pButton
-            type="button"
-            severity="secondary"
-            class="therapy-action"
-            (click)="onOpenPatient()"
-          >
-            <span>{{ openPatientLabelKey() | translate }}</span>
-          </button>
-        </header>
-      </article>
+      <header class="tracking-patient">
+        <div class="tracking-patient__identity">
+          <h2 class="tracking-patient__name">{{ patientDisplayName(selectedPatient()!) }}</h2>
+          <span class="tracking-patient__meta">{{ selectedPatient()!.medicalCondition }}</span>
+        </div>
+        @if (hasActiveSession()) {
+          <span class="tracking-patient__live">
+            <span class="tracking-patient__pulse" aria-hidden="true"></span>
+            {{
+              'therapySessions.tracking.liveBody'
+                | translate
+                  : {
+                      serie: currentSerieLabel(),
+                      completed: progressCompletedSeries(),
+                      total: progressTotalSeries(),
+                    }
+            }}
+          </span>
+        }
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          size="small"
+          class="therapy-action"
+          (click)="onOpenPatient()"
+        >
+          <span>{{ openPatientLabelKey() | translate }}</span>
+        </button>
+      </header>
 
       @if (contextError()) {
         <div class="therapy-card__error">{{ 'therapySessions.contextError' | translate }}</div>
       }
 
-      @if (hasActiveSession()) {
-        <article class="tracking-live">
-          <span class="tracking-live__pulse" aria-hidden="true"></span>
-          <div class="tracking-live__copy">
-            <strong>{{ 'therapySessions.tracking.liveTitle' | translate }}</strong>
-            <span>
-              {{
-                'therapySessions.tracking.liveBody'
-                  | translate
-                    : {
-                        serie: currentSerieLabel(),
-                        completed: progressCompletedSeries(),
-                        total: progressTotalSeries(),
-                      }
-              }}
-            </span>
-          </div>
-          @if (requiresClinicalReview()) {
-            <span class="tracking-live__flag">{{
-              'therapySessions.clinicalReviewRequired' | translate
-            }}</span>
-          }
-        </article>
-      }
+      <app-tracking-kpis [kpis]="kpis()" />
 
-      <section class="therapy-page__stats therapy-page__stats--four">
-        <app-stat-card [title]="'therapySessions.tracking.kpi.sessions' | translate">
-          <div class="tracking-stat">
-            <span class="tracking-stat__value">{{ totalSessions() }}</span>
-            <span class="tracking-stat__hint">
-              {{
-                'therapySessions.tracking.kpi.sessionsSub'
-                  | translate: { completed: completedSessions() }
-              }}
-            </span>
-          </div>
-        </app-stat-card>
+      <div class="tracking-grid">
+        @if (hasRomTrend()) {
+          <article class="therapy-card tracking-grid__chart">
+            <header class="therapy-card__header">
+              <div>
+                <h3 class="therapy-card__title">
+                  {{ 'therapySessions.tracking.chart.romTitle' | translate }}
+                </h3>
+                <p class="therapy-card__hint">
+                  {{ 'therapySessions.tracking.chart.romHint' | translate }}
+                </p>
+              </div>
+            </header>
+            @defer {
+              <app-therapy-chart
+                type="line"
+                [labels]="romTrendLabels()"
+                [series]="romTrendSeries()"
+                yAxisSuffix="°"
+                [ariaLabel]="'therapySessions.tracking.chart.romTitle' | translate"
+              />
+            } @placeholder {
+              <div class="therapy-card__empty">
+                {{ 'therapySessions.tracking.chart.loading' | translate }}
+              </div>
+            }
+          </article>
+        }
 
-        <app-stat-card [title]="'therapySessions.tracking.kpi.repetitions' | translate">
-          <div class="tracking-stat">
-            <span class="tracking-stat__value">{{ totalRepetitions() }}</span>
-            <span class="tracking-stat__hint">
-              {{
-                'therapySessions.tracking.kpi.repetitionsSub'
-                  | translate: { good: goodRepetitions() }
-              }}
-            </span>
-          </div>
-        </app-stat-card>
-
-        <app-stat-card [title]="'therapySessions.tracking.kpi.averageRom' | translate">
-          <div class="tracking-stat">
-            <span class="tracking-stat__value">{{ averageRomLabel() }}</span>
-            <span class="tracking-stat__hint">{{
-              'therapySessions.tracking.kpi.averageRomSub' | translate
-            }}</span>
-          </div>
-        </app-stat-card>
-
-        <app-stat-card [title]="'therapySessions.tracking.kpi.review' | translate">
-          <div class="tracking-stat">
-            <span class="tracking-stat__value">{{ sessionsRequiringReviewCount() }}</span>
-            <span class="tracking-stat__hint">{{
-              'therapySessions.tracking.kpi.reviewSub' | translate
-            }}</span>
-          </div>
-        </app-stat-card>
-      </section>
-
-      @if (hasRomTrend()) {
-        <article class="therapy-card">
+        <article class="therapy-card tracking-grid__table">
           <header class="therapy-card__header">
             <div>
-              <h2 class="therapy-card__title">
-                {{ 'therapySessions.tracking.chart.romTitle' | translate }}
-              </h2>
+              <h3 class="therapy-card__title">
+                {{ 'therapySessions.tracking.historyTitle' | translate }}
+              </h3>
               <p class="therapy-card__hint">
-                {{ 'therapySessions.tracking.chart.romHint' | translate }}
+                {{ 'therapySessions.tracking.historyHint' | translate }}
               </p>
             </div>
+            <span class="therapy-card__counter">
+              {{
+                'therapySessions.tracking.historyCount'
+                  | translate: { count: sessionHistory().length }
+              }}
+            </span>
           </header>
-          @defer {
-            <app-therapy-chart
-              type="line"
-              [labels]="romTrendLabels()"
-              [series]="romTrendSeries()"
-              yAxisSuffix="°"
-              [ariaLabel]="'therapySessions.tracking.chart.romTitle' | translate"
-            />
-          } @placeholder {
+
+          @if (isLoadingHistory()) {
             <div class="therapy-card__empty">
-              {{ 'therapySessions.tracking.chart.loading' | translate }}
+              {{ 'therapySessions.tracking.loadingHistory' | translate }}
             </div>
+          } @else if (!sessionHistory().length) {
+            <div class="therapy-card__empty">
+              <strong>{{ 'therapySessions.tracking.noHistoryTitle' | translate }}</strong>
+              <span>{{ 'therapySessions.tracking.noHistoryBody' | translate }}</span>
+            </div>
+          } @else {
+            <app-session-history-table
+              [sessions]="sessionHistory()"
+              [selectedSessionId]="selectedSessionId()"
+              (selectSession)="onSelectSession($event)"
+            />
           }
         </article>
-      }
-
-      <article class="therapy-card">
-        <header class="therapy-card__header">
-          <h2 class="therapy-card__title">
-            {{ 'therapySessions.tracking.historyTitle' | translate }}
-          </h2>
-          <span class="therapy-card__counter">
-            {{
-              'therapySessions.tracking.historyCount'
-                | translate: { count: sessionHistory().length }
-            }}
-          </span>
-        </header>
-
-        @if (isLoadingHistory()) {
-          <div class="therapy-card__empty">
-            {{ 'therapySessions.tracking.loadingHistory' | translate }}
-          </div>
-        } @else if (!sessionHistory().length) {
-          <div class="therapy-card__empty">
-            <strong>{{ 'therapySessions.tracking.noHistoryTitle' | translate }}</strong>
-            <span>{{ 'therapySessions.tracking.noHistoryBody' | translate }}</span>
-          </div>
-        } @else {
-          <app-session-history-table
-            [sessions]="sessionHistory()"
-            [selectedSessionId]="selectedSessionId()"
-            (selectSession)="onSelectSession($event)"
-          />
-        }
-      </article>
-
-      @if (isLoadingDetail()) {
-        <article class="therapy-card">
-          <div class="therapy-card__empty">
-            {{ 'therapySessions.tracking.detail.loading' | translate }}
-          </div>
-        </article>
-      } @else if (selectedSessionDetail(); as detail) {
-        <article class="therapy-card">
-          <app-session-detail-panel
-            [detail]="detail"
-            [exerciseCatalog]="exerciseCatalog()"
-            (close)="onCloseSession()"
-          />
-        </article>
-      }
+      </div>
     }
   </section>
 </section>
+
+<p-drawer
+  [visible]="isDrawerOpen()"
+  (visibleChange)="onDrawerVisibleChange($event)"
+  (onHide)="onCloseSession()"
+  position="right"
+  styleClass="tracking-drawer"
+  [header]="'therapySessions.tracking.detail.eyebrow' | translate"
+>
+  @if (isLoadingDetail()) {
+    <p class="therapy-card__empty">{{ 'therapySessions.tracking.detail.loading' | translate }}</p>
+  } @else if (selectedSessionDetail(); as detail) {
+    <app-session-detail-panel [detail]="detail" [exerciseCatalog]="exerciseCatalog()" />
+  }
+</p-drawer>

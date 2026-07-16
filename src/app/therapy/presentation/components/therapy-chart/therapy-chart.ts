@@ -83,7 +83,17 @@ export class TherapyChart {
         },
       },
       scales: {
-        x: { ticks: { color: text }, grid: { color: grid } },
+        x: {
+          ticks: {
+            color: text,
+            // Dozens of sessions in a narrow card turn every label into noise; thin them out
+            // rather than let them collide.
+            maxTicksLimit: 8,
+            maxRotation: 0,
+            autoSkip: true,
+          },
+          grid: { color: grid },
+        },
         y: {
           ticks: { color: text, callback: (value: number | string) => `${value}${suffix}` },
           grid: { color: grid },

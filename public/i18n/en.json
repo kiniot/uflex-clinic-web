@@ -1507,7 +1507,7 @@
         "sessions": "Sessions",
         "sessionsSub": "{{completed}} completed",
         "repetitions": "Repetitions",
-        "repetitionsSub": "{{good}} good",
+        "repetitionsSub": "{{good}} good ({{percent}}%)",
         "averageRom": "Average ROM",
         "averageRomSub": "Mean across sessions with repetitions",
         "review": "Need review",
@@ -1532,7 +1532,6 @@
       },
       "detail": {
         "eyebrow": "Session detail",
-        "close": "Close",
         "loading": "Loading detail...",
         "reviewAlert": "This session needs clinical review. Highest reported pain: {{max}}/10.",
         "noSeries": "This session never recorded any series.",
@@ -1560,7 +1559,12 @@
         "targetRom": "Target",
         "repsAria": "Achieved ROM per repetition against the serie's target",
         "loading": "Loading chart..."
-      }
+      },
+      "roster": {
+        "search": "Search patient...",
+        "noMatches": "No patient matches \"{{query}}\"."
+      },
+      "historyHint": "Select a session to inspect its repetitions."
     }
   },
   "therapyRoadmap": {

@@ -1507,7 +1507,7 @@
         "sessions": "Sesiones",
         "sessionsSub": "{{completed}} completadas",
         "repetitions": "Repeticiones",
-        "repetitionsSub": "{{good}} correctas",
+        "repetitionsSub": "{{good}} correctas ({{percent}}%)",
         "averageRom": "ROM promedio",
         "averageRomSub": "Media de las sesiones con repeticiones",
         "review": "Requieren revisión",
@@ -1532,7 +1532,6 @@
       },
       "detail": {
         "eyebrow": "Detalle de sesión",
-        "close": "Cerrar",
         "loading": "Cargando detalle...",
         "reviewAlert": "Esta sesión requiere revisión clínica. Dolor máximo reportado: {{max}}/10.",
         "noSeries": "Esta sesión no llegó a registrar series.",
@@ -1560,7 +1559,12 @@
         "targetRom": "Objetivo",
         "repsAria": "ROM alcanzado por repetición frente al objetivo de la serie",
         "loading": "Cargando gráfica..."
-      }
+      },
+      "roster": {
+        "search": "Buscar paciente...",
+        "noMatches": "Ningún paciente coincide con \"{{query}}\"."
+      },
+      "historyHint": "Selecciona una sesión para ver sus repeticiones."
     }
   },
   "therapyRoadmap": {

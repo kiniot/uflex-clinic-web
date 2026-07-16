@@ -1,3 +1,9 @@
+// Custom elements are inline by default; a chart that cannot shrink pushes the page sideways.
+:host {
+  display: block;
+  min-width: 0;
+}
+
 .therapy-chart {
   position: relative;
   width: 100%;

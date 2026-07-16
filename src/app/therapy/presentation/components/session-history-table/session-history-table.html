@@ -9,11 +9,15 @@
         <th scope="col">{{ 'therapySessions.tracking.table.rom' | translate }}</th>
         <th scope="col">{{ 'therapySessions.tracking.table.pain' | translate }}</th>
         <th scope="col">{{ 'therapySessions.tracking.table.compensations' | translate }}</th>
-        <th scope="col"><span class="visually-hidden">{{ 'therapySessions.tracking.table.review' | translate }}</span></th>
+        <th scope="col">
+          <span class="visually-hidden">
+            {{ 'therapySessions.tracking.table.review' | translate }}
+          </span>
+        </th>
       </tr>
     </thead>
     <tbody>
-      @for (session of sessions(); track session.sessionId) {
+      @for (session of pagedSessions(); track session.sessionId) {
         <tr
           class="session-history__row"
           [class.session-history__row--selected]="session.sessionId === selectedSessionId()"
@@ -24,9 +28,10 @@
           (keydown.enter)="selectSession.emit(session)"
           (keydown.space)="selectSession.emit(session)"
         >
-          <td>
+          <td class="session-history__date">
             @if (session.startedAt) {
-              {{ session.startedAt | date: 'dd MMM, HH:mm' }}
+              {{ session.startedAt | date: 'dd MMM' }}
+              <span class="session-history__time">{{ session.startedAt | date: 'HH:mm' }}</span>
             } @else {
               <span class="session-history__muted">
                 {{ 'therapySessions.tracking.table.neverStarted' | translate }}
@@ -38,11 +43,23 @@
               {{ sessionStatusKey(session) | translate }}
             </span>
           </td>
-          <td>{{ seriesLabel(session) }}</td>
-          <td>{{ qualityLabel(session) }}</td>
-          <td>{{ romLabel(session) }}</td>
-          <td>{{ session.maxReportedPainLevel ?? '—' }}</td>
-          <td>{{ session.compensatoryMovementsDetected ?? 0 }}</td>
+          <td class="session-history__num">{{ seriesLabel(session) }}</td>
+          <td>
+            <span class="session-history__quality" [attr.data-tone]="qualityTone(session)">
+              <span class="session-history__quality-bar">
+                <span
+                  class="session-history__quality-fill"
+                  [style.width.%]="(qualityRatio(session) ?? 0) * 100"
+                ></span>
+              </span>
+              <span class="session-history__num">
+                {{ session.goodRepetitions ?? 0 }}/{{ session.totalRepetitions ?? 0 }}
+              </span>
+            </span>
+          </td>
+          <td class="session-history__num">{{ romLabel(session) }}</td>
+          <td class="session-history__num">{{ session.maxReportedPainLevel ?? '—' }}</td>
+          <td class="session-history__num">{{ session.compensatoryMovementsDetected ?? 0 }}</td>
           <td>
             @if (session.requiresClinicalReview) {
               <span class="session-history__flag">
@@ -55,3 +72,12 @@
     </tbody>
   </table>
 </div>
+
+@if (showPaginator()) {
+  <p-paginator
+    [first]="first()"
+    [rows]="pageSize"
+    [totalRecords]="sessions().length"
+    (onPageChange)="onPageChange($event)"
+  />
+}
