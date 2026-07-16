@@ -129,19 +129,83 @@
   background: var(--p-red-500);
 }
 
+// A dot + label rather than a coloured word: the state reads at a glance without relying on
+// colour alone to carry it.
 .session-history__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 0.78rem;
+  color: var(--p-text-muted-color);
+}
 
-  &[data-status='Completed'] {
-    color: var(--p-green-500);
+.session-history__status-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 999px;
+  background: var(--p-surface-400);
+}
+
+.session-history__status[data-status='Completed'] {
+  color: var(--p-text-color);
+
+  .session-history__status-dot {
+    background: var(--p-green-500);
+  }
+}
+
+.session-history__status[data-status='InProgress'] {
+  color: var(--p-primary-color);
+  font-weight: 600;
+
+  .session-history__status-dot {
+    background: var(--p-primary-color);
+  }
+}
+
+.session-history__pain {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--p-text-muted-color);
+
+  &[data-tone='good'] {
+    color: var(--p-text-color);
+    background: var(--p-surface-100);
   }
 
-  &[data-status='Cancelled'] {
-    color: var(--p-text-muted-color);
+  &[data-tone='warn'] {
+    color: var(--p-yellow-600, var(--p-yellow-500));
+    background: color-mix(in srgb, var(--p-yellow-500) 16%, transparent);
   }
 
-  &[data-status='InProgress'] {
-    color: var(--p-primary-color);
+  &[data-tone='danger'] {
+    color: var(--p-red-600);
+    background: color-mix(in srgb, var(--p-red-500) 16%, transparent);
+  }
+}
+
+:host-context(.app-dark) .session-history__pain[data-tone='good'] {
+  background: var(--p-surface-200);
+}
+
+.session-history__compensations {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--p-yellow-600, var(--p-yellow-500));
+
+  i {
+    font-size: 0.7rem;
   }
 }
 

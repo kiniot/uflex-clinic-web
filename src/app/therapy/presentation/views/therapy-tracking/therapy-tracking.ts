@@ -1,9 +1,10 @@
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
 import { TherapySessionHistoryItemResource } from '../../../infrastructure/therapy-session.response';
-import { PatientRoster } from '../../components/patient-roster/patient-roster';
 import { SessionDetailPanel } from '../../components/session-detail-panel/session-detail-panel';
 import { SessionHistoryTable } from '../../components/session-history-table/session-history-table';
 import { TherapyChart, TherapyChartSeries } from '../../components/therapy-chart/therapy-chart';
@@ -11,25 +12,23 @@ import { TrackingKpi, TrackingKpis } from '../../components/tracking-kpis/tracki
 import { TherapyDashboardBase, TherapyRoleContext } from '../shared/therapy-dashboard.base';
 
 /**
- * Therapy follow-up centre for the physiotherapist: pick a patient and inspect how their therapy is
- * actually going.
+ * One patient's therapy, in depth: history, ROM trend, and a drill-down into every repetition.
  *
- * <p>Read-only by design. This view used to be an execution console (prepare → confirm hardware →
- * start → finalize), which duplicated the patient's mobile app and asked the clinician to attest,
- * from the clinic, that the sensors were on the patient's arm — something only the patient can
- * know. Meanwhile the thing that actually matters, seeing the history, was impossible.
+ * <p>Read-only by design. This used to be an execution console (prepare → confirm hardware → start
+ * → finalize), which duplicated the patient's mobile app and asked the clinician to attest, from
+ * the clinic, that the sensors were on the patient's arm — something only the patient can know.
+ * Meanwhile the thing that actually matters, seeing the history, was impossible.
  *
- * <p>The KPIs are derived from the history in the client rather than fetched: the backend already
- * returns each session's aggregates, and the plan metadata they would be computed against lives in
- * planning, which this page already loads.
+ * <p>Reached from the therapy index, which is where the caseload lives; keeping a patient list in
+ * here as well cost the charts the width they need to be read.
  */
 @Component({
   selector: 'app-therapy-tracking',
   imports: [
     TranslatePipe,
+    RouterLink,
     ButtonModule,
     DrawerModule,
-    PatientRoster,
     TrackingKpis,
     SessionHistoryTable,
     SessionDetailPanel,
@@ -41,18 +40,23 @@ import { TherapyDashboardBase, TherapyRoleContext } from '../shared/therapy-dash
 export class TherapyTracking extends TherapyDashboardBase implements OnInit {
   protected readonly roleContext: TherapyRoleContext = 'physiotherapist';
 
+  private readonly route = inject(ActivatedRoute);
   private readonly translateService = inject(TranslateService);
+
+  /** From the route: /physiotherapist/therapy/:patientId */
+  private readonly routeParams = toSignal(this.route.paramMap, { requireSync: true });
+  protected readonly patientId = computed(() => this.routeParams().get('patientId') ?? '');
+
+  /** Resolved from the caseload the page loads anyway; the API answers by id, not by name. */
+  protected readonly patientName = computed(
+    () => this.patients().find((patient) => patient.id === this.patientId())?.fullName ?? '',
+  );
 
   protected readonly sessionHistory = this.therapySessionStore.sessionHistory;
   protected readonly isLoadingHistory = this.therapySessionStore.isLoadingHistory;
   protected readonly selectedSessionId = this.therapySessionStore.selectedSessionId;
   protected readonly selectedSessionDetail = this.therapySessionStore.selectedSessionDetail;
   protected readonly isLoadingDetail = this.therapySessionStore.isLoadingDetail;
-
-  /** The roster can only mark a session it already knows about: the selected patient's. */
-  protected readonly patientIdInSession = computed(() =>
-    this.hasActiveSession() ? this.selectedPatientId() : null,
-  );
 
   /**
    * The drawer's own state, not a projection of the selected session. p-drawer owns `visible`
@@ -86,11 +90,21 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
       .reverse(),
   );
 
-  /** Mean of the per-session means. */
+  /**
+   * Weighted by repetition count, so every repetition carries the same weight as it does in the
+   * backend's own average. A plain mean of the per-session means would let a 3-rep session sway the
+   * figure as much as a 25-rep one, and the index and this page would quote different numbers for
+   * the same patient.
+   */
   private readonly averageRom = computed(() => {
-    const values = this.romTrendSessions().map((session) => session.averageAchievedRom!);
-    if (!values.length) return null;
-    return values.reduce((total, rom) => total + rom, 0) / values.length;
+    const sessions = this.romTrendSessions();
+    const reps = sessions.reduce((total, session) => total + (session.totalRepetitions ?? 0), 0);
+    if (!reps) return null;
+    const weighted = sessions.reduce(
+      (total, session) => total + session.averageAchievedRom! * (session.totalRepetitions ?? 0),
+      0,
+    );
+    return weighted / reps;
   });
 
   protected readonly kpis = computed<TrackingKpi[]>(() => {
@@ -110,13 +124,14 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
         tone: 'neutral',
       },
       {
-        labelKey: 'therapySessions.tracking.kpi.repetitions',
-        value: `${total}`,
-        hint: this.translateService.instant('therapySessions.tracking.kpi.repetitionsSub', {
+        // The headline is the ratio, not the volume: the tone judges quality, and colouring the
+        // repetition count red would read as "307 repetitions is bad", which it is not.
+        labelKey: 'therapySessions.tracking.kpi.quality',
+        value: goodRatio !== null ? `${Math.round(goodRatio * 100)}%` : '—',
+        hint: this.translateService.instant('therapySessions.tracking.kpi.qualitySub', {
           good,
-          percent: goodRatio !== null ? Math.round(goodRatio * 100) : 0,
+          total,
         }),
-        // A low share of good repetitions is the finding, so let it look like one.
         tone: this.ratioTone(goodRatio),
       },
       {
@@ -152,12 +167,7 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
   ]);
 
   async ngOnInit(): Promise<void> {
-    await this.initializeDashboard();
-  }
-
-  protected override async loadPatientWorkspace(patientId: string, date?: string): Promise<void> {
-    await super.loadPatientWorkspace(patientId, date);
-    await this.therapySessionStore.loadSessionHistory(patientId);
+    await this.initializePatient(this.patientId());
   }
 
   protected onSelectSession(session: TherapySessionHistoryItemResource) {
@@ -178,6 +188,25 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
   protected onCloseSession() {
     this.isDrawerOpen.set(false);
     this.therapySessionStore.clearSelectedSession();
+  }
+
+  protected onRefresh() {
+    void this.loadPatientWorkspace(this.patientId(), this.selectedDate());
+  }
+
+  private async initializePatient(patientId: string): Promise<void> {
+    await Promise.all([
+      this.organizationStore.loadCurrentPhysiotherapistOnce(),
+      this.organizationStore.loadMyPatients(),
+      this.planningStore.loadExerciseCatalog(),
+    ]);
+    this.deviceStore.loadDevices();
+    await this.loadPatientWorkspace(patientId, this.selectedDate());
+  }
+
+  protected override async loadPatientWorkspace(patientId: string, date?: string): Promise<void> {
+    await super.loadPatientWorkspace(patientId, date);
+    await this.therapySessionStore.loadSessionHistory(patientId);
   }
 
   private ratioTone(ratio: number | null): TrackingKpi['tone'] {

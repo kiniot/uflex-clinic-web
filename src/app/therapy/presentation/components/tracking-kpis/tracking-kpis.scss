@@ -43,12 +43,16 @@
   background: var(--p-surface-100);
 }
 
-// A 2px rule carries the tone without tinting the whole tile.
+// A short inset rule rather than a full-height bar: enough to flag the tile, quiet enough not to
+// read as a divider between them.
 .kpis__item::before {
   content: '';
   position: absolute;
-  inset: 0 auto 0 0;
-  width: 2px;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
   background: transparent;
 }
 

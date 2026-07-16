@@ -73,4 +73,23 @@ export class SessionHistoryTable {
     if (ratio >= 0.3) return 'warn';
     return 'danger';
   }
+
+  /** A session where nobody reported pain has no reading, which is not the same as a zero. */
+  protected painLevel(session: TherapySessionHistoryItemResource): number | null {
+    if (!session.totalRepetitions) return null;
+    return session.maxReportedPainLevel ?? null;
+  }
+
+  /** The backend flags a session for review at 3 reports of 7+, or a single 10. */
+  protected painTone(session: TherapySessionHistoryItemResource): string {
+    const pain = this.painLevel(session);
+    if (pain === null) return 'empty';
+    if (pain >= 7) return 'danger';
+    if (pain >= 4) return 'warn';
+    return 'good';
+  }
+
+  protected compensations(session: TherapySessionHistoryItemResource): number {
+    return session.compensatoryMovementsDetected ?? 0;
+  }
 }

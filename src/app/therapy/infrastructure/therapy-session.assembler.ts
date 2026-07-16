@@ -1,6 +1,8 @@
 import {
   DailyScheduleResource,
   DailyScheduleResponse,
+  PatientTherapyOverviewResource,
+  PatientTherapyOverviewResponse,
   SerieExecutionResource,
   SerieExecutionResponse,
   SerieProgressResource,
@@ -52,6 +54,23 @@ export class TherapySessionAssembler {
       compensatoryMovementsDetected: response.compensatoryMovementsDetected ?? null,
       startedAt: response.startedAt ?? null,
       finalizedAt: response.finalizedAt ?? null,
+    };
+  }
+
+  toPatientTherapyOverviewResourceFromResponse(
+    response: PatientTherapyOverviewResponse,
+  ): PatientTherapyOverviewResource {
+    return {
+      patientId: response.patientId,
+      patientFullName: response.patientFullName ?? null,
+      totalSessions: response.totalSessions ?? null,
+      completedSessions: response.completedSessions ?? null,
+      sessionsRequiringReview: response.sessionsRequiringReview ?? null,
+      lastSessionAt: response.lastSessionAt ?? null,
+      totalRepetitions: response.totalRepetitions ?? null,
+      goodRepetitions: response.goodRepetitions ?? null,
+      averageAchievedRom: response.averageAchievedRom ?? null,
+      hasActiveSession: response.hasActiveSession ?? null,
     };
   }
 

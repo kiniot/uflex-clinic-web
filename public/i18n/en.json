@@ -1417,7 +1417,7 @@
     },
     "selectPatientHint": "Select a patient to inspect their therapy context.",
     "openAdminPatient": "Open patient profile",
-    "openPhysiotherapistPatient": "Open patient workspace",
+    "openPhysiotherapistPatient": "View patient record",
     "contextError": "We could not load the latest therapy session context for this patient.",
     "scheduleTitle": "Therapy schedule",
     "schedulePickerHint": "Review the patient's therapy schedule for a specific date.",
@@ -1499,19 +1499,18 @@
     },
     "tracking": {
       "title": "Therapy tracking",
-      "subtitle": "Pick a patient and review how their therapy is going: session history, repetition quality and range of motion achieved.",
-      "patientHint": "Overview of this patient's therapy.",
+      "subtitle": "Session history, repetition quality and range of motion achieved.",
       "liveTitle": "Session running now",
       "liveBody": "{{serie}} · {{completed}} of {{total}} series completed",
       "kpi": {
         "sessions": "Sessions",
         "sessionsSub": "{{completed}} completed",
-        "repetitions": "Repetitions",
-        "repetitionsSub": "{{good}} good ({{percent}}%)",
         "averageRom": "Average ROM",
         "averageRomSub": "Mean across sessions with repetitions",
         "review": "Need review",
-        "reviewSub": "Sessions flagged by reported pain"
+        "reviewSub": "Sessions flagged by reported pain",
+        "quality": "Good repetitions",
+        "qualitySub": "{{good}} of {{total}} repetitions"
       },
       "historyTitle": "Session history",
       "historyCount": "{{count}} sessions",
@@ -1560,11 +1559,39 @@
         "repsAria": "Achieved ROM per repetition against the serie's target",
         "loading": "Loading chart..."
       },
-      "roster": {
-        "search": "Search patient...",
-        "noMatches": "No patient matches \"{{query}}\"."
+      "historyHint": "Select a session to inspect its repetitions.",
+      "breadcrumb": {
+        "therapy": "Therapy tracking",
+        "patient": "Patient"
       },
-      "historyHint": "Select a session to inspect its repetitions."
+      "openPatient": "View patient record"
+    },
+    "hub": {
+      "title": "Therapy tracking",
+      "subtitle": "How each of your patients' therapy is going. Open one to see their history and repetitions.",
+      "tableTitle": "Your patients",
+      "tableHint": "Sorted by last session. Those who never started come first.",
+      "loadError": "We could not load your patients' tracking.",
+      "neverStarted": "Never started",
+      "completedShort": "{{count}} done",
+      "open": "View tracking",
+      "columns": {
+        "patient": "Patient",
+        "lastSession": "Last session",
+        "sessions": "Sessions",
+        "quality": "Good repetitions",
+        "rom": "Average ROM",
+        "alerts": "Alerts",
+        "action": "Action"
+      },
+      "kpi": {
+        "caseload": "Your caseload",
+        "inSession": "In session now",
+        "neverStarted": "Never started",
+        "needReview": "Sessions to review"
+      },
+      "search": "Search patient...",
+      "noMatches": "No patient matches \"{{query}}\"."
     }
   },
   "therapyRoadmap": {

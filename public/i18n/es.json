@@ -1417,7 +1417,7 @@
     },
     "selectPatientHint": "Selecciona un paciente para inspeccionar su contexto de terapia.",
     "openAdminPatient": "Abrir perfil del paciente",
-    "openPhysiotherapistPatient": "Abrir workspace del paciente",
+    "openPhysiotherapistPatient": "Ver ficha del paciente",
     "contextError": "No pudimos cargar el contexto más reciente de sesión de terapia para este paciente.",
     "scheduleTitle": "Agenda Terapéutica",
     "schedulePickerHint": "Consulta la programación terapéutica del paciente para una fecha específica.",
@@ -1499,19 +1499,18 @@
     },
     "tracking": {
       "title": "Seguimiento de terapia",
-      "subtitle": "Selecciona un paciente y revisa cómo avanza su terapia: historial de sesiones, calidad de las repeticiones y rango de movimiento alcanzado.",
-      "patientHint": "Resumen de la terapia de este paciente.",
+      "subtitle": "Historial de sesiones, calidad de las repeticiones y rango de movimiento alcanzado.",
       "liveTitle": "Sesión en curso ahora",
       "liveBody": "{{serie}} · {{completed}} de {{total}} series completadas",
       "kpi": {
         "sessions": "Sesiones",
         "sessionsSub": "{{completed}} completadas",
-        "repetitions": "Repeticiones",
-        "repetitionsSub": "{{good}} correctas ({{percent}}%)",
         "averageRom": "ROM promedio",
         "averageRomSub": "Media de las sesiones con repeticiones",
         "review": "Requieren revisión",
-        "reviewSub": "Sesiones marcadas por dolor reportado"
+        "reviewSub": "Sesiones marcadas por dolor reportado",
+        "quality": "Repeticiones correctas",
+        "qualitySub": "{{good}} de {{total}} repeticiones"
       },
       "historyTitle": "Historial de sesiones",
       "historyCount": "{{count}} sesiones",
@@ -1560,11 +1559,39 @@
         "repsAria": "ROM alcanzado por repetición frente al objetivo de la serie",
         "loading": "Cargando gráfica..."
       },
-      "roster": {
-        "search": "Buscar paciente...",
-        "noMatches": "Ningún paciente coincide con \"{{query}}\"."
+      "historyHint": "Selecciona una sesión para ver sus repeticiones.",
+      "breadcrumb": {
+        "therapy": "Seguimiento de terapia",
+        "patient": "Paciente"
       },
-      "historyHint": "Selecciona una sesión para ver sus repeticiones."
+      "openPatient": "Ver ficha del paciente"
+    },
+    "hub": {
+      "title": "Seguimiento de terapia",
+      "subtitle": "Cómo avanza la terapia de cada uno de tus pacientes. Entra en uno para ver su historial y sus repeticiones.",
+      "tableTitle": "Tus pacientes",
+      "tableHint": "Ordenados por última sesión. Los que nunca han empezado aparecen primero.",
+      "loadError": "No pudimos cargar el seguimiento de tus pacientes.",
+      "neverStarted": "Nunca ha empezado",
+      "completedShort": "{{count}} compl.",
+      "open": "Ver seguimiento",
+      "columns": {
+        "patient": "Paciente",
+        "lastSession": "Última sesión",
+        "sessions": "Sesiones",
+        "quality": "Repeticiones correctas",
+        "rom": "ROM promedio",
+        "alerts": "Alertas",
+        "action": "Acción"
+      },
+      "kpi": {
+        "caseload": "Pacientes a tu cargo",
+        "inSession": "En sesión ahora",
+        "neverStarted": "Sin empezar",
+        "needReview": "Sesiones por revisar"
+      },
+      "search": "Buscar paciente...",
+      "noMatches": "Ningún paciente coincide con \"{{query}}\"."
     }
   },
   "therapyRoadmap": {

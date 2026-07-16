@@ -77,6 +77,35 @@ export interface SessionSummaryResponse extends BaseResponse {
   finalizedAt: string | null;
 }
 
+/** One patient's therapy standing for the clinician's index. */
+export interface PatientTherapyOverviewResource {
+  patientId: string;
+  patientFullName: string | null;
+  totalSessions: number | null;
+  completedSessions: number | null;
+  sessionsRequiringReview: number | null;
+  /** Null when the patient has never started a session. */
+  lastSessionAt: string | null;
+  totalRepetitions: number | null;
+  goodRepetitions: number | null;
+  /** Null when no repetition was ever recorded. */
+  averageAchievedRom: number | null;
+  hasActiveSession: boolean | null;
+}
+
+export interface PatientTherapyOverviewResponse extends BaseResponse {
+  patientId: string;
+  patientFullName: string | null;
+  totalSessions: number | null;
+  completedSessions: number | null;
+  sessionsRequiringReview: number | null;
+  lastSessionAt: string | null;
+  totalRepetitions: number | null;
+  goodRepetitions: number | null;
+  averageAchievedRom: number | null;
+  hasActiveSession: boolean | null;
+}
+
 /** One row of a patient's session history, aggregates already computed by the backend. */
 export interface TherapySessionHistoryItemResource {
   sessionId: string;

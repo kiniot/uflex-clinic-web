@@ -40,6 +40,7 @@
           </td>
           <td>
             <span class="session-history__status" [attr.data-status]="session.status">
+              <span class="session-history__status-dot" aria-hidden="true"></span>
               {{ sessionStatusKey(session) | translate }}
             </span>
           </td>
@@ -58,8 +59,25 @@
             </span>
           </td>
           <td class="session-history__num">{{ romLabel(session) }}</td>
-          <td class="session-history__num">{{ session.maxReportedPainLevel ?? '—' }}</td>
-          <td class="session-history__num">{{ session.compensatoryMovementsDetected ?? 0 }}</td>
+          <td>
+            @if (painLevel(session) === null) {
+              <span class="session-history__muted">—</span>
+            } @else {
+              <span class="session-history__pain" [attr.data-tone]="painTone(session)">
+                {{ painLevel(session) }}
+              </span>
+            }
+          </td>
+          <td>
+            @if (compensations(session) === 0) {
+              <span class="session-history__muted">—</span>
+            } @else {
+              <span class="session-history__compensations">
+                <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+                {{ compensations(session) }}
+              </span>
+            }
+          </td>
           <td>
             @if (session.requiresClinicalReview) {
               <span class="session-history__flag">

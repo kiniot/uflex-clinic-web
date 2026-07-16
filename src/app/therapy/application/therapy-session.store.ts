@@ -4,6 +4,7 @@ import { isAppError } from '../../shared/domain/model/app-error';
 import { TherapyApi } from '../infrastructure/therapy-api';
 import {
   DailyScheduleResource,
+  PatientTherapyOverviewResource,
   SessionProgressResource,
   TherapySessionDetailResource,
   TherapySessionHistoryItemResource,
@@ -19,10 +20,13 @@ export class TherapySessionStore {
   private readonly sessionHistorySignal = signal<TherapySessionHistoryItemResource[]>([]);
   private readonly selectedSessionIdSignal = signal<string | null>(null);
   private readonly selectedSessionDetailSignal = signal<TherapySessionDetailResource | null>(null);
+  private readonly patientOverviewSignal = signal<PatientTherapyOverviewResource[]>([]);
   private readonly loadingPatientContextSignal = signal(false);
   private readonly loadingHistorySignal = signal(false);
   private readonly loadingDetailSignal = signal(false);
+  private readonly loadingOverviewSignal = signal(false);
   private readonly contextErrorSignal = signal<string | null>(null);
+  private readonly overviewErrorSignal = signal<string | null>(null);
 
   readonly selectedPatientId = this.selectedPatientIdSignal.asReadonly();
   readonly activeSession = this.activeSessionSignal.asReadonly();
@@ -31,10 +35,13 @@ export class TherapySessionStore {
   readonly sessionHistory = this.sessionHistorySignal.asReadonly();
   readonly selectedSessionId = this.selectedSessionIdSignal.asReadonly();
   readonly selectedSessionDetail = this.selectedSessionDetailSignal.asReadonly();
+  readonly patientOverview = this.patientOverviewSignal.asReadonly();
   readonly isLoadingPatientContext = this.loadingPatientContextSignal.asReadonly();
   readonly isLoadingHistory = this.loadingHistorySignal.asReadonly();
   readonly isLoadingDetail = this.loadingDetailSignal.asReadonly();
+  readonly isLoadingOverview = this.loadingOverviewSignal.asReadonly();
   readonly contextError = this.contextErrorSignal.asReadonly();
+  readonly overviewError = this.overviewErrorSignal.asReadonly();
 
   readonly hasActiveSession = computed(() => this.activeSession() !== null);
   readonly hasScheduledRoutine = computed(() => this.dailySchedule()?.routineId !== null);
@@ -83,6 +90,21 @@ export class TherapySessionStore {
       }
     } finally {
       this.loadingPatientContextSignal.set(false);
+    }
+  }
+
+  /** Therapy standing of the physiotherapist's whole caseload, for the index. */
+  async loadPatientOverview(): Promise<void> {
+    this.loadingOverviewSignal.set(true);
+    try {
+      const overview = await firstValueFrom(this.therapyApi.getPatientTherapyOverview());
+      this.patientOverviewSignal.set(overview);
+      this.overviewErrorSignal.set(null);
+    } catch {
+      this.patientOverviewSignal.set([]);
+      this.overviewErrorSignal.set('Failed to load patient therapy overview');
+    } finally {
+      this.loadingOverviewSignal.set(false);
     }
   }
 

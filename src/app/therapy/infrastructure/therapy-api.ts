@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseApi } from '../../shared/infrastructure/base-api';
+import { PatientTherapyOverviewApiEndpoint } from './patient-therapy-overview-endpoint';
 import { PatientTherapySessionsApiEndpoint } from './patient-therapy-sessions-endpoint';
 import { TherapySessionDetailApiEndpoint } from './therapy-session-detail-endpoint';
 import { TherapySessionAssembler } from './therapy-session.assembler';
@@ -13,6 +14,7 @@ import {
 } from './therapy-session-endpoints';
 import {
   DailyScheduleResource,
+  PatientTherapyOverviewResource,
   SessionProgressResource,
   SessionSummaryResource,
   TherapySessionDetailResource,
@@ -33,6 +35,7 @@ export class TherapyApi extends BaseApi {
   private readonly getSessionProgressEndpoint: GetSessionProgressApiEndpoint;
   private readonly patientTherapySessionsEndpoint: PatientTherapySessionsApiEndpoint;
   private readonly therapySessionDetailEndpoint: TherapySessionDetailApiEndpoint;
+  private readonly patientTherapyOverviewEndpoint: PatientTherapyOverviewApiEndpoint;
 
   constructor(http: HttpClient) {
     super();
@@ -43,6 +46,11 @@ export class TherapyApi extends BaseApi {
     this.getSessionProgressEndpoint = new GetSessionProgressApiEndpoint(http, assembler);
     this.patientTherapySessionsEndpoint = new PatientTherapySessionsApiEndpoint(http, assembler);
     this.therapySessionDetailEndpoint = new TherapySessionDetailApiEndpoint(http, assembler);
+    this.patientTherapyOverviewEndpoint = new PatientTherapyOverviewApiEndpoint(http, assembler);
+  }
+
+  getPatientTherapyOverview(): Observable<PatientTherapyOverviewResource[]> {
+    return this.patientTherapyOverviewEndpoint.getOverview();
   }
 
   getHistoryByPatient(

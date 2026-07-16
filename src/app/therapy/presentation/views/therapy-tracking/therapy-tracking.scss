@@ -1,42 +1,45 @@
 @use '../shared/therapy-dashboard.shared';
 
-.tracking-layout {
-  grid-template-columns: minmax(260px, 300px) 1fr;
-  align-items: start;
+.tracking__breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+
+  a {
+    color: var(--p-text-muted-color);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--p-text-color);
+  }
+
+  span {
+    color: var(--p-primary-color);
+    font-weight: 600;
+  }
+
+  i {
+    font-size: 10px;
+  }
 }
 
-.tracking-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-width: 0;
-}
-
-.tracking-patient {
+.tracking__actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
-.tracking-patient__identity {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  margin-right: auto;
-}
+:host ::ng-deep .tracking__cta.p-button {
+  gap: 0.4rem;
 
-.tracking-patient__name {
-  margin: 0;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  color: var(--p-text-color);
-}
-
-.tracking-patient__meta {
-  font-size: 0.78rem;
-  color: var(--p-text-muted-color);
+  i {
+    font-size: 0.75rem;
+  }
 }
 
 .tracking-patient__live {
@@ -77,31 +80,6 @@
   }
 }
 
-// Chart and table side by side: stacking them is what buried the table under a scroll.
-// The breakpoint is low on purpose — 1366px laptops keep both columns, and the table
-// scrolls horizontally inside its own card rather than pushing the page down.
-.tracking-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
-  gap: 14px;
-  align-items: start;
-}
-
-@media (max-width: 1150px) {
-  .tracking-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.tracking-grid__chart,
-.tracking-grid__table {
-  min-width: 0;
-}
-
 :host ::ng-deep .tracking-drawer {
-  width: min(560px, 100vw);
-}
-
-:host ::ng-deep .tracking-drawer .p-drawer-content {
-  padding-top: 0;
+  width: min(580px, 100vw);
 }
