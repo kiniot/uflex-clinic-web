@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { ButtonModule } from 'primeng/button';
 import { DrawerModule } from 'primeng/drawer';
+import { TherapyLive } from '../../../application/therapy-live';
 import { TherapySessionHistoryItemResource } from '../../../infrastructure/therapy-session.response';
 import { SessionDetailPanel } from '../../components/session-detail-panel/session-detail-panel';
 import { SessionHistoryTable } from '../../components/session-history-table/session-history-table';
@@ -36,12 +37,15 @@ import { TherapyDashboardBase, TherapyRoleContext } from '../shared/therapy-dash
   ],
   templateUrl: './therapy-tracking.html',
   styleUrl: './therapy-tracking.scss',
+  // Scoped here so the polling dies with the view.
+  providers: [TherapyLive],
 })
 export class TherapyTracking extends TherapyDashboardBase implements OnInit {
   protected readonly roleContext: TherapyRoleContext = 'physiotherapist';
 
   private readonly route = inject(ActivatedRoute);
   private readonly translateService = inject(TranslateService);
+  private readonly therapyLive = inject(TherapyLive);
 
   /** From the route: /physiotherapist/therapy/:patientId */
   private readonly routeParams = toSignal(this.route.paramMap, { requireSync: true });
@@ -202,6 +206,7 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
     ]);
     this.deviceStore.loadDevices();
     await this.loadPatientWorkspace(patientId, this.selectedDate());
+    this.therapyLive.start(patientId);
   }
 
   protected override async loadPatientWorkspace(patientId: string, date?: string): Promise<void> {

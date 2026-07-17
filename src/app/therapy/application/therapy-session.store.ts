@@ -93,18 +93,24 @@ export class TherapySessionStore {
     }
   }
 
-  /** Therapy standing of the physiotherapist's whole caseload, for the index. */
-  async loadPatientOverview(): Promise<void> {
-    this.loadingOverviewSignal.set(true);
+  /**
+   * Therapy standing of the physiotherapist's whole caseload, for the index.
+   *
+   * @param options.silent skips the loading flag and keeps the previous rows on failure — a
+   *        background refresh must not blank the table the clinician is reading.
+   */
+  async loadPatientOverview(options: { silent?: boolean } = {}): Promise<void> {
+    if (!options.silent) this.loadingOverviewSignal.set(true);
     try {
       const overview = await firstValueFrom(this.therapyApi.getPatientTherapyOverview());
       this.patientOverviewSignal.set(overview);
       this.overviewErrorSignal.set(null);
     } catch {
+      if (options.silent) return;
       this.patientOverviewSignal.set([]);
       this.overviewErrorSignal.set('Failed to load patient therapy overview');
     } finally {
-      this.loadingOverviewSignal.set(false);
+      if (!options.silent) this.loadingOverviewSignal.set(false);
     }
   }
 
@@ -114,20 +120,23 @@ export class TherapySessionStore {
    * <p>Guarded against a stale response overwriting a newer selection: switching patients fires a
    * second load, and the first can still land afterwards.
    */
-  async loadSessionHistory(patientId: string, treatmentPlanId?: string): Promise<void> {
-    this.loadingHistorySignal.set(true);
+  async loadSessionHistory(
+    patientId: string,
+    options: { silent?: boolean; treatmentPlanId?: string } = {},
+  ): Promise<void> {
+    if (!options.silent) this.loadingHistorySignal.set(true);
     try {
       const history = await firstValueFrom(
-        this.therapyApi.getHistoryByPatient(patientId, treatmentPlanId),
+        this.therapyApi.getHistoryByPatient(patientId, options.treatmentPlanId),
       );
       if (this.selectedPatientIdSignal() !== patientId) return;
       this.sessionHistorySignal.set(history);
     } catch {
-      if (this.selectedPatientIdSignal() !== patientId) return;
+      if (this.selectedPatientIdSignal() !== patientId || options.silent) return;
       this.sessionHistorySignal.set([]);
       this.contextErrorSignal.set('Failed to load therapy session history');
     } finally {
-      if (this.selectedPatientIdSignal() === patientId) {
+      if (!options.silent && this.selectedPatientIdSignal() === patientId) {
         this.loadingHistorySignal.set(false);
       }
     }
