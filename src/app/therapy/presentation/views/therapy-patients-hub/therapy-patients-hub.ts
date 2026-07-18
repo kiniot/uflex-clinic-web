@@ -38,6 +38,10 @@ export class TherapyPatientsHub implements OnInit {
   protected readonly isLoading = this.therapySessionStore.isLoadingOverview;
   protected readonly loadError = this.therapySessionStore.overviewError;
 
+  /** Placeholder counts for the loading skeleton: four KPI tiles, six table rows. */
+  protected readonly skeletonTiles = [0, 1, 2, 3];
+  protected readonly skeletonRows = [0, 1, 2, 3, 4, 5];
+
   private readonly querySignal = signal('');
   protected readonly query = this.querySignal.asReadonly();
 
