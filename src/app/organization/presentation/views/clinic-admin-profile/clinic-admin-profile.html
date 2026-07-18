@@ -1,13 +1,3 @@
-<nav class="admin-profile__breadcrumb" aria-label="breadcrumb">
-  <a routerLink="/clinic-admin/organization">{{
-    'organization.profile.breadcrumb.organization' | translate
-  }}</a>
-  <i class="pi pi-chevron-right" aria-hidden="true"></i>
-  <span class="admin-profile__breadcrumb-current">{{
-    'organization.profile.breadcrumb.current' | translate
-  }}</span>
-</nav>
-
 <app-page-header
   [title]="'organization.profile.title' | translate"
   [subtitle]="'organization.profile.subtitle' | translate"
@@ -19,347 +9,229 @@
     [outlined]="true"
     (click)="onBackToOrganization()"
   >
-    {{ 'organization.profile.actions.backToOrganization' | translate }}
+    <i class="pi pi-arrow-left" aria-hidden="true"></i>
+    <span>{{ 'organization.profile.actions.backToOrganization' | translate }}</span>
   </button>
 </app-page-header>
 
-<section class="admin-profile__hero">
-  <article class="admin-profile__hero-card admin-profile__hero-card--identity">
-    <span class="admin-profile__eyebrow">{{ 'organization.profile.hero.eyebrow' | translate }}</span>
-    <h2 class="admin-profile__hero-title">
-      @if (isProfileReady()) {
-        {{ clinicAdmin()?.fullName }}
-      } @else {
-        {{ 'organization.profile.hero.pendingTitle' | translate }}
-      }
-    </h2>
-    <p class="admin-profile__hero-body">
-      @if (isProfileReady()) {
-        {{ 'organization.profile.hero.readyBody' | translate }}
-      } @else {
-        {{ 'organization.profile.hero.pendingBody' | translate }}
-      }
-    </p>
-
-    <div class="admin-profile__hero-meta">
-      <span class="admin-profile__meta-item">
-        <i class="pi pi-envelope" aria-hidden="true"></i>
-        {{ currentEmail() ?? '—' }}
-      </span>
-      <span class="admin-profile__meta-item">
-        <i class="pi pi-building" aria-hidden="true"></i>
-        {{ clinic()?.commercialName ?? clinic()?.legalName ?? '—' }}
-      </span>
-      <span class="admin-profile__meta-item">
-        <i class="pi pi-id-card" aria-hidden="true"></i>
-        @if (isProfileReady()) {
-          {{ clinicAdmin()?.dni ?? '—' }}
-        } @else {
-          {{ 'organization.profile.hero.pendingMeta' | translate }}
-        }
-      </span>
-    </div>
-  </article>
-
-  <article class="admin-profile__hero-card admin-profile__hero-card--summary">
-    <span class="admin-profile__eyebrow">{{ 'organization.profile.summary.eyebrow' | translate }}</span>
-    <h3 class="admin-profile__summary-title">
-      {{ 'organization.profile.summary.title' | translate }}
-    </h3>
-    <ul class="admin-profile__summary-list">
-      @for (item of completionItems(); track item) {
-        <li>{{ item }}</li>
-      }
-    </ul>
-    <div class="admin-profile__summary-status" [class.admin-profile__summary-status--ready]="isProfileReady()">
-      <i class="pi" [class.pi-check-circle]="isProfileReady()" [class.pi-exclamation-circle]="!isProfileReady()"></i>
-      <span>
-        {{
-          (isProfileReady()
-            ? 'organization.profile.summary.ready'
-            : 'organization.profile.summary.pending') | translate
-        }}
-      </span>
-    </div>
-  </article>
-</section>
-
-<section class="admin-profile__stats">
-  <app-stat-card [title]="'organization.profile.cards.email.title' | translate">
-    <div class="admin-profile__stat">
-      <span class="admin-profile__stat-value">{{ currentEmail() ?? '—' }}</span>
-      <span class="admin-profile__stat-note">{{
-        'organization.profile.cards.email.note' | translate
-      }}</span>
-    </div>
-  </app-stat-card>
-
-  <app-stat-card [title]="'organization.profile.cards.status.title' | translate">
-    <div class="admin-profile__stat">
-      <span class="admin-profile__stat-value">
+@if (isProfileError()) {
+  <section class="admin-profile__card admin-profile__state">
+    <span class="admin-profile__state-icon admin-profile__state-icon--error" aria-hidden="true">
+      <i class="pi pi-exclamation-triangle"></i>
+    </span>
+    <h2 class="admin-profile__state-title">{{ 'organization.profile.error.title' | translate }}</h2>
+    <p class="admin-profile__state-body">{{ 'organization.profile.error.body' | translate }}</p>
+    <button pButton type="button" (click)="onRetry()">
+      {{ 'organization.profile.actions.retry' | translate }}
+    </button>
+  </section>
+} @else if (showForm()) {
+  <form class="admin-profile__card" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <header class="admin-profile__identity">
+      <span class="admin-profile__avatar" aria-hidden="true">{{ initials() }}</span>
+      <div class="admin-profile__identity-text">
+        <h2 class="admin-profile__name">
+          {{
+            isProfileReady()
+              ? clinicAdmin()?.fullName
+              : ('organization.profile.hero.pendingTitle' | translate)
+          }}
+        </h2>
+        <div class="admin-profile__identity-meta">
+          <span class="admin-profile__meta-item">
+            <i class="pi pi-envelope" aria-hidden="true"></i>
+            {{ currentEmail() ?? '—' }}
+          </span>
+          <span class="admin-profile__meta-item">
+            <i class="pi pi-building" aria-hidden="true"></i>
+            {{ clinic()?.commercialName ?? clinic()?.legalName ?? '—' }}
+          </span>
+        </div>
+      </div>
+      <span class="admin-profile__status" [class.admin-profile__status--ready]="isProfileReady()">
+        <i
+          class="pi"
+          [class.pi-check-circle]="isProfileReady()"
+          [class.pi-clock]="!isProfileReady()"
+          aria-hidden="true"
+        ></i>
         {{
           (isProfileReady()
             ? 'organization.profile.cards.status.ready'
-            : 'organization.profile.cards.status.pending') | translate
+            : 'organization.profile.cards.status.pending'
+          ) | translate
         }}
       </span>
-      <span class="admin-profile__stat-note">{{
-        'organization.profile.cards.status.note' | translate
-      }}</span>
-    </div>
-  </app-stat-card>
+    </header>
 
-  <app-stat-card [title]="'organization.profile.cards.clinic.title' | translate">
-    <div class="admin-profile__stat">
-      <span class="admin-profile__stat-value">
-        {{ clinic()?.commercialName ?? clinic()?.legalName ?? '—' }}
-      </span>
-      <span class="admin-profile__stat-note">{{
-        'organization.profile.cards.clinic.note' | translate
-      }}</span>
-    </div>
-  </app-stat-card>
-</section>
-
-@if (isProfileError()) {
-  <section class="admin-profile__error">
-    <article class="admin-profile__error-card">
-      <span class="admin-profile__eyebrow">{{ 'organization.profile.error.eyebrow' | translate }}</span>
-      <h2>{{ 'organization.profile.error.title' | translate }}</h2>
-      <p>{{ 'organization.profile.error.body' | translate }}</p>
-      <button pButton type="button" (click)="onRetry()">
-        {{ 'organization.profile.actions.retry' | translate }}
-      </button>
-    </article>
-  </section>
-} @else if (showForm()) {
-  <form class="admin-profile__layout" [formGroup]="form" (ngSubmit)="onSubmit()">
-    <article class="admin-profile__panel admin-profile__panel--form">
-      <header class="admin-profile__panel-header">
-        <div>
-          <span class="admin-profile__eyebrow">{{
-            'organization.profile.form.eyebrow' | translate
-          }}</span>
-          <h2 class="admin-profile__panel-title">
-            {{
-              (isProfileReady()
-                ? 'organization.profile.form.completedTitle'
-                : 'organization.profile.form.pendingTitle') | translate
-            }}
-          </h2>
-          <p class="admin-profile__panel-subtitle">
-            {{
-              (isProfileReady()
-                ? 'organization.profile.form.completedBody'
-                : 'organization.profile.form.pendingBody') | translate
-            }}
-          </p>
-        </div>
-      </header>
-
-      <div class="admin-profile__grid">
-        <div class="admin-profile__field">
-          <label for="profileFirstName">{{ 'organization.profile.form.firstName' | translate }}</label>
-          <input
-            pInputText
-            id="profileFirstName"
-            type="text"
-            formControlName="firstName"
-            [class.ng-invalid]="isInvalidControl(form, 'firstName')"
-            [class.ng-dirty]="isInvalidControl(form, 'firstName')"
-          />
-          @if (isInvalidControl(form, 'firstName')) {
-            <small class="admin-profile__error-text">{{
-              'organization.profile.validation.firstNameRequired' | translate
-            }}</small>
-          }
-        </div>
-
-        <div class="admin-profile__field">
-          <label for="profileLastName">{{ 'organization.profile.form.lastName' | translate }}</label>
-          <input
-            pInputText
-            id="profileLastName"
-            type="text"
-            formControlName="lastName"
-            [class.ng-invalid]="isInvalidControl(form, 'lastName')"
-            [class.ng-dirty]="isInvalidControl(form, 'lastName')"
-          />
-          @if (isInvalidControl(form, 'lastName')) {
-            <small class="admin-profile__error-text">{{
-              'organization.profile.validation.lastNameRequired' | translate
-            }}</small>
-          }
-        </div>
-
-        <div class="admin-profile__field">
-          <label for="profileDni">{{ 'organization.profile.form.dni' | translate }}</label>
-          <input
-            pInputText
-            id="profileDni"
-            type="text"
-            formControlName="dni"
-            maxlength="8"
-            [class.ng-invalid]="isInvalidControl(form, 'dni')"
-            [class.ng-dirty]="isInvalidControl(form, 'dni')"
-          />
-          @if (isInvalidControl(form, 'dni')) {
-            <small class="admin-profile__error-text">{{
-              'organization.profile.validation.dniInvalid' | translate
-            }}</small>
-          }
-        </div>
-
-        <div class="admin-profile__field">
-          <label for="profileBirthDate">{{ 'organization.profile.form.birthDate' | translate }}</label>
-          <input
-            pInputText
-            id="profileBirthDate"
-            type="date"
-            formControlName="birthDate"
-            [class.ng-invalid]="isInvalidControl(form, 'birthDate')"
-            [class.ng-dirty]="isInvalidControl(form, 'birthDate')"
-          />
-          @if (isInvalidControl(form, 'birthDate')) {
-            <small class="admin-profile__error-text">{{
-              'organization.profile.validation.birthDateRequired' | translate
-            }}</small>
-          }
-        </div>
-
-        <div class="admin-profile__field">
-          <label for="profileGender">{{ 'organization.profile.form.gender' | translate }}</label>
-          <p-select
-            inputId="profileGender"
-            formControlName="gender"
-            [options]="genderOptions()"
-            optionLabel="label"
-            optionValue="value"
-          />
-        </div>
-
-        <div class="admin-profile__field">
-          <label for="profileEmail">{{ 'organization.profile.form.email' | translate }}</label>
-          <input
-            pInputText
-            id="profileEmail"
-            type="email"
-            [value]="currentEmail() ?? ''"
-            readonly
-          />
-          <small class="admin-profile__hint">{{
-            'organization.profile.form.emailHint' | translate
+    <div class="admin-profile__grid">
+      <div class="admin-profile__field">
+        <label for="profileFirstName">{{
+          'organization.profile.form.firstName' | translate
+        }}</label>
+        <input
+          pInputText
+          id="profileFirstName"
+          type="text"
+          formControlName="firstName"
+          [class.ng-invalid]="isInvalidControl(form, 'firstName')"
+          [class.ng-dirty]="isInvalidControl(form, 'firstName')"
+        />
+        @if (isInvalidControl(form, 'firstName')) {
+          <small class="admin-profile__error-text">{{
+            'organization.profile.validation.firstNameRequired' | translate
           }}</small>
-        </div>
+        }
+      </div>
 
-        <div class="admin-profile__field">
-          <label for="profileCountryCode">{{
-            'organization.profile.form.countryCode' | translate
-          }}</label>
-          <p-select
-            inputId="profileCountryCode"
-            formControlName="countryCode"
-            [options]="countryPhoneOptions()"
-            optionLabel="label"
-            optionValue="phoneCode"
-            [filter]="true"
-            filterBy="label,phoneCode"
-            [resetFilterOnHide]="true"
-            appendTo="body"
-          >
-            <ng-template #selectedItem>
-              @if (countryPhoneOption(form.controls.countryCode.value); as option) {
-                <span class="admin-profile__country-option">
-                  <span class="admin-profile__country-flag">{{ option.flag }}</span>
-                  <span>{{ option.label }}</span>
-                  <span class="admin-profile__country-meta">{{ option.phoneCode }}</span>
-                </span>
-              }
-            </ng-template>
-            <ng-template let-option #item>
+      <div class="admin-profile__field">
+        <label for="profileLastName">{{ 'organization.profile.form.lastName' | translate }}</label>
+        <input
+          pInputText
+          id="profileLastName"
+          type="text"
+          formControlName="lastName"
+          [class.ng-invalid]="isInvalidControl(form, 'lastName')"
+          [class.ng-dirty]="isInvalidControl(form, 'lastName')"
+        />
+        @if (isInvalidControl(form, 'lastName')) {
+          <small class="admin-profile__error-text">{{
+            'organization.profile.validation.lastNameRequired' | translate
+          }}</small>
+        }
+      </div>
+
+      <div class="admin-profile__field">
+        <label for="profileDni">{{ 'organization.profile.form.dni' | translate }}</label>
+        <input
+          pInputText
+          id="profileDni"
+          type="text"
+          formControlName="dni"
+          maxlength="8"
+          [class.ng-invalid]="isInvalidControl(form, 'dni')"
+          [class.ng-dirty]="isInvalidControl(form, 'dni')"
+        />
+        @if (isInvalidControl(form, 'dni')) {
+          <small class="admin-profile__error-text">{{
+            'organization.profile.validation.dniInvalid' | translate
+          }}</small>
+        }
+      </div>
+
+      <div class="admin-profile__field">
+        <label for="profileBirthDate">{{
+          'organization.profile.form.birthDate' | translate
+        }}</label>
+        <input
+          pInputText
+          id="profileBirthDate"
+          type="date"
+          formControlName="birthDate"
+          [class.ng-invalid]="isInvalidControl(form, 'birthDate')"
+          [class.ng-dirty]="isInvalidControl(form, 'birthDate')"
+        />
+        @if (isInvalidControl(form, 'birthDate')) {
+          <small class="admin-profile__error-text">{{
+            'organization.profile.validation.birthDateRequired' | translate
+          }}</small>
+        }
+      </div>
+
+      <div class="admin-profile__field">
+        <label for="profileGender">{{ 'organization.profile.form.gender' | translate }}</label>
+        <p-select
+          inputId="profileGender"
+          formControlName="gender"
+          [options]="genderOptions()"
+          optionLabel="label"
+          optionValue="value"
+        />
+      </div>
+
+      <div class="admin-profile__field">
+        <label for="profileEmail">{{ 'organization.profile.form.email' | translate }}</label>
+        <input pInputText id="profileEmail" type="email" [value]="currentEmail() ?? ''" readonly />
+        <small class="admin-profile__hint">{{
+          'organization.profile.form.emailHint' | translate
+        }}</small>
+      </div>
+
+      <div class="admin-profile__field">
+        <label for="profileCountryCode">{{
+          'organization.profile.form.countryCode' | translate
+        }}</label>
+        <p-select
+          inputId="profileCountryCode"
+          formControlName="countryCode"
+          [options]="countryPhoneOptions()"
+          optionLabel="label"
+          optionValue="phoneCode"
+          [filter]="true"
+          filterBy="label,phoneCode"
+          [resetFilterOnHide]="true"
+          appendTo="body"
+        >
+          <ng-template #selectedItem>
+            @if (countryPhoneOption(form.controls.countryCode.value); as option) {
               <span class="admin-profile__country-option">
                 <span class="admin-profile__country-flag">{{ option.flag }}</span>
                 <span>{{ option.label }}</span>
                 <span class="admin-profile__country-meta">{{ option.phoneCode }}</span>
               </span>
-            </ng-template>
-          </p-select>
-        </div>
-
-        <div class="admin-profile__field">
-          <label for="profilePhoneNumber">{{
-            'organization.profile.form.phoneNumber' | translate
-          }}</label>
-          <input
-            pInputText
-            id="profilePhoneNumber"
-            type="tel"
-            formControlName="phoneNumber"
-            [class.ng-invalid]="isInvalidControl(form, 'phoneNumber')"
-            [class.ng-dirty]="isInvalidControl(form, 'phoneNumber')"
-          />
-          @if (isInvalidControl(form, 'phoneNumber')) {
-            <small class="admin-profile__error-text">{{
-              'organization.profile.validation.phoneNumberRequired' | translate
-            }}</small>
-          }
-        </div>
+            }
+          </ng-template>
+          <ng-template let-option #item>
+            <span class="admin-profile__country-option">
+              <span class="admin-profile__country-flag">{{ option.flag }}</span>
+              <span>{{ option.label }}</span>
+              <span class="admin-profile__country-meta">{{ option.phoneCode }}</span>
+            </span>
+          </ng-template>
+        </p-select>
       </div>
 
-      @if (!isProfileReady()) {
-        <div class="admin-profile__actions">
-          <button
-            pButton
-            type="submit"
-            [loading]="isRegisteringProfile()"
-            [disabled]="isRegisteringProfile()"
-          >
-            {{ 'organization.profile.actions.save' | translate }}
-          </button>
-        </div>
-      }
-    </article>
-
-    <aside class="admin-profile__panel admin-profile__panel--side">
-      <div class="admin-profile__panel-copy">
-        <span class="admin-profile__eyebrow">{{
-          'organization.profile.side.eyebrow' | translate
-        }}</span>
-        <h3 class="admin-profile__side-title">{{ 'organization.profile.side.title' | translate }}</h3>
-        <p class="admin-profile__side-body">{{ 'organization.profile.side.body' | translate }}</p>
+      <div class="admin-profile__field">
+        <label for="profilePhoneNumber">{{
+          'organization.profile.form.phoneNumber' | translate
+        }}</label>
+        <input
+          pInputText
+          id="profilePhoneNumber"
+          type="tel"
+          formControlName="phoneNumber"
+          [class.ng-invalid]="isInvalidControl(form, 'phoneNumber')"
+          [class.ng-dirty]="isInvalidControl(form, 'phoneNumber')"
+        />
+        @if (isInvalidControl(form, 'phoneNumber')) {
+          <small class="admin-profile__error-text">{{
+            'organization.profile.validation.phoneNumberRequired' | translate
+          }}</small>
+        }
       </div>
+    </div>
 
-      <div class="admin-profile__timeline">
-        <div class="admin-profile__timeline-item">
-          <span class="admin-profile__timeline-dot"></span>
-          <div>
-            <strong>{{ 'organization.profile.side.items.identityTitle' | translate }}</strong>
-            <p>{{ 'organization.profile.side.items.identityBody' | translate }}</p>
-          </div>
-        </div>
-        <div class="admin-profile__timeline-item">
-          <span class="admin-profile__timeline-dot"></span>
-          <div>
-            <strong>{{ 'organization.profile.side.items.contactTitle' | translate }}</strong>
-            <p>{{ 'organization.profile.side.items.contactBody' | translate }}</p>
-          </div>
-        </div>
-        <div class="admin-profile__timeline-item">
-          <span class="admin-profile__timeline-dot"></span>
-          <div>
-            <strong>{{ 'organization.profile.side.items.portalTitle' | translate }}</strong>
-            <p>{{ 'organization.profile.side.items.portalBody' | translate }}</p>
-          </div>
-        </div>
+    @if (!isProfileReady()) {
+      <div class="admin-profile__actions">
+        <button
+          pButton
+          type="submit"
+          [loading]="isRegisteringProfile()"
+          [disabled]="isRegisteringProfile()"
+        >
+          {{ 'organization.profile.actions.save' | translate }}
+        </button>
       </div>
-    </aside>
+    }
   </form>
 } @else {
-  <section class="admin-profile__loading">
-    <article class="admin-profile__loading-card">
-      <span class="admin-profile__eyebrow">{{ 'organization.profile.loading.eyebrow' | translate }}</span>
-      <h2>{{ 'organization.profile.loading.title' | translate }}</h2>
-      <p>{{ 'organization.profile.loading.body' | translate }}</p>
-    </article>
+  <section class="admin-profile__card admin-profile__state">
+    <span class="admin-profile__state-icon" aria-hidden="true">
+      <i class="pi pi-spin pi-spinner"></i>
+    </span>
+    <h2 class="admin-profile__state-title">
+      {{ 'organization.profile.loading.title' | translate }}
+    </h2>
+    <p class="admin-profile__state-body">{{ 'organization.profile.loading.body' | translate }}</p>
   </section>
 }

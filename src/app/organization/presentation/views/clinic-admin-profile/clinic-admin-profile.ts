@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -9,7 +8,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { BaseForm } from '../../../../shared/presentation/components/base-form/base-form';
 import { PageHeader } from '../../../../shared/presentation/components/page-header/page-header';
-import { StatCard } from '../../../../shared/presentation/components/stat-card/stat-card';
 import {
   buildCountryPhoneOptions,
   CountryPhoneOption,
@@ -29,15 +27,12 @@ interface SelectOption<T> {
 @Component({
   selector: 'app-clinic-admin-profile',
   imports: [
-    CommonModule,
     ReactiveFormsModule,
-    RouterLink,
     TranslatePipe,
     ButtonModule,
     InputTextModule,
     SelectModule,
     PageHeader,
-    StatCard,
   ],
   templateUrl: './clinic-admin-profile.html',
   styleUrl: './clinic-admin-profile.scss',
@@ -78,11 +73,14 @@ export class ClinicAdminProfile extends BaseForm {
   protected readonly countryPhoneOptions = computed<CountryPhoneOption[]>(() =>
     buildCountryPhoneOptions(this.translate),
   );
-  protected readonly completionItems = computed(() => [
-    this.translate.instant('organization.profile.completion.identity'),
-    this.translate.instant('organization.profile.completion.contact'),
-    this.translate.instant('organization.profile.completion.clinic'),
-  ]);
+  protected readonly initials = computed(() => {
+    const name = this.clinicAdmin()?.fullName?.trim();
+    if (name) {
+      const parts = name.split(' ').filter(Boolean);
+      return `${parts[0]?.[0] ?? ''}${parts[1]?.[0] ?? ''}`.toUpperCase();
+    }
+    return (this.currentEmail()?.[0] ?? '?').toUpperCase();
+  });
 
   protected readonly form = new FormGroup({
     firstName: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
