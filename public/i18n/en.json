@@ -1382,6 +1382,27 @@
       "discharged": "Discharged"
     }
   },
+  "planningHub": {
+    "eyebrow": "Planning",
+    "title": "Treatment plans",
+    "subtitle": "Every treatment plan across your caseload, in one place.",
+    "tableTitle": "Treatment plans",
+    "tableHint": "Open a plan to review its routines and schedule.",
+    "search": "Search by patient or plan...",
+    "emptyTitle": "No treatment plans yet",
+    "emptyBody": "Plans you create for your patients will show up here.",
+    "noMatches": "No treatment plans match \"{{query}}\".",
+    "open": "Open",
+    "showingCount": "Showing {{visible}} of {{total}} plans",
+    "columns": {
+      "patient": "Patient",
+      "plan": "Plan",
+      "status": "Status",
+      "period": "Period",
+      "routines": "Routines",
+      "action": "Open plan"
+    }
+  },
   "therapySessions": {
     "eyebrow": "Therapy Sessions",
     "adminTitle": "Clinic Session Oversight",
@@ -1592,57 +1613,6 @@
       },
       "search": "Search patient...",
       "noMatches": "No patient matches \"{{query}}\"."
-    }
-  },
-  "therapyRoadmap": {
-    "breadcrumb": {
-      "patients": "Patients",
-      "therapyPlanning": "Therapy Planning"
-    },
-    "title": "Therapy Roadmap",
-    "subtitle": "Design a personalized rehabilitation journey by selecting validated exercises and configuring precise recovery parameters.",
-    "saveDraft": "Save Draft",
-    "finalize": "Finalize & Deploy",
-    "patient": "Patient",
-    "currentPhase": "Current Recovery Phase",
-    "dayOf": "Day {{day}} of {{total}}",
-    "complete": "Complete",
-    "library": {
-      "title": "Exercise Library",
-      "subtitle": "Select from clinical protocols",
-      "tags": {
-        "knee": "Knee",
-        "strength": "Strength",
-        "mobility": "Mobility"
-      }
-    },
-    "insight": {
-      "title": "Protocol Insight",
-      "body": "Based on {{patient}}'s current phase (Strength Transition), protocols suggest increasing volume by 15% this week.",
-      "cta": "View Clinical Evidence"
-    },
-    "builder": {
-      "title": "Daily Routine Builder",
-      "subtitle": "Customize parameters for each session",
-      "dropTitle": "Drag and drop more exercises here",
-      "dropHint": "Or select from the library on the left"
-    },
-    "trajectory": {
-      "title": "Long-Term Trajectory",
-      "currentPoint": "Current Point",
-      "estimatedRtp": "Estimated RTP",
-      "complianceScore": "Compliance Score",
-      "riskAssessment": "Risk Assessment",
-      "scheduleStatus": {
-        "ahead": "Ahead of Schedule",
-        "on-track": "On Track",
-        "behind": "Behind Schedule"
-      },
-      "risk": {
-        "low": "Low",
-        "medium": "Medium",
-        "high": "High"
-      }
     }
   },
   "deviceInventory": {
@@ -1921,6 +1891,7 @@
   "treatmentPlanWorkspace": {
     "breadcrumb": {
       "patients": "Patients",
+      "planning": "Planning",
       "patient": "Patient",
       "create": "Create treatment plan",
       "edit": "Edit treatment plan"

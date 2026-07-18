@@ -1,0 +1,114 @@
+<header class="planning-hub__header">
+  <div class="planning-hub__header-text">
+    <span class="planning-hub__eyebrow">{{ 'planningHub.eyebrow' | translate }}</span>
+    <h1 class="planning-hub__title">{{ 'planningHub.title' | translate }}</h1>
+    <p class="planning-hub__subtitle">{{ 'planningHub.subtitle' | translate }}</p>
+  </div>
+</header>
+
+<article class="planning-hub__card">
+  <header class="planning-hub__card-header">
+    <div>
+      <h2 class="planning-hub__card-title">{{ 'planningHub.tableTitle' | translate }}</h2>
+      <p class="planning-hub__card-hint">{{ 'planningHub.tableHint' | translate }}</p>
+    </div>
+    @if (showSearch()) {
+      <app-search-input
+        class="planning-hub__search"
+        [value]="query()"
+        [fluid]="false"
+        [placeholder]="'planningHub.search' | translate"
+        (valueChange)="onQueryChange($event)"
+      />
+    }
+  </header>
+
+  @if (isLoading()) {
+    <div class="planning-hub__loading">
+      @for (row of [0, 1, 2, 3]; track row) {
+        <span class="planning-hub__loading-row"></span>
+      }
+    </div>
+  } @else if (!rows().length) {
+    <div class="planning-hub__empty">
+      <span class="planning-hub__empty-icon" aria-hidden="true">
+        <i class="pi pi-calendar-plus"></i>
+      </span>
+      <h3 class="planning-hub__empty-title">{{ 'planningHub.emptyTitle' | translate }}</h3>
+      <p class="planning-hub__empty-body">{{ 'planningHub.emptyBody' | translate }}</p>
+    </div>
+  } @else if (!filteredRows().length) {
+    <div class="planning-hub__empty">
+      {{ 'planningHub.noMatches' | translate: { query: query() } }}
+    </div>
+  } @else {
+    <div class="planning-hub__scroll">
+      <table class="planning-hub__table">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'planningHub.columns.patient' | translate }}</th>
+            <th scope="col">{{ 'planningHub.columns.plan' | translate }}</th>
+            <th scope="col">{{ 'planningHub.columns.status' | translate }}</th>
+            <th scope="col">{{ 'planningHub.columns.period' | translate }}</th>
+            <th scope="col">{{ 'planningHub.columns.routines' | translate }}</th>
+            <th scope="col" class="planning-hub__action-col">
+              <span class="visually-hidden">{{ 'planningHub.columns.action' | translate }}</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of filteredRows(); track row.plan.id) {
+            <tr
+              class="planning-hub__row"
+              tabindex="0"
+              role="button"
+              (click)="onOpenPlan(row)"
+              (keydown.enter)="onOpenPlan(row)"
+            >
+              <td class="planning-hub__patient">{{ row.patientName }}</td>
+              <td class="planning-hub__plan-name">{{ row.plan.name }}</td>
+              <td>
+                <span
+                  class="planning-hub__status planning-hub__status--{{
+                    row.plan.status.toLowerCase()
+                  }}"
+                >
+                  {{ 'patientDetail.planStatus.' + row.plan.status | translate }}
+                </span>
+              </td>
+              <td class="planning-hub__period">
+                {{ row.plan.period.startsAt | date: 'mediumDate' }} -
+                {{ row.plan.period.endsAt | date: 'mediumDate' }}
+              </td>
+              <td class="planning-hub__routines">{{ row.plan.routines.length }}</td>
+              <td class="planning-hub__action-cell">
+                <button
+                  pButton
+                  type="button"
+                  severity="primary"
+                  size="small"
+                  [outlined]="true"
+                  class="planning-hub__cta"
+                  [attr.aria-label]="('planningHub.open' | translate) + ': ' + row.plan.name"
+                  (click)="onOpenPlan(row); $event.stopPropagation()"
+                >
+                  <span>{{ 'planningHub.open' | translate }}</span>
+                  <i class="pi pi-arrow-right" aria-hidden="true"></i>
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <footer class="planning-hub__footer">
+      <span class="planning-hub__counter">
+        {{
+          'planningHub.showingCount'
+            | translate: { visible: filteredRows().length, total: rows().length }
+        }}
+      </span>
+    </footer>
+  }
+</article>

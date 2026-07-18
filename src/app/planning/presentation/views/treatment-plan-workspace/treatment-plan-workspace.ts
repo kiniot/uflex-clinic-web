@@ -111,6 +111,9 @@ export class TreatmentPlanWorkspace {
   private readonly routeParams = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
   });
+  private readonly queryParams = toSignal(this.route.queryParamMap, {
+    initialValue: this.route.snapshot.queryParamMap,
+  });
   private readonly translations = toSignal(
     this.translate.stream([
       'treatmentPlanWorkspace.dayOptions.MONDAY',
@@ -207,6 +210,16 @@ export class TreatmentPlanWorkspace {
   protected readonly patientId = computed(() => this.routeParams().get('patientId') ?? '');
   protected readonly planId = computed(() => this.routeParams().get('planId') ?? '');
   protected readonly isCreateMode = computed(() => this.planId() === 'new');
+  /**
+   * Where the user came from, so "back" and the breadcrumb return there:
+   * `patient` = the patient detail table, anything else = the planning hub.
+   */
+  protected readonly fromPatient = computed(() => this.queryParams().get('from') === 'patient');
+  protected readonly backRoute = computed(() =>
+    this.fromPatient()
+      ? ['/physiotherapist/patients', this.patientId()]
+      : ['/physiotherapist/planning'],
+  );
   protected readonly pageTitle = computed(() =>
     this.isCreateMode() ? 'treatmentPlanWorkspace.createTitle' : 'treatmentPlanWorkspace.editTitle',
   );
@@ -637,7 +650,7 @@ export class TreatmentPlanWorkspace {
           'treatmentPlanWorkspace.notifications.deleteSuccessSummary',
           'treatmentPlanWorkspace.notifications.deleteSuccessDetail',
         );
-        await this.router.navigate(['/physiotherapist/patients', patientId]);
+        await this.router.navigate(this.backRoute());
         return;
       }
 
@@ -828,7 +841,7 @@ export class TreatmentPlanWorkspace {
           this.buildCreateCommand(),
         );
         await this.planningStore.loadTreatmentPlansByPatient(patientId);
-        await this.router.navigate(['/physiotherapist/patients', patientId]);
+        await this.router.navigate(this.backRoute());
         this.notifySuccess(
           'treatmentPlanWorkspace.notifications.createSuccessSummary',
           'treatmentPlanWorkspace.notifications.createSuccessDetail',

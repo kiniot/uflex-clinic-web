@@ -5,23 +5,15 @@ const registerPatient = () =>
   import('./views/register-patient/register-patient').then((m) => m.RegisterPatient);
 const patientDetail = () =>
   import('./views/patient-detail/patient-detail').then((m) => m.PatientDetail);
-const patientTreatmentPlanRoutes = () =>
-  import('../../planning/presentation/patient-treatment-plan.routes').then(
-    (m) => m.patientTreatmentPlanRoutes,
-  );
 
 /**
- * Organization routes for the physiotherapist role. The public
- * patients URLs live here, while treatment-plan internals lazy-load
- * from the Planning bounded context.
+ * Organization routes for the physiotherapist role. Only the public
+ * patients URLs live here; the treatment-plan workspace now mounts
+ * under the Planning bounded context (/physiotherapist/planning).
  */
 export const physiotherapistOrganizationRoutes: Routes = [
   { path: '', loadComponent: patientsHub },
   { path: 'new', loadComponent: registerPatient, data: { roleContext: 'physiotherapist' } },
-  {
-    path: ':patientId/treatment-plans',
-    loadChildren: patientTreatmentPlanRoutes,
-  },
   {
     path: ':patientId',
     loadComponent: patientDetail,

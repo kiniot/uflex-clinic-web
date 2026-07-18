@@ -1382,6 +1382,27 @@
       "discharged": "Dado de alta"
     }
   },
+  "planningHub": {
+    "eyebrow": "Planificación",
+    "title": "Planes de tratamiento",
+    "subtitle": "Todos los planes de tratamiento de tus pacientes, en un solo lugar.",
+    "tableTitle": "Planes de tratamiento",
+    "tableHint": "Abre un plan para revisar sus rutinas y horario.",
+    "search": "Buscar por paciente o plan...",
+    "emptyTitle": "Aún no hay planes de tratamiento",
+    "emptyBody": "Los planes que crees para tus pacientes aparecerán aquí.",
+    "noMatches": "Ningún plan de tratamiento coincide con «{{query}}».",
+    "open": "Abrir",
+    "showingCount": "Mostrando {{visible}} de {{total}} planes",
+    "columns": {
+      "patient": "Paciente",
+      "plan": "Plan",
+      "status": "Estado",
+      "period": "Periodo",
+      "routines": "Rutinas",
+      "action": "Abrir plan"
+    }
+  },
   "therapySessions": {
     "eyebrow": "Sesiones de terapia",
     "adminTitle": "Supervisión clínica de sesiones",
@@ -1592,57 +1613,6 @@
       },
       "search": "Buscar paciente...",
       "noMatches": "Ningún paciente coincide con \"{{query}}\"."
-    }
-  },
-  "therapyRoadmap": {
-    "breadcrumb": {
-      "patients": "Pacientes",
-      "therapyPlanning": "Planificación de terapia"
-    },
-    "title": "Roadmap terapéutico",
-    "subtitle": "Diseña una ruta de rehabilitación personalizada seleccionando ejercicios validados y configurando parámetros de recuperación precisos.",
-    "saveDraft": "Guardar borrador",
-    "finalize": "Finalizar e implementar",
-    "patient": "Paciente",
-    "currentPhase": "Fase actual de recuperación",
-    "dayOf": "Día {{day}} de {{total}}",
-    "complete": "completado",
-    "library": {
-      "title": "Biblioteca de ejercicios",
-      "subtitle": "Selecciona protocolos clínicos",
-      "tags": {
-        "knee": "Rodilla",
-        "strength": "Fuerza",
-        "mobility": "Movilidad"
-      }
-    },
-    "insight": {
-      "title": "Insight del protocolo",
-      "body": "Basado en la fase actual de {{patient}} (Transición de fuerza), los protocolos sugieren aumentar el volumen un 15% esta semana.",
-      "cta": "Ver evidencia clínica"
-    },
-    "builder": {
-      "title": "Rutina diaria",
-      "subtitle": "Personaliza parámetros por sesión",
-      "dropTitle": "Arrastra más ejercicios aquí",
-      "dropHint": "O selecciona uno de la biblioteca a la izquierda"
-    },
-    "trajectory": {
-      "title": "Trayectoria a largo plazo",
-      "currentPoint": "Punto actual",
-      "estimatedRtp": "RTP estimado",
-      "complianceScore": "Puntaje de adherencia",
-      "riskAssessment": "Evaluación de riesgo",
-      "scheduleStatus": {
-        "ahead": "Adelantado",
-        "on-track": "En tiempo",
-        "behind": "Retrasado"
-      },
-      "risk": {
-        "low": "Bajo",
-        "medium": "Medio",
-        "high": "Alto"
-      }
     }
   },
   "deviceInventory": {
@@ -1921,6 +1891,7 @@
   "treatmentPlanWorkspace": {
     "breadcrumb": {
       "patients": "Pacientes",
+      "planning": "Planificación",
       "patient": "Paciente",
       "create": "Crear plan de tratamiento",
       "edit": "Editar plan de tratamiento"
