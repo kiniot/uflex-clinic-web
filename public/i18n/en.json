@@ -1355,22 +1355,60 @@
       "rolePill": "Physiotherapist"
     },
     "dashboard": {
-      "greeting": "Good Morning, {{name}}",
-      "summary": "You have {{sessions}} patient sessions scheduled for today. {{urgent}} requires immediate review.",
-      "registerPatient": "Register New Patient",
-      "complianceRate": "Compliance Rate",
-      "monthlyProgress": "Monthly Progress",
-      "activePatients": "Active Patients",
-      "newPatientsThisWeek": "{{count}} new this week",
-      "recoveryMilestones": "Recovery Milestones",
-      "goalAchievement": "Goal Achievement Rate",
-      "dailySchedule": "Daily Schedule",
-      "viewFullCalendar": "View Full Calendar",
-      "urgentAlerts": "Urgent Alerts",
-      "releaseBanner": "New Analytics Engine: v2.4 Active",
-      "clinicalSummary": "Clinical Summary",
-      "clinicalSummaryBody": "Cross-patient analysis shows a significant correlation between morning session consistency and 15% faster mobility recovery across the population.",
-      "clinicVsNational": "Clinic vs. National Avg"
+      "eyebrow": "Today's overview",
+      "greeting": {
+        "morning": "Good morning",
+        "afternoon": "Good afternoon",
+        "evening": "Good evening",
+        "morningNamed": "Good morning, {{name}}",
+        "afternoonNamed": "Good afternoon, {{name}}",
+        "eveningNamed": "Good evening, {{name}}"
+      },
+      "summary": "{{patients}} patients in treatment · {{review}} sessions awaiting review.",
+      "registerPatient": "Register patient",
+      "kpisAria": "Key metrics",
+      "kpi": {
+        "activePatients": "Active patients",
+        "activePatientsHint": "Currently in treatment",
+        "inSession": "In session now",
+        "inSessionHint": "Live on the sensors",
+        "needsReview": "Awaiting review",
+        "needsReviewHint": "Sessions flagged for you",
+        "activePlans": "Active plans",
+        "activePlansHint": "{{count}} scheduled",
+        "quality": "Movement quality",
+        "qualityHint": "Good repetitions overall"
+      },
+      "attention": {
+        "title": "Patients needing attention",
+        "viewAll": "All patients",
+        "emptyTitle": "All caught up",
+        "emptyBody": "No patient needs review or has an active session right now.",
+        "columns": {
+          "patient": "Patient",
+          "state": "State",
+          "lastSession": "Last session",
+          "quality": "Quality",
+          "rom": "ROM"
+        },
+        "state": {
+          "live": "In session",
+          "review": "{{count}} to review",
+          "idle": "Not started"
+        }
+      },
+      "agenda": {
+        "title": "Today's schedule",
+        "viewAll": "Planning",
+        "empty": "No routines scheduled for today."
+      },
+      "mix": {
+        "title": "Plan portfolio",
+        "active": "Active",
+        "scheduled": "Scheduled",
+        "completed": "Completed",
+        "empty": "No treatment plans yet."
+      }
     }
   },
   "planning": {

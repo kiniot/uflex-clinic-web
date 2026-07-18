@@ -1355,22 +1355,60 @@
       "rolePill": "Fisioterapeuta"
     },
     "dashboard": {
-      "greeting": "Buenos días, {{name}}",
-      "summary": "Tienes {{sessions}} sesiones programadas para hoy. {{urgent}} requieren revisión inmediata.",
+      "eyebrow": "Resumen de hoy",
+      "greeting": {
+        "morning": "Buenos días",
+        "afternoon": "Buenas tardes",
+        "evening": "Buenas noches",
+        "morningNamed": "Buenos días, {{name}}",
+        "afternoonNamed": "Buenas tardes, {{name}}",
+        "eveningNamed": "Buenas noches, {{name}}"
+      },
+      "summary": "{{patients}} pacientes en tratamiento · {{review}} sesiones por revisar.",
       "registerPatient": "Registrar paciente",
-      "complianceRate": "Tasa de adherencia",
-      "monthlyProgress": "Progreso mensual",
-      "activePatients": "Pacientes activos",
-      "newPatientsThisWeek": "{{count}} nuevos esta semana",
-      "recoveryMilestones": "Hitos de recuperación",
-      "goalAchievement": "Tasa de logro de objetivos",
-      "dailySchedule": "Agenda del día",
-      "viewFullCalendar": "Ver calendario completo",
-      "urgentAlerts": "Alertas urgentes",
-      "releaseBanner": "Nuevo motor de analítica: v2.4 activo",
-      "clinicalSummary": "Resumen clínico",
-      "clinicalSummaryBody": "El análisis cruzado de pacientes muestra una correlación significativa entre la consistencia de las sesiones matutinas y una recuperación de movilidad un 15% más rápida en la población.",
-      "clinicVsNational": "Clínica vs. promedio nacional"
+      "kpisAria": "Métricas clave",
+      "kpi": {
+        "activePatients": "Pacientes activos",
+        "activePatientsHint": "Actualmente en tratamiento",
+        "inSession": "En sesión ahora",
+        "inSessionHint": "En vivo en los sensores",
+        "needsReview": "Por revisar",
+        "needsReviewHint": "Sesiones marcadas para ti",
+        "activePlans": "Planes activos",
+        "activePlansHint": "{{count}} programados",
+        "quality": "Calidad de movimiento",
+        "qualityHint": "Repeticiones buenas en total"
+      },
+      "attention": {
+        "title": "Pacientes que requieren atención",
+        "viewAll": "Ver pacientes",
+        "emptyTitle": "Todo al día",
+        "emptyBody": "Ningún paciente necesita revisión ni tiene una sesión activa ahora.",
+        "columns": {
+          "patient": "Paciente",
+          "state": "Estado",
+          "lastSession": "Última sesión",
+          "quality": "Calidad",
+          "rom": "ROM"
+        },
+        "state": {
+          "live": "En sesión",
+          "review": "{{count}} por revisar",
+          "idle": "Sin iniciar"
+        }
+      },
+      "agenda": {
+        "title": "Agenda de hoy",
+        "viewAll": "Planificación",
+        "empty": "No hay rutinas programadas para hoy."
+      },
+      "mix": {
+        "title": "Cartera de planes",
+        "active": "Activos",
+        "scheduled": "Programados",
+        "completed": "Completados",
+        "empty": "Aún no hay planes de tratamiento."
+      }
     }
   },
   "planning": {

@@ -1,40 +1,30 @@
 import { Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { ClinicalAlert } from '../domain/model/clinical-alert.entity';
-import { ClinicalMetrics } from '../domain/model/clinical-metrics';
 import { AddRoutineCommand } from '../domain/model/add-routine.command';
 import { CreateExerciseCommand } from '../domain/model/create-exercise.command';
 import { CreateTreatmentPlanCommand } from '../domain/model/create-treatment-plan.command';
 import { ExerciseCatalogItem } from '../domain/model/exercise-catalog-item.entity';
 import { Patient } from '../domain/model/patient.entity';
-import { Session } from '../domain/model/session.entity';
 import { TreatmentPlanRoutine } from '../domain/model/treatment-plan-routine.entity';
 import { TreatmentPlan } from '../domain/model/treatment-plan.entity';
 import { UpdateExerciseCommand } from '../domain/model/update-exercise.command';
 import { UpdateRoutineCommand } from '../domain/model/update-routine.command';
 import { UpdateTreatmentPlanCommand } from '../domain/model/update-treatment-plan.command';
-import { MOCK_CLINICAL_ALERTS } from '../infrastructure/clinical-alert.mock';
-import { MOCK_CLINICAL_METRICS } from '../infrastructure/clinical-metrics.mock';
 import { MOCK_PATIENTS } from '../infrastructure/patient.mock';
 import { PlanningApi } from '../infrastructure/planning-api';
 import { TreatmentPlanFilters } from '../infrastructure/all-treatment-plans-endpoint';
-import { MOCK_DAILY_SESSIONS } from '../infrastructure/session.mock';
 import { ExerciseCatalogItemResource } from '../infrastructure/exercise-catalog-item.response';
 import { TreatmentPlanResource } from '../infrastructure/treatment-plan.response';
 
 /**
  * Application-layer store for the Planning bounded context. Exposes the
- * patient roster (consumed by Device's Link to Patient flow) plus the
- * scheduling, alerting, and metrics signals that drive the
- * physiotherapist dashboard. Hydrated from mocks until the backend
- * lands.
+ * patient roster (consumed by Device's Link to Patient flow) and the
+ * treatment-plan operations (per patient and clinic-wide) backing the
+ * planning hub and the treatment-plan workspace.
  */
 @Injectable({ providedIn: 'root' })
 export class PlanningStore {
   private readonly patientsSignal = signal<Patient[]>(MOCK_PATIENTS);
-  private readonly dailySessionsSignal = signal<Session[]>(MOCK_DAILY_SESSIONS);
-  private readonly alertsSignal = signal<ClinicalAlert[]>(MOCK_CLINICAL_ALERTS);
-  private readonly metricsSignal = signal<ClinicalMetrics>(MOCK_CLINICAL_METRICS);
   private readonly allTreatmentPlansSignal = signal<TreatmentPlan[]>([]);
   private readonly loadingAllTreatmentPlansSignal = signal(false);
   private readonly patientTreatmentPlansSignal = signal<TreatmentPlan[]>([]);
@@ -50,9 +40,6 @@ export class PlanningStore {
   private readonly deletingExerciseSignal = signal(false);
 
   readonly patients = this.patientsSignal.asReadonly();
-  readonly dailySessions = this.dailySessionsSignal.asReadonly();
-  readonly alerts = this.alertsSignal.asReadonly();
-  readonly metrics = this.metricsSignal.asReadonly();
   readonly allTreatmentPlans = this.allTreatmentPlansSignal.asReadonly();
   readonly isLoadingAllTreatmentPlans = this.loadingAllTreatmentPlansSignal.asReadonly();
   readonly patientTreatmentPlans = this.patientTreatmentPlansSignal.asReadonly();
