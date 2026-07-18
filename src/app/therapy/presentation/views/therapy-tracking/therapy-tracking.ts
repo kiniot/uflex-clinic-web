@@ -9,6 +9,7 @@ import { TherapySessionHistoryItemResource } from '../../../infrastructure/thera
 import { SessionDetailPanel } from '../../components/session-detail-panel/session-detail-panel';
 import { SessionHistoryTable } from '../../components/session-history-table/session-history-table';
 import { TherapyChart, TherapyChartSeries } from '../../components/therapy-chart/therapy-chart';
+import { TherapyLoadingSkeleton } from '../../components/therapy-loading-skeleton/therapy-loading-skeleton';
 import { TrackingKpi, TrackingKpis } from '../../components/tracking-kpis/tracking-kpis';
 import { TherapyDashboardBase, TherapyRoleContext } from '../shared/therapy-dashboard.base';
 
@@ -34,6 +35,7 @@ import { TherapyDashboardBase, TherapyRoleContext } from '../shared/therapy-dash
     SessionHistoryTable,
     SessionDetailPanel,
     TherapyChart,
+    TherapyLoadingSkeleton,
   ],
   templateUrl: './therapy-tracking.html',
   styleUrl: './therapy-tracking.scss',
@@ -58,6 +60,18 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
 
   protected readonly sessionHistory = this.therapySessionStore.sessionHistory;
   protected readonly isLoadingHistory = this.therapySessionStore.isLoadingHistory;
+
+  /** True for the whole first init, not just the history call, so no zero-KPIs flash before it. */
+  private readonly initializingSignal = signal(true);
+
+  /**
+   * Only the very first load shows the skeleton. A manual refresh keeps the current history on
+   * screen while it reloads — replacing it with a skeleton would blank content the clinician is
+   * already reading.
+   */
+  protected readonly isInitialLoad = computed(
+    () => this.initializingSignal() || (this.isLoadingHistory() && !this.sessionHistory().length),
+  );
   protected readonly selectedSessionId = this.therapySessionStore.selectedSessionId;
   protected readonly selectedSessionDetail = this.therapySessionStore.selectedSessionDetail;
   protected readonly isLoadingDetail = this.therapySessionStore.isLoadingDetail;
@@ -199,14 +213,19 @@ export class TherapyTracking extends TherapyDashboardBase implements OnInit {
   }
 
   private async initializePatient(patientId: string): Promise<void> {
-    await Promise.all([
-      this.organizationStore.loadCurrentPhysiotherapistOnce(),
-      this.organizationStore.loadMyPatients(),
-      this.planningStore.loadExerciseCatalog(),
-    ]);
-    this.deviceStore.loadDevices();
-    await this.loadPatientWorkspace(patientId, this.selectedDate());
-    this.therapyLive.start(patientId);
+    this.initializingSignal.set(true);
+    try {
+      await Promise.all([
+        this.organizationStore.loadCurrentPhysiotherapistOnce(),
+        this.organizationStore.loadMyPatients(),
+        this.planningStore.loadExerciseCatalog(),
+      ]);
+      this.deviceStore.loadDevices();
+      await this.loadPatientWorkspace(patientId, this.selectedDate());
+      this.therapyLive.start(patientId);
+    } finally {
+      this.initializingSignal.set(false);
+    }
   }
 
   protected override async loadPatientWorkspace(patientId: string, date?: string): Promise<void> {

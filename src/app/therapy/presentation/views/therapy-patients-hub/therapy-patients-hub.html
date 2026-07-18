@@ -7,42 +7,12 @@
 </header>
 
 @if (isLoading()) {
-  <div
-    class="hub-skeleton"
-    role="status"
-    [attr.aria-label]="'therapySessions.loadingPatients' | translate"
-  >
-    <div class="hub-skeleton__kpis" aria-hidden="true">
-      @for (tile of skeletonTiles; track tile) {
-        <div class="hub-skeleton__kpi">
-          <span class="hub-skeleton__line hub-skeleton__line--label"></span>
-          <span class="hub-skeleton__line hub-skeleton__line--value"></span>
-          <span class="hub-skeleton__line hub-skeleton__line--hint"></span>
-        </div>
-      }
-    </div>
-
-    <article class="therapy-card">
-      <header class="therapy-card__header">
-        <div>
-          <h2 class="therapy-card__title">{{ 'therapySessions.hub.tableTitle' | translate }}</h2>
-          <p class="therapy-card__hint">{{ 'therapySessions.hub.tableHint' | translate }}</p>
-        </div>
-      </header>
-      <div class="hub-skeleton__rows" aria-hidden="true">
-        @for (row of skeletonRows; track row) {
-          <div class="hub-skeleton__row">
-            <span class="hub-skeleton__avatar"></span>
-            <span class="hub-skeleton__line hub-skeleton__line--name"></span>
-            <span class="hub-skeleton__line hub-skeleton__line--cell"></span>
-            <span class="hub-skeleton__line hub-skeleton__line--cell"></span>
-            <span class="hub-skeleton__line hub-skeleton__line--cell"></span>
-            <span class="hub-skeleton__line hub-skeleton__line--cell"></span>
-          </div>
-        }
-      </div>
-    </article>
-  </div>
+  <app-therapy-loading-skeleton
+    titleKey="therapySessions.hub.tableTitle"
+    subtitleKey="therapySessions.hub.tableHint"
+    loadingLabelKey="therapySessions.loadingPatients"
+    [withAvatar]="true"
+  />
 } @else {
   <app-tracking-kpis [kpis]="kpis()" />
 
