@@ -10,6 +10,7 @@ import { UpdateRoutineCommand } from '../domain/model/update-routine.command';
 import { UpdateTreatmentPlanCommand } from '../domain/model/update-treatment-plan.command';
 import { ActivateTreatmentPlanApiEndpoint } from './activate-treatment-plan-endpoint';
 import { AddRoutineApiEndpoint } from './add-routine-endpoint';
+import { TreatmentPlanFilters, TreatmentPlansApiEndpoint } from './all-treatment-plans-endpoint';
 import { CancelTreatmentPlanApiEndpoint } from './cancel-treatment-plan-endpoint';
 import { CompleteTreatmentPlanApiEndpoint } from './complete-treatment-plan-endpoint';
 import { CreateExerciseApiEndpoint } from './create-exercise-endpoint';
@@ -32,6 +33,7 @@ import { UpdateTreatmentPlanApiEndpoint } from './update-treatment-plan-endpoint
 
 @Injectable({ providedIn: 'root' })
 export class PlanningApi extends BaseApi {
+  private readonly treatmentPlansEndpoint: TreatmentPlansApiEndpoint;
   private readonly treatmentPlansByPatientEndpoint: TreatmentPlansByPatientApiEndpoint;
   private readonly treatmentPlanByPatientAndIdEndpoint: TreatmentPlanByPatientAndIdApiEndpoint;
   private readonly treatmentPlanByIdEndpoint: TreatmentPlanByIdApiEndpoint;
@@ -54,6 +56,7 @@ export class PlanningApi extends BaseApi {
     super();
     const assembler = new TreatmentPlanAssembler();
     const exerciseAssembler = new ExerciseCatalogItemAssembler();
+    this.treatmentPlansEndpoint = new TreatmentPlansApiEndpoint(http, assembler);
     this.treatmentPlansByPatientEndpoint = new TreatmentPlansByPatientApiEndpoint(http, assembler);
     this.treatmentPlanByPatientAndIdEndpoint = new TreatmentPlanByPatientAndIdApiEndpoint(
       http,
@@ -74,6 +77,10 @@ export class PlanningApi extends BaseApi {
     this.createExerciseEndpoint = new CreateExerciseApiEndpoint(http, exerciseAssembler);
     this.updateExerciseEndpoint = new UpdateExerciseApiEndpoint(http, exerciseAssembler);
     this.deleteExerciseEndpoint = new DeleteExerciseApiEndpoint(http);
+  }
+
+  getAllTreatmentPlans(filters?: TreatmentPlanFilters): Observable<TreatmentPlanResource[]> {
+    return this.treatmentPlansEndpoint.getAllTreatmentPlans(filters);
   }
 
   getTreatmentPlansByPatient(patientId: string): Observable<TreatmentPlanResource[]> {

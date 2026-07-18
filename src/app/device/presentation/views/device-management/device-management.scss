@@ -26,15 +26,21 @@
 
 .device__stats {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  // Seven cards: balance them as 4 + 3 on laptops so none is left orphaned.
+  grid-template-columns: repeat(4, 1fr);
   gap: 12px;
 
-  @media (max-width: 1400px) {
-    grid-template-columns: repeat(3, 1fr);
+  // Wide screens fit all seven in a single tidy row.
+  @media (min-width: 1600px) {
+    grid-template-columns: repeat(7, 1fr);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 820px) {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -56,11 +62,21 @@
   color: var(--p-text-color);
 }
 
-.device__stat-icon--success { color: #34c79b; }
-.device__stat-icon--primary { color: var(--p-primary-color); }
-.device__stat-icon--warning { color: #b38600; }
-.device__stat-icon--alert { color: #c73a3a; }
-.device__stat-icon--muted { color: var(--p-text-muted-color); }
+.device__stat-icon--success {
+  color: #34c79b;
+}
+.device__stat-icon--primary {
+  color: var(--p-primary-color);
+}
+.device__stat-icon--warning {
+  color: #b38600;
+}
+.device__stat-icon--alert {
+  color: #c73a3a;
+}
+.device__stat-icon--muted {
+  color: var(--p-text-muted-color);
+}
 
 .device__stat-number {
   font-family: 'Plus Jakarta Sans', sans-serif;

@@ -1,0 +1,100 @@
+@use '../../../../../styles/theme-transition' as theme;
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  // Hairline dividers instead of four separate cards: one object, four readings.
+  background: var(--p-surface-200);
+  overflow: hidden;
+  @include theme.surface;
+}
+
+:host-context(.app-dark) .kpis {
+  border-color: var(--p-surface-300);
+  background: var(--p-surface-300);
+}
+
+@media (max-width: 1200px) {
+  .kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .kpis {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpis__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px;
+  background: var(--p-surface-0);
+}
+
+:host-context(.app-dark) .kpis__item {
+  background: var(--p-surface-100);
+}
+
+// A short inset rule rather than a full-height bar: enough to flag the tile, quiet enough not to
+// read as a divider between them.
+.kpis__item::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: transparent;
+}
+
+.kpis__item[data-tone='good']::before {
+  background: var(--p-green-500);
+}
+
+.kpis__item[data-tone='warn']::before {
+  background: var(--p-yellow-500);
+}
+
+.kpis__item[data-tone='danger']::before {
+  background: var(--p-red-500);
+}
+
+.kpis__label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--p-text-muted-color);
+}
+
+.kpis__value {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+  color: var(--p-text-color);
+}
+
+.kpis__item[data-tone='danger'] .kpis__value {
+  color: var(--p-red-500);
+}
+
+.kpis__hint {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: var(--p-text-muted-color);
+}

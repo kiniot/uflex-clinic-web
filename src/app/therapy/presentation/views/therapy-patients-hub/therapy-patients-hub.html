@@ -1,0 +1,156 @@
+<header class="therapy-page__header">
+  <div class="therapy-page__header-text">
+    <span class="therapy-page__eyebrow">{{ 'therapySessions.eyebrow' | translate }}</span>
+    <h1 class="therapy-page__title">{{ 'therapySessions.hub.title' | translate }}</h1>
+    <p class="therapy-page__subtitle">{{ 'therapySessions.hub.subtitle' | translate }}</p>
+  </div>
+</header>
+
+@if (isLoading()) {
+  <app-therapy-loading-skeleton
+    titleKey="therapySessions.hub.tableTitle"
+    subtitleKey="therapySessions.hub.tableHint"
+    loadingLabelKey="therapySessions.loadingPatients"
+    [withAvatar]="true"
+  />
+} @else {
+  <app-tracking-kpis [kpis]="kpis()" />
+
+  <article class="therapy-card">
+    <header class="therapy-card__header">
+      <div>
+        <h2 class="therapy-card__title">{{ 'therapySessions.hub.tableTitle' | translate }}</h2>
+        <p class="therapy-card__hint">{{ 'therapySessions.hub.tableHint' | translate }}</p>
+      </div>
+      @if (showSearch()) {
+        <app-search-input
+          class="hub__search"
+          [value]="query()"
+          [fluid]="false"
+          [placeholder]="'therapySessions.hub.search' | translate"
+          (valueChange)="onQueryChange($event)"
+        />
+      }
+    </header>
+
+    @if (loadError()) {
+      <div class="therapy-card__error">{{ 'therapySessions.hub.loadError' | translate }}</div>
+    } @else if (!overview().length) {
+      <div class="therapy-card__empty">
+        <strong>{{ 'therapySessions.noPatientsTitle' | translate }}</strong>
+        <span>{{ 'therapySessions.noPatientsBody' | translate }}</span>
+      </div>
+    } @else if (!filteredPatients().length) {
+      <div class="therapy-card__empty">
+        {{ 'therapySessions.hub.noMatches' | translate: { query: query() } }}
+      </div>
+    } @else {
+      <div class="hub__table-wrap">
+        <table class="hub__table">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'therapySessions.hub.columns.patient' | translate }}</th>
+              <th scope="col">{{ 'therapySessions.hub.columns.lastSession' | translate }}</th>
+              <th scope="col">{{ 'therapySessions.hub.columns.sessions' | translate }}</th>
+              <th scope="col">{{ 'therapySessions.hub.columns.quality' | translate }}</th>
+              <th scope="col">{{ 'therapySessions.hub.columns.rom' | translate }}</th>
+              <th scope="col">{{ 'therapySessions.hub.columns.alerts' | translate }}</th>
+              <th scope="col">
+                <span class="visually-hidden">{{
+                  'therapySessions.hub.columns.action' | translate
+                }}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of filteredPatients(); track row.patientId) {
+              <tr
+                class="hub__row"
+                tabindex="0"
+                role="button"
+                (click)="onOpenPatient(row)"
+                (keydown.enter)="onOpenPatient(row)"
+              >
+                <td>
+                  <span class="hub__patient">
+                    <span class="hub__avatar">
+                      {{ initials(row) }}
+                      @if (row.hasActiveSession) {
+                        <span
+                          class="hub__live"
+                          [attr.aria-label]="'therapySessions.tracking.liveTitle' | translate"
+                        ></span>
+                      }
+                    </span>
+                    <span class="hub__name">{{ row.patientFullName }}</span>
+                  </span>
+                </td>
+                <td>
+                  @if (row.lastSessionAt) {
+                    <span class="hub__date">{{ row.lastSessionAt | date: 'dd MMM' }}</span>
+                    <span class="hub__sub">{{ row.lastSessionAt | date: 'HH:mm' }}</span>
+                  } @else {
+                    <span class="hub__badge hub__badge--warn">
+                      {{ 'therapySessions.hub.neverStarted' | translate }}
+                    </span>
+                  }
+                </td>
+                <td class="hub__num">
+                  <span class="hub__strong">{{ row.totalSessions ?? 0 }}</span>
+                  <span class="hub__sub">
+                    {{
+                      'therapySessions.hub.completedShort'
+                        | translate: { count: row.completedSessions ?? 0 }
+                    }}
+                  </span>
+                </td>
+                <td>
+                  @if (qualityRatio(row) === null) {
+                    <span class="hub__never">—</span>
+                  } @else {
+                    <span class="hub__quality" [attr.data-tone]="qualityTone(row)">
+                      <span class="hub__quality-bar">
+                        <span
+                          class="hub__quality-fill"
+                          [style.width.%]="(qualityRatio(row) ?? 0) * 100"
+                        ></span>
+                      </span>
+                      <span class="hub__num"
+                        >{{ row.goodRepetitions ?? 0 }}/{{ row.totalRepetitions ?? 0 }}</span
+                      >
+                    </span>
+                  }
+                </td>
+                <td class="hub__num">{{ romLabel(row) }}</td>
+                <td>
+                  @if ((row.sessionsRequiringReview ?? 0) > 0) {
+                    <span class="hub__flag">{{ row.sessionsRequiringReview }}</span>
+                  } @else {
+                    <span class="hub__never">—</span>
+                  }
+                </td>
+                <td class="hub__action-cell">
+                  <button
+                    pButton
+                    type="button"
+                    severity="primary"
+                    size="small"
+                    [outlined]="true"
+                    class="hub__cta"
+                    [attr.aria-label]="
+                      ('therapySessions.hub.open' | translate) + ': ' + row.patientFullName
+                    "
+                    (click)="onOpenPatient(row); $event.stopPropagation()"
+                  >
+                    <span>{{ 'therapySessions.hub.open' | translate }}</span>
+                    <i class="pi pi-arrow-right" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </article>
+}

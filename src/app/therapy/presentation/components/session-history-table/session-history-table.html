@@ -1,0 +1,101 @@
+<div class="session-history">
+  <table class="session-history__table">
+    <thead>
+      <tr>
+        <th scope="col">{{ 'therapySessions.tracking.table.date' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.status' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.series' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.quality' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.rom' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.pain' | translate }}</th>
+        <th scope="col">{{ 'therapySessions.tracking.table.compensations' | translate }}</th>
+        <th scope="col">
+          <span class="visually-hidden">
+            {{ 'therapySessions.tracking.table.review' | translate }}
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (session of pagedSessions(); track session.sessionId) {
+        <tr
+          class="session-history__row"
+          [class.session-history__row--selected]="session.sessionId === selectedSessionId()"
+          [attr.aria-selected]="session.sessionId === selectedSessionId()"
+          tabindex="0"
+          role="button"
+          (click)="selectSession.emit(session)"
+          (keydown.enter)="selectSession.emit(session)"
+          (keydown.space)="selectSession.emit(session)"
+        >
+          <td class="session-history__date">
+            @if (session.startedAt) {
+              {{ session.startedAt | date: 'dd MMM' }}
+              <span class="session-history__time">{{ session.startedAt | date: 'HH:mm' }}</span>
+            } @else {
+              <span class="session-history__muted">
+                {{ 'therapySessions.tracking.table.neverStarted' | translate }}
+              </span>
+            }
+          </td>
+          <td>
+            <span class="session-history__status" [attr.data-status]="session.status">
+              <span class="session-history__status-dot" aria-hidden="true"></span>
+              {{ sessionStatusKey(session) | translate }}
+            </span>
+          </td>
+          <td class="session-history__num">{{ seriesLabel(session) }}</td>
+          <td>
+            <span class="session-history__quality" [attr.data-tone]="qualityTone(session)">
+              <span class="session-history__quality-bar">
+                <span
+                  class="session-history__quality-fill"
+                  [style.width.%]="(qualityRatio(session) ?? 0) * 100"
+                ></span>
+              </span>
+              <span class="session-history__num">
+                {{ session.goodRepetitions ?? 0 }}/{{ session.totalRepetitions ?? 0 }}
+              </span>
+            </span>
+          </td>
+          <td class="session-history__num">{{ romLabel(session) }}</td>
+          <td>
+            @if (painLevel(session) === null) {
+              <span class="session-history__muted">—</span>
+            } @else {
+              <span class="session-history__pain" [attr.data-tone]="painTone(session)">
+                {{ painLevel(session) }}
+              </span>
+            }
+          </td>
+          <td>
+            @if (compensations(session) === 0) {
+              <span class="session-history__muted">—</span>
+            } @else {
+              <span class="session-history__compensations">
+                <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+                {{ compensations(session) }}
+              </span>
+            }
+          </td>
+          <td>
+            @if (session.requiresClinicalReview) {
+              <span class="session-history__flag">
+                {{ 'therapySessions.tracking.table.reviewFlag' | translate }}
+              </span>
+            }
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+@if (showPaginator()) {
+  <p-paginator
+    [first]="first()"
+    [rows]="pageSize"
+    [totalRecords]="sessions().length"
+    (onPageChange)="onPageChange($event)"
+  />
+}

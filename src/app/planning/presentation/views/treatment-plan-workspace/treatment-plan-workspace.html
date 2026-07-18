@@ -1,7 +1,13 @@
 <nav class="workspace__breadcrumb" aria-label="Breadcrumb">
-  <a [routerLink]="['/physiotherapist/patients']">{{
-    'treatmentPlanWorkspace.breadcrumb.patients' | translate
-  }}</a>
+  @if (fromPatient()) {
+    <a [routerLink]="['/physiotherapist/patients']">{{
+      'treatmentPlanWorkspace.breadcrumb.patients' | translate
+    }}</a>
+  } @else {
+    <a [routerLink]="['/physiotherapist/planning']">{{
+      'treatmentPlanWorkspace.breadcrumb.planning' | translate
+    }}</a>
+  }
   <i class="pi pi-angle-right" aria-hidden="true"></i>
   <a [routerLink]="['/physiotherapist/patients', patientId()]">
     {{ patient()?.fullName ?? ('treatmentPlanWorkspace.breadcrumb.patient' | translate) }}
@@ -25,7 +31,7 @@
   <div class="workspace__header-actions">
     <a
       pButton
-      [routerLink]="['/physiotherapist/patients', patientId()]"
+      [routerLink]="backRoute()"
       severity="secondary"
       [outlined]="true"
       class="workspace__ghost-btn"

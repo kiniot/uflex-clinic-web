@@ -49,6 +49,7 @@ export class PatientDetail {
   private readonly patientId = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
   });
+  protected readonly patientRouteId = computed(() => this.patientId().get('patientId') ?? '');
 
   protected readonly patient = this.organizationStore.selectedPatient;
   protected readonly clinic = this.organizationStore.currentClinic;

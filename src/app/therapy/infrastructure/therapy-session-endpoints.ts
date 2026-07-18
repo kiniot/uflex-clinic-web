@@ -3,15 +3,10 @@ import { environment } from '../../../environments/environment';
 import { buildApiUrl } from '../../shared/infrastructure/api-url';
 import { ErrorHandlingEnabledBaseType } from '../../shared/infrastructure/error-handling-enabled-base-type';
 import { catchError, map, Observable } from 'rxjs';
-import { CancelTherapySessionCommand } from '../domain/model/cancel-therapy-session.command';
-import { ConfirmHardwareReadinessCommand } from '../domain/model/confirm-hardware-readiness.command';
-import { InitiateTherapyPreparationCommand } from '../domain/model/initiate-therapy-preparation.command';
 import { TherapySessionAssembler } from './therapy-session.assembler';
 import {
   DailyScheduleResource,
   DailyScheduleResponse,
-  SerieDetailsResource,
-  SerieDetailsResponse,
   SessionProgressResource,
   SessionProgressResponse,
   SessionSummaryResource,
@@ -25,105 +20,6 @@ const therapySessionsEndpointUrl = buildApiUrl(
   environment.platformProviderTherapySessionsEndpointPath,
 );
 
-export class InitiateTherapyPreparationApiEndpoint extends ErrorHandlingEnabledBaseType {
-  constructor(
-    private http: HttpClient,
-    private assembler: TherapySessionAssembler,
-  ) {
-    super();
-  }
-
-  initiatePreparation(
-    command: InitiateTherapyPreparationCommand,
-  ): Observable<TherapySessionResource> {
-    const request = this.assembler.toInitiatePreparationRequestFromCommand(command);
-    return this.http.post<TherapySessionResponse>(therapySessionsEndpointUrl, request).pipe(
-      map((response) => this.assembler.toTherapySessionResourceFromResponse(response)),
-      catchError(this.handleError('Failed to initiate therapy preparation')),
-    );
-  }
-}
-
-export class ConfirmHardwareReadinessApiEndpoint extends ErrorHandlingEnabledBaseType {
-  constructor(
-    private http: HttpClient,
-    private assembler: TherapySessionAssembler,
-  ) {
-    super();
-  }
-
-  confirmHardwareReadiness(
-    sessionId: string,
-    command: ConfirmHardwareReadinessCommand,
-  ): Observable<TherapySessionResource> {
-    const request = this.assembler.toConfirmHardwareReadinessRequestFromCommand(command);
-    return this.http
-      .patch<TherapySessionResponse>(`${therapySessionsEndpointUrl}/${sessionId}/hardware`, request)
-      .pipe(
-        map((response) => this.assembler.toTherapySessionResourceFromResponse(response)),
-        catchError(this.handleError('Failed to confirm hardware readiness')),
-      );
-  }
-}
-
-export class StartTherapySessionApiEndpoint extends ErrorHandlingEnabledBaseType {
-  constructor(
-    private http: HttpClient,
-    private assembler: TherapySessionAssembler,
-  ) {
-    super();
-  }
-
-  start(sessionId: string): Observable<TherapySessionResource> {
-    return this.http
-      .patch<TherapySessionResponse>(`${therapySessionsEndpointUrl}/${sessionId}/start`, {})
-      .pipe(
-        map((response) => this.assembler.toTherapySessionResourceFromResponse(response)),
-        catchError(this.handleError('Failed to start therapy session')),
-      );
-  }
-}
-
-export class FinalizeTherapySessionApiEndpoint extends ErrorHandlingEnabledBaseType {
-  constructor(
-    private http: HttpClient,
-    private assembler: TherapySessionAssembler,
-  ) {
-    super();
-  }
-
-  finalize(sessionId: string): Observable<TherapySessionResource> {
-    return this.http
-      .patch<TherapySessionResponse>(`${therapySessionsEndpointUrl}/${sessionId}/finalize`, {})
-      .pipe(
-        map((response) => this.assembler.toTherapySessionResourceFromResponse(response)),
-        catchError(this.handleError('Failed to finalize therapy session')),
-      );
-  }
-}
-
-export class CancelTherapySessionApiEndpoint extends ErrorHandlingEnabledBaseType {
-  constructor(
-    private http: HttpClient,
-    private assembler: TherapySessionAssembler,
-  ) {
-    super();
-  }
-
-  cancel(
-    sessionId: string,
-    command: CancelTherapySessionCommand,
-  ): Observable<TherapySessionResource> {
-    const request = this.assembler.toCancelTherapySessionRequestFromCommand(command);
-    return this.http
-      .patch<TherapySessionResponse>(`${therapySessionsEndpointUrl}/${sessionId}/cancel`, request)
-      .pipe(
-        map((response) => this.assembler.toTherapySessionResourceFromResponse(response)),
-        catchError(this.handleError('Failed to cancel therapy session')),
-      );
-  }
-}
-
 export class GetActiveTherapySessionApiEndpoint extends ErrorHandlingEnabledBaseType {
   constructor(
     private http: HttpClient,
@@ -132,6 +28,7 @@ export class GetActiveTherapySessionApiEndpoint extends ErrorHandlingEnabledBase
     super();
   }
 
+  /** Answers 404 when the patient has no session running; that is the normal case, not an error. */
   getActiveByPatientId(patientId: string): Observable<TherapySessionResource> {
     return this.http
       .get<TherapySessionResponse>(`${therapySessionsEndpointUrl}/active/${patientId}`)
@@ -150,6 +47,7 @@ export class GetSessionSummaryApiEndpoint extends ErrorHandlingEnabledBaseType {
     super();
   }
 
+  /** Only resolves once the session is finished; use the detail endpoint for a running one. */
   getSummary(sessionId: string): Observable<SessionSummaryResource> {
     return this.http
       .get<SessionSummaryResponse>(`${therapySessionsEndpointUrl}/${sessionId}/summary`)
@@ -193,45 +91,6 @@ export class GetSessionProgressApiEndpoint extends ErrorHandlingEnabledBaseType 
       .pipe(
         map((response) => this.assembler.toSessionProgressResourceFromResponse(response)),
         catchError(this.handleError('Failed to get therapy session progress')),
-      );
-  }
-}
-
-export class GetSerieDetailsApiEndpoint extends ErrorHandlingEnabledBaseType {
-  constructor(
-    private http: HttpClient,
-    private assembler: TherapySessionAssembler,
-  ) {
-    super();
-  }
-
-  getSerieDetails(sessionId: string, serieId: string): Observable<SerieDetailsResource> {
-    return this.http
-      .get<SerieDetailsResponse>(`${therapySessionsEndpointUrl}/${sessionId}/series/${serieId}`)
-      .pipe(
-        map((response) => this.assembler.toSerieDetailsResourceFromResponse(response)),
-        catchError(this.handleError('Failed to get serie details')),
-      );
-  }
-}
-
-export class StartSerieApiEndpoint extends ErrorHandlingEnabledBaseType {
-  constructor(
-    private http: HttpClient,
-    private assembler: TherapySessionAssembler,
-  ) {
-    super();
-  }
-
-  startSerie(sessionId: string, serieId: string): Observable<SerieDetailsResource> {
-    return this.http
-      .patch<SerieDetailsResponse>(
-        `${therapySessionsEndpointUrl}/${sessionId}/series/${serieId}/start`,
-        {},
-      )
-      .pipe(
-        map((response) => this.assembler.toSerieDetailsResourceFromResponse(response)),
-        catchError(this.handleError('Failed to start serie')),
       );
   }
 }

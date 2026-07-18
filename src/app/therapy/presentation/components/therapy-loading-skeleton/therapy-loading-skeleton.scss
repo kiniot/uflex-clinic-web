@@ -1,0 +1,195 @@
+// Self-contained so it carries no dependency on the shared partial: it renders while the real
+// content (which does use the partial) is still loading.
+
+:host {
+  display: block;
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+// ── KPI strip ─────────────────────────────────────────────────────────────────
+.skeleton__kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  background: var(--p-surface-200);
+  overflow: hidden;
+}
+
+:host-context(.app-dark) .skeleton__kpis {
+  border-color: var(--p-surface-300);
+  background: var(--p-surface-300);
+}
+
+@media (max-width: 1200px) {
+  .skeleton__kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .skeleton__kpis {
+    grid-template-columns: 1fr;
+  }
+}
+
+.skeleton__kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background: var(--p-surface-0);
+}
+
+:host-context(.app-dark) .skeleton__kpi {
+  background: var(--p-surface-100);
+}
+
+// ── Card ──────────────────────────────────────────────────────────────────────
+.skeleton-card {
+  background: var(--p-surface-0);
+  border: 1px solid var(--p-surface-200);
+  border-radius: 14px;
+  padding: 20px;
+}
+
+:host-context(.app-dark) .skeleton-card {
+  background: var(--p-surface-100);
+  border-color: var(--p-surface-300);
+}
+
+.skeleton-card__header {
+  margin-bottom: 16px;
+}
+
+.skeleton-card__title {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--p-text-color);
+}
+
+.skeleton-card__hint {
+  margin: 2px 0 0;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+}
+
+// ── Rows ──────────────────────────────────────────────────────────────────────
+.skeleton__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skeleton__row {
+  display: grid;
+  grid-template-columns: minmax(140px, 1.4fr) repeat(4, minmax(0, 1fr));
+  align-items: center;
+  gap: 16px;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--p-surface-100);
+}
+
+.skeleton__row--avatar {
+  grid-template-columns: 34px minmax(120px, 1.4fr) repeat(4, minmax(0, 1fr));
+}
+
+:host-context(.app-dark) .skeleton__row {
+  border-bottom-color: var(--p-surface-200);
+}
+
+.skeleton__avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+}
+
+// ── Placeholder lines + shimmer ────────────────────────────────────────────────
+// The shimmer sweeps a lighter band across the placeholder tint.
+.skeleton__line,
+.skeleton__avatar {
+  display: block;
+  border-radius: 6px;
+  background:
+    linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, var(--p-surface-0) 55%, transparent) 50%,
+        transparent 100%
+      )
+      no-repeat,
+    color-mix(in srgb, var(--p-surface-200) 85%, transparent);
+  background-size:
+    160px 100%,
+    100% 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}
+
+:host-context(.app-dark) .skeleton__line,
+:host-context(.app-dark) .skeleton__avatar {
+  background:
+    linear-gradient(
+        90deg,
+        transparent 0%,
+        color-mix(in srgb, var(--p-surface-0) 22%, transparent) 50%,
+        transparent 100%
+      )
+      no-repeat,
+    color-mix(in srgb, var(--p-surface-300) 72%, transparent);
+  background-size:
+    160px 100%,
+    100% 100%;
+}
+
+.skeleton__line--label {
+  width: 45%;
+  height: 10px;
+}
+
+.skeleton__line--value {
+  width: 62%;
+  height: 26px;
+}
+
+.skeleton__line--hint {
+  width: 80%;
+  height: 12px;
+}
+
+.skeleton__line--name {
+  width: 60%;
+  height: 14px;
+}
+
+.skeleton__line--cell {
+  height: 14px;
+}
+
+@keyframes skeleton-shimmer {
+  from {
+    background-position:
+      -160px 0,
+      0 0;
+  }
+  to {
+    background-position:
+      calc(100% + 160px) 0,
+      0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton__line,
+  .skeleton__avatar {
+    animation: none;
+  }
+}

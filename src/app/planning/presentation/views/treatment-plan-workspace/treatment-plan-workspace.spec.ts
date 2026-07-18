@@ -30,8 +30,10 @@ describe('TreatmentPlanWorkspace', () => {
           useValue: {
             snapshot: {
               paramMap: convertToParamMap({ patientId: 'patient-1', planId: 'new' }),
+              queryParamMap: convertToParamMap({ from: 'patient' }),
             },
             paramMap: of(convertToParamMap({ patientId: 'patient-1', planId: 'new' })),
+            queryParamMap: of(convertToParamMap({ from: 'patient' })),
           },
         },
         {
