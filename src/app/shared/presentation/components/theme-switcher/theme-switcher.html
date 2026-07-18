@@ -1,6 +1,6 @@
 <p-selectButton
   [options]="themeOptions"
-  [ngModel]="currentTheme"
+  [ngModel]="currentTheme()"
   (ngModelChange)="setTheme($event)"
   optionValue="value"
   [allowEmpty]="false"

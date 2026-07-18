@@ -1,0 +1,141 @@
+<nav class="tracking__breadcrumb" aria-label="Breadcrumb">
+  <a [routerLink]="['/physiotherapist/therapy']">
+    {{ 'therapySessions.tracking.breadcrumb.therapy' | translate }}
+  </a>
+  <i class="pi pi-angle-right" aria-hidden="true"></i>
+  <span>{{ patientName() || ('therapySessions.tracking.breadcrumb.patient' | translate) }}</span>
+</nav>
+
+<header class="therapy-page__header">
+  <div class="therapy-page__header-text">
+    <span class="therapy-page__eyebrow">{{ 'therapySessions.eyebrow' | translate }}</span>
+    <h1 class="therapy-page__title">
+      {{ patientName() || ('therapySessions.tracking.breadcrumb.patient' | translate) }}
+    </h1>
+    <p class="therapy-page__subtitle">{{ 'therapySessions.tracking.subtitle' | translate }}</p>
+  </div>
+  <div class="tracking__actions">
+    @if (hasActiveSession()) {
+      <span class="tracking-patient__live">
+        <span class="tracking-patient__pulse" aria-hidden="true"></span>
+        {{
+          'therapySessions.tracking.liveBody'
+            | translate
+              : {
+                  serie: currentSerieLabel(),
+                  completed: progressCompletedSeries(),
+                  total: progressTotalSeries(),
+                }
+        }}
+      </span>
+    }
+    <button
+      pButton
+      type="button"
+      severity="secondary"
+      [outlined]="true"
+      class="tracking__cta"
+      [disabled]="isLoadingHistory()"
+      (click)="onRefresh()"
+    >
+      <i class="pi pi-refresh" aria-hidden="true"></i>
+      <span>{{ 'therapySessions.refresh' | translate }}</span>
+    </button>
+    <a
+      pButton
+      severity="primary"
+      [outlined]="true"
+      class="tracking__cta"
+      [routerLink]="['/physiotherapist/patients', patientId()]"
+    >
+      <i class="pi pi-user" aria-hidden="true"></i>
+      <span>{{ 'therapySessions.tracking.openPatient' | translate }}</span>
+    </a>
+  </div>
+</header>
+
+@if (contextError()) {
+  <div class="therapy-card__error">{{ 'therapySessions.contextError' | translate }}</div>
+}
+
+@if (isInitialLoad()) {
+  <app-therapy-loading-skeleton
+    titleKey="therapySessions.tracking.historyTitle"
+    subtitleKey="therapySessions.tracking.historyHint"
+    loadingLabelKey="therapySessions.tracking.loadingHistory"
+  />
+} @else {
+  <app-tracking-kpis [kpis]="kpis()" />
+
+  @if (hasRomTrend()) {
+    <article class="therapy-card">
+      <header class="therapy-card__header">
+        <div>
+          <h2 class="therapy-card__title">
+            {{ 'therapySessions.tracking.chart.romTitle' | translate }}
+          </h2>
+          <p class="therapy-card__hint">
+            {{ 'therapySessions.tracking.chart.romHint' | translate }}
+          </p>
+        </div>
+      </header>
+      @defer {
+        <app-therapy-chart
+          type="line"
+          [labels]="romTrendLabels()"
+          [series]="romTrendSeries()"
+          yAxisSuffix="°"
+          [ariaLabel]="'therapySessions.tracking.chart.romTitle' | translate"
+        />
+      } @placeholder {
+        <div class="therapy-card__empty">
+          {{ 'therapySessions.tracking.chart.loading' | translate }}
+        </div>
+      }
+    </article>
+  }
+
+  <article class="therapy-card">
+    <header class="therapy-card__header">
+      <div>
+        <h2 class="therapy-card__title">
+          {{ 'therapySessions.tracking.historyTitle' | translate }}
+        </h2>
+        <p class="therapy-card__hint">{{ 'therapySessions.tracking.historyHint' | translate }}</p>
+      </div>
+      <span class="therapy-card__counter">
+        {{
+          'therapySessions.tracking.historyCount' | translate: { count: sessionHistory().length }
+        }}
+      </span>
+    </header>
+
+    @if (!sessionHistory().length) {
+      <div class="therapy-card__empty">
+        <strong>{{ 'therapySessions.tracking.noHistoryTitle' | translate }}</strong>
+        <span>{{ 'therapySessions.tracking.noHistoryBody' | translate }}</span>
+      </div>
+    } @else {
+      <app-session-history-table
+        [sessions]="sessionHistory()"
+        [selectedSessionId]="selectedSessionId()"
+        (selectSession)="onSelectSession($event)"
+      />
+    }
+  </article>
+}
+
+<p-drawer
+  [visible]="isDrawerOpen()"
+  (visibleChange)="onDrawerVisibleChange($event)"
+  (onHide)="onCloseSession()"
+  position="right"
+  styleClass="tracking-drawer"
+  [header]="'therapySessions.tracking.detail.eyebrow' | translate"
+>
+  @if (isLoadingDetail()) {
+    <p class="therapy-card__empty">{{ 'therapySessions.tracking.detail.loading' | translate }}</p>
+  } @else if (selectedSessionDetail(); as detail) {
+    <app-session-detail-panel [detail]="detail" [exerciseCatalog]="exerciseCatalog()" />
+  }
+</p-drawer>

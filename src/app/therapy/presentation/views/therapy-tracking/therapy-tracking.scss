@@ -1,0 +1,85 @@
+@use '../shared/therapy-dashboard.shared';
+
+.tracking__breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  color: var(--p-text-muted-color);
+
+  a {
+    color: var(--p-text-muted-color);
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: var(--p-text-color);
+  }
+
+  span {
+    color: var(--p-primary-color);
+    font-weight: 600;
+  }
+
+  i {
+    font-size: 10px;
+  }
+}
+
+.tracking__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+:host ::ng-deep .tracking__cta.p-button {
+  gap: 0.4rem;
+
+  i {
+    font-size: 0.75rem;
+  }
+}
+
+.tracking-patient__live {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--p-primary-color);
+  background: color-mix(in srgb, var(--p-primary-color) 12%, transparent);
+}
+
+.tracking-patient__pulse {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: var(--p-primary-color);
+  animation: tracking-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes tracking-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tracking-patient__pulse {
+    animation: none;
+  }
+}
+
+:host ::ng-deep .tracking-drawer {
+  width: min(580px, 100vw);
+}

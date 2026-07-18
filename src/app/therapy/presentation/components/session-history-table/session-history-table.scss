@@ -1,0 +1,228 @@
+// A custom element defaults to display:inline, which ignores the column's width and lets the
+// table push the whole page sideways. min-width:0 is what actually lets it shrink inside a grid.
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.session-history {
+  // The table scrolls inside its own box; the page never scrolls sideways.
+  overflow-x: auto;
+  max-width: 100%;
+  // overflow-x alone only clips the paint: the overflowing table still counted towards the
+  // document's scrollWidth, so the whole page scrolled sideways ~270px on a 1366 laptop.
+  // Containment keeps that overflow from escaping the box at all.
+  contain: paint;
+}
+
+.session-history__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  white-space: nowrap;
+
+  th {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-text-muted-color);
+    border-bottom: 1px solid var(--p-surface-200);
+  }
+
+  td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--p-surface-100);
+    color: var(--p-text-color);
+  }
+}
+
+:host-context(.app-dark) .session-history__table {
+  th {
+    border-bottom-color: var(--p-surface-300);
+  }
+
+  td {
+    border-bottom-color: var(--p-surface-200);
+  }
+}
+
+.session-history__row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--p-surface-100);
+  }
+
+  &--selected {
+    background: color-mix(in srgb, var(--p-primary-color) 10%, transparent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-primary-color);
+    outline-offset: -2px;
+  }
+}
+
+:host-context(.app-dark) .session-history__row:hover,
+:host-context(.app-dark) .session-history__row:focus-visible {
+  background: var(--p-surface-200);
+}
+
+.session-history__muted {
+  color: var(--p-text-muted-color);
+}
+
+.session-history__date {
+  font-weight: 600;
+}
+
+.session-history__time {
+  margin-left: 0.3rem;
+  font-weight: 400;
+  font-size: 0.76rem;
+  color: var(--p-text-muted-color);
+}
+
+.session-history__num {
+  font-variant-numeric: tabular-nums;
+}
+
+.session-history__quality {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.session-history__quality-bar {
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--p-surface-200);
+}
+
+:host-context(.app-dark) .session-history__quality-bar {
+  background: var(--p-surface-300);
+}
+
+.session-history__quality-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--p-surface-400);
+}
+
+.session-history__quality[data-tone='good'] .session-history__quality-fill {
+  background: var(--p-green-500);
+}
+
+.session-history__quality[data-tone='warn'] .session-history__quality-fill {
+  background: var(--p-yellow-500);
+}
+
+.session-history__quality[data-tone='danger'] .session-history__quality-fill {
+  background: var(--p-red-500);
+}
+
+// A dot + label rather than a coloured word: the state reads at a glance without relying on
+// colour alone to carry it.
+.session-history__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--p-text-muted-color);
+}
+
+.session-history__status-dot {
+  width: 6px;
+  height: 6px;
+  flex: none;
+  border-radius: 999px;
+  background: var(--p-surface-400);
+}
+
+.session-history__status[data-status='Completed'] {
+  color: var(--p-text-color);
+
+  .session-history__status-dot {
+    background: var(--p-green-500);
+  }
+}
+
+.session-history__status[data-status='InProgress'] {
+  color: var(--p-primary-color);
+  font-weight: 600;
+
+  .session-history__status-dot {
+    background: var(--p-primary-color);
+  }
+}
+
+.session-history__pain {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--p-text-muted-color);
+
+  &[data-tone='good'] {
+    color: var(--p-text-color);
+    background: var(--p-surface-100);
+  }
+
+  &[data-tone='warn'] {
+    color: var(--p-yellow-600, var(--p-yellow-500));
+    background: color-mix(in srgb, var(--p-yellow-500) 16%, transparent);
+  }
+
+  &[data-tone='danger'] {
+    color: var(--p-red-600);
+    background: color-mix(in srgb, var(--p-red-500) 16%, transparent);
+  }
+}
+
+:host-context(.app-dark) .session-history__pain[data-tone='good'] {
+  background: var(--p-surface-200);
+}
+
+.session-history__compensations {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--p-yellow-600, var(--p-yellow-500));
+
+  i {
+    font-size: 0.7rem;
+  }
+}
+
+.session-history__flag {
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--p-red-600);
+  background: color-mix(in srgb, var(--p-red-500) 14%, transparent);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

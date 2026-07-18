@@ -1,0 +1,32 @@
+<div class="skeleton" role="status" [attr.aria-label]="loadingLabelKey() | translate">
+  <div class="skeleton__kpis" aria-hidden="true">
+    @for (tile of tiles; track tile) {
+      <div class="skeleton__kpi">
+        <span class="skeleton__line skeleton__line--label"></span>
+        <span class="skeleton__line skeleton__line--value"></span>
+        <span class="skeleton__line skeleton__line--hint"></span>
+      </div>
+    }
+  </div>
+
+  <article class="skeleton-card">
+    <header class="skeleton-card__header">
+      <h2 class="skeleton-card__title">{{ titleKey() | translate }}</h2>
+      <p class="skeleton-card__hint">{{ subtitleKey() | translate }}</p>
+    </header>
+    <div class="skeleton__rows" aria-hidden="true">
+      @for (row of rowList(); track row) {
+        <div class="skeleton__row" [class.skeleton__row--avatar]="withAvatar()">
+          @if (withAvatar()) {
+            <span class="skeleton__avatar"></span>
+          }
+          <span class="skeleton__line skeleton__line--name"></span>
+          <span class="skeleton__line skeleton__line--cell"></span>
+          <span class="skeleton__line skeleton__line--cell"></span>
+          <span class="skeleton__line skeleton__line--cell"></span>
+          <span class="skeleton__line skeleton__line--cell"></span>
+        </div>
+      }
+    </div>
+  </article>
+</div>

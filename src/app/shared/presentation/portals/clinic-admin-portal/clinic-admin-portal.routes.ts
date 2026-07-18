@@ -1,8 +1,6 @@
 import { Routes } from '@angular/router';
 
 const portal = () => import('./clinic-admin-portal').then((m) => m.ClinicAdminPortal);
-const therapyRoutes = () =>
-  import('../../../../therapy/presentation/therapy.routes').then((m) => m.therapyRoutes);
 const exerciseRoutes = () =>
   import('../../../../planning/presentation/exercise.routes').then((m) => m.exerciseRoutes);
 const deviceRoutes = () =>
@@ -32,7 +30,6 @@ export const clinicAdminPortalRoutes: Routes = [
     children: [
       { path: '', redirectTo: 'organization', pathMatch: 'full' },
       { path: 'exercises', loadChildren: exerciseRoutes },
-      { path: 'therapy', loadChildren: therapyRoutes },
       { path: 'device', loadChildren: deviceRoutes },
       { path: 'organization', loadChildren: organizationRoutes },
       { path: 'subscription', loadChildren: subscriptionRoutes },

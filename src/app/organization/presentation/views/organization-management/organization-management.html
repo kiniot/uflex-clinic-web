@@ -64,10 +64,15 @@
           </button>
         } @else {
           <div class="org-hero__admin-head">
-            <span class="org-hero__admin-label">{{ 'organization.hero.managedBy' | translate }}</span>
-            <strong class="org-hero__admin-name">{{
-              clinicAdmin()?.fullName ?? ('organization.detail.loading' | translate)
-            }}</strong>
+            <span class="org-hero__admin-avatar" aria-hidden="true">{{ adminInitials() }}</span>
+            <div class="org-hero__admin-heading">
+              <span class="org-hero__admin-label">{{
+                'organization.hero.managedBy' | translate
+              }}</span>
+              <strong class="org-hero__admin-name">{{
+                clinicAdmin()?.fullName ?? ('organization.detail.loading' | translate)
+              }}</strong>
+            </div>
           </div>
           <div class="org-hero__admin-details">
             <span class="org-hero__admin-contact">
@@ -89,39 +94,55 @@
   </header>
 
   <section class="org-metrics">
-    <app-stat-card [title]="'organization.metrics.totalPhysiotherapists' | translate">
-      <div class="org-metric">
-        <span class="org-metric__value">{{ totalPhysiotherapists() }}</span>
-        <span class="org-metric__note">{{
-          'organization.metrics.physiotherapistsNote' | translate
-        }}</span>
-      </div>
-    </app-stat-card>
+    <article class="org-metric-card org-metric-card--primary">
+      <span class="org-metric-card__icon" aria-hidden="true"><i class="pi pi-users"></i></span>
+      <span class="org-metric-card__value">{{ totalPhysiotherapists() }}</span>
+      <span class="org-metric-card__label">{{
+        'organization.metrics.totalPhysiotherapists' | translate
+      }}</span>
+      <span class="org-metric-card__note">{{
+        'organization.metrics.physiotherapistsNote' | translate
+      }}</span>
+    </article>
 
-    <app-stat-card [title]="'organization.metrics.totalPatients' | translate">
-      <div class="org-metric">
-        <span class="org-metric__value">{{ totalPatients() }}</span>
-        <span class="org-metric__note">{{ 'organization.metrics.patientsNote' | translate }}</span>
-      </div>
-    </app-stat-card>
+    <article class="org-metric-card org-metric-card--turquoise">
+      <span class="org-metric-card__icon" aria-hidden="true"><i class="pi pi-heart"></i></span>
+      <span class="org-metric-card__value">{{ totalPatients() }}</span>
+      <span class="org-metric-card__label">{{
+        'organization.metrics.totalPatients' | translate
+      }}</span>
+      <span class="org-metric-card__note">{{
+        'organization.metrics.patientsNote' | translate
+      }}</span>
+    </article>
 
-    <app-stat-card [title]="'organization.metrics.assignedPatients' | translate">
-      <div class="org-metric">
-        <span class="org-metric__value">{{ assignedPatientsCount() }}</span>
-        <span class="org-metric__note">{{ 'organization.metrics.assignedNote' | translate }}</span>
-      </div>
-    </app-stat-card>
+    <article class="org-metric-card org-metric-card--emerald">
+      <span class="org-metric-card__icon" aria-hidden="true"><i class="pi pi-link"></i></span>
+      <span class="org-metric-card__value">{{ assignedPatientsCount() }}</span>
+      <span class="org-metric-card__label">{{
+        'organization.metrics.assignedPatients' | translate
+      }}</span>
+      <span class="org-metric-card__note">{{
+        'organization.metrics.assignedNote' | translate
+      }}</span>
+    </article>
 
-    <app-stat-card [title]="'organization.metrics.unassignedPatients' | translate">
-      <div class="org-metric">
-        <span class="org-metric__value">{{ unassignedPatientsCount() }}</span>
-        <span class="org-metric__note">{{
-          'organization.metrics.unassignedNote' | translate
-        }}</span>
-      </div>
-    </app-stat-card>
+    <article class="org-metric-card org-metric-card--amber">
+      <span class="org-metric-card__icon" aria-hidden="true"><i class="pi pi-user-plus"></i></span>
+      <span class="org-metric-card__value">{{ unassignedPatientsCount() }}</span>
+      <span class="org-metric-card__label">{{
+        'organization.metrics.unassignedPatients' | translate
+      }}</span>
+      <span class="org-metric-card__note">{{
+        'organization.metrics.unassignedNote' | translate
+      }}</span>
+    </article>
 
-    <app-stat-card [title]="'organization.metrics.patientStatuses' | translate">
+    <article class="org-metric-card org-metric-card--statuses">
+      <span class="org-metric-card__icon" aria-hidden="true"><i class="pi pi-chart-bar"></i></span>
+      <span class="org-metric-card__label">{{
+        'organization.metrics.patientStatuses' | translate
+      }}</span>
       <div class="org-status-metric">
         <div class="org-status-metric__row">
           <span>{{ 'organization.patients.status.UNASSIGNED' | translate }}</span>
@@ -144,7 +165,7 @@
           <strong>{{ inactivePatientsCount() }}</strong>
         </div>
       </div>
-    </app-stat-card>
+    </article>
   </section>
 
   <section class="org-workspace">

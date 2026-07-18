@@ -1,9 +1,0 @@
-@use '../shared/therapy-dashboard.shared';
-
-.supervision-layout {
-  grid-template-columns: minmax(280px, 340px) 1.25fr;
-}
-
-.supervision-grid {
-  align-items: start;
-}

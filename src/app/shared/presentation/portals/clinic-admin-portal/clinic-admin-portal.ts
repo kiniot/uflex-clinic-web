@@ -55,7 +55,8 @@ export class ClinicAdminPortal {
   protected profilePromptVisible = signal<boolean>(false);
 
   protected currentEmail = this.iamStore.currentEmail;
-  protected currentClinicAdminProfileStatus = this.organizationStore.currentClinicAdminProfileStatus;
+  protected currentClinicAdminProfileStatus =
+    this.organizationStore.currentClinicAdminProfileStatus;
   protected currentRoleLabel = computed(() => {
     const role = this.iamStore.currentEffectiveRole();
     if (!role) return '';
@@ -66,7 +67,6 @@ export class ClinicAdminPortal {
     this.translate.stream([
       'clinicAdmin.brand.name',
       'clinicAdmin.brand.subtitle',
-      'clinicAdmin.nav.therapy',
       'clinicAdmin.nav.exercises',
       'clinicAdmin.nav.device',
       'clinicAdmin.nav.organization',
@@ -98,11 +98,6 @@ export class ClinicAdminPortal {
       label: this.translations()['clinicAdmin.nav.device'] ?? '',
       icon: 'pi-mobile',
       route: '/clinic-admin/device',
-    },
-    {
-      label: this.translations()['clinicAdmin.nav.therapy'] ?? '',
-      icon: 'pi-th-large',
-      route: '/clinic-admin/therapy',
     },
     {
       label: this.translations()['clinicAdmin.nav.exercises'] ?? '',

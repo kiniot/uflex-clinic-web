@@ -1,0 +1,122 @@
+<article class="session-detail">
+  <header class="session-detail__header">
+    <div>
+      <h3 class="session-detail__title">
+        @if (detail().startedAt) {
+          {{ detail().startedAt | date: 'dd MMMM yyyy, HH:mm' }}
+        } @else {
+          {{ 'therapySessions.tracking.table.neverStarted' | translate }}
+        }
+      </h3>
+      <p class="session-detail__meta">
+        {{ sessionStatusKey() | translate }}
+        @if (detail().cancellationReason) {
+          · {{ detail().cancellationReason }}
+        }
+      </p>
+    </div>
+    <dl class="session-detail__totals">
+      <div>
+        <dt>{{ 'therapySessions.tracking.table.quality' | translate }}</dt>
+        <dd>{{ detail().goodRepetitions ?? 0 }} / {{ detail().totalRepetitions ?? 0 }}</dd>
+      </div>
+      <div>
+        <dt>{{ 'therapySessions.tracking.table.rom' | translate }}</dt>
+        <dd>{{ romLabel(detail().averageAchievedRom) }}</dd>
+      </div>
+    </dl>
+  </header>
+
+  @if (detail().requiresClinicalReview) {
+    <div class="session-detail__alert">
+      {{ 'therapySessions.tracking.detail.reviewAlert' | translate: { max: detail().maxReportedPainLevel } }}
+    </div>
+  }
+
+  @if (!detail().series.length) {
+    <p class="session-detail__empty">{{ 'therapySessions.tracking.detail.noSeries' | translate }}</p>
+  }
+
+  @for (serie of detail().series; track serie.serieId; let serieIndex = $index) {
+    <section class="session-serie">
+      <header class="session-serie__header">
+        <div class="session-serie__identity">
+          <strong>{{ serieTitle(serie, serieIndex) }}</strong>
+          <span class="session-serie__tags">
+            @if (serie.movementType) {
+              <span class="session-serie__tag">
+                {{ 'exerciseCatalogAdmin.movementType.' + serie.movementType | translate }}
+              </span>
+            }
+            @if (serie.bodyPart) {
+              <span class="session-serie__tag">
+                {{ 'exerciseCatalogAdmin.bodyPart.' + serie.bodyPart | translate }}
+              </span>
+            }
+          </span>
+        </div>
+        <div class="session-serie__targets">
+          <span>
+            {{ 'therapySessions.tracking.detail.target' | translate: {
+              rom: romLabel(serie.targetRom),
+              reps: serie.targetRepetitions ?? 0
+            } }}
+          </span>
+          <span class="session-serie__status">{{ serieStatusKey(serie) | translate }}</span>
+        </div>
+      </header>
+
+      @if (!serie.repetitions.length) {
+        <p class="session-serie__empty">
+          {{ 'therapySessions.tracking.detail.noRepetitions' | translate }}
+        </p>
+      } @else {
+        @defer {
+          <app-therapy-chart
+            type="line"
+            [labels]="repetitionLabels(serie)"
+            [series]="repetitionSeries(serie)"
+            yAxisSuffix="°"
+            [ariaLabel]="'therapySessions.tracking.chart.repsAria' | translate"
+          />
+        }
+        <ol class="rep-list">
+          @for (repetition of serie.repetitions; track repetition.repetitionId; let repIndex = $index) {
+            <li class="rep-list__item" [attr.data-classification]="repetition.classification">
+              <span class="rep-list__index">{{ repIndex + 1 }}</span>
+              <span class="rep-list__rom">{{ romLabel(repetition.achievedRom) }}</span>
+              @if (romDelta(repetition, serie)) {
+                <span class="rep-list__delta" [class.rep-list__delta--over]="isOvershoot(repetition, serie)">
+                  {{ romDelta(repetition, serie) }}
+                </span>
+              }
+              <span class="rep-list__peak">
+                {{ 'therapySessions.tracking.detail.peak' | translate: { angle: romLabel(repetition.peakAngle) } }}
+              </span>
+              <span class="rep-list__badge">
+                {{ 'therapySessions.tracking.detail.classification.' + repetition.classification | translate }}
+              </span>
+            </li>
+          }
+        </ol>
+      }
+    </section>
+  }
+
+  @if (detail().compensatoryMovements.length) {
+    <section class="session-serie">
+      <header class="session-serie__header">
+        <strong>{{ 'therapySessions.tracking.detail.compensationsTitle' | translate }}</strong>
+        <span class="session-serie__status">{{ detail().compensatoryMovements.length }}</span>
+      </header>
+      <ul class="compensation-list">
+        @for (movement of detail().compensatoryMovements; track movement.movementId) {
+          <li>
+            <span>{{ 'therapySessions.tracking.detail.compensation.' + movement.type | translate }}</span>
+            <span class="compensation-list__time">{{ movement.detectedAt | date: 'HH:mm:ss' }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+</article>

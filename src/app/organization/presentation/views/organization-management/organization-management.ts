@@ -14,7 +14,6 @@ import { UpdatePatientByClinicAdminCommand } from '../../../domain/model/update-
 import { PatientAssignmentDialog } from '../../components/patient-assignment-dialog/patient-assignment-dialog';
 import { PatientAdminEditDialog } from '../../components/patient-admin-edit-dialog/patient-admin-edit-dialog';
 import { PhysiotherapistEditDialog } from '../../components/physiotherapist-edit-dialog/physiotherapist-edit-dialog';
-import { StatCard } from '../../../../shared/presentation/components/stat-card/stat-card';
 import { PatientsTable } from '../../components/patients-table/patients-table';
 import { PhysiotherapistsTable } from '../../components/physiotherapists-table/physiotherapists-table';
 import { ConfirmActionDialog } from '../../../../shared/presentation/components/confirm-action-dialog/confirm-action-dialog';
@@ -40,7 +39,6 @@ interface SelectOption<T> {
     PatientAdminEditDialog,
     PhysiotherapistEditDialog,
     ConfirmActionDialog,
-    StatCard,
     PhysiotherapistsTable,
     PatientsTable,
   ],
@@ -56,6 +54,12 @@ export class OrganizationManagement {
 
   protected readonly clinic = this.store.currentClinic;
   protected readonly clinicAdmin = this.store.currentClinicAdmin;
+  protected readonly adminInitials = computed(() => {
+    const name = this.store.currentClinicAdmin()?.fullName?.trim();
+    if (!name) return '—';
+    const parts = name.split(' ').filter(Boolean);
+    return `${parts[0]?.[0] ?? ''}${parts[1]?.[0] ?? ''}`.toUpperCase();
+  });
   protected readonly clinicAdminProfileStatus = this.store.currentClinicAdminProfileStatus;
   protected readonly physiotherapists = this.store.physiotherapists;
   protected readonly patients = this.store.patients;
@@ -93,9 +97,9 @@ export class OrganizationManagement {
   protected readonly selectedPhysiotherapistForEdit = signal<PhysiotherapistProfile | null>(null);
   protected readonly isPhysiotherapistEditDialogVisible = signal(false);
   protected readonly selectedPhysiotherapistForAction = signal<PhysiotherapistProfile | null>(null);
-  protected readonly pendingPhysiotherapistAction = signal<'suspend' | 'reactivate' | 'delete' | null>(
-    null,
-  );
+  protected readonly pendingPhysiotherapistAction = signal<
+    'suspend' | 'reactivate' | 'delete' | null
+  >(null);
 
   protected readonly totalPhysiotherapists = computed(() => this.physiotherapists().length);
   protected readonly totalPatients = computed(() => this.patients().length);
@@ -406,18 +410,27 @@ export class OrganizationManagement {
       const updated = await this.store.updatePhysiotherapist(physiotherapist.id, command);
       this.messageService.add({
         severity: 'success',
-        summary: this.translate.instant('organization.physiotherapists.notifications.editSuccessSummary'),
-        detail: this.translate.instant('organization.physiotherapists.notifications.editSuccessDetail', {
-          name: updated.fullName,
-        }),
+        summary: this.translate.instant(
+          'organization.physiotherapists.notifications.editSuccessSummary',
+        ),
+        detail: this.translate.instant(
+          'organization.physiotherapists.notifications.editSuccessDetail',
+          {
+            name: updated.fullName,
+          },
+        ),
         life: 4000,
       });
       this.closePhysiotherapistEditDialog();
     } catch {
       this.messageService.add({
         severity: 'error',
-        summary: this.translate.instant('organization.physiotherapists.notifications.editErrorSummary'),
-        detail: this.translate.instant('organization.physiotherapists.notifications.editErrorDetail'),
+        summary: this.translate.instant(
+          'organization.physiotherapists.notifications.editErrorSummary',
+        ),
+        detail: this.translate.instant(
+          'organization.physiotherapists.notifications.editErrorDetail',
+        ),
         life: 4500,
       });
     }

@@ -1,0 +1,245 @@
+@use '../shared/therapy-dashboard.shared';
+
+.hub__search {
+  min-width: 240px;
+}
+
+.hub__table-wrap {
+  overflow-x: auto;
+  max-width: 100%;
+  // overflow-x only clips paint; without containment the wide table still counts towards the
+  // document's scrollWidth and the whole page scrolls sideways.
+  contain: paint;
+}
+
+.hub__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  white-space: nowrap;
+
+  th {
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--p-text-muted-color);
+    border-bottom: 1px solid var(--p-surface-200);
+  }
+
+  td {
+    padding: 0.7rem 0.75rem;
+    border-bottom: 1px solid var(--p-surface-100);
+    color: var(--p-text-color);
+    vertical-align: middle;
+  }
+}
+
+:host-context(.app-dark) .hub__table {
+  th {
+    border-bottom-color: var(--p-surface-300);
+  }
+
+  td {
+    border-bottom-color: var(--p-surface-200);
+  }
+}
+
+.hub__row {
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--p-surface-100);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--p-primary-color);
+    outline-offset: -2px;
+  }
+}
+
+:host-context(.app-dark) .hub__row:hover,
+:host-context(.app-dark) .hub__row:focus-visible {
+  background: var(--p-surface-200);
+}
+
+.hub__patient {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.hub__avatar {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  flex: none;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--p-primary-color);
+  background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
+}
+
+.hub__live {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--p-green-500);
+  border: 2px solid var(--p-surface-0);
+  animation: hub-pulse 1.8s ease-in-out infinite;
+}
+
+:host-context(.app-dark) .hub__live {
+  border-color: var(--p-surface-100);
+}
+
+@keyframes hub-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub__live {
+    animation: none;
+  }
+}
+
+.hub__name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+}
+
+.hub__num {
+  font-variant-numeric: tabular-nums;
+}
+
+.hub__strong,
+.hub__date {
+  font-weight: 600;
+}
+
+.hub__sub {
+  margin-left: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--p-text-muted-color);
+}
+
+.hub__never {
+  color: var(--p-text-muted-color);
+}
+
+.hub__badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  &--warn {
+    color: var(--p-yellow-600, var(--p-yellow-500));
+    background: color-mix(in srgb, var(--p-yellow-500) 16%, transparent);
+  }
+}
+
+.hub__action-cell {
+  text-align: right;
+}
+
+:host ::ng-deep .hub__cta.p-button {
+  gap: 0.4rem;
+
+  i {
+    font-size: 0.7rem;
+  }
+}
+
+// The row is clickable, so the CTA only announces itself on hover/focus instead of shouting
+// from every row at once.
+.hub__row :host ::ng-deep .hub__cta.p-button,
+:host ::ng-deep .hub__row .hub__cta.p-button {
+  opacity: 0.55;
+  transition: opacity 0.15s ease;
+}
+
+:host ::ng-deep .hub__row:hover .hub__cta.p-button,
+:host ::ng-deep .hub__row:focus-within .hub__cta.p-button {
+  opacity: 1;
+}
+
+.hub__quality {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.hub__quality-bar {
+  width: 48px;
+  height: 5px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--p-surface-200);
+}
+
+:host-context(.app-dark) .hub__quality-bar {
+  background: var(--p-surface-300);
+}
+
+.hub__quality-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--p-surface-400);
+}
+
+.hub__quality[data-tone='good'] .hub__quality-fill {
+  background: var(--p-green-500);
+}
+
+.hub__quality[data-tone='warn'] .hub__quality-fill {
+  background: var(--p-yellow-500);
+}
+
+.hub__quality[data-tone='danger'] .hub__quality-fill {
+  background: var(--p-red-500);
+}
+
+.hub__flag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.4rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--p-red-600);
+  background: color-mix(in srgb, var(--p-red-500) 14%, transparent);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

@@ -1,63 +1,32 @@
-import { CancelTherapySessionCommand } from '../domain/model/cancel-therapy-session.command';
-import { ConfirmHardwareReadinessCommand } from '../domain/model/confirm-hardware-readiness.command';
-import { InitiateTherapyPreparationCommand } from '../domain/model/initiate-therapy-preparation.command';
-import {
-  CancelTherapySessionRequest,
-  ConfirmHardwareReadinessRequest,
-  InitiateTherapyPreparationRequest,
-} from './therapy-session.request';
 import {
   DailyScheduleResource,
   DailyScheduleResponse,
-  SerieDetailsResource,
-  SerieDetailsResponse,
+  PatientTherapyOverviewResource,
+  PatientTherapyOverviewResponse,
+  SerieExecutionResource,
+  SerieExecutionResponse,
   SerieProgressResource,
   SerieProgressResponse,
   SessionProgressResource,
   SessionProgressResponse,
   SessionSummaryResource,
   SessionSummaryResponse,
+  TherapySessionDetailResource,
+  TherapySessionDetailResponse,
+  TherapySessionHistoryItemResource,
+  TherapySessionHistoryItemResponse,
   TherapySessionResource,
   TherapySessionResponse,
 } from './therapy-session.response';
 
 export class TherapySessionAssembler {
-  toInitiatePreparationRequestFromCommand(
-    command: InitiateTherapyPreparationCommand,
-  ): InitiateTherapyPreparationRequest {
-    return {
-      patientId: command.patientId,
-      treatmentPlanId: command.treatmentPlanId,
-      iotDeviceId: command.iotDeviceId,
-      routineId: command.routineId,
-    };
-  }
-
-  toConfirmHardwareReadinessRequestFromCommand(
-    command: ConfirmHardwareReadinessCommand,
-  ): ConfirmHardwareReadinessRequest {
-    return {
-      deviceId: command.deviceId,
-      sensorsPlaced: command.sensorsPlaced,
-    };
-  }
-
-  toCancelTherapySessionRequestFromCommand(
-    command: CancelTherapySessionCommand,
-  ): CancelTherapySessionRequest {
-    return {
-      reason: command.reason,
-    };
-  }
-
   toTherapySessionResourceFromResponse(response: TherapySessionResponse): TherapySessionResource {
     return {
       id: response.id,
       patientId: response.patientId,
       treatmentPlanId: response.treatmentPlanId,
       iotDeviceId: response.iotDeviceId,
-      snapshotDeviceId: response.snapshotDeviceId ?? null,
-      snapshotSensorsPlaced: response.snapshotSensorsPlaced ?? null,
+      sensorsPlaced: response.sensorsPlaced ?? null,
       status: response.status ?? null,
       painLevel: response.painLevel ?? null,
       requiresClinicalReview: response.requiresClinicalReview ?? null,
@@ -72,14 +41,117 @@ export class TherapySessionAssembler {
       patientId: response.patientId,
       totalSeries: response.totalSeries ?? null,
       completedSeries: response.completedSeries ?? null,
+      totalRepetitions: response.totalRepetitions ?? null,
+      goodRepetitions: response.goodRepetitions ?? null,
+      incompleteRepetitions: response.incompleteRepetitions ?? null,
+      unsafeRepetitions: response.unsafeRepetitions ?? null,
+      averageAchievedRom: response.averageAchievedRom ?? null,
       painLevel: response.painLevel ?? null,
       painReportsCount: response.painReportsCount ?? null,
       highPainReportsCount: response.highPainReportsCount ?? null,
       maxReportedPainLevel: response.maxReportedPainLevel ?? null,
       requiresClinicalReview: response.requiresClinicalReview ?? null,
-      anomaliesDetected: response.anomaliesDetected ?? null,
+      compensatoryMovementsDetected: response.compensatoryMovementsDetected ?? null,
       startedAt: response.startedAt ?? null,
       finalizedAt: response.finalizedAt ?? null,
+    };
+  }
+
+  toPatientTherapyOverviewResourceFromResponse(
+    response: PatientTherapyOverviewResponse,
+  ): PatientTherapyOverviewResource {
+    return {
+      patientId: response.patientId,
+      patientFullName: response.patientFullName ?? null,
+      totalSessions: response.totalSessions ?? null,
+      completedSessions: response.completedSessions ?? null,
+      sessionsRequiringReview: response.sessionsRequiringReview ?? null,
+      lastSessionAt: response.lastSessionAt ?? null,
+      totalRepetitions: response.totalRepetitions ?? null,
+      goodRepetitions: response.goodRepetitions ?? null,
+      averageAchievedRom: response.averageAchievedRom ?? null,
+      hasActiveSession: response.hasActiveSession ?? null,
+    };
+  }
+
+  toTherapySessionHistoryItemResourceFromResponse(
+    response: TherapySessionHistoryItemResponse,
+  ): TherapySessionHistoryItemResource {
+    return {
+      sessionId: response.sessionId,
+      status: response.status ?? null,
+      startedAt: response.startedAt ?? null,
+      finalizedAt: response.finalizedAt ?? null,
+      treatmentPlanId: response.treatmentPlanId ?? null,
+      planningRoutineId: response.planningRoutineId ?? null,
+      totalSeries: response.totalSeries ?? null,
+      completedSeries: response.completedSeries ?? null,
+      totalRepetitions: response.totalRepetitions ?? null,
+      goodRepetitions: response.goodRepetitions ?? null,
+      incompleteRepetitions: response.incompleteRepetitions ?? null,
+      unsafeRepetitions: response.unsafeRepetitions ?? null,
+      averageAchievedRom: response.averageAchievedRom ?? null,
+      painLevel: response.painLevel ?? null,
+      maxReportedPainLevel: response.maxReportedPainLevel ?? null,
+      requiresClinicalReview: response.requiresClinicalReview ?? null,
+      compensatoryMovementsDetected: response.compensatoryMovementsDetected ?? null,
+    };
+  }
+
+  toTherapySessionDetailResourceFromResponse(
+    response: TherapySessionDetailResponse,
+  ): TherapySessionDetailResource {
+    return {
+      sessionId: response.sessionId,
+      patientId: response.patientId,
+      treatmentPlanId: response.treatmentPlanId ?? null,
+      planningRoutineId: response.planningRoutineId ?? null,
+      iotDeviceId: response.iotDeviceId ?? null,
+      status: response.status ?? null,
+      sensorsPlaced: response.sensorsPlaced ?? null,
+      startedAt: response.startedAt ?? null,
+      finalizedAt: response.finalizedAt ?? null,
+      cancellationReason: response.cancellationReason ?? null,
+      totalSeries: response.totalSeries ?? null,
+      completedSeries: response.completedSeries ?? null,
+      totalRepetitions: response.totalRepetitions ?? null,
+      goodRepetitions: response.goodRepetitions ?? null,
+      incompleteRepetitions: response.incompleteRepetitions ?? null,
+      unsafeRepetitions: response.unsafeRepetitions ?? null,
+      averageAchievedRom: response.averageAchievedRom ?? null,
+      painLevel: response.painLevel ?? null,
+      painReportsCount: response.painReportsCount ?? null,
+      highPainReportsCount: response.highPainReportsCount ?? null,
+      maxReportedPainLevel: response.maxReportedPainLevel ?? null,
+      requiresClinicalReview: response.requiresClinicalReview ?? null,
+      compensatoryMovementsDetected: response.compensatoryMovementsDetected ?? null,
+      series: (response.series ?? []).map((serie) => this.toSerieExecutionResource(serie)),
+      compensatoryMovements: (response.compensatoryMovements ?? []).map((movement) => ({
+        movementId: movement.movementId,
+        type: movement.type ?? null,
+        detectedAt: movement.detectedAt ?? null,
+      })),
+    };
+  }
+
+  private toSerieExecutionResource(response: SerieExecutionResponse): SerieExecutionResource {
+    return {
+      serieId: response.serieId,
+      exerciseId: response.exerciseId ?? null,
+      targetRepetitions: response.targetRepetitions ?? null,
+      targetRom: response.targetRom ?? null,
+      movementType: response.movementType ?? null,
+      bodyPart: response.bodyPart ?? null,
+      durationSeconds: response.durationSeconds ?? null,
+      restDurationSeconds: response.restDurationSeconds ?? null,
+      status: response.status ?? null,
+      repetitions: (response.repetitions ?? []).map((repetition) => ({
+        repetitionId: repetition.repetitionId,
+        peakAngle: repetition.peakAngle ?? null,
+        achievedRom: repetition.achievedRom ?? null,
+        classification: repetition.classification ?? null,
+        recordedAt: repetition.recordedAt ?? null,
+      })),
     };
   }
 
@@ -91,19 +163,6 @@ export class TherapySessionAssembler {
       routineId: response.routineId ?? null,
       totalSeries: response.totalSeries ?? 0,
       estimatedDurationMinutes: response.estimatedDurationMinutes ?? 0,
-    };
-  }
-
-  toSerieDetailsResourceFromResponse(response: SerieDetailsResponse): SerieDetailsResource {
-    return {
-      serieId: response.serieId,
-      exerciseId: response.exerciseId ?? null,
-      targetRepetitions: response.targetRepetitions ?? null,
-      minAngle: response.minAngle ?? null,
-      maxAngle: response.maxAngle ?? null,
-      durationSeconds: response.durationSeconds ?? null,
-      restDurationSeconds: response.restDurationSeconds ?? null,
-      status: response.status ?? null,
     };
   }
 

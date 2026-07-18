@@ -55,7 +55,6 @@
       "subtitle": "Portal Clínico"
     },
     "nav": {
-      "therapy": "Terapia",
       "exercises": "Ejercicios",
       "device": "Dispositivos",
       "organization": "Organización",
@@ -1355,22 +1354,60 @@
       "rolePill": "Fisioterapeuta"
     },
     "dashboard": {
-      "greeting": "Buenos días, {{name}}",
-      "summary": "Tienes {{sessions}} sesiones programadas para hoy. {{urgent}} requieren revisión inmediata.",
+      "eyebrow": "Resumen de hoy",
+      "greeting": {
+        "morning": "Buenos días",
+        "afternoon": "Buenas tardes",
+        "evening": "Buenas noches",
+        "morningNamed": "Buenos días, {{name}}",
+        "afternoonNamed": "Buenas tardes, {{name}}",
+        "eveningNamed": "Buenas noches, {{name}}"
+      },
+      "summary": "{{patients}} pacientes en tratamiento · {{review}} sesiones por revisar.",
       "registerPatient": "Registrar paciente",
-      "complianceRate": "Tasa de adherencia",
-      "monthlyProgress": "Progreso mensual",
-      "activePatients": "Pacientes activos",
-      "newPatientsThisWeek": "{{count}} nuevos esta semana",
-      "recoveryMilestones": "Hitos de recuperación",
-      "goalAchievement": "Tasa de logro de objetivos",
-      "dailySchedule": "Agenda del día",
-      "viewFullCalendar": "Ver calendario completo",
-      "urgentAlerts": "Alertas urgentes",
-      "releaseBanner": "Nuevo motor de analítica: v2.4 activo",
-      "clinicalSummary": "Resumen clínico",
-      "clinicalSummaryBody": "El análisis cruzado de pacientes muestra una correlación significativa entre la consistencia de las sesiones matutinas y una recuperación de movilidad un 15% más rápida en la población.",
-      "clinicVsNational": "Clínica vs. promedio nacional"
+      "kpisAria": "Métricas clave",
+      "kpi": {
+        "activePatients": "Pacientes activos",
+        "activePatientsHint": "Actualmente en tratamiento",
+        "inSession": "En sesión ahora",
+        "inSessionHint": "En vivo en los sensores",
+        "needsReview": "Por revisar",
+        "needsReviewHint": "Sesiones marcadas para ti",
+        "activePlans": "Planes activos",
+        "activePlansHint": "{{count}} programados",
+        "quality": "Calidad de movimiento",
+        "qualityHint": "Repeticiones buenas en total"
+      },
+      "attention": {
+        "title": "Pacientes que requieren atención",
+        "viewAll": "Ver pacientes",
+        "emptyTitle": "Todo al día",
+        "emptyBody": "Ningún paciente necesita revisión ni tiene una sesión activa ahora.",
+        "columns": {
+          "patient": "Paciente",
+          "state": "Estado",
+          "lastSession": "Última sesión",
+          "quality": "Calidad",
+          "rom": "ROM"
+        },
+        "state": {
+          "live": "En sesión",
+          "review": "{{count}} por revisar",
+          "idle": "Sin iniciar"
+        }
+      },
+      "agenda": {
+        "title": "Agenda de hoy",
+        "viewAll": "Planificación",
+        "empty": "No hay rutinas programadas para hoy."
+      },
+      "mix": {
+        "title": "Cartera de planes",
+        "active": "Activos",
+        "scheduled": "Programados",
+        "completed": "Completados",
+        "empty": "Aún no hay planes de tratamiento."
+      }
     }
   },
   "planning": {
@@ -1382,58 +1419,31 @@
       "discharged": "Dado de alta"
     }
   },
-  "therapyRoster": {
-    "eyebrow": "Casos activos",
-    "title": "Gestión de terapia",
-    "subtitle": "Supervisa la recuperación de los pacientes y monitorea las métricas IoT en tiempo real.",
-    "registerPatient": "Registrar paciente",
-    "kpi": {
-      "throughput": "Rendimiento clínico",
-      "throughputSub": "Velocidad de recuperación este mes",
-      "throughputBadge": "Portal clínico",
-      "active": "Activos",
-      "devicesSub": "Dispositivos IoT enlazados",
-      "reviews": "Revisiones",
-      "reviewsSub": "Evaluación pendiente",
-      "actionRequired": "Acción requerida"
-    },
-    "roster": "Lista de pacientes",
-    "tabs": {
-      "all": "Todos",
-      "connected": "Conectados"
-    },
+  "planningHub": {
+    "eyebrow": "Planificación",
+    "title": "Planes de tratamiento",
+    "subtitle": "Todos los planes de tratamiento de tus pacientes, en un solo lugar.",
+    "tableTitle": "Planes de tratamiento",
+    "tableHint": "Abre un plan para revisar sus rutinas y horario.",
+    "search": "Buscar por paciente o plan...",
+    "emptyTitle": "Aún no hay planes de tratamiento",
+    "emptyBody": "Los planes que crees para tus pacientes aparecerán aquí.",
+    "noMatches": "Ningún plan de tratamiento coincide con «{{query}}».",
+    "open": "Abrir",
+    "showingCount": "Mostrando {{visible}} de {{total}} planes",
     "columns": {
-      "profile": "Perfil del paciente",
-      "injury": "Contexto de la lesión",
-      "lastSession": "Última sesión",
-      "iotStatus": "Estado IoT",
-      "action": "Acción"
-    },
-    "iot": {
-      "connected": "Conectado",
-      "offline": "Desconectado"
-    },
-    "mrn": "ID:",
-    "review": "Revisar terapia",
-    "showingCount": "Mostrando {{visible}} de {{total}} pacientes activos",
-    "previous": "Anterior",
-    "next": "Siguiente",
-    "promo": {
-      "title": "Integración IoT avanzada para cuidados postoperatorios",
-      "body": "Sincroniza sensores ortopédicos vestibles para monitorear el rango de movimiento en tiempo real durante sesiones remotas.",
-      "cta": "Explorar kits de sensores"
-    },
-    "template": {
-      "title": "Crear nueva plantilla",
-      "body": "Ahorra tiempo creando protocolos reutilizables para tipos de lesión comunes."
+      "patient": "Paciente",
+      "plan": "Plan",
+      "status": "Estado",
+      "period": "Periodo",
+      "routines": "Rutinas",
+      "action": "Abrir plan"
     }
   },
   "therapySessions": {
     "eyebrow": "Sesiones de terapia",
     "adminTitle": "Supervisión clínica de sesiones",
     "adminSubtitle": "Revisa agendas de pacientes, sesiones activas y datos de ejecución en vivo a nivel de clínica.",
-    "physiotherapistTitle": "Centro de ejecución de sesiones",
-    "physiotherapistSubtitle": "Selecciona un paciente de tu cartera y revisa la rutina programada, la sesión activa y el progreso en vivo.",
     "refresh": "Actualizar",
     "kpi": {
       "totalPatients": "Pacientes en alcance",
@@ -1465,9 +1475,7 @@
     },
     "selectPatientHint": "Selecciona un paciente para inspeccionar su contexto de terapia.",
     "openAdminPatient": "Abrir perfil del paciente",
-    "openPhysiotherapistPatient": "Abrir workspace del paciente",
-    "startSessionAction": "Iniciar sesión",
-    "openPreparationWorkspace": "Abrir preparación clínica",
+    "openPhysiotherapistPatient": "Ver ficha del paciente",
     "contextError": "No pudimos cargar el contexto más reciente de sesión de terapia para este paciente.",
     "scheduleTitle": "Agenda Terapéutica",
     "schedulePickerHint": "Consulta la programación terapéutica del paciente para una fecha específica.",
@@ -1530,69 +1538,6 @@
     "noSeriesProgress": "Aún no se ha reportado progreso de series.",
     "noProgress": "Aún no hay progreso de ejecución en vivo disponible.",
     "today": "Hoy",
-    "operations": {
-      "preparationTitle": "Preparación de sesión",
-      "treatmentPlan": "Plan terapéutico activo",
-      "routine": "Rutina del día",
-      "device": "Dispositivo asignado",
-      "prepareAction": "Preparar sesión",
-      "hardwareTitle": "Confirmación de hardware",
-      "hardwareBody": "Confirma el dispositivo vinculado y si los sensores ya están colocados en el paciente.",
-      "sensorsPlaced": "Sensores colocados",
-      "confirmHardwareAction": "Confirmar hardware",
-      "closureTitle": "Cierre y contingencia",
-      "closureBody": "Finaliza la sesión cuando concluya o cancélala si la ejecución debe detenerse.",
-      "finalizeAction": "Finalizar sesión",
-      "cancelReason": "Motivo de cancelación",
-      "cancelAction": "Cancelar sesión",
-      "stepper": {
-        "ariaLabel": "Flujo operativo de la sesión de terapia",
-        "step1Title": "Preparación",
-        "step2Title": "Hardware",
-        "step3Title": "Ejecución",
-        "step4Title": "Cierre",
-        "valueUnassigned": "Sin asignar",
-        "executionTitle": "Ejecución de la sesión",
-        "executionReadyHint": "Hardware confirmado. Inicia la sesión cuando el paciente esté listo.",
-        "closedCompletedTitle": "Sesión finalizada",
-        "closedCompletedBody": "La sesión se completó correctamente.",
-        "closedCancelledTitle": "Sesión cancelada",
-        "closedCancelledBody": "La sesión fue cancelada."
-      }
-    },
-    "validation": {
-      "treatmentPlanRequired": "Se requiere un plan activo para preparar la sesión.",
-      "deviceRequired": "Se requiere un dispositivo asignado.",
-      "routineRequired": "Se requiere una rutina resuelta para la fecha seleccionada.",
-      "cancelReasonRequired": "Debes indicar un motivo de cancelación."
-    },
-    "preparationReady": "La sesión puede prepararse con el plan, la rutina y el dispositivo actualmente asignados.",
-    "preparationBlockedActiveSession": "Ya existe una sesión activa o preparada para este paciente.",
-    "preparationMissingPlan": "No hay un plan terapéutico activo o programado para este paciente.",
-    "preparationMissingDevice": "No hay un dispositivo vinculado a este paciente.",
-    "preparationMissingRoutine": "No hay una rutina válida para la fecha seleccionada.",
-    "notifications": {
-      "prepareSuccessSummary": "Terapia",
-      "prepareSuccessDetail": "La sesión quedó preparada correctamente.",
-      "prepareErrorSummary": "Terapia",
-      "prepareErrorDetail": "No se pudo preparar la sesión de terapia.",
-      "hardwareSuccessSummary": "Terapia",
-      "hardwareSuccessDetail": "El hardware quedó confirmado para la sesión.",
-      "hardwareErrorSummary": "Terapia",
-      "hardwareErrorDetail": "No se pudo confirmar el hardware de la sesión.",
-      "startSuccessSummary": "Terapia",
-      "startSuccessDetail": "La sesión de terapia se inició correctamente.",
-      "startErrorSummary": "Terapia",
-      "startErrorDetail": "No se pudo iniciar la sesión de terapia.",
-      "finalizeSuccessSummary": "Terapia",
-      "finalizeSuccessDetail": "La sesión de terapia se finalizó correctamente.",
-      "finalizeErrorSummary": "Terapia",
-      "finalizeErrorDetail": "No se pudo finalizar la sesión de terapia.",
-      "cancelSuccessSummary": "Terapia",
-      "cancelSuccessDetail": "La sesión de terapia se canceló correctamente.",
-      "cancelErrorSummary": "Terapia",
-      "cancelErrorDetail": "No se pudo cancelar la sesión de terapia."
-    },
     "statuses": {
       "session": {
         "Pending": "Pendiente",
@@ -1605,60 +1550,106 @@
       "serie": {
         "Pending": "Pendiente",
         "Started": "Iniciada",
-        "Validated": "Validada",
+        "Completed": "Completada",
+        "Failed": "Fallida",
         "Unknown": "Desconocido"
       }
-    }
-  },
-  "therapyRoadmap": {
-    "breadcrumb": {
-      "patients": "Pacientes",
-      "therapyPlanning": "Planificación de terapia"
     },
-    "title": "Roadmap terapéutico",
-    "subtitle": "Diseña una ruta de rehabilitación personalizada seleccionando ejercicios validados y configurando parámetros de recuperación precisos.",
-    "saveDraft": "Guardar borrador",
-    "finalize": "Finalizar e implementar",
-    "patient": "Paciente",
-    "currentPhase": "Fase actual de recuperación",
-    "dayOf": "Día {{day}} de {{total}}",
-    "complete": "completado",
-    "library": {
-      "title": "Biblioteca de ejercicios",
-      "subtitle": "Selecciona protocolos clínicos",
-      "tags": {
-        "knee": "Rodilla",
-        "strength": "Fuerza",
-        "mobility": "Movilidad"
-      }
-    },
-    "insight": {
-      "title": "Insight del protocolo",
-      "body": "Basado en la fase actual de {{patient}} (Transición de fuerza), los protocolos sugieren aumentar el volumen un 15% esta semana.",
-      "cta": "Ver evidencia clínica"
-    },
-    "builder": {
-      "title": "Rutina diaria",
-      "subtitle": "Personaliza parámetros por sesión",
-      "dropTitle": "Arrastra más ejercicios aquí",
-      "dropHint": "O selecciona uno de la biblioteca a la izquierda"
-    },
-    "trajectory": {
-      "title": "Trayectoria a largo plazo",
-      "currentPoint": "Punto actual",
-      "estimatedRtp": "RTP estimado",
-      "complianceScore": "Puntaje de adherencia",
-      "riskAssessment": "Evaluación de riesgo",
-      "scheduleStatus": {
-        "ahead": "Adelantado",
-        "on-track": "En tiempo",
-        "behind": "Retrasado"
+    "tracking": {
+      "title": "Seguimiento de terapia",
+      "subtitle": "Historial de sesiones, calidad de las repeticiones y rango de movimiento alcanzado.",
+      "liveTitle": "Sesión en curso ahora",
+      "liveBody": "{{serie}} · {{completed}} de {{total}} series completadas",
+      "kpi": {
+        "sessions": "Sesiones",
+        "sessionsSub": "{{completed}} completadas",
+        "averageRom": "ROM promedio",
+        "averageRomSub": "Media de las sesiones con repeticiones",
+        "review": "Requieren revisión",
+        "reviewSub": "Sesiones marcadas por dolor reportado",
+        "quality": "Repeticiones correctas",
+        "qualitySub": "{{good}} de {{total}} repeticiones"
       },
-      "risk": {
-        "low": "Bajo",
-        "medium": "Medio",
-        "high": "Alto"
-      }
+      "historyTitle": "Historial de sesiones",
+      "historyCount": "{{count}} sesiones",
+      "loadingHistory": "Cargando historial...",
+      "noHistoryTitle": "Sin sesiones registradas",
+      "noHistoryBody": "Este paciente aún no ha ejecutado ninguna sesión de terapia.",
+      "table": {
+        "date": "Fecha",
+        "status": "Estado",
+        "series": "Series",
+        "quality": "Correctas",
+        "rom": "ROM medio",
+        "pain": "Dolor máx.",
+        "compensations": "Compensaciones",
+        "review": "Revisión",
+        "reviewFlag": "Revisar",
+        "neverStarted": "No iniciada"
+      },
+      "detail": {
+        "eyebrow": "Detalle de sesión",
+        "loading": "Cargando detalle...",
+        "reviewAlert": "Esta sesión requiere revisión clínica. Dolor máximo reportado: {{max}}/10.",
+        "noSeries": "Esta sesión no llegó a registrar series.",
+        "noRepetitions": "Sin repeticiones registradas en esta serie.",
+        "target": "Objetivo {{rom}} · {{reps}} reps",
+        "peak": "pico {{angle}}",
+        "compensationsTitle": "Movimientos compensatorios",
+        "classification": {
+          "Good": "Correcta",
+          "Incomplete": "Incompleta",
+          "Unsafe": "Insegura",
+          "null": "—"
+        },
+        "compensation": {
+          "ShoulderCompensation": "Compensación de hombro",
+          "TrunkCompensation": "Compensación de tronco",
+          "null": "Desconocida"
+        }
+      },
+      "chart": {
+        "romTitle": "Evolución del rango de movimiento",
+        "romHint": "ROM promedio alcanzado en cada sesión, de la más antigua a la más reciente.",
+        "romSeries": "ROM promedio",
+        "achievedRom": "ROM alcanzado",
+        "targetRom": "Objetivo",
+        "repsAria": "ROM alcanzado por repetición frente al objetivo de la serie",
+        "loading": "Cargando gráfica..."
+      },
+      "historyHint": "Selecciona una sesión para ver sus repeticiones.",
+      "breadcrumb": {
+        "therapy": "Seguimiento de terapia",
+        "patient": "Paciente"
+      },
+      "openPatient": "Ver ficha del paciente"
+    },
+    "hub": {
+      "title": "Seguimiento de terapia",
+      "subtitle": "Cómo avanza la terapia de cada uno de tus pacientes. Entra en uno para ver su historial y sus repeticiones.",
+      "tableTitle": "Tus pacientes",
+      "tableHint": "Ordenados por última sesión. Los que nunca han empezado aparecen primero.",
+      "loadError": "No pudimos cargar el seguimiento de tus pacientes.",
+      "neverStarted": "Nunca ha empezado",
+      "completedShort": "{{count}} compl.",
+      "open": "Ver seguimiento",
+      "columns": {
+        "patient": "Paciente",
+        "lastSession": "Última sesión",
+        "sessions": "Sesiones",
+        "quality": "Repeticiones correctas",
+        "rom": "ROM promedio",
+        "alerts": "Alertas",
+        "action": "Acción"
+      },
+      "kpi": {
+        "caseload": "Pacientes a tu cargo",
+        "inSession": "En sesión ahora",
+        "neverStarted": "Sin empezar",
+        "needReview": "Sesiones por revisar"
+      },
+      "search": "Buscar paciente...",
+      "noMatches": "Ningún paciente coincide con \"{{query}}\"."
     }
   },
   "deviceInventory": {
@@ -1937,6 +1928,7 @@
   "treatmentPlanWorkspace": {
     "breadcrumb": {
       "patients": "Pacientes",
+      "planning": "Planificación",
       "patient": "Paciente",
       "create": "Crear plan de tratamiento",
       "edit": "Editar plan de tratamiento"
