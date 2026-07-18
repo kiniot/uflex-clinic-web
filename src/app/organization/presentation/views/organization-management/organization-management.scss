@@ -73,55 +73,23 @@
 }
 
 .org-hero__identity {
-  position: relative;
-  overflow: hidden;
   display: flex;
   align-items: flex-start;
   gap: 18px;
   padding: 26px;
-  background:
-    radial-gradient(
-      130% 150% at 100% 0%,
-      color-mix(in srgb, var(--p-turquoise-400) 16%, transparent),
-      transparent 55%
-    ),
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--p-primary-color) 9%, var(--p-surface-0)),
-      var(--p-surface-0)
-    );
-}
-
-:host-context(.app-dark) .org-hero__identity {
-  background:
-    radial-gradient(
-      130% 150% at 100% 0%,
-      color-mix(in srgb, var(--p-turquoise-400) 20%, transparent),
-      transparent 55%
-    ),
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--p-primary-color) 20%, var(--p-surface-100)),
-      var(--p-surface-100)
-    );
 }
 
 .org-hero__icon {
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
-  background: linear-gradient(
-    140deg,
-    var(--p-primary-color),
-    color-mix(in srgb, var(--p-turquoise-400) 75%, var(--p-primary-color))
-  );
-  color: #fff;
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
+  color: var(--p-primary-color);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 22px;
   flex-shrink: 0;
-  box-shadow: 0 12px 24px -10px color-mix(in srgb, var(--p-primary-color) 65%, transparent);
 }
 
 .org-hero__copy {
@@ -190,8 +158,6 @@
 }
 
 .org-hero__admin-card {
-  position: relative;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -199,31 +165,6 @@
   padding: 22px;
   flex: 1 1 auto;
   min-height: 100%;
-  background:
-    radial-gradient(
-      120% 130% at 0% 0%,
-      color-mix(in srgb, var(--p-turquoise-400) 13%, transparent),
-      transparent 55%
-    ),
-    var(--p-surface-0);
-}
-
-:host-context(.app-dark) .org-hero__admin-card {
-  background:
-    radial-gradient(
-      120% 130% at 0% 0%,
-      color-mix(in srgb, var(--p-turquoise-400) 18%, transparent),
-      transparent 55%
-    ),
-    var(--p-surface-100);
-}
-
-.org-hero__admin-card::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 4px;
-  background: linear-gradient(90deg, var(--p-turquoise-400), var(--p-primary-color));
 }
 
 .org-hero__admin-head {
@@ -243,9 +184,8 @@
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-size: 16px;
   font-weight: 700;
-  color: #fff;
-  background: linear-gradient(140deg, var(--p-turquoise-400), var(--p-primary-color));
-  box-shadow: 0 10px 20px -9px color-mix(in srgb, var(--p-primary-color) 60%, transparent);
+  color: var(--p-primary-color);
+  background: color-mix(in srgb, var(--p-primary-color) 14%, transparent);
 }
 
 .org-hero__admin-heading {
@@ -323,10 +263,6 @@
   background: var(--p-surface-0);
   border: 1px solid var(--p-surface-200);
   overflow: hidden;
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease,
-    border-color 180ms ease;
   @include theme.surface;
 }
 
@@ -339,18 +275,8 @@
   content: '';
   position: absolute;
   inset: 0 0 auto 0;
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    var(--accent),
-    color-mix(in srgb, var(--accent) 30%, transparent)
-  );
-}
-
-.org-metric-card:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--p-surface-200));
-  box-shadow: 0 18px 32px -22px color-mix(in srgb, var(--accent) 75%, transparent);
+  height: 3px;
+  background: var(--accent);
 }
 
 .org-metric-card--primary {
