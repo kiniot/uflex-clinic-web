@@ -1081,7 +1081,7 @@
       "placeholder": "Ingresa tu contraseña"
     },
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "rememberMe": "Recuérdame por 30 días",
+    "rememberMe": "Mantener sesión iniciada en este dispositivo",
     "submit": "Iniciar sesión",
     "createAccount": "Crear cuenta",
     "viewDemo": "Ver demo",

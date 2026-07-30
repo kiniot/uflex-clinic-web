@@ -69,9 +69,8 @@ export class IamStore {
 
   readonly currentToken = computed(() => {
     if (!this.isSignedIn()) return null;
-    return this.isDemoModeSignal()
-      ? sessionStorage.getItem(DEMO_TOKEN_STORAGE_KEY)
-      : localStorage.getItem('token');
+    if (this.isDemoModeSignal()) return sessionStorage.getItem(DEMO_TOKEN_STORAGE_KEY);
+    return localStorage.getItem('token') ?? sessionStorage.getItem('token');
   });
 
   readonly users = this.usersSignal.asReadonly();
@@ -85,11 +84,12 @@ export class IamStore {
     signInCommand: SignInCommand,
     router: Router,
     redirectTo?: string | null,
+    rememberMe = true,
   ): Promise<SignInResource> {
     return new Promise((resolve, reject) => {
       this.iamApi.signIn(signInCommand).subscribe({
         next: (signInResource) => {
-          this.applyAuthenticatedUser(signInResource);
+          this.applyAuthenticatedUser(signInResource, rememberMe);
           if (redirectTo === null) {
             resolve(signInResource);
             return;
@@ -142,7 +142,6 @@ export class IamStore {
   }
 
   signOut(router: Router) {
-    localStorage.removeItem('token');
     sessionStorage.removeItem(DEMO_TOKEN_STORAGE_KEY);
     sessionStorage.removeItem(DEMO_MODE_STORAGE_KEY);
     this.clearSession();
@@ -198,6 +197,7 @@ export class IamStore {
 
   private clearSession() {
     localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     this.isSignedInSignal.set(false);
     this.isDemoModeSignal.set(false);
     this.currentEmailSignal.set(null);
@@ -225,15 +225,22 @@ export class IamStore {
   }
 
   /**
-   * Restores the in-memory session from a JWT in localStorage, falling back to a
-   * demo session in sessionStorage (real session always takes priority).
-   * Runs on store construction so a page refresh keeps the user logged-in.
-   * If the token is missing, malformed or expired, the session is cleared.
+   * Restores the in-memory session from a JWT, checking storage in priority order: a
+   * "remember me" token in localStorage, then a session-only token in sessionStorage (set
+   * when the user signed in without "remember me"), then a demo session. Runs on store
+   * construction so a page refresh keeps the user logged in. If the token is missing,
+   * malformed or expired, the session is cleared.
    */
   private restoreSessionFromStorage() {
-    const realToken = localStorage.getItem('token');
-    if (realToken) {
-      this.restoreFromToken(realToken, false, () => localStorage.removeItem('token'));
+    const persistedToken = localStorage.getItem('token');
+    if (persistedToken) {
+      this.restoreFromToken(persistedToken, false, () => localStorage.removeItem('token'));
+      return;
+    }
+
+    const sessionOnlyToken = sessionStorage.getItem('token');
+    if (sessionOnlyToken) {
+      this.restoreFromToken(sessionOnlyToken, false, () => sessionStorage.removeItem('token'));
       return;
     }
 
@@ -282,8 +289,14 @@ export class IamStore {
     }
   }
 
-  private applyAuthenticatedUser(signInResource: SignInResource) {
-    localStorage.setItem('token', signInResource.token);
+  /**
+   * `rememberMe` decides where the token lives: localStorage survives closing the browser,
+   * sessionStorage is cleared with it. Either way the session lasts as long as the token
+   * itself is valid — this only controls whether it outlives the browser being closed.
+   */
+  private applyAuthenticatedUser(signInResource: SignInResource, rememberMe: boolean) {
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem('token', signInResource.token);
     this.isSignedInSignal.set(true);
     this.currentEmailSignal.set(signInResource.email);
     this.currentUserIdSignal.set(signInResource.id);

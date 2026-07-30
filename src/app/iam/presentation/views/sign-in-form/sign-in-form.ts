@@ -48,8 +48,8 @@ export class SignInForm extends BaseForm {
   }
 
   /**
-   * Form-group for the sign-in form.
-   * `rememberMe` is a presentation-only control; it is not forwarded to SignInCommand.
+   * Form-group for the sign-in form. `rememberMe` is not part of `SignInCommand` — it only
+   * decides which storage `IamStore` keeps the token in, not anything sent to the backend.
    */
   form = new FormGroup({
     email: new FormControl('', {
@@ -73,7 +73,12 @@ export class SignInForm extends BaseForm {
       password: this.form.value.password!,
     });
     try {
-      await this.store.signIn(signInCommand, this.router);
+      await this.store.signIn(
+        signInCommand,
+        this.router,
+        undefined,
+        this.form.controls.rememberMe.value,
+      );
     } catch (err) {
       this.appErrorNotifier.showHttpError(err, {
         summaryKey: 'signIn.notifications.errorSummary',
