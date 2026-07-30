@@ -13,6 +13,7 @@ import { LanguageSwitcher } from '../../components/language-switcher/language-sw
 import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
 import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
+import { DemoModeBadge } from '../../components/demo-mode-badge/demo-mode-badge';
 
 const ROLE_LABELS: Record<string, string> = {
   ROLE_CLINIC_ADMIN: 'Clinic Admin',
@@ -36,6 +37,7 @@ const ROLE_LABELS: Record<string, string> = {
     LanguageSwitcher,
     ThemeSwitcher,
     ChangePasswordDialog,
+    DemoModeBadge,
   ],
   templateUrl: './physiotherapist-portal.html',
   styleUrl: './physiotherapist-portal.scss',

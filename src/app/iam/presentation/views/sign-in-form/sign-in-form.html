@@ -74,6 +74,18 @@
         >
           <span>{{ 'signIn.createAccount' | translate }}</span>
         </button>
+        <button
+          pButton
+          type="button"
+          severity="secondary"
+          [text]="true"
+          [disabled]="isSubmitting()"
+          (click)="startDemo()"
+          class="sign-in__btn-demo"
+        >
+          <i class="pi pi-eye" aria-hidden="true"></i>
+          <span>{{ 'signIn.viewDemo' | translate }}</span>
+        </button>
       </div>
     </form>
   </div>

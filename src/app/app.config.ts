@@ -6,6 +6,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { iamInterceptor } from './iam/infrastructure/iam.interceptor';
+import { demoInterceptor } from './shared/infrastructure/demo/demo.interceptor';
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
 import { appPreset } from './app.preset';
@@ -21,7 +22,7 @@ import { iamAppErrorCatalog } from './iam/application/iam-error-catalog';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient(withFetch(), withInterceptors([iamInterceptor])),
+    provideHttpClient(withFetch(), withInterceptors([demoInterceptor, iamInterceptor])),
     provideTranslateService({
       loader: provideTranslateHttpLoader({ prefix: './i18n/', suffix: '.json' }),
       fallbackLang: 'en',

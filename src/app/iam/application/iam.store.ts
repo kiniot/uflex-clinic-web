@@ -7,6 +7,16 @@ import { SignUpCommand } from '../domain/model/sign-up.command';
 import { ChangePasswordCommand } from '../domain/model/change-password.command';
 import { SignInResource } from '../infrastructure/sign-in-response';
 import { SignUpResource } from '../infrastructure/sign-up-response';
+import { buildDemoJwt } from '../../shared/infrastructure/demo/demo-jwt';
+import {
+  DEMO_EMAIL,
+  DEMO_MODE_STORAGE_KEY,
+  DEMO_PHYSIOTHERAPIST_ID,
+  DEMO_ROLES,
+  DEMO_SESSION_DURATION_MS,
+  DEMO_TENANT_ID,
+  DEMO_TOKEN_STORAGE_KEY,
+} from '../../shared/infrastructure/demo/demo.constants';
 
 const ROLE_TO_HOME_ROUTE: Record<string, string> = {
   ROLE_CLINIC_ADMIN: '/clinic-admin',
@@ -36,8 +46,10 @@ export class IamStore {
   private readonly currentRolesSignal = signal<string[]>([]);
   private readonly currentTenantIdSignal = signal<string | null>(null);
   private readonly usersSignal = signal<Array<User>>([]);
+  private readonly isDemoModeSignal = signal<boolean>(false);
 
   readonly isSignedIn = this.isSignedInSignal.asReadonly();
+  readonly isDemoMode = this.isDemoModeSignal.asReadonly();
   readonly loadingUsers = signal<boolean>(false);
   readonly currentEmail = this.currentEmailSignal.asReadonly();
   readonly currentUserId = this.currentUserIdSignal.asReadonly();
@@ -55,9 +67,12 @@ export class IamStore {
    */
   readonly currentUsername = this.currentEmailSignal.asReadonly();
 
-  readonly currentToken = computed(() =>
-    this.isSignedIn() ? localStorage.getItem('token') : null,
-  );
+  readonly currentToken = computed(() => {
+    if (!this.isSignedIn()) return null;
+    return this.isDemoModeSignal()
+      ? sessionStorage.getItem(DEMO_TOKEN_STORAGE_KEY)
+      : localStorage.getItem('token');
+  });
 
   readonly users = this.usersSignal.asReadonly();
   readonly isLoadingUsers = this.loadingUsers.asReadonly();
@@ -128,11 +143,43 @@ export class IamStore {
 
   signOut(router: Router) {
     localStorage.removeItem('token');
+    sessionStorage.removeItem(DEMO_TOKEN_STORAGE_KEY);
+    sessionStorage.removeItem(DEMO_MODE_STORAGE_KEY);
     this.clearSession();
     router.navigate(['/sign-in']).then();
   }
 
   resetSession() {
+    this.clearSession();
+  }
+
+  /**
+   * Starts a client-only guest session: no HTTP call, no real backend involved.
+   * Used for the portfolio "Ver demo" flow when the real backend is off.
+   */
+  activateDemoSession(): void {
+    const exp = Math.floor((Date.now() + DEMO_SESSION_DURATION_MS) / 1000);
+    const token = buildDemoJwt({
+      sub: DEMO_PHYSIOTHERAPIST_ID,
+      email: DEMO_EMAIL,
+      roles: DEMO_ROLES,
+      tenantId: DEMO_TENANT_ID,
+      exp,
+    });
+    sessionStorage.setItem(DEMO_TOKEN_STORAGE_KEY, token);
+    sessionStorage.setItem(DEMO_MODE_STORAGE_KEY, '1');
+    this.isDemoModeSignal.set(true);
+    this.isSignedInSignal.set(true);
+    this.currentUserIdSignal.set(DEMO_PHYSIOTHERAPIST_ID);
+    this.currentEmailSignal.set(DEMO_EMAIL);
+    this.currentRolesSignal.set(DEMO_ROLES);
+    this.currentTenantIdSignal.set(DEMO_TENANT_ID);
+  }
+
+  exitDemoSession(): void {
+    sessionStorage.removeItem(DEMO_TOKEN_STORAGE_KEY);
+    sessionStorage.removeItem(DEMO_MODE_STORAGE_KEY);
+    this.isDemoModeSignal.set(false);
     this.clearSession();
   }
 
@@ -152,6 +199,7 @@ export class IamStore {
   private clearSession() {
     localStorage.removeItem('token');
     this.isSignedInSignal.set(false);
+    this.isDemoModeSignal.set(false);
     this.currentEmailSignal.set(null);
     this.currentUserIdSignal.set(null);
     this.currentRolesSignal.set([]);
@@ -177,23 +225,39 @@ export class IamStore {
   }
 
   /**
-   * Restores the in-memory session from a JWT in localStorage.
+   * Restores the in-memory session from a JWT in localStorage, falling back to a
+   * demo session in sessionStorage (real session always takes priority).
    * Runs on store construction so a page refresh keeps the user logged-in.
    * If the token is missing, malformed or expired, the session is cleared.
    */
   private restoreSessionFromStorage() {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.clearSession();
+    const realToken = localStorage.getItem('token');
+    if (realToken) {
+      this.restoreFromToken(realToken, false, () => localStorage.removeItem('token'));
       return;
     }
+
+    const demoToken = sessionStorage.getItem(DEMO_TOKEN_STORAGE_KEY);
+    if (demoToken && sessionStorage.getItem(DEMO_MODE_STORAGE_KEY) === '1') {
+      this.restoreFromToken(demoToken, true, () => {
+        sessionStorage.removeItem(DEMO_TOKEN_STORAGE_KEY);
+        sessionStorage.removeItem(DEMO_MODE_STORAGE_KEY);
+      });
+      return;
+    }
+
+    this.clearSession();
+  }
+
+  private restoreFromToken(token: string, isDemo: boolean, onInvalid: () => void) {
     const payload = this.decodeJwtPayload(token);
     if (!payload || (payload.exp != null && payload.exp * 1000 < Date.now())) {
-      localStorage.removeItem('token');
+      onInvalid();
       this.clearSession();
       return;
     }
     this.isSignedInSignal.set(true);
+    this.isDemoModeSignal.set(isDemo);
     this.currentUserIdSignal.set(payload.sub ?? null);
     this.currentEmailSignal.set(payload.email ?? null);
     this.currentRolesSignal.set(payload.roles ?? []);

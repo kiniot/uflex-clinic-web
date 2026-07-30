@@ -1085,11 +1085,16 @@
     "rememberMe": "Remember me for 30 days",
     "submit": "Sign In",
     "createAccount": "Create Account",
+    "viewDemo": "View demo",
     "notifications": {
       "errorSummary": "Sign-in failed",
       "invalidCredentials": "The email or password is incorrect.",
       "genericError": "We could not sign you in. Please try again."
     }
+  },
+  "demoBadge": {
+    "label": "Demo",
+    "tooltip": "You're exploring a demo with sample data. Changes are not saved. Click to exit."
   },
   "signUp": {
     "planStep": {
