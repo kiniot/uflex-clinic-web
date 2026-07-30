@@ -64,7 +64,6 @@
       "logout": "Cerrar sesión"
     },
     "topbar": {
-      "searchPlaceholder": "Buscar pacientes o dispositivos...",
       "rolePill": "Admin",
       "clinicSelector": "Selector de clínica"
     },
@@ -1085,11 +1084,16 @@
     "rememberMe": "Recuérdame por 30 días",
     "submit": "Iniciar sesión",
     "createAccount": "Crear cuenta",
+    "viewDemo": "Ver demo",
     "notifications": {
       "errorSummary": "No se pudo iniciar sesión",
       "invalidCredentials": "El correo o la contraseña son incorrectos.",
       "genericError": "No pudimos iniciar sesión. Intenta nuevamente."
     }
+  },
+  "demoBadge": {
+    "label": "Demo",
+    "tooltip": "Estás explorando una demo con datos de ejemplo. Los cambios no se guardan. Haz clic para salir."
   },
   "signUp": {
     "planStep": {
@@ -1349,7 +1353,6 @@
       "logout": "Cerrar sesión"
     },
     "topbar": {
-      "searchPlaceholder": "Buscar pacientes, dispositivos o reportes...",
       "rolePill": "Fisioterapeuta"
     },
     "dashboard": {

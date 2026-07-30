@@ -74,7 +74,6 @@ export class ClinicAdminPortal {
       'organization.profile.badge.pending',
       'clinicAdmin.nav.support',
       'clinicAdmin.nav.logout',
-      'clinicAdmin.topbar.searchPlaceholder',
       'clinicAdmin.topbar.rolePill',
       'topbar.menu',
     ]),
@@ -132,9 +131,6 @@ export class ClinicAdminPortal {
     },
   ]);
 
-  protected searchPlaceholder = computed(
-    () => this.translations()['clinicAdmin.topbar.searchPlaceholder'] ?? '',
-  );
   protected rolePillLabel = computed(
     () => this.translations()['clinicAdmin.topbar.rolePill'] ?? '',
   );

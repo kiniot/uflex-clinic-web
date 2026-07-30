@@ -200,8 +200,11 @@
 .planning-hub__plan-name {
   font-family: 'Inter', sans-serif;
   font-size: 14px;
-  font-weight: 700;
   color: var(--p-text-color);
+}
+
+.planning-hub__patient {
+  font-weight: 700;
 }
 
 .planning-hub__period,

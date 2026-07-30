@@ -12,6 +12,7 @@ import {
 import { LanguageSwitcher } from '../../components/language-switcher/language-switcher';
 import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
+import { DemoModeBadge } from '../../components/demo-mode-badge/demo-mode-badge';
 
 const SUPPORT_URL = 'https://uflex-landing-page.vercel.app/#contact';
 
@@ -30,7 +31,7 @@ const ROLE_LABELS: Record<string, string> = {
  */
 @Component({
   selector: 'app-physiotherapist-portal',
-  imports: [RouterOutlet, AdminShell, AvatarModule, LanguageSwitcher, ThemeSwitcher],
+  imports: [RouterOutlet, AdminShell, AvatarModule, LanguageSwitcher, ThemeSwitcher, DemoModeBadge],
   templateUrl: './physiotherapist-portal.html',
   styleUrl: './physiotherapist-portal.scss',
 })
@@ -65,7 +66,6 @@ export class PhysiotherapistPortal {
       'physiotherapist.nav.organization',
       'physiotherapist.nav.support',
       'physiotherapist.nav.logout',
-      'physiotherapist.topbar.searchPlaceholder',
       'physiotherapist.topbar.rolePill',
       'topbar.menu',
     ]),
@@ -118,9 +118,6 @@ export class PhysiotherapistPortal {
     },
   ]);
 
-  protected searchPlaceholder = computed(
-    () => this.translations()['physiotherapist.topbar.searchPlaceholder'] ?? '',
-  );
   protected rolePillLabel = computed(
     () => this.translations()['physiotherapist.topbar.rolePill'] ?? '',
   );
