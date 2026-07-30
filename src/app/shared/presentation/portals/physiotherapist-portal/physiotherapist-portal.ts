@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -12,7 +12,6 @@ import {
 import { LanguageSwitcher } from '../../components/language-switcher/language-switcher';
 import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
-import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
 
 const ROLE_LABELS: Record<string, string> = {
   ROLE_CLINIC_ADMIN: 'Clinic Admin',
@@ -29,14 +28,7 @@ const ROLE_LABELS: Record<string, string> = {
  */
 @Component({
   selector: 'app-physiotherapist-portal',
-  imports: [
-    RouterOutlet,
-    AdminShell,
-    AvatarModule,
-    LanguageSwitcher,
-    ThemeSwitcher,
-    ChangePasswordDialog,
-  ],
+  imports: [RouterOutlet, AdminShell, AvatarModule, LanguageSwitcher, ThemeSwitcher],
   templateUrl: './physiotherapist-portal.html',
   styleUrl: './physiotherapist-portal.scss',
 })
@@ -44,8 +36,6 @@ export class PhysiotherapistPortal {
   private router = inject(Router);
   private translate = inject(TranslateService);
   protected iamStore = inject(IamStore);
-
-  protected changePasswordVisible = signal<boolean>(false);
 
   protected currentEmail = this.iamStore.currentEmail;
 
@@ -75,7 +65,6 @@ export class PhysiotherapistPortal {
       'physiotherapist.nav.logout',
       'physiotherapist.topbar.searchPlaceholder',
       'physiotherapist.topbar.rolePill',
-      'topbar.changePassword',
       'topbar.menu',
     ]),
     { initialValue: {} as Record<string, string> },
@@ -133,12 +122,5 @@ export class PhysiotherapistPortal {
   protected rolePillLabel = computed(
     () => this.translations()['physiotherapist.topbar.rolePill'] ?? '',
   );
-  protected changePasswordTooltip = computed(
-    () => this.translations()['topbar.changePassword'] ?? 'Change password',
-  );
   protected menuToggleLabel = computed(() => this.translations()['topbar.menu'] ?? 'Menu');
-
-  protected openChangePassword() {
-    this.changePasswordVisible.set(true);
-  }
 }

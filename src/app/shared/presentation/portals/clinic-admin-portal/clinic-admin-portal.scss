@@ -26,26 +26,6 @@
   @include theme.surface;
 }
 
-.portal__icon-btn {
-  position: relative;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 0;
-  background: transparent;
-  color: var(--p-text-muted-color);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  @include theme.surface;
-}
-
-.portal__icon-btn:hover {
-  background: var(--p-surface-100);
-  color: var(--p-text-color);
-}
-
 :host ::ng-deep .portal__avatar {
   background: var(--p-surface-200);
   color: var(--p-text-color);

@@ -12,7 +12,6 @@ import {
 import { LanguageSwitcher } from '../../components/language-switcher/language-switcher';
 import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
-import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
 import { OrganizationStore } from '../../../../organization/application/organization.store';
 import { ClinicAdminProfilePromptDialog } from '../../../../organization/presentation/components/clinic-admin-profile-prompt-dialog/clinic-admin-profile-prompt-dialog';
 
@@ -37,7 +36,6 @@ const ROLE_LABELS: Record<string, string> = {
     AvatarModule,
     LanguageSwitcher,
     ThemeSwitcher,
-    ChangePasswordDialog,
     ClinicAdminProfilePromptDialog,
   ],
   templateUrl: './clinic-admin-portal.html',
@@ -51,7 +49,6 @@ export class ClinicAdminPortal {
   protected iamStore = inject(IamStore);
   private readonly organizationStore = inject(OrganizationStore);
 
-  protected changePasswordVisible = signal<boolean>(false);
   protected profilePromptVisible = signal<boolean>(false);
 
   protected currentEmail = this.iamStore.currentEmail;
@@ -77,7 +74,6 @@ export class ClinicAdminPortal {
       'clinicAdmin.nav.logout',
       'clinicAdmin.topbar.searchPlaceholder',
       'clinicAdmin.topbar.rolePill',
-      'topbar.changePassword',
       'topbar.menu',
     ]),
     { initialValue: {} as Record<string, string> },
@@ -140,9 +136,6 @@ export class ClinicAdminPortal {
   protected rolePillLabel = computed(
     () => this.translations()['clinicAdmin.topbar.rolePill'] ?? '',
   );
-  protected changePasswordTooltip = computed(
-    () => this.translations()['topbar.changePassword'] ?? 'Change password',
-  );
   protected menuToggleLabel = computed(() => this.translations()['topbar.menu'] ?? 'Menu');
 
   constructor() {
@@ -167,10 +160,6 @@ export class ClinicAdminPortal {
 
       this.profilePromptVisible.set(true);
     });
-  }
-
-  protected openChangePassword() {
-    this.changePasswordVisible.set(true);
   }
 
   protected async openProfileSetup() {
