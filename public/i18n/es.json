@@ -1115,6 +1115,12 @@
         }
       },
       "loading": "Cargando catálogo de suscripciones...",
+      "catalogError": {
+        "title": "No pudimos cargar el registro",
+        "message": "Inténtalo de nuevo más tarde",
+        "retry": "Reintentar",
+        "backToSignIn": "Volver a inicio de sesión"
+      },
       "chooseKits": "Elegir kits",
       "continuePlan": "Continuar con este plan",
       "contactSales": "Contactar a ventas",
@@ -1272,6 +1278,7 @@
     "notifications": {
       "accountCreatedSummary": "Cuenta creada",
       "accountCreatedDetail": "Tu cuenta ya está lista. Ahora registra tu clínica para completar el onboarding.",
+      "catalogErrorSummary": "No se pudieron cargar los planes",
       "errorSummary": "No se pudo registrar",
       "genericError": "No pudimos crear la cuenta. Intenta nuevamente.",
       "clinicErrorSummary": "No se pudo registrar la clínica",

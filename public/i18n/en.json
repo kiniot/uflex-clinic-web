@@ -1115,6 +1115,12 @@
         }
       },
       "loading": "Loading subscription catalog...",
+      "catalogError": {
+        "title": "We couldn't load sign-up",
+        "message": "Please try again later",
+        "retry": "Retry",
+        "backToSignIn": "Back to sign in"
+      },
       "chooseKits": "Choose kits",
       "continuePlan": "Continue with this plan",
       "contactSales": "Contact sales",
@@ -1272,6 +1278,7 @@
     "notifications": {
       "accountCreatedSummary": "Account created",
       "accountCreatedDetail": "Your account is ready. Now register your clinic to finish onboarding.",
+      "catalogErrorSummary": "Could not load the plans",
       "errorSummary": "Registration failed",
       "genericError": "We could not create the account. Please try again.",
       "clinicErrorSummary": "Clinic registration failed",

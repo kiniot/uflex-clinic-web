@@ -12,248 +12,293 @@
             alt="uFlex"
           />
           <p class="sign-up__brand-subtitle">
-            {{ 'signUp.' + currentStep() + 'Step.title' | translate }}
+            {{ stepTitleKey() | translate }}
           </p>
         </div>
 
-        <div class="sign-up__stepper" aria-hidden="true">
-          @for (step of ['plan', 'account', 'clinic']; track step; let index = $index) {
-            <span
-              class="sign-up__step"
-              [class.sign-up__step--active]="currentStep() === step"
-              [class.sign-up__step--complete]="
-                (currentStep() === 'account' && step === 'plan') ||
-                (currentStep() === 'clinic' && (step === 'plan' || step === 'account'))
-              "
-            >
-              {{ index + 1 }}
-            </span>
-            @if (index < 2) {
+        @if (!(currentStep() === 'plan' && catalogLoadFailed())) {
+          <div class="sign-up__stepper" aria-hidden="true">
+            @for (step of ['plan', 'account', 'clinic']; track step; let index = $index) {
               <span
-                class="sign-up__step-line"
-                [class.sign-up__step-line--active]="
-                  (currentStep() === 'account' && index === 0) || currentStep() === 'clinic'
+                class="sign-up__step"
+                [class.sign-up__step--active]="currentStep() === step"
+                [class.sign-up__step--complete]="
+                  (currentStep() === 'account' && step === 'plan') ||
+                  (currentStep() === 'clinic' && (step === 'plan' || step === 'account'))
                 "
-              ></span>
+              >
+                {{ index + 1 }}
+              </span>
+              @if (index < 2) {
+                <span
+                  class="sign-up__step-line"
+                  [class.sign-up__step-line--active]="
+                    (currentStep() === 'account' && index === 0) || currentStep() === 'clinic'
+                  "
+                ></span>
+              }
             }
-          }
-        </div>
+          </div>
+        }
 
         @if (currentStep() === 'plan') {
           <section class="sign-up__plan-step sign-up__step-stage sign-up__step-stage--plan">
-            <div class="sign-up__plan-copy">
-              <p class="sign-up__description">{{ 'signUp.planStep.subtitle' | translate }}</p>
-              <p class="sign-up__helper">{{ 'signUp.planStep.helper' | translate }}</p>
-            </div>
-
-            <div class="sign-up__controls">
-              <div class="sign-up__toggle-group">
-                <span class="sign-up__toggle-label">{{
-                  'signUp.planStep.billing.label' | translate
-                }}</span>
-                <div class="sign-up__toggle">
-                  <button
-                    type="button"
-                    class="sign-up__toggle-btn"
-                    [class.sign-up__toggle-btn--active]="selectedBillingPeriod() === 'MONTHLY'"
-                    (click)="onBillingPeriodSelected('MONTHLY')"
-                  >
-                    {{ 'signUp.planStep.billing.options.monthly' | translate }}
+            @if (catalogLoadFailed()) {
+              <div class="sign-up__catalog-error">
+                <i class="pi pi-exclamation-triangle" aria-hidden="true"></i>
+                <p class="sign-up__catalog-error-text">
+                  {{ 'signUp.planStep.catalogError.message' | translate }}
+                </p>
+                <div class="sign-up__catalog-error-actions">
+                  <button pButton type="button" (click)="retryLoadCatalog()">
+                    {{ 'signUp.planStep.catalogError.retry' | translate }}
                   </button>
-                  <button
-                    type="button"
-                    class="sign-up__toggle-btn"
-                    [class.sign-up__toggle-btn--active]="selectedBillingPeriod() === 'YEARLY'"
-                    (click)="onBillingPeriodSelected('YEARLY')"
-                  >
-                    {{ 'signUp.planStep.billing.options.yearly' | translate }}
+                  <button pButton type="button" [text]="true" (click)="backToSignIn()">
+                    {{ 'signUp.planStep.catalogError.backToSignIn' | translate }}
                   </button>
                 </div>
               </div>
-
-              <div class="sign-up__toggle-group">
-                <span class="sign-up__toggle-label">{{
-                  'signUp.planStep.currency.label' | translate
-                }}</span>
-                <div class="sign-up__toggle">
-                  <button
-                    type="button"
-                    class="sign-up__toggle-btn"
-                    [class.sign-up__toggle-btn--active]="selectedCurrency() === 'PEN'"
-                    (click)="onCurrencySelected('PEN')"
-                  >
-                    {{ currencyLabel('PEN') }}
-                  </button>
-                  <button
-                    type="button"
-                    class="sign-up__toggle-btn"
-                    [class.sign-up__toggle-btn--active]="selectedCurrency() === 'USD'"
-                    (click)="onCurrencySelected('USD')"
-                  >
-                    {{ currencyLabel('USD') }}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            @if (isLoadingCatalog()) {
-              <p class="sign-up__empty">{{ 'signUp.planStep.loading' | translate }}</p>
             } @else {
-              <div class="sign-up__plans">
-                @for (tier of publicTiers(); track trackTier($index, tier)) {
-                  <article
-                    class="sign-up__plan-card"
-                    [ngClass]="{
-                      'sign-up__plan-card--selected': selectedTierSlug() === tier.slug,
-                      'sign-up__plan-card--highlighted': isTierHighlighted(tier),
-                    }"
-                    (click)="onTierSelected(tier.slug!)"
-                  >
-                    <div class="sign-up__plan-head">
-                      @if (tierBadgeKey(tier); as badgeKey) {
-                        <span class="sign-up__plan-badge">{{ badgeKey | translate }}</span>
-                      }
-                      <h2 class="sign-up__plan-name">
-                        {{ 'signUp.planStep.tiers.' + tier.slug + '.name' | translate }}
-                      </h2>
-                      <p class="sign-up__plan-desc">{{ tierDescriptionKey(tier) | translate }}</p>
+              <div class="sign-up__plan-copy">
+                <p class="sign-up__description">{{ 'signUp.planStep.subtitle' | translate }}</p>
+                <p class="sign-up__helper">{{ 'signUp.planStep.helper' | translate }}</p>
+              </div>
+
+              <div class="sign-up__controls">
+                <div class="sign-up__toggle-group">
+                  <span class="sign-up__toggle-label">{{
+                    'signUp.planStep.billing.label' | translate
+                  }}</span>
+                  <div class="sign-up__toggle">
+                    <button
+                      type="button"
+                      class="sign-up__toggle-btn"
+                      [class.sign-up__toggle-btn--active]="selectedBillingPeriod() === 'MONTHLY'"
+                      (click)="onBillingPeriodSelected('MONTHLY')"
+                    >
+                      {{ 'signUp.planStep.billing.options.monthly' | translate }}
+                    </button>
+                    <button
+                      type="button"
+                      class="sign-up__toggle-btn"
+                      [class.sign-up__toggle-btn--active]="selectedBillingPeriod() === 'YEARLY'"
+                      (click)="onBillingPeriodSelected('YEARLY')"
+                    >
+                      {{ 'signUp.planStep.billing.options.yearly' | translate }}
+                    </button>
+                  </div>
+                </div>
+
+                <div class="sign-up__toggle-group">
+                  <span class="sign-up__toggle-label">{{
+                    'signUp.planStep.currency.label' | translate
+                  }}</span>
+                  <div class="sign-up__toggle">
+                    <button
+                      type="button"
+                      class="sign-up__toggle-btn"
+                      [class.sign-up__toggle-btn--active]="selectedCurrency() === 'PEN'"
+                      (click)="onCurrencySelected('PEN')"
+                    >
+                      {{ currencyLabel('PEN') }}
+                    </button>
+                    <button
+                      type="button"
+                      class="sign-up__toggle-btn"
+                      [class.sign-up__toggle-btn--active]="selectedCurrency() === 'USD'"
+                      (click)="onCurrencySelected('USD')"
+                    >
+                      {{ currencyLabel('USD') }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              @if (isLoadingCatalog()) {
+                <div
+                  class="sign-up__plans"
+                  role="status"
+                  [attr.aria-label]="'signUp.planStep.loading' | translate"
+                >
+                  @for (i of [0, 1, 2]; track i) {
+                    <div class="sign-up__plan-card sign-up__plan-skeleton" aria-hidden="true">
+                      <div class="sign-up__skel-group">
+                        <span class="sign-up__skel-line sign-up__skel-line--badge"></span>
+                        <span class="sign-up__skel-line sign-up__skel-line--title"></span>
+                        <span class="sign-up__skel-line sign-up__skel-line--desc"></span>
+                      </div>
+                      <span class="sign-up__skel-line sign-up__skel-line--price"></span>
+                      <div class="sign-up__skel-group sign-up__skel-group--row">
+                        <span class="sign-up__skel-line sign-up__skel-line--stat"></span>
+                        <span class="sign-up__skel-line sign-up__skel-line--stat"></span>
+                        <span class="sign-up__skel-line sign-up__skel-line--stat"></span>
+                      </div>
+                      <div class="sign-up__skel-group">
+                        @for (line of [0, 1, 2, 3]; track line) {
+                          <span class="sign-up__skel-line sign-up__skel-line--feature"></span>
+                        }
+                      </div>
+                      <span class="sign-up__skel-line sign-up__skel-line--cta"></span>
                     </div>
+                  }
+                </div>
+              } @else {
+                <div class="sign-up__plans">
+                  @for (tier of publicTiers(); track trackTier($index, tier)) {
+                    <article
+                      class="sign-up__plan-card"
+                      [ngClass]="{
+                        'sign-up__plan-card--selected': selectedTierSlug() === tier.slug,
+                        'sign-up__plan-card--highlighted': isTierHighlighted(tier),
+                      }"
+                      (click)="onTierSelected(tier.slug!)"
+                    >
+                      <div class="sign-up__plan-head">
+                        @if (tierBadgeKey(tier); as badgeKey) {
+                          <span class="sign-up__plan-badge">{{ badgeKey | translate }}</span>
+                        }
+                        <h2 class="sign-up__plan-name">
+                          {{ 'signUp.planStep.tiers.' + tier.slug + '.name' | translate }}
+                        </h2>
+                        <p class="sign-up__plan-desc">{{ tierDescriptionKey(tier) | translate }}</p>
+                      </div>
 
-                    <div class="sign-up__plan-price">
-                      @if (tier.isContactOnly) {
-                        <span class="sign-up__plan-price-value">{{
-                          'signUp.planStep.tiers.enterprise.customPrice' | translate
-                        }}</span>
-                      } @else {
-                        <span class="sign-up__plan-price-value">{{
-                          formatMoney(
-                            tier.getPrice(selectedBillingPeriod(), selectedCurrency()),
-                            selectedCurrency()
-                          )
-                        }}</span>
-                        <span class="sign-up__plan-price-suffix">
-                          / {{ billingLabel(selectedBillingPeriod()) }}
-                        </span>
-                      }
-                    </div>
-
-                    <p class="sign-up__plan-note">
-                      @if (tier.isContactOnly) {
-                        {{ 'signUp.planStep.tiers.enterprise.contactNote' | translate }}
-                      } @else {
-                        {{
-                          'signUp.planStep.kitFee'
-                            | translate
-                              : {
-                                  amount: formatMoney(
-                                    tier.getKitUnitPrice(selectedCurrency()),
-                                    selectedCurrency()
-                                  ),
-                                }
-                        }}
-                      }
-                    </p>
-
-                    <div class="sign-up__plan-stats">
-                      <span class="sign-up__plan-stat">
-                        {{
-                          'signUp.planStep.stats.physios'
-                            | translate: { count: tier.limits.maxPhysiotherapists ?? '∞' }
-                        }}
-                      </span>
-                      <span class="sign-up__plan-stat">
-                        {{
-                          'signUp.planStep.stats.patients'
-                            | translate: { count: tier.limits.maxPatients ?? '∞' }
-                        }}
-                      </span>
-                      <span class="sign-up__plan-stat">
-                        {{
-                          'signUp.planStep.stats.kits'
-                            | translate
-                              : {
-                                  base: tier.kits.baseKits,
-                                  max: maxKitsLabel(tier),
-                                }
-                        }}
-                      </span>
-                    </div>
-
-                    <ul class="sign-up__plan-features">
-                      @for (featureKey of tierFeatureKeys(tier); track featureKey) {
-                        <li>
-                          <i class="pi pi-check" aria-hidden="true"></i>
-                          <span>{{
-                            'signUp.planStep.tiers.' + tier.slug + '.' + featureKey | translate
+                      <div class="sign-up__plan-price">
+                        @if (tier.isContactOnly) {
+                          <span class="sign-up__plan-price-value">{{
+                            'signUp.planStep.tiers.enterprise.customPrice' | translate
                           }}</span>
-                        </li>
-                      }
-                    </ul>
+                        } @else {
+                          <span class="sign-up__plan-price-value">{{
+                            formatMoney(
+                              tier.getPrice(selectedBillingPeriod(), selectedCurrency()),
+                              selectedCurrency()
+                            )
+                          }}</span>
+                          <span class="sign-up__plan-price-suffix">
+                            / {{ billingLabel(selectedBillingPeriod()) }}
+                          </span>
+                        }
+                      </div>
 
-                    <div class="sign-up__plan-footer">
-                      @if (!tier.isContactOnly) {
-                        <div
-                          class="sign-up__kits-panel"
-                          [class.sign-up__kits-panel--open]="isKitsEditorVisible(tier)"
-                          (click)="$event.stopPropagation()"
-                        >
-                          <div class="sign-up__kits-panel-inner">
-                            <div class="sign-up__kits">
-                              <label>{{ 'signUp.planStep.kitsLabel' | translate }}</label>
-                              <div class="sign-up__kits-stepper">
-                                <button
-                                  type="button"
-                                  class="sign-up__kits-btn"
-                                  [disabled]="!canDecreaseKits(tier)"
-                                  (click)="decreaseKits(tier); $event.stopPropagation()"
-                                >
-                                  <i class="pi pi-minus" aria-hidden="true"></i>
-                                </button>
-                                <div class="sign-up__kits-value">
-                                  {{ normalizedRequestedTotalKits() ?? tier.kits.baseKits }}
+                      <p class="sign-up__plan-note">
+                        @if (tier.isContactOnly) {
+                          {{ 'signUp.planStep.tiers.enterprise.contactNote' | translate }}
+                        } @else {
+                          {{
+                            'signUp.planStep.kitFee'
+                              | translate
+                                : {
+                                    amount: formatMoney(
+                                      tier.getKitUnitPrice(selectedCurrency()),
+                                      selectedCurrency()
+                                    ),
+                                  }
+                          }}
+                        }
+                      </p>
+
+                      <div class="sign-up__plan-stats">
+                        <span class="sign-up__plan-stat">
+                          {{
+                            'signUp.planStep.stats.physios'
+                              | translate: { count: tier.limits.maxPhysiotherapists ?? '∞' }
+                          }}
+                        </span>
+                        <span class="sign-up__plan-stat">
+                          {{
+                            'signUp.planStep.stats.patients'
+                              | translate: { count: tier.limits.maxPatients ?? '∞' }
+                          }}
+                        </span>
+                        <span class="sign-up__plan-stat">
+                          {{
+                            'signUp.planStep.stats.kits'
+                              | translate
+                                : {
+                                    base: tier.kits.baseKits,
+                                    max: maxKitsLabel(tier),
+                                  }
+                          }}
+                        </span>
+                      </div>
+
+                      <ul class="sign-up__plan-features">
+                        @for (featureKey of tierFeatureKeys(tier); track featureKey) {
+                          <li>
+                            <i class="pi pi-check" aria-hidden="true"></i>
+                            <span>{{
+                              'signUp.planStep.tiers.' + tier.slug + '.' + featureKey | translate
+                            }}</span>
+                          </li>
+                        }
+                      </ul>
+
+                      <div class="sign-up__plan-footer">
+                        @if (!tier.isContactOnly) {
+                          <div
+                            class="sign-up__kits-panel"
+                            [class.sign-up__kits-panel--open]="isKitsEditorVisible(tier)"
+                            (click)="$event.stopPropagation()"
+                          >
+                            <div class="sign-up__kits-panel-inner">
+                              <div class="sign-up__kits">
+                                <label>{{ 'signUp.planStep.kitsLabel' | translate }}</label>
+                                <div class="sign-up__kits-stepper">
+                                  <button
+                                    type="button"
+                                    class="sign-up__kits-btn"
+                                    [disabled]="!canDecreaseKits(tier)"
+                                    (click)="decreaseKits(tier); $event.stopPropagation()"
+                                  >
+                                    <i class="pi pi-minus" aria-hidden="true"></i>
+                                  </button>
+                                  <div class="sign-up__kits-value">
+                                    {{ normalizedRequestedTotalKits() ?? tier.kits.baseKits }}
+                                  </div>
+                                  <button
+                                    type="button"
+                                    class="sign-up__kits-btn"
+                                    [disabled]="!canIncreaseKits(tier)"
+                                    (click)="increaseKits(tier); $event.stopPropagation()"
+                                  >
+                                    <i class="pi pi-plus" aria-hidden="true"></i>
+                                  </button>
                                 </div>
-                                <button
-                                  type="button"
-                                  class="sign-up__kits-btn"
-                                  [disabled]="!canIncreaseKits(tier)"
-                                  (click)="increaseKits(tier); $event.stopPropagation()"
-                                >
-                                  <i class="pi pi-plus" aria-hidden="true"></i>
-                                </button>
+                                <p class="sign-up__kits-note">
+                                  {{
+                                    'signUp.planStep.kitsHint'
+                                      | translate
+                                        : {
+                                            min: tier.kits.baseKits,
+                                            max: maxKitsLabel(tier),
+                                          }
+                                  }}
+                                </p>
                               </div>
-                              <p class="sign-up__kits-note">
-                                {{
-                                  'signUp.planStep.kitsHint'
-                                    | translate
-                                      : {
-                                          min: tier.kits.baseKits,
-                                          max: maxKitsLabel(tier),
-                                        }
-                                }}
-                              </p>
                             </div>
                           </div>
-                        </div>
-                      }
+                        }
 
-                      <button
-                        type="button"
-                        class="sign-up__plan-cta"
-                        [class.sign-up__plan-cta--secondary]="true"
-                        (click)="onPlanCta(tier); $event.stopPropagation()"
-                      >
-                        {{
-                          tier.isContactOnly
-                            ? ('signUp.planStep.contactSales' | translate)
-                            : isKitsEditorVisible(tier)
-                              ? ('signUp.planStep.continuePlan' | translate)
-                              : ('signUp.planStep.chooseKits' | translate)
-                        }}
-                      </button>
-                    </div>
-                  </article>
-                }
-              </div>
+                        <button
+                          type="button"
+                          class="sign-up__plan-cta"
+                          [class.sign-up__plan-cta--secondary]="true"
+                          (click)="onPlanCta(tier); $event.stopPropagation()"
+                        >
+                          {{
+                            tier.isContactOnly
+                              ? ('signUp.planStep.contactSales' | translate)
+                              : isKitsEditorVisible(tier)
+                                ? ('signUp.planStep.continuePlan' | translate)
+                                : ('signUp.planStep.chooseKits' | translate)
+                          }}
+                        </button>
+                      </div>
+                    </article>
+                  }
+                </div>
+              }
             }
           </section>
         } @else if (currentStep() === 'account') {

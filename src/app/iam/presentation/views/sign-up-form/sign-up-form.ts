@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -72,7 +72,21 @@ export class SignUpForm extends BaseForm implements OnInit {
   readonly isSubmitting = signal(false);
   readonly currentStep = signal<SignUpStep>('plan');
   readonly kitsEditorTierSlug = signal<PublicSubscriptionTierSlug | null>(null);
+  /** Set when `loadCatalog` fails (backend unreachable, etc.) so the plan step can show a
+   * persistent explanation instead of leaving the tier list silently empty. */
+  readonly catalogLoadFailed = signal(false);
   private shippingCountryManuallyChanged = false;
+
+  /**
+   * The header above the stepper. On the plan step, once the catalog fails to load, none of
+   * "Elige tu plan ideal", the billing/currency toggles, etc. make sense to show — there is
+   * nothing to configure yet — so it switches to a connection-problem title instead.
+   */
+  protected readonly stepTitleKey = computed(() =>
+    this.currentStep() === 'plan' && this.catalogLoadFailed()
+      ? 'signUp.planStep.catalogError.title'
+      : `signUp.${this.currentStep()}Step.title`,
+  );
 
   readonly publicTiers = this.subscriptionStore.publicTiers;
   readonly isLoadingCatalog = this.subscriptionStore.isLoadingCatalog;
@@ -184,7 +198,8 @@ export class SignUpForm extends BaseForm implements OnInit {
 
   protected async initializeOnboarding() {
     this.iamStore.resetSession();
-    await this.subscriptionStore.loadCatalog();
+    const loaded = await this.loadCatalogSafely();
+    if (!loaded) return;
 
     this.subscriptionStore.hydrateSelectionFromQuery({
       tier: this.route.snapshot.queryParamMap.get('tier'),
@@ -201,6 +216,34 @@ export class SignUpForm extends BaseForm implements OnInit {
     }
 
     this.syncQueryParams();
+  }
+
+  /**
+   * Wraps `loadCatalog` so a failure (backend down, network error, ...) surfaces both as a
+   * toast and as a persistent inline state in the plan step, instead of leaving the tier list
+   * silently empty. Returns whether it succeeded, so callers can skip steps that need tiers.
+   */
+  private async loadCatalogSafely(force = false): Promise<boolean> {
+    try {
+      await this.subscriptionStore.loadCatalog({ force });
+      this.catalogLoadFailed.set(false);
+      return true;
+    } catch (err) {
+      this.catalogLoadFailed.set(true);
+      this.appErrorNotifier.showHttpError(err, {
+        summaryKey: 'signUp.notifications.catalogErrorSummary',
+        fallbackDetailKey: 'errors.network.unreachable',
+      });
+      return false;
+    }
+  }
+
+  protected retryLoadCatalog() {
+    void this.loadCatalogSafely(true);
+  }
+
+  protected backToSignIn() {
+    void this.router.navigate(['/sign-in']);
   }
 
   protected onTierSelected(slug: PublicSubscriptionTierSlug) {
