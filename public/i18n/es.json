@@ -2076,6 +2076,10 @@
       "body": "Confirma si deseas continuar con esta accion.",
       "confirm": "Confirmar",
       "cancel": "Volver"
+    },
+    "validation": {
+      "required": "Este campo es obligatorio.",
+      "invalid": "Este campo no es válido."
     }
   },
   "organizationView": {

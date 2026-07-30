@@ -2076,6 +2076,10 @@
       "body": "Please confirm if you want to continue with this action.",
       "confirm": "Confirm",
       "cancel": "Go back"
+    },
+    "validation": {
+      "required": "This field is required.",
+      "invalid": "This field is invalid."
     }
   },
   "organizationView": {

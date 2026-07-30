@@ -1,9 +1,14 @@
-import {FormGroup} from '@angular/forms';
+import { inject } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Base class for form components providing common form validation utilities in the presentation layer.
  */
 export class BaseForm {
+  /** Named distinctly from `translate` since most subclasses inject their own copy under that name. */
+  private readonly baseFormTranslate = inject(TranslateService);
+
   /**
    * Checks if a form control is invalid and has been touched.
    * @param form - The form group containing the control.
@@ -16,16 +21,19 @@ export class BaseForm {
   }
 
   /**
-   * Generates an error message for a specific error key on a control.
-   * @param controlName - The name of the control.
+   * Generates an error message for a specific error key on a control. Messages are generic
+   * (not control-specific) since raw control names like "dni" or "countryCode" aren't
+   * user-friendly labels to interpolate into a sentence.
    * @param errorKey - The error key (e.g., 'required').
-   * @returns The error message string.
+   * @returns The translated error message string.
    * @private
    */
-  private errorMessageForControl(controlName: string, errorKey: string): string {
+  private errorMessageForControl(errorKey: string): string {
     switch (errorKey) {
-      case 'required': return `The field ${controlName} is required.`;
-      default: return `The field ${controlName} is invalid.`;
+      case 'required':
+        return this.baseFormTranslate.instant('shared.validation.required');
+      default:
+        return this.baseFormTranslate.instant('shared.validation.invalid');
     }
   }
 
@@ -38,11 +46,12 @@ export class BaseForm {
    */
   protected errorMessagesForControl(form: FormGroup, controlName: string): string {
     const control = form.controls[controlName];
-    let errorMessages = "";
-    let errors = control.errors;
+    let errorMessages = '';
+    const errors = control.errors;
     if (!errors) return errorMessages;
-    Object.keys(errors).forEach((errorKey) =>
-      errorMessages += this.errorMessageForControl(controlName, errorKey));
+    Object.keys(errors).forEach(
+      (errorKey) => (errorMessages += this.errorMessageForControl(errorKey)),
+    );
     return errorMessages;
   }
 }

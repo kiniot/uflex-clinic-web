@@ -16,13 +16,6 @@ import { DemoModeBadge } from '../../components/demo-mode-badge/demo-mode-badge'
 
 const SUPPORT_URL = 'https://uflex-landing-page.vercel.app/#contact';
 
-const ROLE_LABELS: Record<string, string> = {
-  ROLE_CLINIC_ADMIN: 'Clinic Admin',
-  ROLE_PHYSIOTHERAPIST: 'Physiotherapist',
-  ROLE_PATIENT: 'Patient',
-  ROLE_USER: 'User',
-};
-
 /**
  * Top-level shell for the Physiotherapist portal. Wires the shared
  * AdminShell with the clinician sidebar (Dashboard, Therapy, Planning,
@@ -42,11 +35,8 @@ export class PhysiotherapistPortal {
 
   protected currentEmail = this.iamStore.currentEmail;
 
-  protected currentRoleLabel = computed(() => {
-    const role = this.iamStore.currentEffectiveRole();
-    if (!role) return '';
-    return ROLE_LABELS[role] ?? role;
-  });
+  /** Same translated text as the topbar role pill — this portal only ever shows one role. */
+  protected currentRoleLabel = computed(() => this.rolePillLabel());
 
   protected avatarInitials = computed(() => {
     const email = this.iamStore.currentEmail();

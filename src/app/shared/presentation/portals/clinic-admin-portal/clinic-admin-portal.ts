@@ -17,13 +17,6 @@ import { ClinicAdminProfilePromptDialog } from '../../../../organization/present
 
 const SUPPORT_URL = 'https://uflex-landing-page.vercel.app/#contact';
 
-const ROLE_LABELS: Record<string, string> = {
-  ROLE_CLINIC_ADMIN: 'Clinic Admin',
-  ROLE_PHYSIOTHERAPIST: 'Physiotherapist',
-  ROLE_PATIENT: 'Patient',
-  ROLE_USER: 'User',
-};
-
 /**
  * Top-level shell for the Clinic Admin portal. Wires the shared AdminShell
  * with Clinic-Admin-specific navigation, brand identity, and topbar actions
@@ -56,11 +49,8 @@ export class ClinicAdminPortal {
   protected currentEmail = this.iamStore.currentEmail;
   protected currentClinicAdminProfileStatus =
     this.organizationStore.currentClinicAdminProfileStatus;
-  protected currentRoleLabel = computed(() => {
-    const role = this.iamStore.currentEffectiveRole();
-    if (!role) return '';
-    return ROLE_LABELS[role] ?? role;
-  });
+  /** Same translated text as the topbar role pill — this portal only ever shows one role. */
+  protected currentRoleLabel = computed(() => this.rolePillLabel());
 
   private readonly translations = toSignal(
     this.translate.stream([
