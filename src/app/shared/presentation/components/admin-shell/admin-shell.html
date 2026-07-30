@@ -1,9 +1,5 @@
 <div class="admin-shell" [class.admin-shell--nav-open]="mobileNavOpen()">
-  <div
-    class="admin-shell__backdrop"
-    (click)="closeMobileNav()"
-    aria-hidden="true"
-  ></div>
+  <div class="admin-shell__backdrop" (click)="closeMobileNav()" aria-hidden="true"></div>
   <aside class="admin-shell__sidebar">
     <div class="admin-shell__brand">
       <img
@@ -43,6 +39,16 @@
       @for (item of bottomItems(); track item.label) {
         @if (item.route) {
           <a class="admin-shell__nav-item" [routerLink]="item.route" (click)="closeMobileNav()">
+            <i class="pi {{ item.icon }} admin-shell__nav-icon" aria-hidden="true"></i>
+            <span>{{ item.label }}</span>
+          </a>
+        } @else if (item.href) {
+          <a
+            class="admin-shell__nav-item"
+            [href]="item.href"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <i class="pi {{ item.icon }} admin-shell__nav-icon" aria-hidden="true"></i>
             <span>{{ item.label }}</span>
           </a>

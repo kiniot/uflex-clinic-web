@@ -16,6 +16,8 @@ import { ChangePasswordDialog } from '../../../../iam/presentation/components/ch
 import { OrganizationStore } from '../../../../organization/application/organization.store';
 import { ClinicAdminProfilePromptDialog } from '../../../../organization/presentation/components/clinic-admin-profile-prompt-dialog/clinic-admin-profile-prompt-dialog';
 
+const SUPPORT_URL = 'https://uflex-landing-page.vercel.app/#contact';
+
 const ROLE_LABELS: Record<string, string> = {
   ROLE_CLINIC_ADMIN: 'Clinic Admin',
   ROLE_PHYSIOTHERAPIST: 'Physiotherapist',
@@ -125,7 +127,7 @@ export class ClinicAdminPortal {
     {
       label: this.translations()['clinicAdmin.nav.support'] ?? '',
       icon: 'pi-question-circle',
-      action: () => console.log('Support clicked'),
+      href: SUPPORT_URL,
     },
     {
       label: this.translations()['clinicAdmin.nav.logout'] ?? '',

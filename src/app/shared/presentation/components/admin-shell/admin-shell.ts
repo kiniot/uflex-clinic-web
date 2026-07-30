@@ -17,13 +17,14 @@ export interface AdminNavItem {
 
 /**
  * Action shown in the sidebar bottom area (Support / Logout).
- * Either `route` (link) or `action` (callback) is provided; if both are set,
- * `route` wins.
+ * Exactly one of `route` (internal routerLink), `href` (external link, opened
+ * in a new tab) or `action` (callback) is provided; checked in that order.
  */
 export interface AdminBottomItem {
   label: string;
   icon: string;
   route?: string;
+  href?: string;
   action?: () => void;
 }
 
