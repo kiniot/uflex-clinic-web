@@ -14,6 +14,8 @@ import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
 import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
 
+const SUPPORT_URL = 'https://uflex-landing-page.vercel.app/#contact';
+
 const ROLE_LABELS: Record<string, string> = {
   ROLE_CLINIC_ADMIN: 'Clinic Admin',
   ROLE_PHYSIOTHERAPIST: 'Physiotherapist',
@@ -118,7 +120,7 @@ export class PhysiotherapistPortal {
     {
       label: this.translations()['physiotherapist.nav.support'] ?? '',
       icon: 'pi-question-circle',
-      action: () => console.log('Support clicked'),
+      href: SUPPORT_URL,
     },
     {
       label: this.translations()['physiotherapist.nav.logout'] ?? '',
