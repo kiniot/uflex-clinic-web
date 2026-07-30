@@ -77,13 +77,12 @@
         <button
           pButton
           type="button"
-          severity="secondary"
-          [text]="true"
+          [outlined]="true"
           [disabled]="isSubmitting()"
           (click)="startDemo()"
           class="sign-in__btn-demo"
         >
-          <i class="pi pi-eye" aria-hidden="true"></i>
+          <i class="pi pi-eye sign-in__btn-icon-left" aria-hidden="true"></i>
           <span>{{ 'signIn.viewDemo' | translate }}</span>
         </button>
       </div>
