@@ -2,12 +2,13 @@
   [brand]="brand()"
   [navItems]="navItems()"
   [bottomItems]="bottomItems()"
-  [searchPlaceholder]="searchPlaceholder()"
   [menuToggleLabel]="menuToggleLabel()"
 >
-  <div topbar-actions class="portal__actions">
-    <span class="portal__role-pill">{{ rolePillLabel() }}</span>
+  <div topbar-left class="portal__topbar-left">
     <app-demo-mode-badge />
+    <span class="portal__role-pill">{{ rolePillLabel() }}</span>
+  </div>
+  <div topbar-actions class="portal__actions">
     <app-language-switcher />
     <app-theme-switcher />
     <button

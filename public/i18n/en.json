@@ -64,7 +64,6 @@
       "logout": "Logout"
     },
     "topbar": {
-      "searchPlaceholder": "Search patients or devices...",
       "rolePill": "Admin",
       "clinicSelector": "Clinic Selector"
     },
@@ -1355,7 +1354,6 @@
       "logout": "Logout"
     },
     "topbar": {
-      "searchPlaceholder": "Search patients, devices, or reports...",
       "rolePill": "Physiotherapist"
     },
     "dashboard": {

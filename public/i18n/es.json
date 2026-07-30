@@ -64,7 +64,6 @@
       "logout": "Cerrar sesión"
     },
     "topbar": {
-      "searchPlaceholder": "Buscar pacientes o dispositivos...",
       "rolePill": "Admin",
       "clinicSelector": "Selector de clínica"
     },
@@ -1355,7 +1354,6 @@
       "logout": "Cerrar sesión"
     },
     "topbar": {
-      "searchPlaceholder": "Buscar pacientes, dispositivos o reportes...",
       "rolePill": "Fisioterapeuta"
     },
     "dashboard": {

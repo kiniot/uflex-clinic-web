@@ -251,8 +251,9 @@
   border-bottom-color: var(--p-surface-300);
 }
 
-.admin-shell__search {
-  flex: 0 1 420px;
+.admin-shell__topbar-left {
+  display: flex;
+  align-items: center;
 }
 
 .admin-shell__topbar-actions {
@@ -321,12 +322,5 @@
 
   .admin-shell__content {
     padding: 20px 16px;
-  }
-}
-
-@media (max-width: 560px) {
-  // Keep the search from crowding the toolbar on phones; it stays usable but flexible.
-  .admin-shell__search {
-    flex: 1 1 auto;
   }
 }

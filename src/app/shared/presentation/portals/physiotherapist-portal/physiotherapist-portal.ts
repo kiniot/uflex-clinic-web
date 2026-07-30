@@ -75,7 +75,6 @@ export class PhysiotherapistPortal {
       'physiotherapist.nav.organization',
       'physiotherapist.nav.support',
       'physiotherapist.nav.logout',
-      'physiotherapist.topbar.searchPlaceholder',
       'physiotherapist.topbar.rolePill',
       'topbar.changePassword',
       'topbar.menu',
@@ -129,9 +128,6 @@ export class PhysiotherapistPortal {
     },
   ]);
 
-  protected searchPlaceholder = computed(
-    () => this.translations()['physiotherapist.topbar.searchPlaceholder'] ?? '',
-  );
   protected rolePillLabel = computed(
     () => this.translations()['physiotherapist.topbar.rolePill'] ?? '',
   );
