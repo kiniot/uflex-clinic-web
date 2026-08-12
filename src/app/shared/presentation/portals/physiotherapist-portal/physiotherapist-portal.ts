@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -12,14 +12,9 @@ import {
 import { LanguageSwitcher } from '../../components/language-switcher/language-switcher';
 import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
-import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
+import { DemoModeBadge } from '../../components/demo-mode-badge/demo-mode-badge';
 
-const ROLE_LABELS: Record<string, string> = {
-  ROLE_CLINIC_ADMIN: 'Clinic Admin',
-  ROLE_PHYSIOTHERAPIST: 'Physiotherapist',
-  ROLE_PATIENT: 'Patient',
-  ROLE_USER: 'User',
-};
+const SUPPORT_URL = 'https://uflex-landing-page.vercel.app/#contact';
 
 /**
  * Top-level shell for the Physiotherapist portal. Wires the shared
@@ -29,14 +24,7 @@ const ROLE_LABELS: Record<string, string> = {
  */
 @Component({
   selector: 'app-physiotherapist-portal',
-  imports: [
-    RouterOutlet,
-    AdminShell,
-    AvatarModule,
-    LanguageSwitcher,
-    ThemeSwitcher,
-    ChangePasswordDialog,
-  ],
+  imports: [RouterOutlet, AdminShell, AvatarModule, LanguageSwitcher, ThemeSwitcher, DemoModeBadge],
   templateUrl: './physiotherapist-portal.html',
   styleUrl: './physiotherapist-portal.scss',
 })
@@ -45,15 +33,10 @@ export class PhysiotherapistPortal {
   private translate = inject(TranslateService);
   protected iamStore = inject(IamStore);
 
-  protected changePasswordVisible = signal<boolean>(false);
-
   protected currentEmail = this.iamStore.currentEmail;
 
-  protected currentRoleLabel = computed(() => {
-    const role = this.iamStore.currentEffectiveRole();
-    if (!role) return '';
-    return ROLE_LABELS[role] ?? role;
-  });
+  /** Same translated text as the topbar role pill — this portal only ever shows one role. */
+  protected currentRoleLabel = computed(() => this.rolePillLabel());
 
   protected avatarInitials = computed(() => {
     const email = this.iamStore.currentEmail();
@@ -73,9 +56,7 @@ export class PhysiotherapistPortal {
       'physiotherapist.nav.organization',
       'physiotherapist.nav.support',
       'physiotherapist.nav.logout',
-      'physiotherapist.topbar.searchPlaceholder',
       'physiotherapist.topbar.rolePill',
-      'topbar.changePassword',
       'topbar.menu',
     ]),
     { initialValue: {} as Record<string, string> },
@@ -118,7 +99,7 @@ export class PhysiotherapistPortal {
     {
       label: this.translations()['physiotherapist.nav.support'] ?? '',
       icon: 'pi-question-circle',
-      action: () => console.log('Support clicked'),
+      href: SUPPORT_URL,
     },
     {
       label: this.translations()['physiotherapist.nav.logout'] ?? '',
@@ -127,18 +108,8 @@ export class PhysiotherapistPortal {
     },
   ]);
 
-  protected searchPlaceholder = computed(
-    () => this.translations()['physiotherapist.topbar.searchPlaceholder'] ?? '',
-  );
   protected rolePillLabel = computed(
     () => this.translations()['physiotherapist.topbar.rolePill'] ?? '',
   );
-  protected changePasswordTooltip = computed(
-    () => this.translations()['topbar.changePassword'] ?? 'Change password',
-  );
   protected menuToggleLabel = computed(() => this.translations()['topbar.menu'] ?? 'Menu');
-
-  protected openChangePassword() {
-    this.changePasswordVisible.set(true);
-  }
 }

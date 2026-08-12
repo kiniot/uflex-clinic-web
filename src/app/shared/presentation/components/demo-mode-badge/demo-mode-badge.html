@@ -1,0 +1,6 @@
+@if (iamStore.isDemoMode()) {
+  <button type="button" class="demo-badge" [title]="tooltip" (click)="exitDemo()">
+    <i class="pi pi-eye demo-badge__icon" aria-hidden="true"></i>
+    <span>{{ 'demoBadge.label' | translate }}</span>
+  </button>
+}

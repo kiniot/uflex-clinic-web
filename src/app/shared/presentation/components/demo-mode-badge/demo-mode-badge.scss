@@ -1,0 +1,30 @@
+:host {
+  display: inline-flex;
+}
+
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--p-amber-500) 16%, transparent);
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--p-amber-500);
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--p-amber-500) 26%, transparent);
+  }
+}
+
+.demo-badge__icon {
+  font-size: 13px;
+}

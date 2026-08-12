@@ -1,9 +1,5 @@
 <div class="admin-shell" [class.admin-shell--nav-open]="mobileNavOpen()">
-  <div
-    class="admin-shell__backdrop"
-    (click)="closeMobileNav()"
-    aria-hidden="true"
-  ></div>
+  <div class="admin-shell__backdrop" (click)="closeMobileNav()" aria-hidden="true"></div>
   <aside class="admin-shell__sidebar">
     <div class="admin-shell__brand">
       <img
@@ -46,6 +42,16 @@
             <i class="pi {{ item.icon }} admin-shell__nav-icon" aria-hidden="true"></i>
             <span>{{ item.label }}</span>
           </a>
+        } @else if (item.href) {
+          <a
+            class="admin-shell__nav-item"
+            [href]="item.href"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="pi {{ item.icon }} admin-shell__nav-icon" aria-hidden="true"></i>
+            <span>{{ item.label }}</span>
+          </a>
         } @else {
           <button
             type="button"
@@ -71,12 +77,9 @@
       >
         <i class="pi pi-bars" aria-hidden="true"></i>
       </button>
-      <app-search-input
-        class="admin-shell__search"
-        [placeholder]="searchPlaceholder()"
-        [value]="searchValue()"
-        (valueChange)="onSearch($event)"
-      />
+      <div class="admin-shell__topbar-left">
+        <ng-content select="[topbar-left]" />
+      </div>
       <div class="admin-shell__topbar-actions">
         <ng-content select="[topbar-actions]" />
       </div>

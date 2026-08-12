@@ -64,7 +64,6 @@
       "logout": "Logout"
     },
     "topbar": {
-      "searchPlaceholder": "Search patients or devices...",
       "rolePill": "Admin",
       "clinicSelector": "Clinic Selector"
     },
@@ -1082,14 +1081,19 @@
       "placeholder": "Enter your password"
     },
     "forgotPassword": "Forgot password?",
-    "rememberMe": "Remember me for 30 days",
+    "rememberMe": "Keep me signed in on this device",
     "submit": "Sign In",
     "createAccount": "Create Account",
+    "viewDemo": "View demo",
     "notifications": {
       "errorSummary": "Sign-in failed",
       "invalidCredentials": "The email or password is incorrect.",
       "genericError": "We could not sign you in. Please try again."
     }
+  },
+  "demoBadge": {
+    "label": "Demo",
+    "tooltip": "You're exploring a demo with sample data. Changes are not saved. Click to exit."
   },
   "signUp": {
     "planStep": {
@@ -1111,6 +1115,12 @@
         }
       },
       "loading": "Loading subscription catalog...",
+      "catalogError": {
+        "title": "We couldn't load sign-up",
+        "message": "Please try again later",
+        "retry": "Retry",
+        "backToSignIn": "Back to sign in"
+      },
       "chooseKits": "Choose kits",
       "continuePlan": "Continue with this plan",
       "contactSales": "Contact sales",
@@ -1268,6 +1278,7 @@
     "notifications": {
       "accountCreatedSummary": "Account created",
       "accountCreatedDetail": "Your account is ready. Now register your clinic to finish onboarding.",
+      "catalogErrorSummary": "Could not load the plans",
       "errorSummary": "Registration failed",
       "genericError": "We could not create the account. Please try again.",
       "clinicErrorSummary": "Clinic registration failed",
@@ -1332,7 +1343,6 @@
   },
   "topbar": {
     "settings": "Settings",
-    "changePassword": "Change password",
     "menu": "Open menu"
   },
   "physiotherapist": {
@@ -1350,7 +1360,6 @@
       "logout": "Logout"
     },
     "topbar": {
-      "searchPlaceholder": "Search patients, devices, or reports...",
       "rolePill": "Physiotherapist"
     },
     "dashboard": {
@@ -2074,6 +2083,10 @@
       "body": "Please confirm if you want to continue with this action.",
       "confirm": "Confirm",
       "cancel": "Go back"
+    },
+    "validation": {
+      "required": "This field is required.",
+      "invalid": "This field is invalid."
     }
   },
   "organizationView": {

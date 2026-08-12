@@ -64,7 +64,6 @@
       "logout": "Cerrar sesión"
     },
     "topbar": {
-      "searchPlaceholder": "Buscar pacientes o dispositivos...",
       "rolePill": "Admin",
       "clinicSelector": "Selector de clínica"
     },
@@ -1082,14 +1081,19 @@
       "placeholder": "Ingresa tu contraseña"
     },
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "rememberMe": "Recuérdame por 30 días",
+    "rememberMe": "Mantener sesión iniciada en este dispositivo",
     "submit": "Iniciar sesión",
     "createAccount": "Crear cuenta",
+    "viewDemo": "Ver demo",
     "notifications": {
       "errorSummary": "No se pudo iniciar sesión",
       "invalidCredentials": "El correo o la contraseña son incorrectos.",
       "genericError": "No pudimos iniciar sesión. Intenta nuevamente."
     }
+  },
+  "demoBadge": {
+    "label": "Demo",
+    "tooltip": "Estás explorando una demo con datos de ejemplo. Los cambios no se guardan. Haz clic para salir."
   },
   "signUp": {
     "planStep": {
@@ -1111,6 +1115,12 @@
         }
       },
       "loading": "Cargando catálogo de suscripciones...",
+      "catalogError": {
+        "title": "No pudimos cargar el registro",
+        "message": "Inténtalo de nuevo más tarde",
+        "retry": "Reintentar",
+        "backToSignIn": "Volver a inicio de sesión"
+      },
       "chooseKits": "Elegir kits",
       "continuePlan": "Continuar con este plan",
       "contactSales": "Contactar a ventas",
@@ -1268,6 +1278,7 @@
     "notifications": {
       "accountCreatedSummary": "Cuenta creada",
       "accountCreatedDetail": "Tu cuenta ya está lista. Ahora registra tu clínica para completar el onboarding.",
+      "catalogErrorSummary": "No se pudieron cargar los planes",
       "errorSummary": "No se pudo registrar",
       "genericError": "No pudimos crear la cuenta. Intenta nuevamente.",
       "clinicErrorSummary": "No se pudo registrar la clínica",
@@ -1332,7 +1343,6 @@
   },
   "topbar": {
     "settings": "Configuración",
-    "changePassword": "Cambiar contraseña",
     "menu": "Abrir menú"
   },
   "physiotherapist": {
@@ -1350,7 +1360,6 @@
       "logout": "Cerrar sesión"
     },
     "topbar": {
-      "searchPlaceholder": "Buscar pacientes, dispositivos o reportes...",
       "rolePill": "Fisioterapeuta"
     },
     "dashboard": {
@@ -2074,6 +2083,10 @@
       "body": "Confirma si deseas continuar con esta accion.",
       "confirm": "Confirmar",
       "cancel": "Volver"
+    },
+    "validation": {
+      "required": "Este campo es obligatorio.",
+      "invalid": "Este campo no es válido."
     }
   },
   "organizationView": {

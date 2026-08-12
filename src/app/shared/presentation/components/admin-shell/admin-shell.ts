@@ -1,6 +1,5 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { SearchInput } from '../search-input/search-input';
 
 /**
  * Single nav entry rendered inside the AdminShell sidebar.
@@ -17,13 +16,14 @@ export interface AdminNavItem {
 
 /**
  * Action shown in the sidebar bottom area (Support / Logout).
- * Either `route` (link) or `action` (callback) is provided; if both are set,
- * `route` wins.
+ * Exactly one of `route` (internal routerLink), `href` (external link, opened
+ * in a new tab) or `action` (callback) is provided; checked in that order.
  */
 export interface AdminBottomItem {
   label: string;
   icon: string;
   route?: string;
+  href?: string;
   action?: () => void;
 }
 
@@ -37,14 +37,15 @@ export interface AdminBrand {
 }
 
 /**
- * Admin portal shell: fixed sidebar with brand + nav, topbar with search and
- * action slot, and a content area projected via <ng-content/>. The shell is
- * role-agnostic — clinic-admin and physiotherapist portals configure it with
- * their own nav data.
+ * Admin portal shell: fixed sidebar with brand + nav, topbar with a left
+ * projection slot (e.g. a status badge) and an action slot, and a content
+ * area projected via <ng-content/>. The shell is role-agnostic —
+ * clinic-admin and physiotherapist portals configure it with their own nav
+ * data.
  */
 @Component({
   selector: 'app-admin-shell',
-  imports: [RouterLink, RouterLinkActive, SearchInput],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './admin-shell.html',
   styleUrl: './admin-shell.scss',
 })
@@ -52,12 +53,8 @@ export class AdminShell {
   brand = input.required<AdminBrand>();
   navItems = input.required<AdminNavItem[]>();
   bottomItems = input<AdminBottomItem[]>([]);
-  searchPlaceholder = input<string>('');
-  searchValue = input<string>('');
   /** Accessible label for the mobile nav toggle; optional so existing callers stay valid. */
   menuToggleLabel = input<string>('Menu');
-
-  readonly searchValueChange = output<string>();
 
   /** Whether the off-canvas sidebar is open on small viewports. Ignored on desktop. */
   protected readonly mobileNavOpen = signal(false);
@@ -68,10 +65,6 @@ export class AdminShell {
 
   protected closeMobileNav() {
     this.mobileNavOpen.set(false);
-  }
-
-  protected onSearch(next: string) {
-    this.searchValueChange.emit(next);
   }
 
   protected runBottomItem(item: AdminBottomItem) {

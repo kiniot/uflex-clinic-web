@@ -12,16 +12,10 @@ import {
 import { LanguageSwitcher } from '../../components/language-switcher/language-switcher';
 import { ThemeSwitcher } from '../../components/theme-switcher/theme-switcher';
 import { IamStore } from '../../../../iam/application/iam.store';
-import { ChangePasswordDialog } from '../../../../iam/presentation/components/change-password-dialog/change-password-dialog';
 import { OrganizationStore } from '../../../../organization/application/organization.store';
 import { ClinicAdminProfilePromptDialog } from '../../../../organization/presentation/components/clinic-admin-profile-prompt-dialog/clinic-admin-profile-prompt-dialog';
 
-const ROLE_LABELS: Record<string, string> = {
-  ROLE_CLINIC_ADMIN: 'Clinic Admin',
-  ROLE_PHYSIOTHERAPIST: 'Physiotherapist',
-  ROLE_PATIENT: 'Patient',
-  ROLE_USER: 'User',
-};
+const SUPPORT_URL = 'https://uflex-landing-page.vercel.app/#contact';
 
 /**
  * Top-level shell for the Clinic Admin portal. Wires the shared AdminShell
@@ -37,7 +31,6 @@ const ROLE_LABELS: Record<string, string> = {
     AvatarModule,
     LanguageSwitcher,
     ThemeSwitcher,
-    ChangePasswordDialog,
     ClinicAdminProfilePromptDialog,
   ],
   templateUrl: './clinic-admin-portal.html',
@@ -51,17 +44,13 @@ export class ClinicAdminPortal {
   protected iamStore = inject(IamStore);
   private readonly organizationStore = inject(OrganizationStore);
 
-  protected changePasswordVisible = signal<boolean>(false);
   protected profilePromptVisible = signal<boolean>(false);
 
   protected currentEmail = this.iamStore.currentEmail;
   protected currentClinicAdminProfileStatus =
     this.organizationStore.currentClinicAdminProfileStatus;
-  protected currentRoleLabel = computed(() => {
-    const role = this.iamStore.currentEffectiveRole();
-    if (!role) return '';
-    return ROLE_LABELS[role] ?? role;
-  });
+  /** Same translated text as the topbar role pill — this portal only ever shows one role. */
+  protected currentRoleLabel = computed(() => this.rolePillLabel());
 
   private readonly translations = toSignal(
     this.translate.stream([
@@ -75,9 +64,7 @@ export class ClinicAdminPortal {
       'organization.profile.badge.pending',
       'clinicAdmin.nav.support',
       'clinicAdmin.nav.logout',
-      'clinicAdmin.topbar.searchPlaceholder',
       'clinicAdmin.topbar.rolePill',
-      'topbar.changePassword',
       'topbar.menu',
     ]),
     { initialValue: {} as Record<string, string> },
@@ -125,7 +112,7 @@ export class ClinicAdminPortal {
     {
       label: this.translations()['clinicAdmin.nav.support'] ?? '',
       icon: 'pi-question-circle',
-      action: () => console.log('Support clicked'),
+      href: SUPPORT_URL,
     },
     {
       label: this.translations()['clinicAdmin.nav.logout'] ?? '',
@@ -134,14 +121,8 @@ export class ClinicAdminPortal {
     },
   ]);
 
-  protected searchPlaceholder = computed(
-    () => this.translations()['clinicAdmin.topbar.searchPlaceholder'] ?? '',
-  );
   protected rolePillLabel = computed(
     () => this.translations()['clinicAdmin.topbar.rolePill'] ?? '',
-  );
-  protected changePasswordTooltip = computed(
-    () => this.translations()['topbar.changePassword'] ?? 'Change password',
   );
   protected menuToggleLabel = computed(() => this.translations()['topbar.menu'] ?? 'Menu');
 
@@ -167,10 +148,6 @@ export class ClinicAdminPortal {
 
       this.profilePromptVisible.set(true);
     });
-  }
-
-  protected openChangePassword() {
-    this.changePasswordVisible.set(true);
   }
 
   protected async openProfileSetup() {

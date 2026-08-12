@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
@@ -11,6 +11,7 @@ import { SignInCommand } from '../../../domain/model/sign-in.command';
 import { AuthShell } from '../../../../shared/presentation/components/auth-shell/auth-shell';
 import { BaseForm } from '../../../../shared/presentation/components/base-form/base-form';
 import { AppErrorNotifier } from '../../../../shared/application/app-error-notifier';
+import { DEMO_QUERY_PARAM } from '../../../../shared/infrastructure/demo/demo.constants';
 
 /**
  * Component for the sign-in form view in the presentation layer of the IAM bounded context.
@@ -33,14 +34,22 @@ import { AppErrorNotifier } from '../../../../shared/application/app-error-notif
 })
 export class SignInForm extends BaseForm {
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private store = inject(IamStore);
   private appErrorNotifier = inject(AppErrorNotifier);
 
   readonly isSubmitting = signal(false);
 
+  constructor() {
+    super();
+    if (this.route.snapshot.queryParamMap.get(DEMO_QUERY_PARAM) != null) {
+      this.startDemo();
+    }
+  }
+
   /**
-   * Form-group for the sign-in form.
-   * `rememberMe` is a presentation-only control; it is not forwarded to SignInCommand.
+   * Form-group for the sign-in form. `rememberMe` is not part of `SignInCommand` — it only
+   * decides which storage `IamStore` keeps the token in, not anything sent to the backend.
    */
   form = new FormGroup({
     email: new FormControl('', {
@@ -64,7 +73,12 @@ export class SignInForm extends BaseForm {
       password: this.form.value.password!,
     });
     try {
-      await this.store.signIn(signInCommand, this.router);
+      await this.store.signIn(
+        signInCommand,
+        this.router,
+        undefined,
+        this.form.controls.rememberMe.value,
+      );
     } catch (err) {
       this.appErrorNotifier.showHttpError(err, {
         summaryKey: 'signIn.notifications.errorSummary',
@@ -73,5 +87,15 @@ export class SignInForm extends BaseForm {
     } finally {
       this.isSubmitting.set(false);
     }
+  }
+
+  /**
+   * Starts a client-only guest session (no backend call) and lands on the
+   * physiotherapist portal, so the portfolio deployment is explorable with the
+   * real backend turned off.
+   */
+  startDemo() {
+    this.store.activateDemoSession();
+    this.router.navigate([this.store.currentPortalLandingRoute() ?? '/forbidden']).then();
   }
 }

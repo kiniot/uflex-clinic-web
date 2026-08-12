@@ -2,22 +2,15 @@
   [brand]="brand()"
   [navItems]="navItems()"
   [bottomItems]="bottomItems()"
-  [searchPlaceholder]="searchPlaceholder()"
   [menuToggleLabel]="menuToggleLabel()"
 >
-  <div topbar-actions class="portal__actions">
+  <div topbar-left class="portal__topbar-left">
+    <app-demo-mode-badge />
     <span class="portal__role-pill">{{ rolePillLabel() }}</span>
+  </div>
+  <div topbar-actions class="portal__actions">
     <app-language-switcher />
     <app-theme-switcher />
-    <button
-      type="button"
-      class="portal__icon-btn"
-      [attr.aria-label]="changePasswordTooltip()"
-      [title]="changePasswordTooltip()"
-      (click)="openChangePassword()"
-    >
-      <i class="pi pi-cog" aria-hidden="true"></i>
-    </button>
     <div class="portal__profile">
       <div class="portal__profile-text">
         <strong class="portal__profile-name">{{ currentEmail() ?? '' }}</strong>
@@ -34,5 +27,3 @@
 
   <router-outlet />
 </app-admin-shell>
-
-<app-change-password-dialog [(visible)]="changePasswordVisible" />
