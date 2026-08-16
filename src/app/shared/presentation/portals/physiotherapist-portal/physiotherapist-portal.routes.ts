@@ -17,11 +17,11 @@ export const physiotherapistPortalRoutes: Routes = [
     loadComponent: portal,
     children: [
       {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-      {path: 'dashboard', loadComponent: dashboard},
-      {path: 'therapy', loadChildren: therapyRoutes},
-      {path: 'planning', loadChildren: planningRoutes},
-      {path: 'device', loadChildren: deviceRoutes},
-      {path: 'patients', loadChildren: organizationRoutes}
+      {path: 'dashboard', loadComponent: dashboard, data: {preload: true}},
+      {path: 'therapy', loadChildren: therapyRoutes, data: {preload: true}},
+      {path: 'planning', loadChildren: planningRoutes, data: {preload: true}},
+      {path: 'device', loadChildren: deviceRoutes, data: {preload: true}},
+      {path: 'patients', loadChildren: organizationRoutes, data: {preload: true}}
     ]
   }
 ];

@@ -10,6 +10,6 @@ const patientTreatmentPlanRoutes = () =>
  * mounts the treatment-plan workspace under the same context.
  */
 export const planningRoutes: Routes = [
-  { path: '', loadComponent: planningHub },
+  { path: '', loadComponent: planningHub, data: { preload: true } },
   { path: ':patientId/treatment-plans', loadChildren: patientTreatmentPlanRoutes },
 ];

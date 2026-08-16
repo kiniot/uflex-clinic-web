@@ -12,6 +12,6 @@ const therapyTracking = () =>
  * patient's mobile app. The clinic admin's exercise catalog is exposed by {@link therapyRoutes}.
  */
 export const physiotherapistTherapyRoutes: Routes = [
-  { path: '', loadComponent: therapyPatientsHub },
+  { path: '', loadComponent: therapyPatientsHub, data: { preload: true } },
   { path: ':patientId', loadComponent: therapyTracking },
 ];

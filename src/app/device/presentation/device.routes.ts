@@ -18,7 +18,7 @@ const deviceDetails = () =>
  * subscription activation, so there is no per-clinic registration route.
  */
 export const deviceRoutes: Routes = [
-  { path: '', loadComponent: deviceManagement },
+  { path: '', loadComponent: deviceManagement, data: { preload: true } },
   { path: 'details/:deviceId', loadComponent: deviceDetails },
   { path: 'calibrate', loadComponent: deviceCalibration },
   { path: 'diagnostics', loadComponent: deviceDiagnostics },
