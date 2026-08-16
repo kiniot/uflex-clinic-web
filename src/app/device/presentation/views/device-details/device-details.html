@@ -1,4 +1,7 @@
-<p-toast position="top-right" />
+<p-toast
+  position="top-right"
+  [breakpoints]="{ '640px': { width: 'calc(100vw - 2rem)', left: '1rem', right: '1rem' } }"
+/>
 
 <a class="detail__back" routerLink="../..">
   <i class="pi pi-arrow-left" aria-hidden="true"></i>

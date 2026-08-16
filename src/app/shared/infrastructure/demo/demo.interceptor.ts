@@ -17,5 +17,5 @@ export const demoInterceptor: HttpInterceptorFn = (request, next) => {
   const handled = demoRouter.dispatch(request);
   if (!handled) return next(request);
 
-  return handled.pipe(delay(150));
+  return handled.pipe(delay(0));
 };
