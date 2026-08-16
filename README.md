@@ -16,6 +16,30 @@
 
 UflexClinicWeb is a modern health-tech web application built with Angular 21, designed to provide comprehensive digital rehabilitation solutions. The project adheres to strict Domain-Driven Design (DDD) principles and high-performance development standards.
 
+## Product Tour
+
+Try the hosted experience through the **[interactive demo](https://uflex-clinic-web.vercel.app/sign-in?demo=1)**. Demo mode runs entirely in the browser with representative clinical data, so no account is required.
+
+![uFlex Clinic Web sign-in with demo access](docs/screenshots/demo-sign-in.png)
+
+### From treatment design to measurable outcomes
+
+![Physiotherapist dashboard](docs/screenshots/physiotherapist-dashboard.png)
+
+The physiotherapist workspace brings patients, active plans, adherence, and recent clinical activity into one operational view.
+
+![Exercise catalog](docs/screenshots/exercise-catalog.png)
+
+Reusable exercises combine movement metadata with guided video content for consistent prescriptions.
+
+![Treatment plan workspace for Salim Ramirez](docs/screenshots/treatment-plan.png)
+
+Treatment plans organize routines, schedules, exercise series, target ranges, repetitions, and safety limits around an individual patient.
+
+![Detailed therapy session analysis](docs/screenshots/session-analysis.png)
+
+Session analysis turns captured movement into repetition-level range-of-motion and safety evidence for the clinician.
+
 ## Technical Stack
 
 - **Framework**: Angular 21 with standalone components.
