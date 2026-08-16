@@ -7,5 +7,5 @@ const subscriptionManagement = () =>
  * Routes for the Subscription bounded context.
  */
 export const subscriptionRoutes: Routes = [
-  {path: '', loadComponent: subscriptionManagement}
+  {path: '', loadComponent: subscriptionManagement, data: {preload: true}}
 ];

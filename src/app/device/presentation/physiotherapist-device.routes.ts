@@ -7,6 +7,6 @@ const deviceDetails = () =>
   import('./views/device-details/device-details').then((m) => m.DeviceDetails);
 
 export const physiotherapistDeviceRoutes: Routes = [
-  { path: '', loadComponent: deviceInventory },
+  { path: '', loadComponent: deviceInventory, data: { preload: true } },
   { path: 'details/:deviceId', loadComponent: deviceDetails },
 ];

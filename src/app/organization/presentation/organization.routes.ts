@@ -23,7 +23,7 @@ const patientDetail = () =>
  * view alongside it.
  */
 export const organizationRoutes: Routes = [
-  { path: '', loadComponent: organizationManagement },
+  { path: '', loadComponent: organizationManagement, data: { preload: true } },
   { path: 'physiotherapists/new', loadComponent: registerPhysiotherapist },
   { path: 'physiotherapists/:physiotherapistId', loadComponent: physiotherapistDetail },
   { path: 'patients/new', loadComponent: registerPatient, data: { roleContext: 'admin' } },

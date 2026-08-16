@@ -39,12 +39,14 @@ export const routes: Routes = [
   {
     path: 'clinic-admin',
     loadChildren: clinicAdminPortalRoutes,
+    data: { preloadPortal: true },
     title: `${baseTitle} - Clinic Admin`,
     canActivate: [iamGuard, rolePortalGuard('ROLE_CLINIC_ADMIN')],
   },
   {
     path: 'physiotherapist',
     loadChildren: physiotherapistPortalRoutes,
+    data: { preloadPortal: true },
     title: `${baseTitle} - Physiotherapist`,
     canActivate: [iamGuard, rolePortalGuard('ROLE_PHYSIOTHERAPIST')],
   },

@@ -29,11 +29,11 @@ export const clinicAdminPortalRoutes: Routes = [
     loadComponent: portal,
     children: [
       { path: '', redirectTo: 'organization', pathMatch: 'full' },
-      { path: 'exercises', loadChildren: exerciseRoutes },
-      { path: 'device', loadChildren: deviceRoutes },
-      { path: 'organization', loadChildren: organizationRoutes },
-      { path: 'subscription', loadChildren: subscriptionRoutes },
-      { path: 'profile', loadComponent: clinicAdminProfile },
+      { path: 'exercises', loadChildren: exerciseRoutes, data: { preload: true } },
+      { path: 'device', loadChildren: deviceRoutes, data: { preload: true } },
+      { path: 'organization', loadChildren: organizationRoutes, data: { preload: true } },
+      { path: 'subscription', loadChildren: subscriptionRoutes, data: { preload: true } },
+      { path: 'profile', loadComponent: clinicAdminProfile, data: { preload: true } },
     ],
   },
 ];

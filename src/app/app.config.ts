@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withViewTransitions } from '@angular/router';
+import { provideRouter, withPreloading, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -15,6 +15,7 @@ import {
   globalAppErrorCatalog,
 } from './shared/application/app-error-catalog';
 import { iamAppErrorCatalog } from './iam/application/iam-error-catalog';
+import { SelectivePreloadingStrategy } from './shared/infrastructure/routing/selective-preloading.strategy';
 
 /**
  * Application configuration for dependency injection and providers in the infrastructure layer.
@@ -27,7 +28,11 @@ export const appConfig: ApplicationConfig = {
       loader: provideTranslateHttpLoader({ prefix: './i18n/', suffix: '.json' }),
       fallbackLang: 'en',
     }),
-    provideRouter(routes, withViewTransitions()),
+    provideRouter(
+      routes,
+      withViewTransitions(),
+      withPreloading(SelectivePreloadingStrategy),
+    ),
     MessageService,
     provideAppErrorCatalog(globalAppErrorCatalog),
     provideAppErrorCatalog(iamAppErrorCatalog),

@@ -12,7 +12,7 @@ const patientDetail = () =>
  * under the Planning bounded context (/physiotherapist/planning).
  */
 export const physiotherapistOrganizationRoutes: Routes = [
-  { path: '', loadComponent: patientsHub },
+  { path: '', loadComponent: patientsHub, data: { preload: true } },
   { path: 'new', loadComponent: registerPatient, data: { roleContext: 'physiotherapist' } },
   {
     path: ':patientId',
