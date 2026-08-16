@@ -3,6 +3,7 @@
 :host {
   display: block;
   height: 100vh;
+  min-width: 0;
   overflow: hidden;
   background: var(--app-surface-canvas);
   @include theme.surface;
@@ -13,6 +14,11 @@
   grid-template-columns: 240px 1fr;
   height: 100vh;
   overflow: hidden;
+}
+
+.admin-shell__main {
+  min-width: 0;
+  min-height: 0;
 }
 
 // Off-canvas backdrop — only visible while the drawer is open on small screens.
@@ -225,6 +231,7 @@
 
 .admin-shell__main {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr;
   height: 100vh;
   min-width: 0;
@@ -254,6 +261,8 @@
 .admin-shell__topbar-left {
   display: flex;
   align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .admin-shell__topbar-actions {
@@ -261,10 +270,13 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  flex: 0 1 auto;
+  min-width: 0;
 }
 
 .admin-shell__content {
   min-height: 0;
+  min-width: 0;
   overflow: auto;
   padding: 32px;
   box-sizing: border-box;
@@ -318,9 +330,25 @@
 
   .admin-shell__topbar {
     padding: 12px 16px;
+    gap: 10px;
   }
 
   .admin-shell__content {
     padding: 20px 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-shell__topbar {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .admin-shell__content {
+    padding: 16px 12px;
+  }
+
+  .admin-shell__topbar-actions {
+    gap: 8px;
   }
 }

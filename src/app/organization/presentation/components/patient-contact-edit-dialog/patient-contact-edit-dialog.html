@@ -5,7 +5,7 @@
   [draggable]="false"
   [resizable]="false"
   [dismissableMask]="!pending()"
-  [style]="{ width: '480px' }"
+  [style]="{ width: '480px', maxWidth: 'calc(100vw - 2rem)' }"
   [header]="'patientEditDialog.title' | translate"
   (visibleChange)="onVisibleChange($event)"
 >

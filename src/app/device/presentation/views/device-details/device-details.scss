@@ -242,6 +242,18 @@
   display: flex;
   gap: 12px;
   justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .assign-dialog__footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  :host ::ng-deep .assign-dialog__footer .p-button {
+    width: 100%;
+  }
 }
 
 .detail__empty {

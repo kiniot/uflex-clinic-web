@@ -2,7 +2,12 @@
 
 :host { display: block; }
 
-.users-table__scroll { overflow-x: auto; }
+.users-table__scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
+}
 
 .users-table {
   width: 100%;

@@ -66,6 +66,9 @@
 
 .fleet__scroll {
   overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
 }
 
 .fleet__table {

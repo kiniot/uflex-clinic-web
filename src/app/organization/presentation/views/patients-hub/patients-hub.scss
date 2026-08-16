@@ -288,6 +288,9 @@
 
 .patients-page__table-scroll {
   overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
 }
 
 .patients-page__table {

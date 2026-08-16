@@ -323,6 +323,9 @@
 
 .physio-detail__patients-scroll {
   overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
 }
 
 .physio-detail__patients-table {

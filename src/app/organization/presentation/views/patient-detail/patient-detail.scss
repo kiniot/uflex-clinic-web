@@ -387,6 +387,9 @@
 
 .patient-detail__plans-scroll {
   overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
 }
 
 .patient-detail__plans-table {

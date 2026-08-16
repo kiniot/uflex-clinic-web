@@ -6,6 +6,9 @@
 
 .physios-table__scroll {
   overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
 }
 
 .physios-table {

@@ -126,12 +126,18 @@
   grid-template-columns: 1fr minmax(300px, 360px);
   gap: 16px;
   align-items: start;
+  min-width: 0;
 }
 
 .dash__side {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
+}
+
+.dash__attention {
+  min-width: 0;
 }
 
 .dash__card {

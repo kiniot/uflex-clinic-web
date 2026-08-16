@@ -109,7 +109,12 @@
   max-width: 100%;
 }
 
-.patients__scroll { overflow-x: auto; }
+.patients__scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
+}
 
 .patients__table {
   width: 100%;

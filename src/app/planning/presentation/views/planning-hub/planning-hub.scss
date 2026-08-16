@@ -76,7 +76,8 @@
 }
 
 .planning-hub__search {
-  min-width: 240px;
+  width: min(100%, 280px);
+  min-width: min(240px, 100%);
 }
 
 .planning-hub__loading {
@@ -138,6 +139,7 @@
   overflow-x: auto;
   max-width: 100%;
   contain: paint;
+  overscroll-behavior-inline: contain;
 }
 
 .planning-hub__table {

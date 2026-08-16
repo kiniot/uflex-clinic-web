@@ -44,3 +44,14 @@
     flex-wrap: wrap;
   }
 }
+
+@media (max-width: 480px) {
+  .confirm-action__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  :host ::ng-deep .confirm-action__actions .p-button {
+    width: 100%;
+  }
+}

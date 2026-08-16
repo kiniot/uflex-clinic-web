@@ -4,7 +4,12 @@
   display: block;
 }
 
-.team-table__scroll { overflow-x: auto; }
+.team-table__scroll {
+  overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
+}
 
 .team-table {
   width: 100%;

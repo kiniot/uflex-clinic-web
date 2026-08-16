@@ -385,6 +385,9 @@
 
 .inv__table-scroll {
   overflow-x: auto;
+  max-width: 100%;
+  contain: paint;
+  overscroll-behavior-inline: contain;
 }
 
 .inv__table {

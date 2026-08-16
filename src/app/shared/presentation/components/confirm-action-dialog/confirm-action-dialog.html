@@ -5,7 +5,7 @@
   [draggable]="false"
   [resizable]="false"
   [dismissableMask]="!pending()"
-  [style]="{ width: '420px' }"
+  [style]="{ width: '420px', maxWidth: 'calc(100vw - 2rem)' }"
   [header]="titleKey() | translate: titleParams()"
   (onHide)="onHide()"
 >

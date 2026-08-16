@@ -8,12 +8,15 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .portal__topbar-left {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .portal__role-pill {
@@ -45,6 +48,7 @@
   flex-direction: column;
   text-align: right;
   line-height: 1.2;
+  min-width: 0;
 }
 
 .portal__profile-name {
@@ -52,6 +56,10 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--p-text-color);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .portal__profile-sub {
@@ -68,4 +76,53 @@
   font-weight: 600;
   font-size: 12px;
   @include theme.surface;
+}
+
+@media (max-width: 640px) {
+  .portal__actions {
+    gap: 4px;
+  }
+
+  .portal__profile-text,
+  .portal__role-pill {
+    display: none;
+  }
+
+  .portal__profile {
+    flex: 0 0 auto;
+    gap: 0;
+    padding: 4px;
+  }
+
+  :host ::ng-deep app-language-switcher,
+  :host ::ng-deep app-theme-switcher {
+    flex: 0 0 auto;
+  }
+
+  :host ::ng-deep app-language-switcher .p-selectbutton,
+  :host ::ng-deep app-theme-switcher .p-selectbutton {
+    width: 80px;
+  }
+
+  :host ::ng-deep app-language-switcher .p-togglebutton,
+  :host ::ng-deep app-theme-switcher .p-togglebutton {
+    width: 40px;
+    min-width: 40px;
+    padding-inline: 0;
+  }
+
+  :host ::ng-deep app-language-switcher .p-togglebutton-content,
+  :host ::ng-deep app-theme-switcher .p-togglebutton-content {
+    justify-content: center;
+    padding-inline: 8px;
+  }
+}
+
+@media (max-width: 380px) {
+  :host ::ng-deep app-demo-mode-badge .demo-badge {
+    gap: 4px;
+    padding-inline: 6px;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
 }

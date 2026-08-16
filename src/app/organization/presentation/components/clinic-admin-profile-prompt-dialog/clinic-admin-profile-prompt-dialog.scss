@@ -32,3 +32,14 @@
   gap: 0.75rem;
   flex-wrap: wrap;
 }
+
+@media (max-width: 480px) {
+  .profile-prompt__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  :host ::ng-deep .profile-prompt__actions .p-button {
+    width: 100%;
+  }
+}

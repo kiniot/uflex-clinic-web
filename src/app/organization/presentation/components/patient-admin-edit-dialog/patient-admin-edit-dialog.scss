@@ -26,10 +26,22 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 @media (max-width: 720px) {
   .patient-admin-edit-dialog__grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .patient-admin-edit-dialog__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  :host ::ng-deep .patient-admin-edit-dialog__actions .p-button {
+    width: 100%;
   }
 }
